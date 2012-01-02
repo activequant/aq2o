@@ -1,4 +1,4 @@
-package com.activequant1.combination;
+package com.activequant.combination;
 
 import java.util.ArrayList;
 import java.util.List;
