@@ -15,6 +15,7 @@
       <item name="High level overview" href="highlevel.html"/>
       <item name="Installation/Use/POM" href="referencingaq.html"/>
 	<item name="Details" href="domainmodel.html" collapse="false">
+		  <item name="About the details" href="aboutdetails.html"/>
 	      <item name="Domain model" href="domainmodel.html"/>
 	      <item name="DAO" href="dao.html"/>
 	      <item name="Series Archive" href="seriesarchive.html"/>
