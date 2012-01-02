@@ -11,6 +11,7 @@
 
    
     <menu name="Framework">
+      <item name="Welcome" href="index.html"/>
       <item name="High level overview" href="highlevel.html"/>
       <item name="Installation/Use/POM" href="referencingaq.html"/>
 	<item name="Details" href="domainmodel.html" collapse="false">
