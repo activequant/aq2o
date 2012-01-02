@@ -40,12 +40,12 @@
 
 	<distributionManagement>
 		<repository>
-			<id>releases</id>
+			<id>aq-framework-site</id>
 			<url>scp://activequant.org/opt/0.8-stable/public/repository/release</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>snapshots</id>
+			<id>aq-framework-site</id>
 			<url>scp://activequant.org/opt/0.8-stable/public/repository/snapshot</url>
 		</snapshotRepository>
 		<site>
