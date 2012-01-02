@@ -1,0 +1,17 @@
+High level overview
+
+*--+--+--+
+|<<Functionality>>  | <<Used technology>> | <<Comments>> |
+*--+--+--+
+| Overall framework | Spring |  |
+*--+--+--+
+|Time series database   | HBase, Hadoop  |   |
+*--+--+--+
+|Reference and other data storage   | MyBatis, MySQL  |   |
+*--+--+--+
+| SOAP Service Facade | Apache CXR |  |
+*--+--+--+
+| Messaging Layer | JMS, Apache ActiveMQ |  |
+*--+--+--+
+
+

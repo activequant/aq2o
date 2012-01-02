@@ -1,0 +1,5 @@
+Service Facades
+
+	Service Facades are classes that provide use case oriented methods for other systems. They are essential in a service oriented architecture (SOA). Details about SOA can be found on {{{http://en.wikipedia.org/wiki/Service-oriented_architecture}Wikipedia}} or in any good book on software architecture.
+
+	AQ's service facades are at the time of this writing relatively lean, but functional. Feel free to extend these classes and to submit new code.  
