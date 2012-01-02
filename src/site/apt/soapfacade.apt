@@ -5,8 +5,14 @@ SOAP facade
 	The SOAP facade uses Apache's JXB library to generate a WAR file that can be dropped into a servlet container, such as Tomcat.
 
 * Building and deploying the WAR
+	
+	Building the WAR file is straightforward as you can see in the following snipplet. The resulting WAR file can be pushed directly into Tomcat's webapps folder. 
 
-	TBW.
++-----------+
+mvn clean package war:war
+# now copy the war file over. 
+cp target/aim-framework-1.0-SNAPSHOT.war  /opt/apache-tomcat-7.0.23/webapps/
++-----------+
 
 * Accessing the WSDL 
 
