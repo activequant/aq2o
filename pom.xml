@@ -14,19 +14,19 @@
 		<url>http://activequant.org/svn/aq2o/trunk</url>
 	</scm>
 	<licenses>
-	  <license>
-	    <name>Apache 2</name>
-	    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-	    <distribution>releases</distribution>
-	    <comments>A business-friendly OSS license</comments>
-	  </license>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>releases</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
 	</licenses>
 	<developers>
 		<developer>
 			<id>ustaudinger</id>
 			<name>Ulrich Staudinger</name>
-			<email>ustaudinger@activequant.com</email>			
-		</developer>	
+			<email>ustaudinger@activequant.com</email>
+		</developer>
 	</developers>
 	<properties>
 		<jdk.version>1.6</jdk.version>
@@ -58,11 +58,11 @@
 	<build>
 		<extensions>
 			<extension>
-                                                <groupId>org.apache.maven.wagon</groupId>
-                                                <artifactId>wagon-ssh</artifactId>
-                                                <version>1.0</version>
-                                        </extension>
-			</extensions>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
 
 		<plugins>
 			<plugin>
@@ -360,6 +360,8 @@
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
+
+	
 
 	</dependencies>
 
