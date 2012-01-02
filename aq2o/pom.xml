@@ -8,9 +8,9 @@
 	<name>ActiveQuant 2.o (AQ2o)</name>
 	<url>http://activequant.org</url>
  <scm>
-    <connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
-    <developerConnection>scm:svn://activequant.org/svn/aq2o/trunk</developerConnection>
-    <url>http://activequant.org/svn/aq2o/trunk</url>
+    <connection>scm:svn:http://activequant.org/svn/aq2o/trunk/aq2o</connection>
+    <developerConnection>scm:svn://activequant.org/svn/aq2o/trunk/aq2o</developerConnection>
+    <url>http://activequant.org/svn/aq2o/trunk/aq2o</url>
   </scm>
 
 	<properties>
