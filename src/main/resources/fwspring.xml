@@ -3,12 +3,11 @@
 <beans>
 	<import resource="ibatis/fwbeans.xml" />
 
-	<property name="locations">
-		<list>
-			<value>classpath:framework.properties</value>
-		</list>
-	</property>
-	
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="framework.properties" />
+	</bean>
+
 	<bean id="fwDataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource"
 		lazy-init="true">
 		<property name="driver">

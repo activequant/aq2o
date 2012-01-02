@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+
+	<import resource="fwspring.xml" />
+
+	<bean name="csimapper" class="com.activequant.tools.mapping.CSIMapper"
+		lazy-init="true">
+	</bean>
+
+	<bean name="mapperloop" class="com.activequant.tools.mapping.Mdi2InstrumentMapper"
+		lazy-init="false">
+		<constructor-arg>
+			<ref bean="ibatisDao" />
+		</constructor-arg>
+		<constructor-arg>
+			<list>
+				<ref bean="csimapper" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+</beans>
