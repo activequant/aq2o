@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="fwDataSource" />
+	</bean>
+
+	<bean id="countryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="countryDao" class="com.activequant.dao.mybatis.CountryDao">
+		<constructor-arg>
+			<ref bean="countryMapper"></ref>
+		</constructor-arg>
+	</bean>
+
+	<bean id="regionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="regionDao" class="com.activequant.dao.mybatis.RegionDao">
+		<constructor-arg>
+			<ref bean="regionMapper"></ref>
+		</constructor-arg>
+	</bean>
+
+	<bean id="genMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="instrDao" class="com.activequant.dao.mybatis.InstrumentDao">
+		<constructor-arg>
+			<ref bean="genMapper1"></ref>
+		</constructor-arg>
+	</bean>
+
+
+
+	<bean id="genMapper2" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="venueDao" class="com.activequant.dao.mybatis.VenueDao">
+		<constructor-arg>
+			<ref bean="genMapper2"></ref>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="genMapper3" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="mdiDao" class="com.activequant.dao.mybatis.MarketDataInstrumentDao">
+		<constructor-arg>
+			<ref bean="genMapper3"></ref>
+		</constructor-arg>
+	</bean>
+
+	<bean id="genMapper4" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="tradeableDao" class="com.activequant.dao.mybatis.TradeableInstrumentDao">
+		<constructor-arg>
+			<ref bean="genMapper4"></ref>
+		</constructor-arg>
+	</bean>
+
+	<bean id="genMapper5" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="portfolioDao" class="com.activequant.dao.mybatis.PortfolioDao">
+		<constructor-arg>
+			<ref bean="genMapper5"></ref>
+		</constructor-arg>
+	</bean>
+
+	<bean id="genMapper6" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="positionDao" class="com.activequant.dao.mybatis.PositionDao">
+		<constructor-arg>
+			<ref bean="genMapper6"></ref>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="ibatisDao" class="com.activequant.dao.mybatis.DaoFactory">
+		<constructor-arg index="0">
+			<ref bean="countryDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="regionDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="instrDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="venueDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="tradeableDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="mdiDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="6">
+			<ref bean="positionDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="7">
+			<ref bean="portfolioDao"></ref>
+		</constructor-arg>
+	</bean>
+
+</beans>

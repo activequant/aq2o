@@ -1,0 +1,115 @@
+Futures,Symbol,TWSymbol,AIMSymbol,Exchange,Type,Currency,PointValue,TickSize,TickWriteScaling,BloombergSymbol,YellowKey,BloombergScaling
+Australian Dollar Futures,AUD,AD,AD,CME,Currency Futures,USD,100000,0.0001,1,AD,CURNCY,1
+Set 50 Index,SET50,,S50,TFEX,Equity Futures,THB,100,0.1,1,BC,INDEX,1
+Soybean Oil Futures,SOYO,BO,ZL,CBOT / CME,Grain Futures,USD,600,0.01,1,BO,COMDTY,1
+Soybean Oil (Electronic+Pit),SOYOELEC,,BO2,CBOT,Grain Futures,USD,600,0.01,1,BO,COMDTY,1
+British Pound Futures,GBP,BP,BP,CME,Currency Futures,USD,62500,0.0001,1,BP,CURNCY,1
+IBOVESPA Stock Index,IBOVESPA,,IND,BMF,Equity Futures,BRL,1,5,1,BZ,INDEX,1
+Corn Futures,CORN,CN,ZC,CBOT / CME,Grain Futures,USD,50,0.25,1,C,COMDTY,1
+Corn (Pit),CORNPIT,,C,CBOT,Grain Futures,USD,50,0.25,1,C,COMDTY,1
+Corn (Electronic+Pit),CORNELEC,,C2,CBOT,Grain Futures,USD,50,0.25,1,C,COMDTY,1
+Cocoa Futures,COCOA,CC,CC,NYBOT / ICE,Food & Fiber Futures,USD,10,1,1,CC,COMDTY,1
+Canadian Dollar Futures,CAD,CD,CD,CME,Currency Futures,USD,100000,0.0001,1,CD,CURNCY,1
+CAC 40 Index Futures,CAC,CF,FCH,MNP,Equity Futures,EUR,10,0.5,1,CF,INDEX,1
+NY Light Sweet Crude Oil Futures,NYCOIL,CL,CL2,NYMEX,Energy Futures,USD,1000,0.01,1,CL,COMDTY,1
+Brent Crude Oil Futures ICE,BCOIL,CO,LCO,ICE,Energy Futures,USD,1000,0.01,1,CO,COMDTY,1
+Cotton Futures,COTTON,CT,CT,NYBOT / ICE,Food & Fiber Futures,USD,50000,0.0001,1,CT,COMDTY,1
+Coffee Robusta,COFFEROBUSTA,,LRC,LIFFE,Food & Fiber Futures,USD,10,1,1,DF,COMDTY,1
+DJA Mini $5,DJAMINI,,YM,CBOT,Equity Futures,USD,5,1,1,DM,INDEX,1
+Euro Schatz 2-year Futures,GBS,BZ,FGBS,EUREX,Interest Futures,EUR,1000,0.005,1,DU,COMDTY,1
+Euro FX Futures,EUR,EC,CU,CME,Currency Futures,USD,125000,0.0001,1,EC,CURNCY,1
+Eurodollar Futures,ED,ED,ED,CME,Interest Futures,USD,2500,0.005,1,ED,COMDTY,1
+Euro Euribor 3-month Futures,EURIBOR,UR,FEI,LIFFE,Interest Futures,EUR,2500,0.005,1,ER,COMDTY,1
+E-Mini S&P 500 Index Futures,ESP500,ES,ES,CME,Equity Futures,USD,50,0.25,1,ES,INDEX,1
+Euroswiss 3-Month,EUROSWISS,,FES,LIFFE,Interest Futures,CHF,2500,0.01,1,ES,COMDTY,1
+Feeder Cattle Futures,FCATTLE,FC,FC,CME,Meat Futures,USD,500,0.025,1,FC,COMDTY,1
+Federal Funds 30-Day,FEDFUNDS,,FF,CBOT,Interest Futures,USD,4167,0.005,1,FF,COMDTY,1
+T-Notes 5-year Futures,T5Y,FV,FV3,CBOT,Interest Futures,USD,1000,0.00781,1,FV,COMDTY,1
+Long Gilt,GILT,,FLG,LIFFE,Interest Futures,GBP,1000,0.01,1,G,COMDTY,1
+Gold Futures COMEX,GOLD,GC,GC2,COMEX,Metal Futures,USD,100,0.1,1,GC,COMDTY,1
+DAX Index Futures,DAX,DA,FDAX,EUREX,Equity Futures,EUR,25,0.5,1,GX,INDEX,1
+H-Shares Index,HSHARES,,HCE,HKEX,Equity Futures,HKD,50,1,1,HC,INDEX,1
+Copper Futures COMEX,COPPER,HG,HG2,COMEX,Metal Futures,USD,250,0.05,1,HG,COMDTY,1
+Hang Seng Stock Index,HANGSENG,,HSI,HKEX,Equity Futures,HKD,50,1,1,HI,INDEX,1
+NY Heating Oil #2 Futures,NHEAT,HO,HO2,NYMEX,Energy Futures,USD,42000,0.0001,1,HO,COMDTY,1
+IBEX 35 Index,IBEX,,MFX,MEFFRV,Equity Futures,EUR,10,1,1,IB,INDEX,1
+S&P CNX Nifty Index Futures,NIFTY,,SIN,SGX,Equity Futures,USD,2,0.5,1,IH,INDEX,1
+Kuala Lumpur Composite Index,KLINDEX,,KLI,MDEX,Equity Futures,MYR,50,0.5,1,IK,INDEX,1
+Platinum (Electronic),PLATINUMELEC,,JP2,TOCOM,Metal Futures,JPY,500,1,1,JA,COMDTY,1
+Platinum,PLATINUM,,JPL,TOCOM,Metal Futures,JPY,500,1,1,JA,COMDTY,1
+Japanese Govt Bond 10-Year,JPYBOND,,JGB,TSE,Interest Futures,JPY,1000000,0.01,1,JB,COMDTY,1
+Gold,TGOLD,,JAU,TOCOM,Metal Futures,JPY,1000,1,1,JG,COMDTY,1
+Rubber,RUBBER2,,JR2,TOCOM,Food & Fiber Futures,JPY,5000,0.1,1,JN,COMDTY,1
+Rubber,RUBBER,,JRU,TOCOM,Food & Fiber Futures,JPY,5000,0.1,1,JN,COMDTY,1
+Japanese Yen Futures,JPY,JY,JY,CME,Currency Futures,USD,125000,0.0001,1,JY,CURNCY,1
+Coffee Futures,COFFE,KC,KC,NYBOT / ICE,Food & Fiber Futures,USD,37500,0.0005,100,KC,COMDTY,1
+KOSPI 200 Index,KOSPI,,KOS,KOFEX,Equity Futures,KRW,500000,0.05,1,KM,INDEX,1
+Palm Oil,PALMOIL,,KPO,MDEX,Food & Fiber Futures,MYR,25,1,1,KO,COMDTY,1
+Wheat Hard Red Winter (Electronic),KWHEAT,,KE,KCBT,Grain Futures,USD,50,0.25,1,KW,COMDTY,1
+Wheat No. 2 Hard Winter,KWHEAT,,KW,KCBT,Grain Futures,USD,50,0.25,1,KW,COMDTY,1
+Short Sterling 3-Month,STERLING,,FSS,LIFFE,Interest Futures,GBP,1250,0.01,1,L,COMDTY,1
+Live Cattle Futures,LCATTLE,LC,LC,CME,Meat Futures,USD,400,0.025,1,LC,COMDTY,1
+Live/Lean Hogs Futures,LHOGS,LH,LH,CME,Meat Futures,USD,400,0.025,1,LH,COMDTY,1
+Aluminum High Grade 3 Month,LALUMINUM,,MHA9,LME,Metal Futures,USD,25,0.5,1,LMAHDS03,COMDTY,1
+Copper Grade A 3 Month,LCOPPER,,MCU0,LME,Metal Futures,USD,25,0.5,1,LMCADS03,COMDTY,1
+Nickel 3 Month,LNICKEL,,MNI9,LME,Metal Futures,USD,6,1,1,LMNIDS03,COMDTY,1
+Lead 3 Month,LLEAD,,MPB9,LME,Metal Futures,USD,25,0.5,1,LMPBDS03,COMDTY,1
+Zinc Special High Grade 3 Month,LZINC,,MZS9,LME,Metal Futures,USD,25,1,1,LMZSDS03,COMDTY,1
+NY Natural Gas Futures,NGAS,NG,NG2,NYMEX,Energy Futures,USD,10000,0.001,1,NG,COMDTY,1
+Nikkei 225 Index Futures CME,NIKKEI,NK,JNI,CME,Equity Futures,USD,5,5,1,NK,INDEX,1
+E-Mini NASDAQ 100 Index Futures,ENASDAQ,NQ,NQ,CME,Equity Futures,USD,20,0.25,1,NQ,INDEX,1
+New Zealand Dollar (Electronic),NZDOLLAR,,NE,CME,Currency Futures,USD,100000,0.0001,1,NV,CURNCY,1
+Euro Bobl 5-year Futures,GBM,BL,FGBM,EUREX,Interest Futures,EUR,1000,0.01,1,OE,COMDTY,1
+Mexican Peso Futures,MEX,ME,MP,CME,Currency Futures,USD,5000,0.0025,1,PE,CURNCY,1
+Platinum Futures NYMEX,PLAT,PL,PL1,NYMEX,Metal Futures,USD,50,0.1,1,PL,COMDTY,1
+S&P Canada 60 Index,SP60,,SXF,ME,Equity Futures,CAD,200,0.1,1,PT,INDEX,1
+Cocoa #7,LCOCOA,,LCC,LIFFE,Food & Fiber Futures,GBP,10,1,1,QC,COMDTY,1
+OMX Stockholm 30 Index,OMX,,OMXS30,OMX,Equity Futures,SEK,100,0.25,1,QC,INDEX,1
+ICE Gasoil Futures,GASOIL,GO,LGO,ICE,Energy Futures,USD,100,0.25,1,QS,COMDTY,1
+Sugar White,LSUGAR,,LSU,LIFFE,Food & Fiber Futures,USD,50,0.1,1,QW,COMDTY,1
+MSCI Singapore Stock Index,MSCISING,,SSG,SGX,Equity Futures,SGD,200,0.1,1,QZ,INDEX,1
+Canola,CANOLA,,RS,ICE-CA,Grain Futures,CAD,20,0.1,1,RS,COMDTY,1
+Euro Bund 10-year Futures,GBL,BN,FGBL,EUREX,Interest Futures,EUR,1000,0.01,1,RX,COMDTY,1
+Soybeans Futures,SOY,SY,ZS,CBOT / CME,Grain Futures,USD,50,0.25,1,S,COMDTY,1
+Soybeans (Pit),SOYPIT,,S,CBOT,Grain Futures,USD,50,0.25,1,S,COMDTY,1
+Soybeans (Electronic+Pit),SOYPITELEC,,S2,CBOT,Grain Futures,USD,50,0.25,1,S,COMDTY,1
+Sugar Futures,SUGAR,SB,SB,NYBOT / ICE,Food & Fiber Futures,USD,1120,0.0001,1,SB,COMDTY,1
+Swiss Franc Futures,CHF,SF,SF,CME,Currency Futures,USD,125000,0.0001,1,SF,CURNCY,1
+Silver Futures COMEX,SILVER,SV,SI2,COMEX,Metal Futures,USD,50,0.5,1,SI,COMDTY,1
+Swiss Market Index Futures EUREX,SMI,SW,SWI,EUREX,Equity Futures,CHF,10,1,1,SM,INDEX,1
+Soybean Meal Futures,SOYM,SM,ZM,CBOT / CME,Grain Futures,USD,100,0.1,1,SM,COMDTY,1
+Soybean Meal (Pit),SOYMPIT,,SM,CBOT,Grain Futures,USD,100,0.1,1,SM,COMDTY,1
+Soybean Meal (Electronic+Pit),SOYMELEC,,SM2,CBOT,Grain Futures,USD,100,0.1,1,SM,COMDTY,1
+TOPIX Index,TOPIX,,JTI,TSE,Equity Futures,JPY,10000,0.5,1,TP,INDEX,1
+T-Notes 2-year Futures,T2Y,TU,TU,CBOT,Interest Futures,USD,2000,0.00781,1,TU,COMDTY,1
+MSCI Taiwan Index,MSCITAIWAN,,STW,SGX,Equity Futures,USD,100,0.1,1,TW,INDEX,1
+T-Notes 10-year Futures,T10Y,TY,TY3,CBOT,Interest Futures,USD,1000,0.01562,1,TY,COMDTY,1
+T-Bond 30-year Futures,T30Y,US,US,CBOT,Interest Futures,USD,1000,0.01562,1,US,COMDTY,1
+DJ Euro Stoxx 50 Index Futures,ESTX,XX,SXE,EUREX,Equity Futures,EUR,10,1,1,VG,INDEX,1
+Wheat Futures,WHEAT,WC,ZW,CBOT / CME,Grain Futures,USD,50,0.25,1,W,COMDTY,1
+Wheat (Pit),WHEATPIT,,W,CBOT,Grain Futures,USD,50,0.25,1,W,COMDTY,1
+Wheat (Electronic+Pit),WHEATELEC,,W2,CBOT,Grain Futures,USD,50,0.25,1,W,COMDTY,1
+WIG 20 Index,WIG20,,W20,WSE,Equity Futures,PLZ,10,0.01,1,WI,INDEX,1
+RBOB Gasoline (Electronic),RBOB,,RB2,NYMEX,Energy Futures,USD,42000,0.0005,1,XB,COMDTY,1
+SPI 200 (Electronic),SPI200,,YAP2,SFE,Equity Futures,AUD,25,1,1,XP,INDEX,1
+Euroyen 3-Month,EUROYEN,,JEY,TFX,Interest Futures,JPY,250000,0.005,1,YE,INDEX,1
+FTSE 100 Index Futures,FTSE,FT,FFI,LIFFE,Equity Futures,GBP,10,0.5,1,Z,INDEX,1
+NASDAQ 100 Index Futures,NASDAQ,ND,ND3,CME,Equity Futures,USD,100,0.25,1,,,1
+Orange Juice Futures,ORANGE,JO,OJ,NYBOT / ICE,Food & Fiber Futures,USD,15000,0.0005,1,,,1
+Palladium Futures NYMEX,PALL,PA,PA,NYMEX,Metal Futures,USD,100,0.05,1,,,1
+Pork Bellies Futures,PORK,PB,PB,CME,Meat Futures,USD,400,0.025,1,,,1
+S&P 500 Index Futures,SP500,SP,SP2,CME,Equity Futures,USD,250,0.1,1,,,1
+T-Bills Futures,TBILL,TB,TB,CME,Interest Futures,USD,2500,0.005,1,,,1
+Oats Futures,OATS,OA,ZO,CBOT / CME,Grain Futures,USD,50,0.25,1,,,1
+AEX Index Futures,AEX,EO,,LIFFE Amsterdam,Equity Futures,EUR,200,0.05,1,,,1
+DJIA ($10) Futures,DJIA,DJ,,CBOT / CME,Equity Futures,USD,10,1,1,,,1
+BIG Dow ($25) Futures,DOJ,BD,,CBOT / CME,Equity Futures,USD,25,1,1,,,1
+E-mini Light Sweet Crude Oil Futures,ECOIL,QM,,NYMEX,Energy Futures,USD,500,0.025,1,,,1
+E-mini DJIA ($5) Futures,EDJIA,YM,,CBOT / CME,Equity Futures,USD,5,1,1,,,1
+E-mini Gold Futures COMEX,EGOLD,XG,,CBOT,Metal Futures,USD,33,0.1,1,,,1
+E-mini Euro FX Futures,EMINI,EE,,CME,Currency Futures,USD,62500,0.0001,1,,,1
+E-mini Japanese Yen Futures,EMINIJ,JE,,CME,Currency Futures,USD,6250000,0.000001,1,,,1
+E-mini Natural Gas Futures,ENGAS,QG,,NYMEX,Energy Futures,USD,2500,0.001,1,,,1
+E-mini S&P 400 Index Futures,ESP400,MI,,CME,Equity Futures,USD,100,0.1,1,,,1
+S&P 400 MidCap Index Futures,SP400,MD,,CME,Equity Futures,USD,500,0.05,1,,,1
+ICE WTI Light Sweet Crude Oil,WCOIL,WT,,ICE,Energy Futures,USD,1000,0.01,1,,,1

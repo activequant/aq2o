@@ -1,0 +1,25 @@
++-------------------+
+Everything should be made as simple as possible, but not simpler.  (Albert Einstein)
++-------------------+
+
+Welcome 
+        
+	This is the ActiveQuant Framework project. It contains CRUD functionality for timeseries and associated reference data. 
+
+	Our people are available for consulting, please contact {{{mailto:ustaudinger@activequant.com}Ulrich}} to get in touch with us to make your security trading happen. 
+	
+
+Typical use cases
+
+	Typical use cases for this project include recording large volume timeseries, managing financial reference data and other information. You might also want to plug in applications written in other languages through a SOAP Service Facade. It is also possible simulate trading, high frequency and low frequency and to move seamlessly from simulation to production through one of the trading venue interface implementations.  
+
+	Proceed to the {{{highlevel.html}high level overview}} for a 50k feet overview.
+
+
+A personal message
+
+	This framework follows the KISS principle as close as possible. In case you wonder why something was done that way and not another, keep KISS in mind. 
+
+	Another topic, checkstyle. Use it as a hint, but don't take it serious. Things like whitespace warnings and hiding variable names in constructors are something for interns that have nothing else to do. If you have some time, clean things up.   
+
+	Use this framework in simulation as long as you need to and purchase one of the external interfaces to link it to the real world. Of course you are free to distribute and publish our own external connectors. 

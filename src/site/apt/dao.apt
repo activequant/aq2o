@@ -1,0 +1,33 @@
+Data Access Object layer
+
+	The DAO layer provides interfaces and an implementation to CRUD AQ's domain model objects. As usual, here again you will find a factory/interface pattern. The factory interface defines all DAO interface creation methods. The individual DAO interfaces, such as IMarketDataInstrumentDao, define type specific access and modification methods next to the generic create, read, update and delete methods. 
+
+	Each DAO layer implementation has its own requirements. 
+
+MyBatis DAO layer
+
+* Setup
+	
+	Before you can use the MyBatis DAO layer, the database has to be initialized. The layer will generate tables and indices on tables itself, but expects that a database exists and is accessible for the framework. The database configuration is read from the file "framework.properties", which must reside somewhere in your classpath. The following snipplet shows all database related properties that have to be set in the properties file. 
+
++------------------+
+#db
+db.driver=org.gjt.mm.mysql.Driver
+db.url=jdbc:mysql://localhost:3306/activequant2.0
+db.username=writer
+db.password=writerpwd
++------------------+
+
+
+
+* MyBatis DAO factory
+
+	The MyBatis DAO factory requires a database configuration properties file in the well-known Java properties file format. This properties file contains MySQL connection parameters. The database needs to be initialized outside of ActiveQuant, the corresponding SQL files are included in the subversion repository. 
+
+
+
+* Example use: IInstrumentDao
+
+
+
+

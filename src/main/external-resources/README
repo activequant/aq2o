@@ -1,0 +1,3 @@
+this folder is not included in the final jar. 
+Put files, which should not go into the final jar, but which are necessary for example during development into this folder. 
+Example: log4j.xml

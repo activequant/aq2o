@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FrameWork">
+   <publishDate position="right"/>
+   <version position="right"/>
+   <body>
+
+
+    <links>
+      <item name="Apache" href="http://www.apache.org/" />
+    </links>
+
+   
+    <menu name="Framework">
+      <item name="High level overview" href="highlevel.html"/>
+      <item name="Installation/Use/POM" href="referencingaq.html"/>
+	<item name="Details" href="domainmodel.html" collapse="false">
+	      <item name="Domain model" href="domainmodel.html"/>
+	      <item name="DAO" href="dao.html"/>
+	      <item name="Series Archive" href="seriesarchive.html"/>
+	      <item name="Messaging" href="messaging.html"/>
+	      <item name="SNMP support" href="snmp.html"/>
+	      <item name="Worker Threads" href="workerpattern.html"/>
+	</item>
+    </menu>
+
+    <menu name="Service facades (SOA)">
+	<item name="Intro" href="servicefacades.html"/>
+	<item name="Matlab Facade" href="matlabfacade.html"/>
+	<item name="SOAP Facade" href="soapfacade.html"/>
+    </menu>
+
+    <menu name="Usage scenarios">
+		<item name="Backtesting" href="backtesting.html"/>
+		<item name="Live trading" href="livetrading.html"/>
+		<item name="Research" href="research.html"/>
+    </menu>
+    <menu name="Venue connectors">
+		<item name="Trading Technologies" href="tt.html"/>
+		<item name="BB TradeBook" href="bbtb.html"/>
+		<item name="CTS T4" href="cts.html"/>
+    </menu>
+    <menu name="Support">
+	<item name="Forum" href="supp_forums.html"/>
+	<item name="Bug tracker" href="bugtracker.html"/>
+	<item name="Consulting" href="consulting.html"/>
+    </menu>
+
+    <menu name="License">
+	<item name="License" href="license.html"/>
+    </menu>
+
+
+    <menu ref="reports"/>
+
+  </body>
+</project>
