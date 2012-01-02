@@ -1,4 +1,4 @@
-package com.activequant.trading;
+package com.activequant.trading.jms;
 
 /**
  * Lightweight text-based Venue implementation. 
