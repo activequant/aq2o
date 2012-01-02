@@ -8,12 +8,21 @@ MyBatis DAO layer
 
 * Setup
 	
-	Before you can use the MyBatis DAO layer, the database has to be initialized. The layer will generate tables and indices on tables itself, but expects that a database exists and is accessible for the framework. The database configuration is read from the file "framework.properties", which must reside somewhere in your classpath. The following snipplet shows all database related properties that have to be set in the properties file. 
+	Before you can use the MyBatis DAO layer, the database has to be initialized. The layer will generate tables and indices on tables itself, but expects that a database exists and is accessible for the framework. 
+	In case no database exists, create the database from within mysql with the following command. 
+	 
++---------+
+mysql> create database aq2o;
+Query OK, 1 row affected (0.13 sec)
+mysql> 
++---------+
+	
+	The database configuration is read from the file "framework.properties", which must reside somewhere in your classpath. The following snipplet shows all database related properties that have to be set in the properties file. 
 
 +------------------+
 #db
 db.driver=org.gjt.mm.mysql.Driver
-db.url=jdbc:mysql://localhost:3306/activequant2.0
+db.url=jdbc:mysql://localhost:3306/aq2o
 db.username=writer
 db.password=writerpwd
 +------------------+
@@ -22,12 +31,45 @@ db.password=writerpwd
 
 * MyBatis DAO factory
 
-	The MyBatis DAO factory requires a database configuration properties file in the well-known Java properties file format. This properties file contains MySQL connection parameters. The database needs to be initialized outside of ActiveQuant, the corresponding SQL files are included in the subversion repository. 
+	The MyBatis DAO factory requires a database configuration properties file in the well-known Java properties file format. 
+	This properties file contains MySQL connection parameters. The MyBatis DAO factory will also initialize the database tables on initialization in case these tables do not exist. 	
 
 
 
 * Example use: IInstrumentDao
 
+	First, initialize the dao factory by loading an application context. Usually, this is done only in one place, for example in a spring configuration file which tells Spring to 
+	inject the dao factory into your code. For the sake of this example, we assume that injection is not happening. 
+	 
+	 The following code shows how to obtain the DAO factory and how to obtain an instrument DAO. 
+	 
++------------+
+ApplicationContext appContext = new ClassPathXmlApplicationContext("springtest.xml");
+IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+IInstrumentDao idao = idf.instrumentDao();
++------------+
 
+	Once you have an instrument DAO, you can CRUD objects and perform other, DAO specific functions such as search by specific parameters. The following 
+	code snipplet shows you how to create a Future object and how to load it at another time. 
+	
++-----------+
+// instantiate a Future. 
+Future future = new Future();
+future.setName("FDAX");
+future.setDescription("The dax future");
+future.setExpiry(20111231l);
+future.setShortName("FDAX");
+future.setTickSize(10.0);
+future.setTickValue(10.0);
 
+// finally create it. 
+idao.create(future);
 
+....
+
+// load the future
+Future loadedFuture = (Future) idao.load(future.getId());
++-----------+
+
+	Using AQ's generic DAO pattern approach, you can easily add new classes, for example new Instrument types, and store them in a seamless way.  
+	
