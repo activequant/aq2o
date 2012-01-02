@@ -2,11 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.activequant</groupId>
-	<artifactId>aim-framework</artifactId>
+	<artifactId>aq2o</artifactId>
 	<packaging>jar</packaging>
 	<version>2.0-SNAPSHOT</version>
 	<name>ActiveQuant 2.o (AQ2o)</name>
-	<url>http://maven.apache.org</url>
+	<url>http://activequant.org</url>
+ <scm>
+    <connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
+    <developerConnection>scm:svn://activequant.org/svn/aq2o/trunk</developerConnection>
+    <url>http://activequant.org/svn/aq2o/trunk</url>
+  </scm>
 
 	<properties>
 		<jdk.version>1.6</jdk.version>
