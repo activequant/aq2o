@@ -107,7 +107,6 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 	private void createReceiver(String destination) throws TransportException {
 		String originalDestination = destination;
 		// reducing the amount of topics. working through selectors.
-
 		if (destination.length() > 5)
 			destination = destination.substring(0, 4); // +
 														// (destination.hashCode()
@@ -174,14 +173,20 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 
 	public IPublisher getPublisher(ETransportType transType,
 			TradeableInstrument instrument) throws TransportException {
-		// TODO Auto-generated method stub
-		return null;
+		String destination = transType.toString() + "."
+				+ instrument.getTradingProvider() + "."
+				+ instrument.getProviderSpecificId();
+		createPublisher(destination);
+		return publisherMap.get(destination);
 	}
 
 	public IReceiver getReceiver(ETransportType transType,
 			TradeableInstrument instrument) throws TransportException {
-		// TODO Auto-generated method stub
-		return null;
+		String destination = transType.toString() + "."
+				+ instrument.getTradingProvider() + "."
+				+ instrument.getProviderSpecificId();
+		createReceiver(destination);
+		return receiverMap.get(destination);
 	}
 
 }
