@@ -26,12 +26,12 @@
 	<distributionManagement>
 		<repository>
 			<id>releases</id>
-			<url>http://activequant.org/mvn/releases/</url>
+			<url>scp://activequant.org/opt/0.8-stable/public/repository/release</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>snapshots</id>
-			<url>http://activequant.org/mvn/snapshots/</url>
+			<url>scp://activequant.org/opt/0.8-stable/public/repository/snapshot</url>
 		</snapshotRepository>
 		<site>
 			<id>aq-framework-site</id>
@@ -193,18 +193,6 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
 		<repository>
-			<id>thirdparty</id>
-			<url>http://ahbuild:8090/nexus/content/repositories/thirdparty/</url>
-		</repository>
-		<repository>
-			<id>releases</id>
-			<url>http://ahbuild:8090/nexus/content/repositories/releases/</url>
-		</repository>
-		<repository>
-			<id>snapshots</id>
-			<url>http://ahbuild:8090/nexus/content/repositories/snapshots/</url>
-		</repository>
-		<repository>
 			<id>hbase</id>
 			<url>https://repository.apache.org/content/repositories/releases/</url>
 		</repository>
@@ -220,8 +208,6 @@
 			</releases>
 		</repository>
 	</repositories>
-
-
 	<dependencies>
 
 		<dependency>
@@ -232,29 +218,16 @@
 		</dependency>
 
 
-		<!-- dependency> <groupId>org.springframework</groupId> <artifactId>spring-core</artifactId> 
-			<version>${spring.version}</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
-			<artifactId>spring-beans</artifactId> <version>${spring.version}</version> 
-			</dependency -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- dependency> <groupId>org.springframework</groupId> <artifactId>spring-aop</artifactId> 
-			<version>${spring.version}</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
-			<artifactId>spring-context-support</artifactId> <version>${spring.version}</version> 
-			</dependency -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- dependency> <groupId>org.springframework</groupId> <artifactId>spring-orm</artifactId> 
-			<version>${spring.version}</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
-			<artifactId>spring-jdbc</artifactId> <version>${spring.version}</version> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-test</artifactId> 
-			<version>${spring.version}</version> </dependency -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-core</artifactId>
