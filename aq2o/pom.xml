@@ -7,11 +7,11 @@
 	<version>2.0-SNAPSHOT</version>
 	<name>ActiveQuant 2.o (AQ2o)</name>
 	<url>http://activequant.org</url>
- <scm>
-    <connection>scm:svn:http://activequant.org/svn/aq2o/trunk/aq2o</connection>
-    <developerConnection>scm:svn://activequant.org/svn/aq2o/trunk/aq2o</developerConnection>
-    <url>http://activequant.org/svn/aq2o/trunk/aq2o</url>
-  </scm>
+	<scm>
+		<connection>scm:svn:http://activequant.org/svn/aq2o/trunk/aq2o</connection>
+		<developerConnection>scm:svn://activequant.org/svn/aq2o/trunk/aq2o</developerConnection>
+		<url>http://activequant.org/svn/aq2o/trunk/aq2o</url>
+	</scm>
 
 	<properties>
 		<jdk.version>1.6</jdk.version>
@@ -47,13 +47,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.0</version>
-<dependencies>
-            <dependency><!-- add support for ssh/scp -->
-              <groupId>org.apache.maven.wagon</groupId>
-              <artifactId>wagon-ssh</artifactId>
-              <version>1.0</version>
-            </dependency>
-          </dependencies>
+				<dependencies>
+					<dependency><!-- add support for ssh/scp -->
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-ssh</artifactId>
+						<version>1.0</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<reportPlugins>
 						<plugin>
@@ -243,11 +243,8 @@
 			<artifactId>mybatis</artifactId>
 			<version>3.0.6</version>
 		</dependency>
-		<!-- dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency -->
+		<!-- dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
+			<version>1.2.16</version> </dependency -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -268,7 +265,7 @@
 			<groupId>org.snmp4j</groupId>
 			<artifactId>snmp4j</artifactId>
 			<version>1.10.1</version>
-				<exclusions>
+			<exclusions>
 				<exclusion>
 					<groupId>log4j</groupId>
 					<artifactId>log4j</artifactId>
