@@ -14,8 +14,6 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-
-
 	<scm>
 		<connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
 		<developerConnection>scm:svn://activequant.org/svn/aq2o/trunk</developerConnection>
@@ -47,15 +45,10 @@
 	</properties>
 
 	<distributionManagement>
-	<!-- 	<repository>
-			<id>aq-framework-site</id>
-			<url>scp://activequant.org/opt/0.8-stable/public/repository/release</url>
-		</repository>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>aq-framework-site</id>
-			<url>scp://activequant.org/opt/0.8-stable/public/repository/snapshot</url>
-		</snapshotRepository> -->
+		<!-- <repository> <id>aq-framework-site</id> <url>scp://activequant.org/opt/0.8-stable/public/repository/release</url> 
+			</repository> <snapshotRepository> <uniqueVersion>false</uniqueVersion> <id>aq-framework-site</id> 
+			<url>scp://activequant.org/opt/0.8-stable/public/repository/snapshot</url> 
+			</snapshotRepository> -->
 		<site>
 			<id>aq-framework-site</id>
 			<url>scp://activequant.org/var/aq2o.activequant.org</url>
