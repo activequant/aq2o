@@ -33,6 +33,8 @@
 		</menu>
 
 		<menu name="Usage scenarios">
+			<item name="Importing timeseries data" href="importingdata.html"/>
+			<item name="Importing reference data" href="importingrefdata.html"/>
 			<item name="Backtesting" href="backtesting.html" />
 			<item name="Live trading" href="livetrading.html" />
 			<item name="Research" href="research.html" />
@@ -42,6 +44,10 @@
 			<item name="BB TradeBook" href="bbtb.html" />
 			<item name="CTS T4" href="cts.html" />
 		</menu>
+		<menue name="Downloads">
+			<item name="QEmu Appliance" href="qemuapp.html"/>
+			<item name="Uber-JAR" href="uberjar.html"/> 
+		</menue>
 		<menu name="Support">
 			<item name="Forum" href="supp_forums.html" />
 			<item name="Bug tracker" href="bugtracker.html" />
