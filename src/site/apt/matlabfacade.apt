@@ -18,17 +18,7 @@ DAYRULE_WEEKDAYS = com.activequant.matlab.DayRule.WEEKDAYS;
 msf = com.activequant.matlab.MatlabServiceFacade();
 paramMap = java.util.HashMap()
 
-% fetch time series data 
-array = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
-    {'CSI_JPL', 'CSI_EURUSD'}, ... 
-    {'OPEN', 'HIGH', 'LOW', 'CLOSE'}, ... 
-    20000101000000.0, paramMap);        
-
-% fetch time series data with an interpolation rule. 
-paramMap.put(INTERPOLRULE, INTERPOLRULE_CARRY_FORWARD);    
-paramMap.put(DAYRULE, DAYRULE_WEEKDAYS);    
-
-% load some data. 
+% load some time series data. 
 
 array = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
             {'COX'}, ... 
