@@ -3,8 +3,10 @@
 	<publishDate position="right" />
 	<version position="right" />
 
-	<body>
+    <googleAnalyticsAccountId>UA-28069832-1</googleAnalyticsAccountId>
 
+	<body>
+	
 		<links>
 			<item name="Apache" href="http://www.apache.org/" />
 		</links>
