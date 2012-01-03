@@ -38,10 +38,7 @@ public class MatlabServiceFacade {
     private IDaoFactory daoFactory;
 
     public MatlabServiceFacade() {
-        log.info("Instantiating new archive factory.");
-        archiveFactory = new HBaseArchiveFactory();
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
-        daoFactory = (IDaoFactory) appContext.getBean("ibatisDao");
+        this("localhost");
     }
     
     public MatlabServiceFacade(String zookeeperHost) {

@@ -56,7 +56,7 @@ public class ImportTickWrite {
     }
 
     class AnonymousWorker extends Worker<String> {
-        IArchiveWriter iaw = new HBaseArchiveFactory().getWriter(TimeFrame.MINUTES_5);
+        IArchiveWriter iaw = new HBaseArchiveFactory("localhost").getWriter(TimeFrame.MINUTES_5);
 
         public void process(String event) {
             if (event.equals("TERMINATE")) {

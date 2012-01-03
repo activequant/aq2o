@@ -81,7 +81,7 @@ public class ImportCSI {
     }
 
     class AnonymousWorker extends Worker<String> {
-        IArchiveWriter iaw = new HBaseArchiveFactory().getWriter(TimeFrame.EOD);
+        IArchiveWriter iaw = new HBaseArchiveFactory("localhost").getWriter(TimeFrame.EOD);
 
         public void process(String event) {
             if (event.equals("TERMINATE")) {

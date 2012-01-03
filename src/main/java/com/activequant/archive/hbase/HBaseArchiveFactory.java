@@ -19,11 +19,6 @@ public class HBaseArchiveFactory implements IArchiveFactory {
         this.zookeeperHost = zookeeperHost;
     }
 
-    public HBaseArchiveFactory() {
-        // should be taken from a properties file. 
-        this.zookeeperHost = "localhost";
-    }
-
     public synchronized IArchiveReader getReader(TimeFrame tf) {
         if (readers.get(tf) == null)
             try {
