@@ -27,19 +27,20 @@ QEmu Image
 	To reduce our bandwidth consumption, we distribute the QEmu image over bittorrent. 
 
 * Start the image	
+
 	Run the debian image:
 
 +---------+
 qemu -m 256 -hda /home/ustaudinger/work/activequant/image/debian_squeeze_i386_standard.qcow2 -redir tcp:65432::22 
 +---------+	
 		
-	By default it is not possible to access the QEmu image, unless you configure several parameters. 
-	The above command line tells qemu to redirect traffic from your localhost, port 65432 to the virtual machine's ssh port. 
+	By default it is not possible to access the QEmu image, unless you configure NATting (see below). 	
+	The above command line tells qemu to redirect traffic from your localhost, port 65432 to the virtual machine's ssh port. Mind that Samba, Mysql, HBase, etc. are not accessible in this setup (again, setup NAT).   
 	
-	Now log in via ssh from your local machine:  
+	Assuming, NAT is not yet setup, log in via ssh from your local machine:  
 	
 +---------+	
-ustaudinger@baikal:~/work/activequant/trunk$ ssh root@baikal.local -p 65432
+ustaudinger@baikal:~/work/activequant/trunk$ ssh root@localhost -p 65432
 root@baikal.local's password: 
 Linux debian-i386 2.6.32-5-686 #1 SMP Wed Jan 12 04:01:41 UTC 2011 i686
 
@@ -55,8 +56,10 @@ root@debian-i386:~#
 +---------+
 
 	Ready to continue. 
+
+	Note: We strongly advise to use NAT with QEmu, as outlined at http://wiki.debian.org/QEMU#Guests_on_NATed_internal_network. Only by doig so 
 	  
-* Admin tools
+* Admin tools and SAMBA
 
 	Let's assume you were able to deploy the QEmu app on some virtualization cluster or something similar. 
 
@@ -65,6 +68,11 @@ root@debian-i386:~#
 	Hadoop's cluster state interface is located at http://<qemu-app-ip>:50070/dfshealth.jsp - from there you can also browse the virtual file system 
 	
 	HBase's web interface at http://<qemu-app-ip>:60010/master.jsp
+	
+	The appliance includes a samba share at /opt/shared. On windows or linux, you can mount it with smb://root@<your-appliance-ip>/shared/, uid/pwd <root/root>.
+	
+[./images/samba_screen.png] Screenshot of the samba share. 
+	
 	
 * AQ2o 
 
@@ -81,4 +89,9 @@ root@debian-i386:/opt/aq2o/trunk#
 +--------+
 root@debian-i386:/opt/aq2o/trunk# mvn install
 +--------+  
+	
+	
+	
+	
+	
 	
