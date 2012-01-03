@@ -57,8 +57,10 @@
 			<item name="What you can do" href="yourinvolvement.html" />
 		</menu>
 
-		<menu name="License">
+		<menu name="License, Disclaimer, etc">
 			<item name="License" href="license.html" />
+			<item name="Legal" href="legal.html" />
+			<item name="Contact details" href="contact.html" />
 		</menu>
 
 
