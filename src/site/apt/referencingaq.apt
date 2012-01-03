@@ -28,6 +28,8 @@ Usage
 
 Installation/Preparation
 
+	<<Please check the {{{./qemuapp.html}QEmu appliance page}} to get a head start.>>
+
 	By default, AQ relies on a MySQL database to store things like instrument specific information. This database has to be initialized for first use. Please see the {{{./dao.html}DAO}} page for details about how to do that. 
 
 	Also by default, AQ relies on HBase to store time series data. Please see the {{{./seriesarchive.html}Series Archive}} page for details.
