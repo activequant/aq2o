@@ -41,7 +41,7 @@ public class MapToString {
             }
             String key = keyVal[0];
             try {
-                AimHedgeDataField field = AimHedgeDataField.valueOf(key);
+                ActiveQuantDataField field = ActiveQuantDataField.valueOf(key);
                 if (field != null) {
                     ret.put(key, field.getValueObject(keyVal[1]));
                 } else {

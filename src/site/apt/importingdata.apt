@@ -10,9 +10,12 @@ Importing time series data
 	You can run a market data import with the following command.
 
 +------+
-java com.activequant.utils.ImportMarketDataCSV $startFolder $providerId $springConfigFile
+java com.activequant.utils.ImportMarketDataCSV $startFolder $providerId $springConfigFile $timeFrame
 +------+	 
 
+	Where time frame must be a string representation of the {{{./apidocs/com/activequant/domainmodel/TimeFrame.html}TimeFrame enum}}, for example <MINUTES_5>. 
+
+	
 		
 	 
 	 

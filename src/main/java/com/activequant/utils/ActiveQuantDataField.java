@@ -1,6 +1,6 @@
 package com.activequant.utils;
 
-public enum AimHedgeDataField {
+public enum ActiveQuantDataField {
 
     // will have to load this from DB at one point.
     BID(Double.class, "BID"), ASK(Double.class, "ASK"), BIDVOL(Double.class, "BIDVOL"), ASKVOL(Double.class, "ASKVOL"), EXP_DT(
@@ -11,7 +11,7 @@ public enum AimHedgeDataField {
     private Class<?> clazz;
     private String keyName;
 
-    AimHedgeDataField(Class<?> clazz, String keyName) {
+    ActiveQuantDataField(Class<?> clazz, String keyName) {
         this.clazz = clazz;
         this.keyName = keyName;
     }
