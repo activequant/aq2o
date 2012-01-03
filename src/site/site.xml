@@ -16,8 +16,8 @@
 			<item name="Welcome" href="index.html" />
 			<item name="High level overview" href="highlevel.html" />
 			<item name="Installation/Use/POM" href="referencingaq.html" />
-			<item name="Details" href="domainmodel.html" collapse="false">
-				<item name="About the details" href="aboutdetails.html" />
+			<item name="Details" href="aboutdetails" collapse="false">
+				<item name="Introduction" href="aboutdetails.html" />
 				<item name="Domain model" href="domainmodel.html" />
 				<item name="MdiIDs to InstIDs" href="instmapping.html" />
 				<item name="DAO" href="dao.html" />
@@ -29,7 +29,7 @@
 		</menu>
 
 		<menu name="Service facades (SOA)">
-			<item name="Intro" href="servicefacades.html" />
+			<item name="Introduction" href="servicefacades.html" />
 			<item name="Matlab (and Java) Facade" href="matlabfacade.html" />
 			<item name="SOAP Facade" href="soapfacade.html" />
 		</menu>
