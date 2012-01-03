@@ -59,7 +59,7 @@ root@debian-i386:~#
 
 	Ready to continue. 
 
-	Note: We strongly advise to use NAT with QEmu, as outlined at http://wiki.debian.org/QEMU#Guests_on_NATed_internal_network or at http://felipec.wordpress.com/2009/12/27/setting-up-qemu-with-a-nat/. Only by doig so 
+	Note: We strongly advise to use NAT with QEmu, as outlined  {{{http://wiki.debian.org/QEMU#Guests_on_NATed_internal_network}here}} or {{{http://felipec.wordpress.com/2009/12/27/setting-up-qemu-with-a-nat/}here}}. Only by doing so you will be able to continue properly.   
 	  
 * Included tools 
 
