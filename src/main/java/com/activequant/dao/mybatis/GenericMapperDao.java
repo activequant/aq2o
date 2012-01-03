@@ -30,54 +30,54 @@ class GenericMapperDao<T extends PersistentEntity> {
         try {
             mapper.init(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+            log.debug("Message while creating table, can be ignored on consecutive runs: " + ex.getStackTrace()[0]);
         }
         this.tableName = table;
         // same story here.
         try {
             mapper.genIndex1(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+            log.debug("Index already exists.");
         }
         try {
             mapper.genIndex2(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
         try {
             mapper.genIndex3(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
         try {
             mapper.genIndex4(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
         try {
             mapper.genIndex5(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
         try {
             mapper.genIndex6(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
         try {
             mapper.genIndex7(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
         try {
             mapper.genIndex8(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
         try {
             mapper.genKey9(table);
         } catch (Exception ex) {
-            log.debug("Message while creating index, can be ignored on consecutive runs: " + ex.getMessage());
+        	log.debug("Index already exists.");
         }
     }
 
