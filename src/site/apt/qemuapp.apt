@@ -66,4 +66,19 @@ root@debian-i386:~#
 	
 	HBase's web interface at http://<qemu-app-ip>:60010/master.jsp
 	
+* AQ2o 
+
+	AQ2o is located in /opt/aq2o/trunk. It contains the repository trunk and we recommend the first thing you do after a download of this appliance is to update the svn tree. 
+	
++--------+
+root@debian-i386:/opt/aq2o/trunk# svn update
+At revision 55.
+root@debian-i386:/opt/aq2o/trunk# 
++--------+	
+	
+	Thereafter, install the latest version into the appliance's local repository: 
+	
++--------+
+root@debian-i386:/opt/aq2o/trunk# mvn install
++--------+  
 	

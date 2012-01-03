@@ -31,10 +31,8 @@ function demo()
     array = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
             {'CSI_COX'}, ... 
             {'CLOSE'}, ... 
-            20000101000000.0, 20121010000000.0, paramMap);
-    vals = array.values
-    v1 = vals(2,:,1);
-    plot(array.timeStamps,v1)
+            20000101000000.0, 20121010000000.0, paramMap);    
+    plot(array.timeStamps,array.values)
     dateaxis('x',1)
     
     
@@ -81,13 +79,13 @@ function demo()
     
     
     % intraday tick data
-    price = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.MINUTES_1,  ...
+    price = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.MINUTES_5,  ...
             {'TICKDATA_ADU11'}, ... 
             {'CLOSE'}, ... 
             20000101000000.0, paramMap);   
     vals = price.values;
     plot(price.timeStamps,vals(1,:,1))
-    dateaxis('x',1)
+    dateaxis('x',14)
     
     % EOD
     price = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
