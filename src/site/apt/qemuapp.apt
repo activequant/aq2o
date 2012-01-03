@@ -1,0 +1,50 @@
+QEmu Image
+
+
+* Deliverables
+	The QEmu Image contains an entire AQ working environment. This includes: 
+	
+	[[1]] JAVA JDK 1.6 (<Note: licensing to be figured out. We are working on it. (Jan 2012) >)
+	[[1]] MySQL server running, with a user/pwd <writer/writer>
+	[[1]] Apache ActiveMQ JMS server running 
+	[[1]] ready set-up single node Apache Hadoop and Apache HBase installation, running
+	[[1]] SAMBA share, so that you can copy CSV files in
+	[[1]] Apache Tomcat server, so that you can use the SOAP services
+	[[1]] Root user, with password <root/root>. (<Note: yes, that's simple and unsafe, good for testing, ungood for production.>)
+	[[1]] checked out ActiveQuant project, so that you can keep everything in sync with the repository and also start hacking. 
+	
+* Download
+	
+	To reduce our bandwidth consumption, we distribute the QEmu image over bittorrent. 
+
+* Start the image	
+	Run the debian image:
+
++---------+
+qemu -m 256 -hda /home/ustaudinger/work/activequant/image/debian_squeeze_i386_standard.qcow2 -redir tcp:65432::22 
++---------+	
+		
+	By default it is not possible to access the QEmu image, unless you configure several parameters. 
+	The above command line tells qemu to redirect traffic from your localhost, port 65432 to the virtual machine's ssh port. 
+	
+	Now log in via ssh from your local machine:  
+	
++---------+	
+ustaudinger@baikal:~/work/activequant/trunk$ ssh root@baikal.local -p 65432
+root@baikal.local's password: 
+Linux debian-i386 2.6.32-5-686 #1 SMP Wed Jan 12 04:01:41 UTC 2011 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Jan  3 07:19:27 2012
+
+root@debian-i386:~# 
++---------+
+
+	Ready to continue. 
+	  
+	
