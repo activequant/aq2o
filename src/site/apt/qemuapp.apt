@@ -2,16 +2,25 @@ QEmu Image
 
 
 * Deliverables
+
 	The QEmu Image contains an entire AQ working environment. This includes: 
 	
 	[[1]] JAVA JDK 1.6 (<Note: licensing to be figured out. We are working on it. (Jan 2012) >)
+	
 	[[1]] MySQL server running, with a user/pwd <writer/writer>
-	[[1]] Apache ActiveMQ JMS server running 
-	[[1]] ready set-up single node Apache Hadoop and Apache HBase installation, running
+	
+	[[1]] Apache ActiveMQ JMS server running
+	 
+	[[1]] ready set-up single node Apache Hadoop (0.20.x) and Apache HBase (0.90.4) installation, running. At the moment without HDFS sync support. Volunteers anyone?
+	 
 	[[1]] SAMBA share, so that you can copy CSV files in
+	
 	[[1]] Apache Tomcat server, so that you can use the SOAP services
+	
 	[[1]] Root user, with password <root/root>. (<Note: yes, that's simple and unsafe, good for testing, ungood for production.>)
-	[[1]] checked out ActiveQuant project, so that you can keep everything in sync with the repository and also start hacking. 
+	
+	[[1]] checked out ActiveQuant project, so that you can keep everything in sync with the repository and also start hacking.
+	
 	
 * Download
 	
@@ -47,4 +56,14 @@ root@debian-i386:~#
 
 	Ready to continue. 
 	  
+* Admin tools
+
+	Let's assume you were able to deploy the QEmu app on some virtualization cluster or something similar. 
+
+	Hadoop's job tracker interface is located at http://<qemu-app-ip>:50030/jobtracker.jsp
+	
+	Hadoop's cluster state interface is located at http://<qemu-app-ip>:50070/dfshealth.jsp - from there you can also browse the virtual file system 
+	
+	HBase's web interface at http://<qemu-app-ip>:60010/master.jsp
+	
 	

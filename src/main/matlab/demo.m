@@ -1,13 +1,14 @@
 function demo()
 
-
+    % define some constants
     EOD = com.activequant.domainmodel.TimeFrame.EOD;
     INTERPOLRULE =  com.activequant.matlab.Parameter.INTERPOLRULE;
     DAYRULE =  com.activequant.matlab.Parameter.DAYRULE;
     INTERPOLRULE_CARRY_FORWARD = com.activequant.matlab.InterpolationRule.CARRY_FORWARD;
     DAYRULE_WEEKDAYS = com.activequant.matlab.DayRule.WEEKDAYS;
 
-    msf = com.activequant.matlab.MatlabServiceFacade();
+    % instantiate the facade. 
+    msf = com.activequant.matlab.MatlabServiceFacade('ahlinux1.aimhedge.local');
     paramMap = java.util.HashMap()
 
     
@@ -78,6 +79,15 @@ function demo()
     plot(price.timeStamps,vals(1,:,1))
     dateaxis('x',1)
     
+    
+    % intraday tick data
+    price = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.MINUTES_1,  ...
+            {'TICKDATA_ADU11'}, ... 
+            {'CLOSE'}, ... 
+            20000101000000.0, paramMap);   
+    vals = price.values;
+    plot(price.timeStamps,vals(1,:,1))
+    dateaxis('x',1)
     
     % EOD
     price = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
