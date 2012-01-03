@@ -28,6 +28,8 @@ QEmu Image
 
 * Start the image	
 
+	<<Please, use the following lines to test the QEMU image and then set it up with proper NAT to get access to its mysql, hbase, soap and samba interfaces. Thanks!>>
+
 	Run the debian image:
 
 +---------+
