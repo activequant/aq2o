@@ -6,6 +6,9 @@ High level overview
 	
 [./images/arch.png] High level overview	
 
+
+	Some details about the used technologies. 
+
 *--+--+--+
 |<<Functionality>>  | <<Used technology>> | <<Comments>> |
 *--+--+--+
@@ -15,7 +18,7 @@ High level overview
 *--+--+--+
 |Reference and other data storage   | MyBatis, MySQL  |   |
 *--+--+--+
-| SOAP Service Facade | Apache CXR |  |
+| SOAP Service Facade | Apache CXF |  |
 *--+--+--+
 | Messaging Layer | JMS, Apache ActiveMQ |  |
 *--+--+--+
