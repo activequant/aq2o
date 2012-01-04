@@ -1,5 +1,11 @@
 High level overview
 
+
+	The following diagram gives you a rough overview about the AQ2o structure. 
+	
+	
+[./images/arch.png] High level overview	
+
 *--+--+--+
 |<<Functionality>>  | <<Used technology>> | <<Comments>> |
 *--+--+--+
@@ -14,4 +20,4 @@ High level overview
 | Messaging Layer | JMS, Apache ActiveMQ |  |
 *--+--+--+
 
-
+	
