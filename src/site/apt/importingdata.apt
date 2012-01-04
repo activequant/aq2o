@@ -5,7 +5,9 @@ Importing time series data
 	AQ2o includes a central import tool for importing time series data. The importer 
 	processes all <.csv> files in that folder and also traverses recursively through all sub folders. 
 	
-	All .csv files must contain a header. The import will 
+	All .csv files must contain a header. The import routine will load all data. It will strip " and ', should these characters be encountered. 
+	
+	All .csv files must contain at least two columns DATE and TIME, which must be in format <yyyyMMdd>  an in format <HH:mm:ss.SSS>. Mind the "must".  
 		
 	You can run a market data import with the following command.
 
@@ -15,6 +17,51 @@ java com.activequant.utils.ImportMarketDataCSV $startFolder $providerId $springC
 
 	Where time frame must be a string representation of the {{{./apidocs/com/activequant/domainmodel/TimeFrame.html}TimeFrame enum}}, for example <MINUTES_5>. 
 
+	Let's make a real-world example based on our distributed appliance. Let's import the <eurusd.csv> file into the archive and let's query this later on. 
+	
+	First, let's log in. 
+
++----------+
+ustaudinger@baikal:~$ ssh root@192.168.100.2
+root@192.168.100.2's password: 
+Linux debian-i386 2.6.32-5-686 #1 SMP Wed Jan 12 04:01:41 UTC 2011 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Jan  3 20:10:23 2012 from 192.168.100.1
+
+root@debian-i386:~# 
+root@debian-i386:~# cd /opt/aq2o/trunk/
+root@debian-i386:/opt/aq2o/trunk# 
++----------+	 
+	
+	Now, let's start the import. In case you have never built the uber-jar on the virtual machine before, execute <mvn assembly:assembly> before. 
+	Assuming the uber-jar is located at /opt/aq2o/trunk/target/aq2o-2.0-SNAPSHOT-jar-with-dependencies.jar, the call to start the import becomes trivial. 
+	 
++---------+
+root@debian-i386:/opt/aq2o/trunk# java -classpath target/site/distribution/aq2o-2.0-SNAPSHOT-jar-with-dependencies.jar:/opt/shared/ com.activequant.utils.ImportMarketDataCSV /opt/shared/ DUKASCOPY fwspring.xml EOD
+
+Importing from /opt/shared/ all .csv files for DUKASCOPY. Using spring configuration fwspring.xml and time frame EOD
+
+12/01/03 20:29:08 INFO support.ClassPathXmlApplicationContext: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@2bb514: startup date [Tue Jan 03 20:29:08 UTC 2012]; root of context hierarchy
+12/01/03 20:29:09 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [fwspring.xml]
+12/01/03 20:29:10 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [ibatis/fwbeans.xml]
+12/01/03 20:29:12 INFO config.PropertyPlaceholderConfigurer: Loading properties file from class path resource [framework.properties]
+12/01/03 20:29:12 INFO support.DefaultListableBeanFactory: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@4aa0ce: defining beans [sqlSessionFactory,countryMapper,countryDao,regionMapper,regionDao,genMapper1,instrDao,genMapper2,venueDao,genMapper3,mdiDao,genMapper4,tradeableDao,genMapper5,portfolioDao,genMapper6,positionDao,ibatisDao,placeholderConfig,fwDataSource,jmsTransport,app]; root of factory hierarchy
+12/01/03 20:29:15 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Country
+12/01/03 20:29:19 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Region
+12/01/03 20:29:20 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Instrument
+
+...
++---------+	
+	
+	After several lines, the importer will report that all data was imported successfully. 
+	
+	
 	
 		
 	 
