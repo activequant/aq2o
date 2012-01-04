@@ -11,7 +11,9 @@ Welcome
 
 Typical use cases
 
-	Typical use cases for this project include recording large volume timeseries, managing financial reference data and other information. You might also want to plug in applications written in other languages through a SOAP Service Facade. It is also possible simulate trading, high frequency and low frequency and to move seamlessly from simulation to production through one of the trading venue interface implementations.  
+	Typical use cases for this project include recording large volume timeseries, managing financial reference data and other information. 
+	You can also backtest and run trading systems in production.  
+	You might also want to plug in applications written in other languages through a SOAP Service Facade or Matlab to access that data. It is also possible simulate trading, high frequency and low frequency and to move seamlessly from simulation to production through one of the trading venue interface implementations.  
 
 	Proceed to the {{{./highlevel.html}high level overview}} for a 50k feet overview.
 
