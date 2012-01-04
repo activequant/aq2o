@@ -69,6 +69,11 @@ root@debian-i386:~#
 
 	Let's assume you were able to deploy the QEmu app on some virtualization cluster or something similar. 
 
+
+** HBase and Hadoop
+
+	You will have to start and stop these services manually. /opt/hbase-0.90.4/bin/start-all.sh and /opt/hadoop-0.20.205.0/bin/start-all.sh contain the proper files for this. The actual administration is beyond the scope of this page. Ensure that you first start hadoop and let it settle for a minute and then hbase. 
+
 	Hadoop's job tracker interface is located at http://<qemu-app-ip>:50030/jobtracker.jsp
 	
 	Hadoop's cluster state interface is located at http://<qemu-app-ip>:50070/dfshealth.jsp - from there you can also browse the virtual file system 
