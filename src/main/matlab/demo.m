@@ -8,13 +8,13 @@ function demo()
     DAYRULE_WEEKDAYS = com.activequant.matlab.DayRule.WEEKDAYS;
 
     % instantiate the facade. 
-    msf = com.activequant.matlab.MatlabServiceFacade('ahlinux1.aimhedge.local');
+    msf = com.activequant.matlab.MatlabServiceFacade('debian-i386.local');
     paramMap = java.util.HashMap()
 
     
 
     array = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
-            {'CSI_JPL', 'CSI_EURUSD'}, ... 
+            {'DUKASCOPY_eurusd'}, ... 
             {'OPEN', 'HIGH', 'LOW', 'CLOSE'}, ... 
             20000101000000.0, paramMap);        
         

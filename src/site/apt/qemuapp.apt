@@ -63,6 +63,8 @@ root@debian-i386:~#
 
 	Note: We strongly advise to use NAT with QEmu, as outlined  {{{http://wiki.debian.org/QEMU#Guests_on_NATed_internal_network}here}} or {{{http://felipec.wordpress.com/2009/12/27/setting-up-qemu-with-a-nat/}here}}. Only by doing so you will be able to continue properly.   
 	  
+	Note 2: It might be necessary that you start the shipped HADOOP and HBase manually. Check /opt/hadoop* and /opt/hbase* and the {{{http://forums.activequant.org}forums}} for more details. 
+	  
 * Included tools 
 
 	Let's assume you were able to deploy the QEmu app on some virtualization cluster or something similar. 
