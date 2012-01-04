@@ -24,6 +24,12 @@
 		</property>
 	</bean>
 
+	<bean id="archiveFactory" lazy-init="true"
+		class="com.activequant.archive.hbase.HBaseArchiveFactory">
+		<constructor-arg>
+			<value>${hbase.zookeeper.host}</value>
+		</constructor-arg>
+	</bean>
 
 	<bean id="jmsTransport"
 		class="com.activequant.transport.activemq.ActiveMQTransportFactory"
