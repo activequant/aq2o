@@ -16,7 +16,7 @@
 			<item name="Welcome" href="index.html" />
 			<item name="High level overview" href="highlevel.html" />
 			<item name="Installation/Use/POM" href="referencingaq.html" />
-			<item name="Details" href="aboutdetails" collapse="false">
+			<item name="Details" href="aboutdetails.html" collapse="false">
 				<item name="Introduction" href="aboutdetails.html" />
 				<item name="Domain model" href="domainmodel.html" />
 				<item name="MdiIDs to InstIDs" href="instmapping.html" />
