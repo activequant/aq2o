@@ -37,37 +37,5 @@ class HBaseBase {
     HBaseBase(final String tableName) throws IOException {
         this("localhost", tableName);
     }
-    //
-    //
-    // public void test() throws Exception {
-    // // HBaseArchiveWriter tsw = new HBaseArchiveWriter();
-    // long l1 = System.currentTimeMillis();
-    // Tuple<String, Double> t = new Tuple<String, Double>();
-    // for(int i = 0; i<100000;i++)
-    // {
-    // t.setA("BID");
-    // t.setB(Math.random());
-    // //tsw.write("Instrument1", i*1000L, t);
-    // // System.out.print(".");
-    // }
-    // long l1a = System.currentTimeMillis();
-    // //tsw.commit();
-    // long l2 = System.currentTimeMillis();
-    // System.out.println( (l1a - l1)+"ms " + (l2 - l1)+"ms");
-    // IArchiveReader tsr = new HBaseArchiveReader(TimeFrame.EOD);
-    // TSContainer ret = tsr.getTimeSeries("BBGT_ADH2 CURNCY", "BID", new
-    // Date8Time6(19700101000000.0));
-    // System.out.println(ret.timeStamps.length);
-    // System.out.println(ret.values.length);
-    // long l3 = System.currentTimeMillis();
-    // System.out.println( (l2 - l1)+"ms to " + (l3-l2)+" ms");
-    // }
-    //
-    // /**
-    // * @param args
-    // */
-    // public static void main(String[] args) throws Exception {
-    // new HBaseBase("testdata").test();
-    // }
 
 }

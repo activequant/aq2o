@@ -1,7 +1,7 @@
 package com.activequant.trading;
 
-import com.activequant.domainmodel.trade.Order;
-import com.activequant.domainmodel.trade.OrderEvent;
+import com.activequant.domainmodel.trade.event.OrderEvent;
+import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.utils.events.IEventSource;
 
 /**
