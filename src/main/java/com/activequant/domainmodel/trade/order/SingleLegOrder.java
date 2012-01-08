@@ -1,9 +1,20 @@
 package com.activequant.domainmodel.trade.order;
 
-public class SingleLegOrder {
+public class SingleLegOrder extends Order {
 
 	private String tradInstId;
 	private double quantity;
+
+	private double openQuantity;
+	private OrderSide orderSide;
+
+	public OrderSide getOrderSide() {
+		return orderSide;
+	}
+
+	public void setOrderSide(OrderSide orderSide) {
+		this.orderSide = orderSide;
+	}
 
 	public String getTradInstId() {
 		return tradInstId;
@@ -20,4 +31,13 @@ public class SingleLegOrder {
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
+
+	public double getOpenQuantity() {
+		return openQuantity;
+	}
+
+	public void setOpenQuantity(double openQuantity) {
+		this.openQuantity = openQuantity;
+	}
+
 }

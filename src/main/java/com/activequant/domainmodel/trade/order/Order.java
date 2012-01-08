@@ -4,14 +4,16 @@ import com.activequant.domainmodel.Date8Time6;
 
 public class Order {
 	private Date8Time6 creationTimeStamp;
-	private boolean anonymousOrder = false;
+	private Date8Time6 workingTimeStamp; 
 
-	public boolean isAnonymousOrder() {
-		return anonymousOrder;
+	private String orderId;
+
+	public String getOrderId() {
+		return orderId;
 	}
 
-	public void setAnonymousOrder(boolean anonymousOrder) {
-		this.anonymousOrder = anonymousOrder;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 	public Date8Time6 getCreationTimeStamp() {
@@ -21,4 +23,12 @@ public class Order {
 	public void setCreationTimeStamp(Date8Time6 creationTimeStamp) {
 		this.creationTimeStamp = creationTimeStamp;
 	}
+	public Date8Time6 getWorkingTimeStamp() {
+		return workingTimeStamp;
+	}
+
+	public void setWorkingTimeStamp(Date8Time6 workingTimeStamp) {
+		this.workingTimeStamp = workingTimeStamp;
+	}
+
 }

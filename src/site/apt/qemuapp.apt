@@ -23,10 +23,8 @@ QEmu Image
 	
 	
 * Download
-	
-	To reduce our bandwidth consumption, we distribute the QEmu image over bittorrent. You need to have a bittorrent client installed, such as {{{http://www.bittorrent.com/downloads}the original bittorrent client}}. 
-	
-	Click {{{http://burnbit.com/download/184326/aq2o_image_20120104_7z}here}} to download the torrent file and launch your bittorrent client.   
+		
+	Click {{{./image/aq2o_image_20120104_7z}here}} to download the qemu file.
 
 * Start the image	
 
