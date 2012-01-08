@@ -34,6 +34,11 @@ public class Date8Time6 {
 		return new Date(asMilliSeconds());
 	}
 
+	public boolean before(Date8Time6 other)
+	{
+		return this.doubleValue() < other.doubleValue();
+	}
+	
 	public boolean isWeekday() {
 		Calendar cal = GregorianCalendar.getInstance(TimeZone
 				.getTimeZone("UTC"));
