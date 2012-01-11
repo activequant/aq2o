@@ -130,7 +130,8 @@ candle(open', high', low', close')
 
 	The distro ships with sample data, which we are this time going to import through the shipped import scripts. 
 	
-	The concepts are the same as above, it all fits a bit better into the appliance, that's all: 
+	The concepts are the same as above, it all fits a bit better into the appliance, that's all. 
+	So here in quick mode:  
 	
 +----------+
 

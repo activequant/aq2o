@@ -72,7 +72,7 @@ root@debian-i386:~#
 
 ** HBase and Hadoop
 
-	You will have to start and stop these services manually. /opt/hbase-0.90.4/bin/start-all.sh and /opt/hadoop-0.20.205.0/bin/start-all.sh contain the proper files for this. The actual administration is beyond the scope of this page. Ensure that you first start hadoop and let it settle for a minute and then hbase. 
+	You will have to start and stop these services manually. /opt/hbase-0.90.4/bin/start-hbase.sh and /opt/hadoop-0.20.205.0/bin/start-all.sh contain the proper files for this. The actual administration is beyond the scope of this page. Ensure that you first start hadoop and let it settle for a minute and then hbase. 
 
 	Hadoop's job tracker interface is located at http://<qemu-app-ip>:50030/jobtracker.jsp
 	
