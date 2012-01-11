@@ -14,7 +14,7 @@ public class Stock extends ListedInstrument {
     }
 
     public String getId() {
-        return "STOCK." + nullSafe(getShortName());
+        return "STOCK." + nullSafe(getShortName())+"."+nullSafe(getExchangeCode());
     }
 
 }

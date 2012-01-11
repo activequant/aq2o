@@ -10,10 +10,18 @@ import java.util.Map;
 import com.activequant.utils.events.Event;
 import com.activequant.utils.events.IEventListener;
 
+/**
+ * Event based, stream reader, will read CSV lines from a stream and will then 
+ * fire an event to an event listener. 
+ *  
+ * @author ustaudinger
+ *
+ */
 public class CsvMapReader {
 
 	/**
-	 * will replace all " and ' with nothing. reads in streaming manner.
+	 * will replace all " and ' with nothing. reads in streaming manner. Trims 
+	 * values to remove whitespace. 
 	 * 
 	 * @param eventListener
 	 * @param fileName
@@ -36,6 +44,7 @@ public class CsvMapReader {
 				rowCount++;
 				line.replaceAll("\"", "");
 				line.replaceAll("'", "");
+				line = line.trim();
 				String[] content = line.split(",");
 				Map<String, String> map = new HashMap<String, String>();
 				for (int i = 0; i < content.length; i++) {

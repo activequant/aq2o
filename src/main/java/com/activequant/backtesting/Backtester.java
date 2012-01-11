@@ -17,6 +17,7 @@ public class Backtester {
 	public void init()
 	{
 		// load 
+		
 	}
 	
 	public void execute()
