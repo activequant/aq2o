@@ -198,13 +198,14 @@ public class ImportMarketDataCSV {
 						Date8Time6 d8t6 = d8t6p.fromMilliseconds(ms);
 						while (it.hasNext()) {
 							Entry<String, String> entry = it.next();
-							if (entry.getKey().equals("DATE"))
+							String key = entry.getKey().toUpperCase();
+							if (key.equals("DATE"))
 								continue;
-							if (entry.getKey().equals("TIME"))
+							if (key.equals("TIME"))
 								continue;
 
-							iaw.write(mdi.getId(), d8t6, entry.getKey()
-									.toUpperCase(), Double.parseDouble(entry
+							iaw.write(mdi.getId(), d8t6, key, 
+									Double.parseDouble(entry
 									.getValue()));
 							if (lineCounter++ > 100) {
 								lineCounter = 0;
