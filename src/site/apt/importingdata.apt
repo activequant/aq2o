@@ -39,6 +39,9 @@ root@debian-i386:~# cd /opt/aq2o/trunk/
 root@debian-i386:/opt/aq2o/trunk# 
 +----------+	 
 	
+	
+* Run 1. Dukascopy CSV data	
+	
 	Now, let's start the import. In case you have never built the uber-jar on the virtual machine before, execute <mvn assembly:assembly> before. 
 	Assuming the uber-jar is located at /opt/aq2o/trunk/target/aq2o-2.0-SNAPSHOT-jar-with-dependencies.jar, the call to start the import becomes trivial. 
 	 
@@ -124,5 +127,4 @@ candle(open', high', low', close')
 	
 	
 		
-	 
-	 
+* Run 2. YAHOO CSV market data 

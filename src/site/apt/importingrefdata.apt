@@ -1,0 +1,8 @@
+Importing reference data
+
+	As you already know, reference data is split into instrument data, market data instrument data and tradeable instrument data. 
+	Quick recap, each of these three types has its own properties and the latter two refer to an instrument data set through their instrumentId property. 
+	
+		 
+	
+	
