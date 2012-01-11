@@ -3,6 +3,9 @@ Importing reference data
 	As you already know, reference data is split into instrument data, market data instrument data and tradeable instrument data. 
 	Quick recap, each of these three types has its own properties and the latter two refer to an instrument data set through their instrumentId property. 
 	
+
+* Importing instrument data
+
 	The following snipplets will help you get started. More documentation will follow. 
 	
 	First, let's go into the appliance's sample data folder. 
@@ -55,14 +58,11 @@ mysql> select distinct keyVal from Instrument;
 2 rows in set (0.01 sec)
 
 mysql> 
- 
 +------+	
 	
 	Now let's see what values we have in the database for HSBC Holdings, Ltd. 
 	
 +------+
-
-
 mysql> select * from Instrument where keyVal like "STOCK. H%"; 
 + ---------------+------------------+--------------+-----------+---------------+-----------------------------------+
 |  created       | keyVal           | fieldName    | doubleVal | longVal       | stringVal                         |
@@ -83,14 +83,13 @@ mysql> select * from Instrument where keyVal like "STOCK. H%";
 12 rows in set (0.01 sec)
 
 mysql> 
-
 +------+	
 	
 	Of course you can query all these values in a JAVA or in a Matlab program. 
 	
 		
 	
-Import market data instrument data
+* Import market data instrument data
 
 	Same pattern as above but in green instead of blue, therefore here the quick version. 
 	
@@ -151,6 +150,6 @@ mysql> select * from MarketDataInstrument where keyVal like "YAHOO_h%";
 mysql> 
 +-------+
 		
-	en voila, you can now look up MDIs for Instruments and vice versa. 
+	En voila, you can now look up MDIs for Instruments and vice versa. 
 	
 	Enjoy. 
