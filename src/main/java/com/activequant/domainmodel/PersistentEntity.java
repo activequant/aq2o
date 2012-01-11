@@ -60,6 +60,28 @@ public abstract class PersistentEntity {
     }
 
     /**
+     * very underdeveloped converter. 
+     * 
+     * @param targetType
+     * @param input
+     * @return
+     */
+    public Object convertValueToType(Class<?> targetType, Object input)
+    {
+    	if(input.getClass().isAssignableFrom(targetType))
+    		return input;
+    	else if(targetType.isAssignableFrom(double.class) || targetType.isAssignableFrom(Double.class)){
+    		if(input.getClass().isAssignableFrom(String.class))
+    			return Double.parseDouble(input.toString());    		
+    	}
+    	else if(targetType.isAssignableFrom(long.class) || targetType.isAssignableFrom(Long.class)){
+    		if(input.getClass().isAssignableFrom(String.class))
+    			return Long.parseLong(input.toString());    		
+    	}
+    	return input; 
+    }
+    
+    /**
      * 
      * @param inMap
      *            the incoming map will be cloned.
@@ -80,8 +102,12 @@ public abstract class PersistentEntity {
                         Method setter = this.getClass().getMethod("set" + m.getName().substring(3), returnType);
                         // only use values if they are not null and are thus,
                         // present.
-                        if (value != null)
-                            setter.invoke(this, value);
+                        if (value != null){
+                        	// 
+                        	Object convertedType = convertValueToType(returnType, value);
+                        	// 
+                            setter.invoke(this, convertedType);
+                        }
                     } catch (Exception ex) {
                         // drop the value.
                         log.warn("Could not set " + m.getName().substring(3) + " for value :" + value);

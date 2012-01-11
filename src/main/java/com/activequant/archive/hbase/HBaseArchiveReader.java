@@ -11,8 +11,6 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
 
-import sun.util.logging.resources.logging;
-
 import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;

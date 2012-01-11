@@ -35,8 +35,10 @@ import com.activequant.utils.worker.WorkerThread;
  * Requires that the user specifies a market data provider name and a time
  * frame.
  * 
- * Date and time, <arbitrary amount of fields> date and time have to be in the
- * format "yyyyMMdd HH:mm:ss.SSS". The file must have a header and must be comma
+ * Date and time must be to separate columns.  
+ * 
+ * Date and time have to be in the format "yyyyMMdd", respectively  "HH:mm:ss.SSS". 
+ * The file must have a header and must be comma
  * separated. Decimal separator must be a ".". Fields must only contain double
  * values. Filename of csv file is used as market data instrument provider
  * specific name.

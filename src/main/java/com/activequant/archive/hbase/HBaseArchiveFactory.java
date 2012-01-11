@@ -9,6 +9,14 @@ import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.IArchiveWriter;
 import com.activequant.domainmodel.TimeFrame;
 
+/**
+ * Instantiates readers and writers for different time frames. 
+ * Stores them internally in a hashmap. 
+ * Access to the getReader and getWriter methods is synchronized. 
+ * 
+ * @author ustaudinger
+ *
+ */
 public class HBaseArchiveFactory implements IArchiveFactory {
 
     private final Map<TimeFrame, IArchiveReader> readers = new HashMap<TimeFrame, IArchiveReader>();

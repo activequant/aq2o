@@ -6,42 +6,55 @@ import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.IMarketDataInstrumentDao;
+import com.activequant.domainmodel.Instrument;
 import com.activequant.utils.events.IEventListener;
 
 /**
- * Imports one CSV file that contains reference data, one instrument per row,
+ * Imports one CSV file that contains instrument reference data, one instrument per row,
  * with multiple columns.
  * 
  * The file must have a header and must be comma separated.
  * 
+ * Each instrument must have at least: 
+ * - CLASSNAME (this corresponds to the type)
+ * - SHORTNAME
+ * - NAME
+ * - DESCRIPTION
+ * - plus some class specific parameters, such as tick value, tick size. 
  * 
  * @author ustaudinger
  * 
  */
-public class ImportReferenceDataCSV {
+public class ImportInstrumentsCSV {
 
 	private final ApplicationContext appContext;
 	private final IDaoFactory idf;
-	private final IMarketDataInstrumentDao mdiDao;
 	private final IInstrumentDao idao;
 
-	public ImportReferenceDataCSV(String fileName, String springInitFile)
+	public ImportInstrumentsCSV(String fileName, String springInitFile)
 			throws Exception {
 
 		appContext = new ClassPathXmlApplicationContext(springInitFile);
 		idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		mdiDao = idf.mdiDao();
 		idao = idf.instrumentDao();
-
+		final InstanceFromMapInstantiator<Instrument> i = new InstanceFromMapInstantiator<Instrument>();
+		
 		final CsvMapReader cmr = new CsvMapReader();
 		cmr.read(new IEventListener<Map<String, String>>() {
-
 			@Override
 			public void eventFired(Map<String, String> event) {
-
+				Instrument instr = i.loadStringString(event);
+				// 
+				try {
+					idao.update(instr);
+				} catch (DaoException e) {
+					System.err.println("Error while importing " + event);
+					e.printStackTrace();
+				}
 			}
 		}, new FileInputStream(fileName));
 
@@ -55,7 +68,7 @@ public class ImportReferenceDataCSV {
 		String springFile = args[1];
 		System.out.println("Importing from " + fileName
 				+ ". Using spring configuration " + springFile);
-		new ImportReferenceDataCSV(fileName, springFile);
+		new ImportInstrumentsCSV(fileName, springFile);
 
 	}
 
