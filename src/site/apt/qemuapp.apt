@@ -128,10 +128,10 @@ At revision 55.
 root@debian-i386:/opt/aq2o/trunk# 
 +--------+	
 	
-	Thereafter, install the latest version into the appliance's local repository: 
+	Thereafter, build the uber-jar and install the latest version into the appliance's local repository: 
 	
 +--------+
-root@debian-i386:/opt/aq2o/trunk# mvn install
+root@debian-i386:/opt/aq2o/trunk# mvn assembly:assembly install
 +--------+  
 	
 	The appliance has an environment variable that points to the AQ_HOME folder. The PATH of the appliance contains the external resources folder, as there are tool scripts: 
