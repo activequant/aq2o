@@ -170,7 +170,7 @@ public class ImportMarketDataCSV {
 			final SimpleDateFormat sdf = new SimpleDateFormat(
 					"yyyyMMdd HH:mm:ss.SSS");
 			final SimpleDateFormat sdf2 = new SimpleDateFormat(
-					"yyyyMMdd HH:mm:ss.SSS");
+					"yyyy-MM-dd HH:mm:ss.SSS");
 			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 			sdf2.setTimeZone(TimeZone.getTimeZone("UTC"));
 
