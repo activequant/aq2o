@@ -3,22 +3,30 @@ Importing reference data
 	As you already know, reference data is split into instrument data, market data instrument data and tradeable instrument data. 
 	Quick recap, each of these three types has its own properties and the latter two refer to an instrument data set through their instrumentId property. 
 	
+	<Note: This section describes the manual import processes which are part of aq2o's default bundle. 
+	Automated data downloaders and importers for well-known commercial data and trading venues are available on request.>
+	
+	Now, let's import data manually in CSV form. Of course you could also setup some cron jobs in the appliance. You would also have to configure the run scripts (see below). 
 
 * Importing instrument data
 
-	The following snipplets will help you get started. More documentation will follow. 
+	The following snipplets will help you get started. We will import CSV data from the test/sampledata folder. 
 	
 	First, let's go into the appliance's sample data folder. 
 
 +------+
 root@debian-i386:/#   cd /opt/aq2o/trunk/src/test/resources/sampledata#
++------+
 
+	Let's see which files we have in there. 
++------+
 root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# ls
 framework.properties  instruments.csv  marketdatainstruments.csv  md_yahoo
+
 root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# 
 +------+			 
 
-	Next, let's start the instrument import. 
+	Next, let's start the instrument import. In case your shell cannot find the import script, do a <locate> and <chmod 755> it (same for the other scripts)  
 	
 +------+
 root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# importInstruments.sh 
@@ -125,7 +133,6 @@ mysql> select distinct keyVal from MarketDataInstrument;
 + ------------------+
 |  keyVal           |
 + ------------------+
-|  DUKASCOPY_eurusd |
 |  YAHOO_cbk.de     |
 |  YAHOO_hsba.l     |
 + ------------------+
@@ -150,6 +157,6 @@ mysql> select * from MarketDataInstrument where keyVal like "YAHOO_h%";
 mysql> 
 +-------+
 		
-	En voila, you can now look up MDIs for Instruments and vice versa. 
+	En voila, you can now look up MDIs for Instruments and vice versa. Of course also in Matlab. 
 	
 	Enjoy. 
