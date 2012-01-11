@@ -3,6 +3,97 @@ Importing reference data
 	As you already know, reference data is split into instrument data, market data instrument data and tradeable instrument data. 
 	Quick recap, each of these three types has its own properties and the latter two refer to an instrument data set through their instrumentId property. 
 	
-		 
+	The following snipplets will help you get started. More documentation will follow. 
 	
+	First, let's go into the appliance's sample data folder. 
+
++------+
+root@debian-i386:/#   cd /opt/aq2o/trunk/src/test/resources/sampledata#
+
+root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# ls
+framework.properties  instruments.csv  marketdatainstruments.csv  md_yahoo
+root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# 
++------+			 
+
+	Next, let's start the instrument import. 
 	
++------+
+root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# importInstruments.sh 
+Importing from instruments.csv. Using spring configuration fwspring.xml
+12/01/11 13:15:21 INFO support.ClassPathXmlApplicationContext: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1617189: startup date [Wed Jan 11 13:15:20 UTC 2012]; root of context hierarchy
+12/01/11 13:15:21 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [fwspring.xml]
+12/01/11 13:15:22 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [ibatis/fwbeans.xml]
+12/01/11 13:15:24 INFO config.PropertyPlaceholderConfigurer: Loading properties file from class path resource [framework.properties]
+12/01/11 13:15:25 INFO support.DefaultListableBeanFactory: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@16dadf9: defining beans [sqlSessionFactory,countryMapper,countryDao,regionMapper,regionDao,genMapper1,instrDao,genMapper2,venueDao,genMapper3,mdiDao,genMapper4,tradeableDao,genMapper5,portfolioDao,genMapper6,positionDao,ibatisDao,placeholderConfig,fwDataSource,archiveFactory,jmsTransport,app]; root of factory hierarchy
+12/01/11 13:15:28 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Country
+12/01/11 13:15:34 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [org/springframework/jdbc/support/sql-error-codes.xml]
+12/01/11 13:15:34 INFO support.SQLErrorCodesFactory: SQLErrorCodes loaded: [DB2, Derby, H2, HSQL, Informix, MS-SQL, MySQL, Oracle, PostgreSQL, Sybase]
+12/01/11 13:15:35 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Region
+12/01/11 13:15:35 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Instrument
+12/01/11 13:15:36 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Venue
+12/01/11 13:15:36 INFO mybatis.GenericMapperDao: Initializing GenericDao for table MarketDataInstrument
+12/01/11 13:15:36 INFO mybatis.GenericMapperDao: Initializing GenericDao for table TradeableInstrument
+12/01/11 13:15:37 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Portfolio
+12/01/11 13:15:37 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Position
+root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata#
++------+
+
+	Now, let's check what the database contains. 
+
++------+
+root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# mysql aq2o
+Reading table information for completion of table and column names
+...
+mysql>
+mysql> select distinct keyVal from Instrument; 
++ ------------------- +
+| keyVal              |
++ ------------------- +
+| STOCK. CBK.DE. DE   |
+| STOCK. HSBA.L. L    |
++ ------------------- +
+2 rows in set (0.01 sec)
+
+mysql> 
+ 
++------+	
+
+	<Note: the above snipplet shows a bug (spaces before symbol) - that has been fixed already.>
+	
+	Now let's see what values we have in the database for HSBC Holdings, Ltd. 
+	
++------+
+
+
+mysql> select * from Instrument where keyVal like "STOCK. H%"; 
++ ---------------+------------------+--------------+-----------+---------------+-----------------------------------+
+|  created       | keyVal           | fieldName    | doubleVal | longVal       | stringVal                         |
++ ---------------+------------------+--------------+-----------+---------------+-----------------------------------+
+|  1326287738443 | STOCK. HSBA.L. L | NAME         |      NULL |          NULL |  HSBC Holding                     |
+|  1326287738443 | STOCK. HSBA.L. L | TICKVALUE    |         1 |          NULL | NULL                              |
+|  1326287738443 | STOCK. HSBA.L. L | DESCRIPTION  |      NULL |          NULL |  HSBC Holding                     |
+|  1326287738443 | STOCK. HSBA.L. L | DELETIONTIME |      NULL |             0 | NULL                              |
+|  1326287738443 | STOCK. HSBA.L. L | QUOTEUNITS   |      NULL |          NULL |  Lot                              |
+|  1326287738443 | STOCK. HSBA.L. L | TICKSIZE     |         1 |          NULL | NULL                              |
+|  1326287738443 | STOCK. HSBA.L. L | CURRENCY     |      NULL |          NULL |  GBp                              |
+|  1326287738443 | STOCK. HSBA.L. L | CREATIONTIME |      NULL | 1326287738378 | NULL                              |
+|  1326287738443 | STOCK. HSBA.L. L | SHORTNAME    |      NULL |          NULL |  HSBA.L                           |
+|  1326287738443 | STOCK. HSBA.L. L | SNAPSHOTTIME |         0 |          NULL | NULL                              |
+|  1326287738443 | STOCK. HSBA.L. L | EXCHANGECODE |      NULL |          NULL |  L                                |
+|  1326287738443 | STOCK. HSBA.L. L | CLASSNAME    |      NULL |          NULL | com.activequant.domainmodel.Stock |
++ ---------------+------------------+--------------+-----------+---------------+-----------------------------------+
+12 rows in set (0.01 sec)
+
+mysql> 
+
++------+	
+	
+	Of course you can query all these values in a JAVA or in a Matlab program. 
+	
+		
+	
+Import market data instrument data
+
+	Same as above, therefor here the quick version. 
+	
+		

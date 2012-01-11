@@ -42,11 +42,4 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="app" class="com.activequant.App" lazy-init="true">
-		<constructor-arg>
-			<ref bean="jmsTransport" />
-		</constructor-arg>
-	</bean>
-
-
 </beans>
