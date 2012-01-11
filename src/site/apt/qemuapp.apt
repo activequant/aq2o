@@ -134,8 +134,14 @@ root@debian-i386:/opt/aq2o/trunk#
 root@debian-i386:/opt/aq2o/trunk# mvn install
 +--------+  
 	
+	The appliance has an environment variable that points to the AQ_HOME folder. The PATH of the appliance contains the external resources folder, as there are tool scripts: 
 	
++-------+
+export AQ_HOME=/opt/aq2o/trunk/
+export PATH=$PATH:$JAVA_HOME/bin:$MVN_HOME/bin:$AQ_HOME/src/main/external-resources
++-------+	
 	
+	Included tool scripts are for example <importInstruments.sh>.
 	
 	
 	
