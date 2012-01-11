@@ -134,5 +134,11 @@ candle(open', high', low', close')
 	So here in quick mode:  
 	
 +----------+
-
+root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# importMarketData.sh 
+Importing from md_yahoo all .csv files for YAHOO. Using spring configuration fwspring.xml and time frame EOD
+12/01/11 14:11:36 INFO support.ClassPathXmlApplicationContext: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@5e5a50: startup date [Wed Jan 11 14:11:36 UTC 2012]; root of context hierarchy
+12/01/11 14:11:37 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [fwspring.xml]
+....
 +----------+ 
+
+	Once done, all CSV files from md_yahoo will be available in the archive. 
