@@ -181,7 +181,8 @@ public class ImportMarketDataCSV {
 				@Override
 				public void eventFired(Map<String, String> event) {
 					final String date = event.get("DATE");
-					final String time = event.get("TIME");
+					String time = event.get("TIME");
+					if(time==null)time = "00:00:00.000";
 					final String dateTime = date + " " + time;
 					final Iterator<Entry<String, String>> it = event.entrySet()
 							.iterator();
