@@ -17,7 +17,7 @@ QEmu Image
 	
 	[[1]] Apache Tomcat server, so that you can use the SOAP services
 	
-	[[1]] Root user, with password <root/root>. (<Note: yes, that's simple and unsafe, good for testing, ungood for production.>)
+	[[1]] Root user, with password <root>. (<Note: yes, that's simple and unsafe, good for testing, ungood for production.>)
 	
 	[[1]] checked out ActiveQuant project, so that you can keep everything in sync with the repository and also start hacking.
 	
