@@ -48,7 +48,7 @@ public class CsvMapReader {
 				String[] content = line.split(",");
 				Map<String, String> map = new HashMap<String, String>();
 				for (int i = 0; i < content.length; i++) {
-					String trimmedH = headerNames[i].trim(); 
+					String trimmedH = headerNames[i].trim().toUpperCase();
 					String trimmedC = content[i].trim();
 					map.put(trimmedH, trimmedC);
 				}
