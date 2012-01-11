@@ -169,7 +169,10 @@ public class ImportMarketDataCSV {
 			//
 			final SimpleDateFormat sdf = new SimpleDateFormat(
 					"yyyyMMdd HH:mm:ss.SSS");
+			final SimpleDateFormat sdf2 = new SimpleDateFormat(
+					"yyyyMMdd HH:mm:ss.SSS");
 			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			sdf2.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 			System.out.println("All set, ready to parse for " + mdi.getId()
 					+ " /// " + System.currentTimeMillis());
@@ -188,7 +191,10 @@ public class ImportMarketDataCSV {
 							.iterator();
 					long ms;
 					try {
-						ms = sdf.parse(dateTime).getTime();
+						if(dateTime.indexOf("-")!=-1)
+							ms = sdf2.parse(dateTime).getTime();
+						else
+							ms = sdf.parse(dateTime).getTime();
 						Date8Time6 d8t6 = d8t6p.fromMilliseconds(ms);
 						while (it.hasNext()) {
 							Entry<String, String> entry = it.next();
