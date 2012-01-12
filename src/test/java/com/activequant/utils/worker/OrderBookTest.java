@@ -30,8 +30,8 @@ public class OrderBookTest extends TestCase {
 		ob.addOrder(o1);
 		ob.addOrder(o2);
 		
-		assertEquals(o2, ob.getBuySide().get(0));
-		assertEquals(o1, ob.getBuySide().get(1));		
+		assertEquals(o2, ob.buySide().get(0));
+		assertEquals(o1, ob.buySide().get(1));		
 		
 	}
 	
@@ -50,8 +50,8 @@ public class OrderBookTest extends TestCase {
 		ob.addOrder(o1);
 		ob.addOrder(o2);
 		
-		assertEquals(o1, ob.getSellSide().get(0));
-		assertEquals(o2, ob.getSellSide().get(1));		
+		assertEquals(o1, ob.sellSide().get(0));
+		assertEquals(o2, ob.sellSide().get(1));		
 		
 	}
 }

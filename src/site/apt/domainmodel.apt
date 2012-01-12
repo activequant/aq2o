@@ -58,6 +58,7 @@ Domain model overview
 	
 	[[1]] The venue signals a transaction related event, for example an execution or the cancellation of an errenous execution. 
 	
+	
 	Different venues and their corresponding implementations can extend these base entities, so that your trading system can also work with venue specific situations. 
 	
 	Event consumers, such as trading systems can register on the order book interface for these three types of events, they will have to work these events out themself. 
@@ -81,6 +82,7 @@ Domain model overview
 	[[1]] Accepted, by venue
 	
 	[[1]] Filled, by venue
+	
 	
 	However, there are of course also other stations, such as partially filled or even rejected or cancelled. It is up to your trading system to 
 	handle these different events and react as needed or wanted. 

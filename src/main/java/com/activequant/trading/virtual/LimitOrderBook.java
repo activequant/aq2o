@@ -8,6 +8,7 @@ import java.util.List;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
+import com.activequant.trading.AbstractOrderBook;
 
 /**
  * See
@@ -18,7 +19,7 @@ import com.activequant.domainmodel.trade.order.SingleLegOrder;
  * @author ustaudinger
  * 
  */
-public class LimitOrderBook {
+public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 
 	private final String instrumentId;
 
@@ -27,6 +28,7 @@ public class LimitOrderBook {
 	private List<LimitOrder> sellSide = new ArrayList<LimitOrder>();
 
 	public LimitOrderBook(String tradeableInstrumentId){
+		super(tradeableInstrumentId);
 		this.instrumentId = tradeableInstrumentId; 
 	}
 	
@@ -96,20 +98,21 @@ public class LimitOrderBook {
 		}
 	}
 
-	public List<LimitOrder> getBuySide() {
+	public List<LimitOrder> buySide() {
 		return buySide;
 	}
 
-	public void setBuySide(List<LimitOrder> buySide) {
+	public void buySide(List<LimitOrder> buySide) {
 		this.buySide = buySide;
 	}
 
-	public List<LimitOrder> getSellSide() {
+	public List<LimitOrder> sellSide() {
 		return sellSide;
 	}
 
-	public void setSellSide(List<LimitOrder> sellSide) {
+	public void sellSide(List<LimitOrder> sellSide) {
 		this.sellSide = sellSide;
 	}
+
 
 }

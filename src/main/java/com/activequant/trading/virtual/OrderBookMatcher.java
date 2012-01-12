@@ -20,8 +20,8 @@ public class OrderBookMatcher {
 	}
 
 	public void match() {
-		List<LimitOrder> buySide = ob.getBuySide();
-		List<LimitOrder> sellSide = ob.getSellSide();
+		List<LimitOrder> buySide = ob.buySide();
+		List<LimitOrder> sellSide = ob.sellSide();
 
 		if (buySide.size() > 0 && sellSide.size() > 0) {
 			while (buySide.get(0).getLimitPrice() <= sellSide.get(0)
