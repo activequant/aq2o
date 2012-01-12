@@ -25,15 +25,66 @@ In general ...
 Domain model overview
 
 	The following diagram shows how these entities relate to each other. 
+	
+	<Note: This domain model is not fully up-to-date.> 
 
 [./images/domainmodel.png] Domain model
 		
 
 * Instrument information domain model 
 
-	TBW
+	Instruments can be of type Future, Stock, etc. all extending the abstract Instrument class. 
+	An Instrument instance describes the instrument and can be linked to a Market Data Instrument and
+	a Tradeable Instrument. The latter two contain provider or venue specific settings, such as 
+	venue specific IDs.    
 
 * Trading and simulation domain model
 	
-	TBW
+	This one is more complicated. 
 
+** Order books
+
+	Every tradeable instrument has one and only one order book per venue. 
+	Note, you would have multiple order books for the same instrument if you are connected 
+	to the same venue with multiple accounts. 
+	
+	Trading systems can access these order books. 
+	
+	Three types of events can happen in order book: 
+	
+	[[1]] It can change its state or phase, the so called market phase or market state. For example, it can go from closed, to auction, to pre-open to open to close. Details about this are available on any good website. 
+	
+	[[1]] Orders of other participants are added, updated or removed. Usually, any party connecting to a venue will only see anonymous order adds, deletions and updates in the form of changing bid/ask prices and quantities. 
+	
+	[[1]] The venue signals a transaction related event, for example an execution or the cancellation of an errenous execution. 
+	
+	Different venues and their corresponding implementations can extend these base entities, so that your trading system can also work with venue specific situations. 
+	
+	Event consumers, such as trading systems can register on the order book interface for these three types of events, they will have to work these events out themself. 
+	
+** Order related
+
+	This section is about the orders that your trading system is going to send. 
+	
+	It uses Mike's excellent Order Tracker interface. 
+	
+	AQ2o knows several order types, which all extend an Order, for example SingleLegOrder, LimitOrder, StopLimitOrder, etc. 
+	
+	You cannot submit an order directly to a venue, instead you have to at first prepare an order (see the prepareOrder method) at a venue, 
+	the implementation will then return an IOrderTracker implementation. You register at the order tracker for order events, details later. 
+	The order tracker has contains all order action related methods, such as submit, update or cancel order. 
+	
+	Your orders flow through an order lifecycle. On the happy trail, the stations for your order are: 
+	
+	[[1]] Submitted, to venue
+	
+	[[1]] Accepted, by venue
+	
+	[[1]] Filled, by venue
+	
+	However, there are of course also other stations, such as partially filled or even rejected or cancelled. It is up to your trading system to 
+	handle these different events and react as needed or wanted. 
+	
+	Examples of how to consume these events are available in the trading system related section of this webpage. 	 
+		
+	   
