@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.activequant.domainmodel.Date8Time6;
-import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.domainmodel.trade.event.OrderTerminalEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.tools.streaming.StreamEvent;
+import com.activequant.tools.streaming.TimeStreamEvent;
 import com.activequant.trading.IOrderTracker;
-import com.activequant.trading.TimeStreamEvent;
+import com.activequant.trading.NBBOEvent;
 import com.activequant.utils.events.Event;
 import com.activequant.utils.events.IEventSource;
 
@@ -105,7 +105,11 @@ public class VirtualExchange {
 			currentExchangeTime = ((TimeStreamEvent) streamEvent)
 					.getTimeStamp();
 		}
-		
+		else if(streamEvent instanceof NBBOEvent)
+		{
+			String instId = ((NBBOEvent)streamEvent).getTradeableInstrumentId();
+			LimitOrderBook lob = getOrderBook(instId);
+		}		
 	}
 
 	public LimitOrderBook getOrderBook(String tradeableInstrumentId){
@@ -114,8 +118,7 @@ public class VirtualExchange {
 		return lobs.get(tradeableInstrumentId);
 	}
 	
-	public VirtualExchange(MarketDataInstrument[] instruments,
-			int timeStreamGranularityInMs) {
+	public VirtualExchange() {
 
 	}
 

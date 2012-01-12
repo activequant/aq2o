@@ -1,10 +1,15 @@
 package com.activequant.trading;
 
+import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.trade.order.OrderSide;
-import com.activequant.tools.streaming.StreamEvent;
+import com.activequant.tools.streaming.TimeStreamEvent;
 
-public class QuoteEvent extends StreamEvent{
+public class QuoteEvent extends TimeStreamEvent{
 	
+	public QuoteEvent(Date8Time6 ts) {
+		super(ts);
+	}
+
 	public String getEventType(){return "QUOTE";}
 	
 	private final String tradeableInstrumentId = "";
@@ -23,6 +28,7 @@ public class QuoteEvent extends StreamEvent{
 	public String getTradeableInstrumentId() {
 		return tradeableInstrumentId;
 	}
+
 	
 
 }

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
@@ -14,6 +13,7 @@ import com.activequant.domainmodel.trade.order.SingleLegOrder;
  * See
  * http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Kane~et~al.pdf
  * see http://dl.dropbox.com/u/3001534/engine.c
+ * see http://www.mathworks.com/matlabcentral/fileexchange/28156-limit-order-book-simulation
  * 
  * @author ustaudinger
  * 

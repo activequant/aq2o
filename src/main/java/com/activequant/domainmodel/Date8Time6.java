@@ -11,11 +11,11 @@ import com.activequant.utils.Date8Time6Parser;
 
 public class Date8Time6 {
 	private final double timeStamp;
-	private final long microseconds;
+	private long microseconds = -1L;
 
 	public Date8Time6(double timeStamp) throws InvalidDate8Time6Input {
 		this.timeStamp = timeStamp;
-		microseconds = new Date8Time6Parser().getMicroseconds(timeStamp);
+
 	}
 
 	public final double doubleValue() {
@@ -23,10 +23,25 @@ public class Date8Time6 {
 	}
 
 	public final long asMicroSeconds() {
+		if (microseconds == -1L)
+			try {
+				microseconds = new Date8Time6Parser()
+						.getMicroseconds(timeStamp);
+			} catch (InvalidDate8Time6Input e) {
+				e.printStackTrace();
+			}
 		return microseconds;
 	}
 
 	public final long asMilliSeconds() {
+		
+		if (microseconds == -1L)
+			try {
+				microseconds = new Date8Time6Parser()
+						.getMicroseconds(timeStamp);
+			} catch (InvalidDate8Time6Input e) {
+				e.printStackTrace();
+			}
 		return microseconds / 1000L;
 	}
 
@@ -34,11 +49,10 @@ public class Date8Time6 {
 		return new Date(asMilliSeconds());
 	}
 
-	public boolean before(Date8Time6 other)
-	{
+	public boolean before(Date8Time6 other) {
 		return this.doubleValue() < other.doubleValue();
 	}
-	
+
 	public boolean isWeekday() {
 		Calendar cal = GregorianCalendar.getInstance(TimeZone
 				.getTimeZone("UTC"));
@@ -64,7 +78,7 @@ public class Date8Time6 {
 			cal.setTimeZone(TimeZone.getTimeZone("UTC"));
 			return new Date8Time6(Double.parseDouble(new Date8Time6Parser()
 					.format(cal.getTime())));
-			// will not and cannot be reached. 
+			// will not and cannot be reached.
 		} finally {
 			return null;
 		}

@@ -13,6 +13,9 @@ import com.activequant.domainmodel.Tuple;
  */
 public abstract class TimeSeriesIterator implements Iterator<Tuple<Date8Time6, Double>>{
 
+	/**
+	 * Implemented as final to prevent re-implementation. 
+	 */
 	@Override
 	public final void remove() {				
 	}

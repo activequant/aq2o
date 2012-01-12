@@ -31,6 +31,7 @@ class HBaseBase {
         }
         htable = new HTable(config, tableName.getBytes());
         htable.setAutoFlush(false);
+        htable.setScannerCaching(1000000);
     }
 
     @Deprecated
