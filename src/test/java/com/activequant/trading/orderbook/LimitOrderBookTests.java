@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.activequant.trading.virtual.LimitOrderBook;
+import com.activequant.trading.virtual.VirtualExchange;
 
 public class LimitOrderBookTests extends TestCase {
 	/**
@@ -34,12 +35,9 @@ public class LimitOrderBookTests extends TestCase {
 		
 		// 
 		class LocalLimitOrderBook extends LimitOrderBook{
-			public LocalLimitOrderBook(String tradeableInstrumentId) {
-				super(tradeableInstrumentId); 
-			}
+			public LocalLimitOrderBook(String tradeableInstrumentId) {super(new VirtualExchange(), tradeableInstrumentId);}
 			public void fireTransaction(TransactionEvent te){super.transaction(te);};
-			public void fireMarketStateChange(MarketState newState){super.marketStateChange(newState);};
-			
+			public void fireMarketStateChange(MarketState newState){super.marketStateChange(newState);};			
 		}
 		//
 		LocalLimitOrderBook llob = new LocalLimitOrderBook("ID"); 
@@ -65,4 +63,9 @@ public class LimitOrderBookTests extends TestCase {
 		assertEquals("CLOSED", llob.getMarketState().getType());
 		assertEquals(2, events);
 	}
+	
+	public void testDataRelaying(){
+		
+	}
+	
 }

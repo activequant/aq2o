@@ -3,12 +3,14 @@ package com.activequant.trading.virtual;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
 import com.activequant.trading.AbstractOrderBook;
+import com.activequant.trading.orderbook.OrderBookUpdated;
 
 /**
  * See
@@ -26,11 +28,43 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 	private List<LimitOrder> buySide = new ArrayList<LimitOrder>();
 
 	private List<LimitOrder> sellSide = new ArrayList<LimitOrder>();
+	
+	private final LimitOrderBookMatcher matcher; 
 
-	public LimitOrderBook(String tradeableInstrumentId){
+	public LimitOrderBook(VirtualExchange vex, String tradeableInstrumentId){
 		super(tradeableInstrumentId);
-		this.instrumentId = tradeableInstrumentId; 
+		this.instrumentId = tradeableInstrumentId;
+		this.matcher = new LimitOrderBookMatcher(vex, this);
 	}
+	
+	void weedOutForeignOrders(){
+		Iterator<LimitOrder> it = buySide.iterator();
+		while(it.hasNext()){
+			LimitOrder lo = it.next();
+			if(lo.getOrderId()==null)it.remove();
+		}
+		it = sellSide.iterator();
+		while(it.hasNext()){
+			LimitOrder lo = it.next();
+			if(lo.getOrderId()==null)it.remove();
+		}
+		
+	}
+	
+	public void addOrders(LimitOrder[] orders) {
+		for(LimitOrder order : orders){
+			if (order.getOrderSide().equals(OrderSide.BUY)) {
+				buySide.add(order);
+			} else if (order.getOrderSide().equals(OrderSide.SELL)) {
+				sellSide.add(order);
+			}
+		}
+		resortBuySide();
+		resortSellSide();
+		// signal that there was an update. 
+		super.orderBookEvent(new OrderBookUpdated());
+	}
+		
 	
 	public void addOrder(LimitOrder order) {
 		if (order.getOrderSide().equals(OrderSide.BUY)) {
@@ -40,6 +74,9 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 			sellSide.add(order);
 			resortSellSide();
 		}
+		// signal that there was an update. 
+		super.orderBookEvent(new OrderBookUpdated());
+
 	}
 
 	public void cancelOrder(SingleLegOrder order) {
@@ -50,6 +87,9 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 			sellSide.remove(order);
 			resortSellSide();
 		}
+		// signal that there was an update. 
+		super.orderBookEvent(new OrderBookUpdated());
+
 	}
 
 	private void resortBuySide() {
@@ -96,6 +136,9 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 				resortSellSide();
 			}
 		}
+		// signal that there was an update. 
+		super.orderBookEvent(new OrderBookUpdated());
+
 	}
 
 	public List<LimitOrder> buySide() {

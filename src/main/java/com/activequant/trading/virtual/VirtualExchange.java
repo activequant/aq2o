@@ -9,6 +9,7 @@ import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.domainmodel.trade.event.OrderTerminalEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.Order;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.TimeStreamEvent;
 import com.activequant.trading.IOrderTracker;
@@ -77,11 +78,14 @@ public class VirtualExchange {
 	}
 
 	public void execution(Order order, double price, double quantity){
+		if(order.getOrderId()==null)return; 
 		IOrderTracker trck = getOrderTracker(order);
 		if(trck==null)return; 
+		// can only handle our own virtual trackers. 
 		if(trck instanceof VirtualOrderTracker)
 		{
 			OrderFillEvent ofe = new OrderFillEvent();
+			ofe.setCreationTimeStamp(currentExchangeTime());
 			ofe.setFillAmount(quantity);
 			ofe.setFillPrice(price);
 			((VirtualOrderTracker)trck).getEvent().fire(ofe);
@@ -92,6 +96,7 @@ public class VirtualExchange {
 				LimitOrder lo = (LimitOrder) order; 
 				if(lo.getOpenQuantity()==0){
 					OrderTerminalEvent ote = new OrderTerminalEvent();
+					ote.setCreationTimeStamp(currentExchangeTime());
 					((VirtualOrderTracker)trck).getEvent().fire(ote);
 					// clean up the order tracker. 
 					orderTrackers.remove(trck);
@@ -105,16 +110,37 @@ public class VirtualExchange {
 			currentExchangeTime = ((TimeStreamEvent) streamEvent)
 					.getTimeStamp();
 		}
-		else if(streamEvent instanceof NBBOEvent)
+		if(streamEvent instanceof NBBOEvent)
 		{
-			String instId = ((NBBOEvent)streamEvent).getTradeableInstrumentId();
+			NBBOEvent nbbo = (NBBOEvent)streamEvent; 
+			String instId = nbbo.getTradeableInstrumentId();
+			
 			LimitOrderBook lob = getOrderBook(instId);
+			
+			// clear out limit order book except our own orders. 			
+			lob.weedOutForeignOrders();
+			
+			LimitOrder[] lobs = new LimitOrder[2];
+			
+			LimitOrder bestBid = new LimitOrder();
+			bestBid.setOrderSide(OrderSide.BUY);
+			bestBid.setLimitPrice(nbbo.getBid().getA());
+			bestBid.setQuantity(nbbo.getBid().getB());
+			lobs[0] = (bestBid);
+			
+			LimitOrder bestAsk = new LimitOrder();
+			bestAsk.setOrderSide(OrderSide.SELL);
+			bestAsk.setLimitPrice(nbbo.getAsk().getA());
+			bestAsk.setQuantity(nbbo.getAsk().getB());
+			lobs[1] = (bestAsk);
+			
+			lob.addOrders(lobs);
 		}		
 	}
 
 	public LimitOrderBook getOrderBook(String tradeableInstrumentId){
-		if(lobs.containsKey(tradeableInstrumentId))
-			lobs.put(tradeableInstrumentId, new LimitOrderBook(tradeableInstrumentId));
+		if(!lobs.containsKey(tradeableInstrumentId))
+			lobs.put(tradeableInstrumentId, new LimitOrderBook(this, tradeableInstrumentId));
 		return lobs.get(tradeableInstrumentId);
 	}
 	

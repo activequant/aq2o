@@ -79,7 +79,7 @@ public class Date8Time6 {
 			return new Date8Time6(Double.parseDouble(new Date8Time6Parser()
 					.format(cal.getTime())));
 			// will not and cannot be reached.
-		} finally {
+		} catch(Exception ex) {
 			return null;
 		}
 	}

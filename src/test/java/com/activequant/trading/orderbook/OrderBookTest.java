@@ -1,4 +1,4 @@
-package com.activequant.utils.worker;
+package com.activequant.trading.orderbook;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -7,6 +7,7 @@ import junit.framework.TestSuite;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.trading.virtual.LimitOrderBook;
+import com.activequant.trading.virtual.VirtualExchange;
 
 public class OrderBookTest extends TestCase {
 	/**
@@ -26,7 +27,7 @@ public class OrderBookTest extends TestCase {
 		o2.setLimitPrice(101.0);
 		o2.setOrderSide(OrderSide.BUY);
 		
-		LimitOrderBook ob = new LimitOrderBook("TESTBOOK");
+		LimitOrderBook ob = new LimitOrderBook(new VirtualExchange(), "TESTBOOK");
 		ob.addOrder(o1);
 		ob.addOrder(o2);
 		
@@ -46,7 +47,7 @@ public class OrderBookTest extends TestCase {
 		o2.setLimitPrice(101.0);
 		o2.setOrderSide(OrderSide.SELL);
 		
-		LimitOrderBook ob = new LimitOrderBook("TESTBOOK");
+		LimitOrderBook ob = new LimitOrderBook(new VirtualExchange(), "TESTBOOK");
 		ob.addOrder(o1);
 		ob.addOrder(o2);
 		

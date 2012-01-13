@@ -1,22 +1,28 @@
 package com.activequant.trading;
 
 import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.Tuple;
 import com.activequant.tools.streaming.TimeStreamEvent;
 
 
 public class NBBOEvent extends TimeStreamEvent {
 	
-	private final QuoteEvent bid, ask; 
-	private final String tradeableId; 
-	
-	public NBBOEvent(Date8Time6 ts, QuoteEvent bid, QuoteEvent ask) {
+	private final Tuple<Double, Double> bid, ask; 
+	private final String tradeableId;
+
+	public NBBOEvent(String tradInstId, Date8Time6 ts, Tuple<Double, Double> bid, Tuple<Double, Double> ask) {
 		super(ts);
 		this.bid = bid; 
-		this.ask = ask;
-		if(bid!=null)tradeableId = bid.getTradeableInstrumentId();
-		else if(ask!=null)tradeableId = ask.getTradeableInstrumentId();
-		// TODO: throw invalid argument exception. 
-		else tradeableId = null; 
+		this.ask = ask;		
+		this.tradeableId = tradInstId; 
+	}
+
+	public Tuple<Double, Double> getAsk() {
+		return ask;
+	} 
+	
+	public Tuple<Double, Double> getBid() {
+		return bid;
 	}
 
 	public String getEventType(){return "NBBO";}

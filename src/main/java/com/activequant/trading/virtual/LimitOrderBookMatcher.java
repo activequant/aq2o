@@ -9,12 +9,12 @@ import com.activequant.domainmodel.trade.order.LimitOrder;
  * @author ustaudinger
  * 
  */
-public class OrderBookMatcher {
+public class LimitOrderBookMatcher {
 
 	private LimitOrderBook ob;
 	private VirtualExchange exchange;
 
-	public OrderBookMatcher(VirtualExchange exchange, LimitOrderBook ob) {
+	public LimitOrderBookMatcher(VirtualExchange exchange, LimitOrderBook ob) {
 		this.ob = ob;
 		this.exchange = exchange;
 	}
