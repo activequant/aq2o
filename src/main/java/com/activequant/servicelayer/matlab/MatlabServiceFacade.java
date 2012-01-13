@@ -1,4 +1,4 @@
-package com.activequant.matlab;
+package com.activequant.servicelayer.matlab;
 
 import java.util.ArrayList;
 import java.util.HashMap;

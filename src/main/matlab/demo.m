@@ -2,13 +2,13 @@ function demo()
 
     % define some constants
     EOD = com.activequant.domainmodel.TimeFrame.EOD;
-    INTERPOLRULE =  com.activequant.matlab.Parameter.INTERPOLRULE;
-    DAYRULE =  com.activequant.matlab.Parameter.DAYRULE;
-    INTERPOLRULE_CARRY_FORWARD = com.activequant.matlab.InterpolationRule.CARRY_FORWARD;
-    DAYRULE_WEEKDAYS = com.activequant.matlab.DayRule.WEEKDAYS;
+    INTERPOLRULE =  com.activequant.servicelayer.matlab.Parameter.INTERPOLRULE;
+    DAYRULE =  com.activequant.servicelayer.matlab.Parameter.DAYRULE;
+    INTERPOLRULE_CARRY_FORWARD = com.activequant.servicelayer.matlab.InterpolationRule.CARRY_FORWARD;
+    DAYRULE_WEEKDAYS = com.activequant.servicelayer.matlab.DayRule.WEEKDAYS;
 
     % instantiate the facade. 
-    msf = com.activequant.matlab.MatlabServiceFacade('debian-i386.local');
+    msf = com.activequant.matlab.servicelayer.MatlabServiceFacade('debian-i386.local');
     paramMap = java.util.HashMap()
 
     

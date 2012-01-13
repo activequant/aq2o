@@ -1,4 +1,4 @@
-package com.activequant.matlab;
+package com.activequant.servicelayer.matlab;
 
 /**
  * return object for matlab.
