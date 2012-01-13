@@ -10,6 +10,8 @@ import com.activequant.domainmodel.trade.event.OrderTerminalEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.domainmodel.trade.order.OrderSide;
+import com.activequant.exceptions.IncompleteOrderInstructions;
+import com.activequant.exceptions.UnsupportedOrderType;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.TimeStreamEvent;
 import com.activequant.trading.IOrderTracker;
@@ -17,37 +19,46 @@ import com.activequant.trading.NBBOEvent;
 import com.activequant.utils.events.Event;
 import com.activequant.utils.events.IEventSource;
 
-public class VirtualExchange {
+public class VirtualExchange implements IExchange {
 
+	private long virtexOrderId = 0L; 
 	private Date8Time6 currentExchangeTime;
 	private Map<String, IOrderTracker> orderTrackers = new HashMap<String, IOrderTracker>();
 	private Map<String, LimitOrderBook> lobs = new HashMap<String, LimitOrderBook>(); 
 	
+	/* (non-Javadoc)
+	 * @see com.activequant.trading.virtual.IExchange#currentExchangeTime()
+	 */
+	@Override
 	public Date8Time6 currentExchangeTime() {
 		return currentExchangeTime;
 	}
 
 	class VirtualOrderTracker implements IOrderTracker {
 		private Event<OrderEvent> event = new Event<OrderEvent>();
-
+		private LimitOrder order; 
+		VirtualOrderTracker(LimitOrder order) throws IncompleteOrderInstructions{
+			this.order = order;
+			if(order.getTradInstId()==null) throw new IncompleteOrderInstructions("TradInstID missing");
+			
+		}
 		public Event<OrderEvent> getEvent() {
 			return event;
 		}
 
 		@Override
 		public void update(Order newOrder) {
-			// TODO Auto-generated method stub
-
+			getOrderBook(order.getTradInstId()).updateOrder(order);
 		}
 
 		@Override
 		public void submit() {
+			getOrderBook(order.getTradInstId()).addOrder(order);
 		}
 
 		@Override
 		public String getVenueAssignedId() {
-			// TODO Auto-generated method stub
-			return null;
+			return "VIRTEXOID"+(virtexOrderId++);
 		}
 
 		@Override
@@ -57,19 +68,23 @@ public class VirtualExchange {
 
 		@Override
 		public Order getOrder() {
-			// TODO Auto-generated method stub
-			return null;
+			return order; 
 		}
 
 		@Override
 		public void cancel() {
-			// TODO Auto-generated method stub
-
+			getOrderBook(order.getTradInstId()).cancelOrder(order);
 		}
 	}
 
-	public IOrderTracker prepareOrder() {
-		return new VirtualOrderTracker();
+	/* (non-Javadoc)
+	 * @see com.activequant.trading.virtual.IExchange#prepareOrder()
+	 */
+	@Override
+	public IOrderTracker prepareOrder(Order order) throws UnsupportedOrderType, IncompleteOrderInstructions {
+		if(!(order instanceof LimitOrder))throw new UnsupportedOrderType("Order type not supported by exchange: " + order);
+		LimitOrder limitOrder = (LimitOrder)order; 
+		return new VirtualOrderTracker(limitOrder);
 	}
 
 	public IOrderTracker getOrderTracker(Order order) {
@@ -138,6 +153,10 @@ public class VirtualExchange {
 		}		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.activequant.trading.virtual.IExchange#getOrderBook(java.lang.String)
+	 */
+	@Override
 	public LimitOrderBook getOrderBook(String tradeableInstrumentId){
 		if(!lobs.containsKey(tradeableInstrumentId))
 			lobs.put(tradeableInstrumentId, new LimitOrderBook(this, tradeableInstrumentId));

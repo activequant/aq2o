@@ -9,12 +9,12 @@ import com.activequant.utils.events.IEventSource;
 
 class VirtualOrderTracker implements IOrderTracker {
 
-	private final VirtualExchange exchange;
+	private final IExchange exchange;
 	private final Order order;
 	private final Event<OrderEvent> event = new Event<OrderEvent>();
 	private final String venueAssignedId; 
 
-	VirtualOrderTracker(VirtualExchange exchange, String venueAssignedId, Order order) {
+	VirtualOrderTracker(IExchange exchange, String venueAssignedId, Order order) {
 		this.exchange = exchange;
 		this.order = order;
 		this.venueAssignedId = venueAssignedId;  

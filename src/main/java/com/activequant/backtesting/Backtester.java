@@ -15,6 +15,7 @@ import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.exceptions.InvalidDate8Time6Input;
 import com.activequant.tools.streaming.DoubleValStreamEvent;
+import com.activequant.trading.virtual.IExchange;
 import com.activequant.trading.virtual.VirtualExchange;
 
 public class Backtester {
@@ -25,7 +26,7 @@ public class Backtester {
 	private IInstrumentDao instrumentDao;
 	private Date8Time6 startTime, endTime;
 	private String[] fields;
-	private VirtualExchange vex = new VirtualExchange();
+	private IExchange vex = new VirtualExchange();
 	
 	
 	public Backtester(String[] mdis, String timeFrameString, String[] fields,
