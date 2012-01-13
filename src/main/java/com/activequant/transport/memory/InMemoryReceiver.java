@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.activequant.transport.IReceiver;
 import com.activequant.utils.events.Event;
+import com.activequant.utils.events.IEventSource;
 
 public class InMemoryReceiver implements IReceiver {
 
@@ -14,7 +15,7 @@ public class InMemoryReceiver implements IReceiver {
 	}
 	
 	@Override
-	public Event<Map<String, Object>> getMsgRecEvent() {
+	public IEventSource<Map<String, Object>> getMsgRecEvent() {
 		return event;
 	}
 }

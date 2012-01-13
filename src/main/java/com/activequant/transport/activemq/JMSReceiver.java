@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.activequant.transport.IReceiver;
 import com.activequant.utils.MapToString;
 import com.activequant.utils.events.Event;
+import com.activequant.utils.events.IEventSource;
 
 class JMSReceiver implements IReceiver, MessageListener {
     JMSReceiver() {
@@ -24,7 +25,7 @@ class JMSReceiver implements IReceiver, MessageListener {
      */
     private MapToString mapToString = new MapToString();
 
-    public Event<Map<String, Object>> getMsgRecEvent() {
+    public IEventSource<Map<String, Object>> getMsgRecEvent() {
         return msgRecEvent;
     }
 

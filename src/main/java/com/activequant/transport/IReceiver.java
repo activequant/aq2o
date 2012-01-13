@@ -2,7 +2,7 @@ package com.activequant.transport;
 
 import java.util.Map;
 
-import com.activequant.utils.events.Event;
+import com.activequant.utils.events.IEventSource;
 
 public interface IReceiver {
 
@@ -11,5 +11,5 @@ public interface IReceiver {
      * 
      * @return
      */
-    Event<Map<String, Object>> getMsgRecEvent();
+	IEventSource<Map<String, Object>> getMsgRecEvent();
 }
