@@ -26,4 +26,4 @@ A personal message
 
 	Another topic, checkstyle. Use it as a hint, but don't take it serious. Things like whitespace warnings and hiding variable names in constructors are something for interns that have nothing else to do. If you have some time, clean things up.   
 
-	Use this framework in simulation as long as you need to and purchase one of the external interfaces to link it to the real world. Of course you are free to distribute and publish our own external connectors. Please keep our license in mind.  
+	Use this framework in simulation as long as you need to and purchase one of the external interfaces to link it to the real world. Of course you are free to distribute and publish your own external connectors, if you let something flow back to us. Please keep our license in mind.  
