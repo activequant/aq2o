@@ -9,13 +9,15 @@ Messaging
 	Note that the messaging part fits perfectly together with the domain model.  
 
 
-* ActiveMQ transport factory
+* ActiveMQ
+
+** ActiveMQ transport factory
 
 	The ActiveMQ transport factory implements a transport factory. Its methods provide publisher and a receiver implementations. Notice that this implementation works through selectors rather than threads, so that the overall thread load on your system stays low, because of this approach, you can easily subscribe to thousands of Instruments through this implementation. In its current implementation it uses only ActiveMQ topics, but you are free to implement your own transport factory based on queues. 
 
 	On purpose, it is not a singleton, as this design decision can be made easily with spring. 
 
-* Sending data 
+** Sending data 
 
 	The following snipplet shows you how to use it to publish some data for a specific MarketDataInstrument. 
 
@@ -31,7 +33,7 @@ IPublisher publisher = new ActiveMQTransportFactory("8.8.8.8", 61616).
 publisher.send(toBeDeliveredMap);
 +-----------------------+
 
-* Receiving data
+** Receiving data
 
 	The following snipplet shows you how to use it to receive some data for a specific MarketDataInstrument. You do not need to start the receiver, it will automatically receive data. 
 
@@ -52,4 +54,9 @@ rec2.getMsgRecEvent().addEventListener(localListener);
 +-----------------------+
 
 		
+* InMemory
+
+	AQ2o also includes an in-memory messaging infrastructure, which you can seamlessly use instead of the ActiveMQ messaging layer. It is lightweight and very flexible. 
+	
+	
 
