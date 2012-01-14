@@ -57,7 +57,7 @@ public class VirtualExchangeTest extends TestCase {
 		
 		ve.processStreamEvent(n);
 				
-		assertNull(orderBookChange);
+		assertNotNull(orderBookChange);
 		assertEquals(ChangeTypeEnum.UPDATED, orderBookChange.getChangeType());
 		
 		// 
