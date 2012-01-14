@@ -38,9 +38,7 @@ public class InMemoryTransportFactory implements ITransportFactory {
 			recvMap.put(channelName, p);
 		}
 		return recvMap.get(channelName);
-	}
-	
-	
+	}	
 	
 	@Override
 	public IPublisher getPublisher(ETransportType transType,

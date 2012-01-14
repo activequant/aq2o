@@ -11,12 +11,17 @@ import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.IMarketDataInstrumentDao;
+import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.exceptions.InvalidDate8Time6Input;
 import com.activequant.tools.streaming.DoubleValStreamEvent;
+import com.activequant.trading.ITradingSystem;
 import com.activequant.trading.virtual.IExchange;
 import com.activequant.trading.virtual.VirtualExchange;
+import com.activequant.transport.ETransportType;
+import com.activequant.transport.ITransportFactory;
+import com.activequant.transport.memory.InMemoryTransportFactory;
 
 public class Backtester {
 
@@ -26,11 +31,12 @@ public class Backtester {
 	private IInstrumentDao instrumentDao;
 	private Date8Time6 startTime, endTime;
 	private String[] fields;
-	private IExchange vex = new VirtualExchange();
+	private VirtualExchange vex = new VirtualExchange();
+	private ITransportFactory transportFactory = new InMemoryTransportFactory();
 	
 	
 	public Backtester(String[] mdis, String timeFrameString, String[] fields,
-			IArchiveFactory factory) throws InvalidDate8Time6Input {
+			IArchiveFactory factory, ITradingSystem[] tradingSystems) throws InvalidDate8Time6Input {
 		//
 		this.marketDataInstrumentIds = mdis;
 		this.archiveReader = factory.getReader(TimeFrame
@@ -39,6 +45,10 @@ public class Backtester {
 		this.fields = fields;
 		startTime = new Date8Time6(20000101000000.0);
 		endTime = new Date8Time6(20120101000000.0);
+		
+		//
+		
+		
 	}
 
 	public void init() {
@@ -48,16 +58,22 @@ public class Backtester {
 	public void execute() throws Exception {
 		int id = 0;
 		List<TimeSeriesIterator> tempList = new ArrayList<TimeSeriesIterator>();
+		// add the trading time stream. 
+		tempList.add(new TradingTimeStream(startTime.asMicroSeconds()*1000, endTime.asMicroSeconds()* 1000));
+		
+		
+		//
 		for (String s : marketDataInstrumentIds) {
 			for (String f : fields) {
 				TimeSeriesIterator iterator = archiveReader
 						.getTimeSeriesStream(s, f, startTime, endTime);
-				tempList.add(iterator);
-				
+				tempList.add(iterator);				
 			}
 		}
 		
 		FastStreamer fs = new FastStreamer(tempList.toArray(new TimeSeriesIterator[]{}));
+		
+		
 		
 		long l1 = System.currentTimeMillis(); 
 		long eventCount = 0; 
@@ -65,6 +81,13 @@ public class Backtester {
 		while(fs.moreDataInPipe()){			
 			DoubleValStreamEvent chunk = fs.getOneFromPipes();	
 			// System.out.println(chunk.getTimeStamp() + " --> " + chunk.getPayload());
+			
+			
+			
+			// vex.processStreamEvent(chunk);
+			
+			
+			//
 			eventCount ++; 
 		}
 		

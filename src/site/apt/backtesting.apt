@@ -1,1 +1,20 @@
 Backtesting 
+
+	All trading systems know of a trade system environment, which contains environment specific pointers. 
+	
+	The trade system environment is injected by the outer runtime environment, such as a backtester. The 
+	outer environment MUST call the trading system's <initialize> function once, if the trade system should 
+	and may start to register for data streams, etc.
+	
+	The trade system MUST not start to access the environment before the <initialize> function is called.
+	
+	All environments, live and production, push second-precise time beats into the event bus, available on
+	channel "TRADINGTIME".    
+	
+	The trading system MUST not register to operating system time events. All activity must be deducted from 
+	trading time, which MUST be in UTC.
+	
+		   
+	 
+	
+	   
