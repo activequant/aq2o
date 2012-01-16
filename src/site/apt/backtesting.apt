@@ -8,11 +8,11 @@ Backtesting
 	
 	The trade system MUST not start to access the environment before the <initialize> function is called.
 	
-	All environments, live and production, push second-precise time beats into the event bus, available on
-	channel "TRADINGTIME".    
+	All environments, live and production, push minute-precise time beats into the event bus, in the form of 
+	TimeStreamEvents. Trading systems implement an IEventSink interface.  
 	
-	The trading system MUST not register to operating system time events. All activity must be deducted from 
-	trading time, which MUST be in UTC.
+	The trading system MUST not register to or use operating system time events (such as System.currentTimeMillis()). 
+	All activity must be deducted from trading time, which MUST be and is in UTC.
 	
 		   
 	 
