@@ -1,18 +1,17 @@
 package com.activequant.backtesting;
 
 import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.dao.IDaoFactory;
-import com.activequant.exceptions.InvalidDate8Time6Input;
+import com.activequant.tools.streaming.MarketDataEvent;
+import com.activequant.tools.streaming.ReferenceDataEvent;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.StreamEventIterator;
+import com.activequant.tools.streaming.TradingDataEvent;
 import com.activequant.trading.ITradingSystem;
 import com.activequant.trading.TradingSystemEnvironment;
 import com.activequant.trading.virtual.IExchange;
-import com.activequant.trading.virtual.VirtualExchange;
 import com.activequant.transport.ETransportType;
 import com.activequant.transport.ITransportFactory;
-import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.TimeMeasurement;
 
 public class Backtester {
@@ -21,7 +20,7 @@ public class Backtester {
 	private ITransportFactory transportFactory;
 	@SuppressWarnings("rawtypes")
 	private StreamEventIterator[] streamIters;
-	private ITradingSystem[] tradingSystems; 
+	private ITradingSystem[] tradingSystems;
 
 	@SuppressWarnings("rawtypes")
 	public Backtester(IArchiveFactory factory,
@@ -34,7 +33,7 @@ public class Backtester {
 		this.streamIters = streamIters;
 		this.transportFactory = transportFactory;
 		this.streamIters = streamIters;
-		this.tradingSystems = tradingSystems; 
+		this.tradingSystems = tradingSystems;
 
 		// construct the trading system environment.
 		TradingSystemEnvironment env = new TradingSystemEnvironment();
@@ -58,13 +57,11 @@ public class Backtester {
 		FastStreamer fs = new FastStreamer(streamIters);
 
 		TimeMeasurement.start("BACKTEST");
-		
 
 		for (ITradingSystem s : tradingSystems) {
 			s.start();
 		}
 
-		
 		long eventCount = 0;
 		// iterate over all data and feed it into the event bus.
 		while (fs.moreDataInPipe()) {
@@ -73,13 +70,29 @@ public class Backtester {
 			StreamEvent se = fs.getOneFromPipes();
 			ETransportType transportType = se.getEventType();
 
+			// only time events are sent to the generic transport layer.
 			if (transportType.equals(ETransportType.TIME)) {
 				transportFactory.getPublisher(transportType.toString())
 						.send(se);
-			}
+			} else if (transportType.equals(ETransportType.MARKET_DATA)) {
+				MarketDataEvent mde = (MarketDataEvent) se;
+				transportFactory.getPublisher(transportType, mde.getMdi())
+						.send(se);
+				
+				// send also to virtex exchange layer.
+				exchange.processStreamEvent(se);
+			} else if (transportType.equals(ETransportType.REF_DATA)) {
+				ReferenceDataEvent rde = (ReferenceDataEvent) se;
+				transportFactory.getPublisher(transportType,
+						rde.getInstrument()).send(se);
+			} else if (transportType.equals(ETransportType.TRAD_DATA)) {
+				TradingDataEvent tde = (TradingDataEvent) se;
+				transportFactory.getPublisher(transportType, tde.getTradInst())
+						.send(se);
 
-			//
-			exchange.processStreamEvent(se);
+				// send everything also to virtex exchange layer.
+				exchange.processStreamEvent(se);
+			}
 
 			//
 			eventCount++;
@@ -88,7 +101,7 @@ public class Backtester {
 		for (ITradingSystem s : tradingSystems) {
 			s.stop();
 		}
-		
+
 		TimeMeasurement.stop("BACKTEST");
 
 		long difference = TimeMeasurement.getRuntime("BACKTEST");
@@ -96,7 +109,6 @@ public class Backtester {
 				+ difference + "ms. That's "
 				+ (eventCount / (double) difference) + " events/ms");
 
-		
 	}
 
 }
