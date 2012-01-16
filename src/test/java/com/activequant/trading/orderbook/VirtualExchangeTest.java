@@ -4,11 +4,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.Tuple;
 import com.activequant.trading.NBBOEvent;
 import com.activequant.trading.virtual.LimitOrderBook;
 import com.activequant.trading.virtual.VirtualExchange;
+import com.activequant.utils.Date8Time6Parser;
+import com.activequant.utils.UniqueTimeStampGenerator;
 
 public class VirtualExchangeTest extends TestCase {
 	/**
@@ -50,9 +51,9 @@ public class VirtualExchangeTest extends TestCase {
 		};
 		
 		lob.attachOrderBookListener(iobl);
-		
+		UniqueTimeStampGenerator gen = new UniqueTimeStampGenerator(); 
 		//  
-		NBBOEvent n = new NBBOEvent(tradInstId, Date8Time6.now(), 
+		NBBOEvent n = new NBBOEvent(tradInstId, gen.now(), 
 				new Tuple<Double, Double>(99.0,100.0), new Tuple<Double, Double>(101.0,100.0));
 		
 		ve.processStreamEvent(n);

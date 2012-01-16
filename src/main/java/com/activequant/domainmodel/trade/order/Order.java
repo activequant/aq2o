@@ -1,10 +1,10 @@
 package com.activequant.domainmodel.trade.order;
 
-import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.TimeStamp;
 
 public class Order {
-	private Date8Time6 creationTimeStamp;
-	private Date8Time6 workingTimeStamp; 
+	private TimeStamp creationTimeStamp;
+	private TimeStamp workingTimeStamp; 
 
 	private String orderId;
 
@@ -16,18 +16,18 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public Date8Time6 getCreationTimeStamp() {
+	public TimeStamp getCreationTimeStamp() {
 		return creationTimeStamp;
 	}
 
-	public void setCreationTimeStamp(Date8Time6 creationTimeStamp) {
+	public void setCreationTimeStamp(TimeStamp creationTimeStamp) {
 		this.creationTimeStamp = creationTimeStamp;
 	}
-	public Date8Time6 getWorkingTimeStamp() {
+	public TimeStamp getWorkingTimeStamp() {
 		return workingTimeStamp;
 	}
 
-	public void setWorkingTimeStamp(Date8Time6 workingTimeStamp) {
+	public void setWorkingTimeStamp(TimeStamp workingTimeStamp) {
 		this.workingTimeStamp = workingTimeStamp;
 	}
 

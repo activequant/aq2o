@@ -1,5 +1,7 @@
 package com.activequant.archive;
 
+import com.activequant.domainmodel.TimeStamp;
+
 /**
  * Trivial container class, even without getters and setters.
  * 
@@ -8,11 +10,10 @@ package com.activequant.archive;
  */
 public class TSContainer {
 
-    // timestamps are date8time6 double values.
-    public Double[] timeStamps;
+    public TimeStamp[] timeStamps;
     public Double[] values;
 
-    public TSContainer(Double[] ts, Double[] v) {
+    public TSContainer(TimeStamp[] ts, Double[] v) {
         timeStamps = ts;
         values = v;
     }

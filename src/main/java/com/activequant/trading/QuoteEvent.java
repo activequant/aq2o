@@ -1,12 +1,12 @@
 package com.activequant.trading;
 
-import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.tools.streaming.TimeStreamEvent;
 
 public class QuoteEvent extends TimeStreamEvent{
 	
-	public QuoteEvent(Date8Time6 ts) {
+	public QuoteEvent(TimeStamp ts) {
 		super(ts);
 	}
 

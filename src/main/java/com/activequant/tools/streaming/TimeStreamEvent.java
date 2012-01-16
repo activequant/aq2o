@@ -1,19 +1,19 @@
 package com.activequant.tools.streaming;
 
-import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.TimeStamp;
 
 public class TimeStreamEvent extends StreamEvent {
 	
 	
-	private final Date8Time6 timeStamp;
+	private final TimeStamp timeStamp;
 	public String getEventType(){return "TIME";}
 
-	public TimeStreamEvent(Date8Time6 ts)
+	public TimeStreamEvent(TimeStamp ts)
 	{
 		this.timeStamp = ts; 
 	}
 	
-	public Date8Time6 getTimeStamp() {
+	public TimeStamp getTimeStamp() {
 		return timeStamp;
 	}
 }

@@ -9,7 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.activequant.domainmodel.Date8Time6;
 import com.activequant.exceptions.InvalidDate8Time6Input;
 
 /**
@@ -49,14 +48,22 @@ public class Date8Time6Parser extends SimpleDateFormat {
 
     }
 
-    public Date8Time6 fromMilliseconds(long ms) throws InvalidDate8Time6Input {
+    public long getNanoseconds(Double d8t6) throws InvalidDate8Time6Input {
+        return getMicroseconds(d8t6) * 1000L; 
+    }
+    
+    public Double fromMilliseconds(long ms) throws InvalidDate8Time6Input {
         String d = new Date8Time6Parser().format(new Date(ms));
-        return new Date8Time6(Double.parseDouble(d));
+        return Double.parseDouble(d);
     }
 
-    public Date8Time6 now() throws InvalidDate8Time6Input {
+    public Double now() throws InvalidDate8Time6Input {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return new Date8Time6(Double.parseDouble(new Date8Time6Parser().format(cal.getTime())));
+        return Double.parseDouble(new Date8Time6Parser().format(cal.getTime()));
+    }
+    
+    public String toString(Double date8time6){
+    	return dcf.format(date8time6);
     }
 }

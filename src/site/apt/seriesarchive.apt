@@ -10,7 +10,7 @@ Series Archive
 
 	The archive stores only double values, although we might talk about adding support to store string values. 
 
-	Throughout the archive you will encounter Date8Time6 timestamps. 
+	Throughout the archive, and also throughout the entire framework, you will encounter nanosecond timestamps.   
  
 * TimeSeries container
 
@@ -42,7 +42,12 @@ IArchiveReader  reader2 = factory.getReader(TimeFrame.MINUTES_1);
 
 +--------------------+
 IArchiveReader reader = ....
-TSContainer ts = reader.getTimeSeries("TT_FDAX201112", "PX_SETTLE", 20110101000000.0, 20111231235959.0);
+
+Date8Time6Parser d8t6p = new Date8Time6Parser();
+TimeStamp startTime = new TimeStamp(d8t6p.getNanoSeconds(20110101000000.0));
+TimeStamp endTime = new TimeStamp(d8t6p.getNanoSeconds(20111231235959.0));
+
+TSContainer ts = reader.getTimeSeries("TT_FDAX201112", "PX_SETTLE", startTime, endTime);
 +--------------------+
 
 
@@ -55,9 +60,9 @@ TSContainer ts = reader.getTimeSeries("TT_FDAX201112", "PX_SETTLE", 201101010000
 +-----------------+
 IArchiveWriter writer = .... 
 
-Date8Time6 d8t6 = new Date8Time6(20111231135912.123123);
+UniqueTimeStampGenerator generator = new UniqueTimeStampGenerator();
 
-writer.write("TT_FDAX201112", d8t6, "BID", 8120.5);
+writer.write("TT_FDAX201112", generator.now(), "BID", 8120.5);
 writer.commit();
 +-----------------+
 

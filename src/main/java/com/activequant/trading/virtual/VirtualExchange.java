@@ -3,7 +3,7 @@ package com.activequant.trading.virtual;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.domainmodel.trade.event.OrderTerminalEvent;
@@ -22,7 +22,7 @@ import com.activequant.utils.events.IEventSource;
 public class VirtualExchange implements IExchange {
 
 	private long virtexOrderId = 0L; 
-	private Date8Time6 currentExchangeTime;
+	private TimeStamp currentExchangeTime;
 	private Map<String, IOrderTracker> orderTrackers = new HashMap<String, IOrderTracker>();
 	private Map<String, LimitOrderBook> lobs = new HashMap<String, LimitOrderBook>(); 
 	
@@ -30,7 +30,7 @@ public class VirtualExchange implements IExchange {
 	 * @see com.activequant.trading.virtual.IExchange#currentExchangeTime()
 	 */
 	@Override
-	public Date8Time6 currentExchangeTime() {
+	public TimeStamp currentExchangeTime() {
 		return currentExchangeTime;
 	}
 
@@ -163,8 +163,4 @@ public class VirtualExchange implements IExchange {
 		return lobs.get(tradeableInstrumentId);
 	}
 	
-	public VirtualExchange() {
-
-	}
-
 }

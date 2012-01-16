@@ -38,7 +38,7 @@ public class LimitOrderBookMatcher {
 				double relevantPrice = sellOrder.getLimitPrice();
 				// determine the relevant price.
 				if (buyOrder.getWorkingTimeStamp()
-						.before(sellOrder.getWorkingTimeStamp()))
+						.compareTo(sellOrder.getWorkingTimeStamp())<0)
 					relevantPrice = buyOrder.getLimitPrice();
 
 				if (difference > 0) {

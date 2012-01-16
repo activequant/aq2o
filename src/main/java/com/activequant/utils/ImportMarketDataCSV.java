@@ -19,12 +19,12 @@ import com.activequant.archive.IArchiveWriter;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.IMarketDataInstrumentDao;
-import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.RollingSchedule;
 import com.activequant.domainmodel.SuperInstrument;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.exceptions.InvalidDate8Time6Input;
 import com.activequant.utils.events.IEventListener;
 import com.activequant.utils.worker.Worker;
@@ -189,13 +189,15 @@ public class ImportMarketDataCSV {
 					final String dateTime = date + " " + time;
 					final Iterator<Entry<String, String>> it = event.entrySet()
 							.iterator();
-					long ms;
+					TimeStamp ts;
 					try {
 						if(dateTime.indexOf("-")!=-1)
-							ms = sdf2.parse(dateTime).getTime();
+							ts = new TimeStamp(sdf2.parse(dateTime));
 						else
-							ms = sdf.parse(dateTime).getTime();
-						Date8Time6 d8t6 = d8t6p.fromMilliseconds(ms);
+							ts = new TimeStamp(sdf.parse(dateTime));
+						
+						
+						
 						while (it.hasNext()) {
 							Entry<String, String> entry = it.next();
 							String key = entry.getKey().toUpperCase();
@@ -204,7 +206,7 @@ public class ImportMarketDataCSV {
 							if (key.equals("TIME"))
 								continue;
 
-							iaw.write(mdi.getId(), d8t6, key, 
+							iaw.write(mdi.getId(), ts, key, 
 									Double.parseDouble(entry
 									.getValue()));
 							if (lineCounter++ > 100) {
@@ -218,10 +220,7 @@ public class ImportMarketDataCSV {
 						}
 					} catch (ParseException e1) {
 						e1.printStackTrace();
-					} catch (InvalidDate8Time6Input e) {
-						e.printStackTrace();
-					}
-
+					} 
 				}
 			}, new FileInputStream(fileName));
 

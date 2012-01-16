@@ -14,11 +14,11 @@ import org.apache.log4j.Logger;
 import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;
-import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.exceptions.InvalidDate8Time6Input;
 import com.activequant.utils.Date8Time6Parser;
+import com.activequant.utils.UniqueTimeStampGenerator;
 
 /**
  * Reader class to read from HBase. All timestamps are in UTC and in Date8Time6
@@ -33,6 +33,7 @@ import com.activequant.utils.Date8Time6Parser;
  */
 class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
+	private UniqueTimeStampGenerator timeStampGenerator = new UniqueTimeStampGenerator();
 	private Date8Time6Parser d8t6p = new Date8Time6Parser();
 	private Logger log = Logger.getLogger(HBaseArchiveReader.class);
 
@@ -54,9 +55,9 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 	 * java.lang.String, java.lang.Long)
 	 */
 	public TSContainer getTimeSeries(final String instrumentId,
-			final String value, final Date8Time6 startTimeStamp)
+			final String value, final TimeStamp startTimeStamp)
 			throws Exception {
-		return getTimeSeries(instrumentId, value, startTimeStamp, d8t6p.now());
+		return getTimeSeries(instrumentId, value, startTimeStamp, timeStampGenerator.now());
 	}
 
 	/*
@@ -67,12 +68,12 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 	 * java.lang.String, java.lang.Long, java.lang.Long)
 	 */
 	public TSContainer getTimeSeries(final String instrumentId,
-			final String value, final Date8Time6 startTimeStamp,
-			final Date8Time6 stopTimeStamp) throws Exception {
+			final String value, final TimeStamp startTimeStamp,
+			final TimeStamp stopTimeStamp) throws Exception {
 		ResultScanner scanner = getScanner(instrumentId, startTimeStamp,
 				stopTimeStamp);
 
-		List<Double> timeStamps = new ArrayList<Double>();
+		List<TimeStamp> timeStamps = new ArrayList<TimeStamp>();
 		List<Double> values = new ArrayList<Double>();
 		try {
 			for (Result rr = scanner.next(); rr != null; rr = scanner.next()) {
@@ -82,24 +83,24 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 					byte[] tsB = rr.getValue("numbers".getBytes(),
 							"ts".getBytes());
 					Double val = Bytes.toDouble(valB);
-					Double ts = Bytes.toDouble(tsB);
-					timeStamps.add(ts);
+					Long ts = Bytes.toLong(tsB);
+					timeStamps.add(new TimeStamp(ts));
 					values.add(val);
 				}
 			}
 		} finally {
 			scanner.close();
 		}
-		TSContainer ret = new TSContainer(timeStamps.toArray(new Double[] {}),
+		TSContainer ret = new TSContainer(timeStamps.toArray(new TimeStamp[] {}),
 				values.toArray(new Double[] {}));
 		return ret;
 	}
 
 	private ResultScanner getScanner(final String instrumentId,
-			final Date8Time6 startTimeStamp, final Date8Time6 stopTimeStamp)
+			final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp)
 			throws IOException {
-		String startKey = instrumentId + "_" + startTimeStamp.asString();
-		String stopKey = instrumentId + "_" + stopTimeStamp.asString();
+		String startKey = instrumentId + "_" + startTimeStamp.toString();
+		String stopKey = instrumentId + "_" + stopTimeStamp.toString();
 
 		Scan s = new Scan(startKey.getBytes(), stopKey.getBytes());
 		s.setMaxVersions(1);
@@ -108,7 +109,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 	}
 
 	public TimeSeriesIterator getTimeSeriesStream(String instrumentId,
-			final String key, Date8Time6 startTimeStamp, Date8Time6 stopTimeStamp)
+			final String key, TimeStamp startTimeStamp, TimeStamp stopTimeStamp)
 			throws Exception {
 		final ResultScanner scanner = getScanner(instrumentId, startTimeStamp,
 				stopTimeStamp);
@@ -123,7 +124,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 			}
 
 			@Override
-			public Tuple<Date8Time6, Double> next() {
+			public Tuple<TimeStamp, Double> next() {
 				Result rr = resultIterator.next();
 				if(rr!=null)
 				{
@@ -133,14 +134,8 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 						byte[] tsB = rr.getValue("numbers".getBytes(),
 								"ts".getBytes());
 						Double val = Bytes.toDouble(valB);
-						Double ts = Bytes.toDouble(tsB);
-						Date8Time6 t = null;
-						try {
-							t = new Date8Time6(ts);
-							return new Tuple<Date8Time6, Double>(t, val);
-						} catch (InvalidDate8Time6Input e) {
-							log.warn(e);
-						}
+						Long ts = Bytes.toLong(tsB);
+						return new Tuple<TimeStamp, Double>(new TimeStamp(ts), val);
 					}
 					return null; 
 				}

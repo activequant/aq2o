@@ -14,10 +14,10 @@ import com.activequant.archive.TSContainer;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
-import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.utils.Date8Time6Parser;
 
 /**
@@ -90,30 +90,32 @@ public class MatlabServiceFacade {
         //
         if (paramMap == null)
             paramMap = new HashMap<Parameter, Object>();
+        Date8Time6Parser parser = new Date8Time6Parser(); 
+
         //
-        Map<String, Map<String, Map<Double, Double>>> dataMap = new HashMap<String, Map<String, Map<Double, Double>>>();
-        List<Double> timeStamps = new ArrayList<Double>();
+        Map<String, Map<String, Map<TimeStamp, Double>>> dataMap = new HashMap<String, Map<String, Map<TimeStamp, Double>>>();
+        List<TimeStamp> timeStamps = new ArrayList<TimeStamp>();
         for (int i = 0; i < marketInstrumentIds.length; i++) {
             String instrument = marketInstrumentIds[i];
             // get the instrument specific map.
-            Map<String, Map<Double, Double>> instrumentMap;
+            Map<String, Map<TimeStamp, Double>> instrumentMap;
             if (!dataMap.containsKey(instrument))
-                dataMap.put(instrument, new HashMap<String, Map<Double, Double>>());
+                dataMap.put(instrument, new HashMap<String, Map<TimeStamp, Double>>());
             instrumentMap = dataMap.get(instrument);
 
             for (int j = 0; j < fieldNames.length; j++) {
                 String field = fieldNames[j];
                 // get the field specific map
-                Map<Double, Double> fieldMap;
+                Map<TimeStamp, Double> fieldMap;
                 if (!instrumentMap.containsKey(field))
-                    instrumentMap.put(field, new HashMap<Double, Double>());
+                    instrumentMap.put(field, new HashMap<TimeStamp, Double>());
                 fieldMap = instrumentMap.get(field);
-                Date8Time6 t1 = new Date8Time6(startDate8Time6);
-                Date8Time6 t2 = new Date8Time6(endDate8Time6);
+                TimeStamp t1 = new TimeStamp(parser.getNanoseconds(startDate8Time6));
+                TimeStamp t2 = new TimeStamp(parser.getNanoseconds(endDate8Time6));
                 TSContainer ts = archiveFactory.getReader(tf).getTimeSeries(instrument, field, t1, t2);
                 if (ts.timeStamps.length > 0) {
                     for (int k = 0; k < ts.timeStamps.length; k++) {
-                        Double timeStamp = ts.timeStamps[k];
+                        TimeStamp timeStamp = ts.timeStamps[k];
                         Double value = ts.values[k];
                         // TODO: have to reduce the granularity.
                         if (!timeStamps.contains(timeStamp))

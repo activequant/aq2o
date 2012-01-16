@@ -1,6 +1,6 @@
 package com.activequant.trading;
 
-import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 import com.activequant.tools.streaming.TimeStreamEvent;
 
@@ -10,7 +10,7 @@ public class NBBOEvent extends TimeStreamEvent {
 	private final Tuple<Double, Double> bid, ask; 
 	private final String tradeableId;
 
-	public NBBOEvent(String tradInstId, Date8Time6 ts, Tuple<Double, Double> bid, Tuple<Double, Double> ask) {
+	public NBBOEvent(String tradInstId, TimeStamp ts, Tuple<Double, Double> bid, Tuple<Double, Double> ask) {
 		super(ts);
 		this.bid = bid; 
 		this.ask = ask;		

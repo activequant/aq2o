@@ -1,15 +1,15 @@
 package com.activequant.domainmodel.trade.event;
 
-import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.TimeStamp;
 
 public abstract class OrderEvent {
-	private Date8Time6 creationTimeStamp;
+	private TimeStamp creationTimeStamp;
 
-	public Date8Time6 getCreationTimeStamp() {
+	public TimeStamp getCreationTimeStamp() {
 		return creationTimeStamp;
 	}
 
-	public void setCreationTimeStamp(Date8Time6 creationTimeStamp) {
+	public void setCreationTimeStamp(TimeStamp creationTimeStamp) {
 		this.creationTimeStamp = creationTimeStamp;
 	}
 }

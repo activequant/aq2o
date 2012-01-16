@@ -8,8 +8,8 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.activequant.archive.IArchiveWriter;
-import com.activequant.domainmodel.Date8Time6;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 
 /**
@@ -57,7 +57,7 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
      * @see com.activequant.archive.IArchiveWriter#write(java.lang.String,
      * java.lang.Long, com.activequant.domainmodel.Tuple)
      */
-    public void write(String instrumentId, Date8Time6 timeStamp, Tuple<String, Double>... value) throws IOException {
+    public void write(String instrumentId, TimeStamp timeStamp, Tuple<String, Double>... value) throws IOException {
 
         for (Tuple<String, Double> t : value) {
             write(instrumentId, timeStamp, t.getA(), t.getB());
@@ -71,7 +71,7 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
      * @see com.activequant.archive.IArchiveWriter#write(java.lang.String,
      * java.lang.Long, java.lang.String[], java.lang.Double[])
      */
-    public void write(String instrumentId, Date8Time6 timeStamp, String[] keys, Double[] values) {
+    public void write(String instrumentId, TimeStamp timeStamp, String[] keys, Double[] values) {
         assert (values != null);
         assert (keys != null);
         assert (keys.length == values.length);
@@ -87,13 +87,13 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
      * @see com.activequant.archive.IArchiveWriter#write(java.lang.String,
      * java.lang.Long, java.lang.String, java.lang.Double)
      */
-    public void write(String instrumentId, Date8Time6 timeStamp, String key, Double value) {
+    public void write(String instrumentId, TimeStamp timeStamp, String key, Double value) {
         assert (key != null);
         assert (value != null);
-        String rowKey = instrumentId + "_" + timeStamp.asString();
+        String rowKey = instrumentId + "_" + timeStamp.toString();
         Put p = new Put(rowKey.getBytes());
         p.add("numbers".getBytes(), key.getBytes(), Bytes.toBytes(value));
-        p.add("numbers".getBytes(), "ts".getBytes(), Bytes.toBytes(timeStamp.doubleValue()));
+        p.add("numbers".getBytes(), "ts".getBytes(), Bytes.toBytes(timeStamp.getNanoseconds()));
         // relatively expensive call. have to find a way around.
         // maybe by using a special class.
         synchronized (puts) {

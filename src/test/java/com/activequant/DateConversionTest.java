@@ -9,7 +9,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.activequant.domainmodel.Date8Time6;
 import com.activequant.utils.Date8Time6Parser;
 
 /**
@@ -45,8 +44,8 @@ public class DateConversionTest extends TestCase {
         Date d1 = new Date(ms);
         String s2 = sdf.format(d1);
         Date8Time6Parser d8t6p = new Date8Time6Parser();
-        Date8Time6 d8t6 = d8t6p.fromMilliseconds(ms);
-        assertEquals(shouldBe, d8t6.asString());
+        Double d8t6 = d8t6p.fromMilliseconds(ms);
+        assertEquals(shouldBe, d8t6p.toString(d8t6));
 
     }
 

@@ -1,17 +1,17 @@
 package com.activequant.archive;
 
-import com.activequant.domainmodel.Date8Time6;
+import com.activequant.domainmodel.TimeStamp;
 
 public interface IArchiveReader {
 
 	public TSContainer getTimeSeries(String streamId, String key,
-			Date8Time6 startTimeStamp) throws Exception;
+			TimeStamp startTimeStamp) throws Exception;
 
 	public TSContainer getTimeSeries(String streamId, String key,
-			Date8Time6 startTimeStamp, Date8Time6 stopTimeStamp)
+			TimeStamp startTimeStamp, TimeStamp stopTimeStamp)
 			throws Exception;
 
 	public TimeSeriesIterator getTimeSeriesStream(String streamId, String key,
-			Date8Time6 startTimeStamp, Date8Time6 stopTimeStamp)
+			TimeStamp startTimeStamp, TimeStamp stopTimeStamp)
 			throws Exception;
 }
