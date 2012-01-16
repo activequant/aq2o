@@ -12,11 +12,13 @@ public class RandomMarketDataIterator extends StreamEventIterator<MarketDataEven
 	private final long step;
 	private String tradId, mdId; 
 
-	public RandomMarketDataIterator(String tradId, String mdId, TimeStamp startTime, TimeStamp endTime,
+	public RandomMarketDataIterator(String tradId, String mdiId, TimeStamp startTime, TimeStamp endTime,
 			long stepWidthInNanoS) {
 		step = stepWidthInNanoS;
 		this.currentTime = startTime.getNanoseconds() - step;
 		this.endTime = endTime.getNanoseconds();
+		this.mdId = mdiId; 
+		this.tradId = tradId; 
 	}
 
 	@Override
