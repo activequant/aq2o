@@ -3,10 +3,14 @@
 	<publishDate position="right" />
 	<version position="right" />
 
-    <googleAnalyticsAccountId>UA-28069832-1</googleAnalyticsAccountId>
-
+	<googleAnalyticsAccountId>UA-28069832-1</googleAnalyticsAccountId>
+	<bannerLeft>
+		<name>ActiveQuant AQ2o</name>
+		<src>images/logo.png</src>
+		<href>http://aq2o.activequant.org</href>
+	</bannerLeft>
 	<body>
-	
+
 		<links>
 			<item name="Apache" href="http://www.apache.org/" />
 		</links>
@@ -36,8 +40,8 @@
 		</menu>
 
 		<menu name="Usage scenarios">
-			<item name="Importing timeseries data" href="importingdata.html"/>
-			<item name="Importing reference data" href="importingrefdata.html"/>
+			<item name="Importing timeseries data" href="importingdata.html" />
+			<item name="Importing reference data" href="importingrefdata.html" />
 			<item name="Backtesting" href="backtesting.html" />
 			<item name="Live trading" href="livetrading.html" />
 			<item name="Research" href="research.html" />
@@ -48,8 +52,8 @@
 			<item name="CTS T4" href="cts.html" />
 		</menu>
 		<menu name="Downloads">
-			<item name="QEmu Appliance" href="qemuapp.html"/>
-			<item name="Uber-JAR" href="uberjar.html"/> 
+			<item name="QEmu Appliance" href="qemuapp.html" />
+			<item name="Uber-JAR" href="uberjar.html" />
 		</menu>
 		<menu name="Support">
 			<item name="Forum" href="supp_forums.html" />
@@ -65,7 +69,7 @@
 		</menu>
 
 
-		<menu ref="reports"/>
+		<menu ref="reports" />
 
 	</body>
 </project>
