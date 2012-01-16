@@ -76,8 +76,7 @@ public class Backtester {
 						.send(se);
 			} else if (transportType.equals(ETransportType.MARKET_DATA)) {
 				MarketDataEvent mde = (MarketDataEvent) se;
-				transportFactory.getPublisher(transportType, mde.getMdi())
-						.send(se);
+				transportFactory.getPublisher(transportType, mde.getMdiId()).send(se);
 				
 				// send also to virtex exchange layer.
 				exchange.processStreamEvent(se);

@@ -48,6 +48,21 @@ public class InMemoryTransportFactory implements ITransportFactory {
 		return recvMap.get(channelName);
 	}	
 	
+	
+	@Override
+	public IPublisher getPublisher(ETransportType transType,
+			String id) throws TransportException {
+		String channelName = transType.toString()+":"+id;
+		return getIPub(channelName);
+	}
+
+	@Override
+	public IReceiver getReceiver(ETransportType transType, String id)
+			throws TransportException {
+		String channelName = transType.toString()+":"+id;
+		return getIRecv(channelName);
+	}
+	
 	@Override
 	public IPublisher getPublisher(ETransportType transType,
 			Instrument instrument) throws TransportException {

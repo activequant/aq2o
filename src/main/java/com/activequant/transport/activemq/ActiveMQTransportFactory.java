@@ -128,6 +128,21 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 	}
 
 	public synchronized IPublisher getPublisher(ETransportType transType,
+			String id) throws TransportException {
+		String destination = transType.toString() + "." + id;
+		createPublisher(destination);
+		return publisherMap.get(destination);
+	}
+
+	public synchronized IReceiver getReceiver(ETransportType transType,
+			String id) throws TransportException {
+		String destination = transType.toString() + "." + id;
+		createReceiver(destination);
+		return receiverMap.get(destination);
+	}
+	
+	
+	public synchronized IPublisher getPublisher(ETransportType transType,
 			Instrument instrument) throws TransportException {
 		String destination = transType.toString() + "." + instrument.getId();
 		createPublisher(destination);

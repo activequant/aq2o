@@ -47,6 +47,12 @@ public class MatlabServiceFacade {
         ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
         daoFactory = (IDaoFactory) appContext.getBean("ibatisDao");
     }
+    
+    public MatlabServiceFacade(IArchiveFactory af, IDaoFactory dao) {
+        log.info("Instantiating new archive factory.");
+        archiveFactory = af;
+        daoFactory = dao;
+    }
 
     public String[] getInstrumentIds() throws DaoException {
         return daoFactory.instrumentDao().loadIDs();

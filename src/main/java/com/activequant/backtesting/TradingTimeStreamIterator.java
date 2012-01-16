@@ -1,7 +1,6 @@
 package com.activequant.backtesting;
 
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.Tuple;
 import com.activequant.tools.streaming.StreamEventIterator;
 import com.activequant.tools.streaming.TimeStreamEvent;
 
@@ -9,7 +8,6 @@ public class TradingTimeStreamIterator extends StreamEventIterator<TimeStreamEve
 
 	// time in nanoseconds. 
 	private long endTime, currentTime;
-	Tuple<TimeStamp, Double> next = new Tuple<TimeStamp, Double>();
 	private final long step; 
 
 	public TradingTimeStreamIterator(TimeStamp startTime, TimeStamp endTime, long stepWidthInNanoS){

@@ -11,7 +11,7 @@ public class TradeableInstrument extends PersistentEntity {
     }
 
     public String getId() {
-        return instrumentId + "_" + tradingProvider;
+        return "TRADEABLE."+ instrumentId + "." + tradingProvider;
     }
 
     @Property

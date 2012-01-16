@@ -12,10 +12,10 @@ import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.exceptions.IncompleteOrderInstructions;
 import com.activequant.exceptions.UnsupportedOrderType;
+import com.activequant.tools.streaming.BBOEvent;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.TimeStreamEvent;
 import com.activequant.trading.IOrderTracker;
-import com.activequant.trading.NBBOEvent;
 import com.activequant.utils.events.Event;
 import com.activequant.utils.events.IEventSource;
 
@@ -125,10 +125,12 @@ public class VirtualExchange implements IExchange {
 			currentExchangeTime = ((TimeStreamEvent) streamEvent)
 					.getTimeStamp();
 		}
-		if(streamEvent instanceof NBBOEvent)
+		if(streamEvent instanceof BBOEvent)
 		{
-			NBBOEvent nbbo = (NBBOEvent)streamEvent; 
+			BBOEvent nbbo = (BBOEvent)streamEvent; 
 			String instId = nbbo.getTradeableInstrumentId();
+			// weed out non-tradeable market data.
+			if(instId==null)return; 
 			
 			LimitOrderBook lob = getOrderBook(instId);
 			
@@ -139,14 +141,14 @@ public class VirtualExchange implements IExchange {
 			
 			LimitOrder bestBid = new LimitOrder();
 			bestBid.setOrderSide(OrderSide.BUY);
-			bestBid.setLimitPrice(nbbo.getBid().getA());
-			bestBid.setQuantity(nbbo.getBid().getB());
+			bestBid.setLimitPrice(nbbo.getBid());
+			bestBid.setQuantity(nbbo.getBidQuantity());
 			lobs[0] = (bestBid);
 			
 			LimitOrder bestAsk = new LimitOrder();
 			bestAsk.setOrderSide(OrderSide.SELL);
-			bestAsk.setLimitPrice(nbbo.getAsk().getA());
-			bestAsk.setQuantity(nbbo.getAsk().getB());
+			bestAsk.setLimitPrice(nbbo.getAsk());
+			bestAsk.setQuantity(nbbo.getAskQuantity());
 			lobs[1] = (bestAsk);
 			
 			lob.addOrders(lobs);

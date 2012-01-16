@@ -5,8 +5,17 @@ import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.exceptions.TransportException;
 
+/**
+ * If possible, always use the typed methods. 
+ * @author ustaudinger
+ *
+ */
 public interface ITransportFactory {
 
+    public IPublisher getPublisher(ETransportType transType, String id) throws TransportException;
+
+    public IReceiver getReceiver(ETransportType transType, String id) throws TransportException;
+	
     public IPublisher getPublisher(ETransportType transType, Instrument instrument) throws TransportException;
 
     public IReceiver getReceiver(ETransportType transType, Instrument instrument) throws TransportException;

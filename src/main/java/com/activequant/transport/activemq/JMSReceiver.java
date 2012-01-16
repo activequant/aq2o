@@ -49,6 +49,9 @@ class JMSReceiver implements IReceiver, MessageListener {
                 Map<String, Object> map = mapToString.convert(text);
                 rawMsgRecEvent.fire(map);
                 // check if it is a persistent entity. 
+                
+                // TODO for speed up reasons, make it possible to disable this. 
+                
                 if(map.containsKey("CLASSNAME")){
                 	Class<PersistentEntity> clazz;
 					try {
