@@ -11,10 +11,10 @@ public interface ITradingSystem extends IEventSink {
 	 */
 	void environment(TradingSystemEnvironment env);
 	
-	void initialize();
+	void initialize() throws Exception;
 	
-	void start();
+	void start() throws Exception;
 
-	void stop();
+	void stop() throws Exception;
 	
 }
