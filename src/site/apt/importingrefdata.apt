@@ -19,6 +19,7 @@ root@debian-i386:/#   cd /opt/aq2o/trunk/src/test/resources/sampledata#
 +------+
 
 	Let's see which files we have in there. 
+	
 +------+
 root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# ls
 framework.properties  instruments.csv  marketdatainstruments.csv  md_yahoo
