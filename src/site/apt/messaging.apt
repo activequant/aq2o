@@ -8,6 +8,8 @@ Messaging
 
 	Note that the messaging part fits perfectly together with the domain model.  
 
+	You are able to subscribe to the raw map-based event mechanisms, but also to the persistent-entity based mechanisms. Map based events are perfect if you want 
+	to push around your own data sets.  
 
 * ActiveMQ
 
@@ -49,7 +51,7 @@ IEventListener<Map<String, Object>> localListener = new IEventListener<Map<Strin
 		System.out.println("Received: " + event);
 	}						
 };
-rec2.getMsgRecEvent().addEventListener(localListener);
+rec2.getRawMsgRecEvent().addEventListener(localListener);
 
 +-----------------------+
 

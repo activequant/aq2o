@@ -8,6 +8,7 @@ import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
 
+import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.transport.IPublisher;
 import com.activequant.utils.MapToString;
 
@@ -33,5 +34,10 @@ class JMSPublisher implements IPublisher {
         tm.setStringProperty("channelId", channelId);
         producer.send(tm);
     }
+
+	@Override
+	public void send(PersistentEntity entity) throws Exception {
+		send(entity.propertyMap());
+	}
 
 }

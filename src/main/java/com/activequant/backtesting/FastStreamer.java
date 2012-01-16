@@ -2,16 +2,14 @@ package com.activequant.backtesting;
 
 import java.util.PriorityQueue;
 
-import com.activequant.archive.TimeSeriesIterator;
-import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.Tuple;
-import com.activequant.tools.streaming.DoubleValStreamEvent;
+import com.activequant.tools.streaming.StreamEvent;
+import com.activequant.tools.streaming.StreamEventIterator;
 
 public class FastStreamer {
 
 	class FastStreamEventContainer implements Comparable<FastStreamEventContainer> {
 		private final int internalStreamId;
-		private DoubleValStreamEvent streamEvent; 
+		private StreamEvent streamEvent; 
 		FastStreamEventContainer(int streamId) {
 			this.internalStreamId = streamId;
 		}
@@ -22,36 +20,34 @@ public class FastStreamer {
 	}
 
 	private PriorityQueue<FastStreamEventContainer> fastQueue = new PriorityQueue<FastStreamEventContainer>();
-	private final TimeSeriesIterator[] iterators;
+	private final StreamEventIterator<StreamEvent>[] iterators;
 
-	public FastStreamer(TimeSeriesIterator[] it) {
+	public FastStreamer(  StreamEventIterator<StreamEvent>[] it) {
 		this.iterators = it;
 		// initialize also the headstart data. 
 		
 		for (int i = 0; i < it.length; i++) {
 			if (it[i].hasNext()) {
-				Tuple<TimeStamp, Double> payload = it[i].next();
-				DoubleValStreamEvent dval = new DoubleValStreamEvent(payload.getA(), payload.getB());				
+				
+				StreamEvent payload = it[i].next();
 				FastStreamEventContainer fs = new FastStreamEventContainer(i);
-				fs.streamEvent=dval;
+				fs.streamEvent=payload;
 				fastQueue.add(fs);
 			}
 		}
 	}
 
-	public DoubleValStreamEvent getOneFromPipes()
+	public StreamEvent getOneFromPipes()
 	{
-		DoubleValStreamEvent ret = null; 
+		StreamEvent ret = null; 
 		if(!fastQueue.isEmpty()){
 			FastStreamEventContainer event = fastQueue.poll();
 			if(event==null)return ret;
 			ret = event.streamEvent;
 			if(iterators[event.internalStreamId].hasNext())
-			{
-				// TODO: OPTIMIZE. SUBOPTIMAL. 				
-				Tuple<TimeStamp, Double> payload = iterators[event.internalStreamId].next();
-				DoubleValStreamEvent dval = new DoubleValStreamEvent(payload.getA(), payload.getB());
-				event.streamEvent=dval;
+			{ 				
+				StreamEvent payload = iterators[event.internalStreamId].next();
+				event.streamEvent=payload;
 				fastQueue.add(event);
 			}
 		}
@@ -59,7 +55,7 @@ public class FastStreamer {
 	}
 	
 	public boolean moreDataInPipe() {
-		for (TimeSeriesIterator it : iterators)
+		for (StreamEventIterator<StreamEvent> it : iterators)
 			if (it.hasNext())
 				return true;
 		return false;

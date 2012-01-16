@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.activequant.transport.ETransportType;
+
 public abstract class AbstractEventChainLink implements IEventSink, IEventSource {
 
-	private Map<String, List<IEventSink>> subscriberMap = 
-			new HashMap<String, List<IEventSink>>();
+	private Map<ETransportType, List<IEventSink>> subscriberMap = 
+			new HashMap<ETransportType, List<IEventSink>>();
 
 	
-	public List<IEventSink> getSubscriberList(String type){
+	public List<IEventSink> getSubscriberList(ETransportType type){
 		if(!subscriberMap.containsKey(type)){
 			subscriberMap.put(type, new ArrayList<IEventSink>());
 		}
@@ -19,11 +21,11 @@ public abstract class AbstractEventChainLink implements IEventSink, IEventSource
 	}
 	
 	@Override
-	public void subscribe(IEventSink sink,String eventType) {
+	public void subscribe(IEventSink sink,ETransportType eventType) {
 		getSubscriberList(eventType).add(sink);
 	}
 
-	public void unsubscribe(IEventSink sink, String eventType) {
+	public void unsubscribe(IEventSink sink, ETransportType eventType) {
 		getSubscriberList(eventType).remove(sink);
 	}
 

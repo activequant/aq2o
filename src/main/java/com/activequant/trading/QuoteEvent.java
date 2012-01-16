@@ -3,6 +3,7 @@ package com.activequant.trading;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.tools.streaming.TimeStreamEvent;
+import com.activequant.transport.ETransportType;
 
 public class QuoteEvent extends TimeStreamEvent{
 	
@@ -10,7 +11,7 @@ public class QuoteEvent extends TimeStreamEvent{
 		super(ts);
 	}
 
-	public String getEventType(){return "QUOTE";}
+	public ETransportType getEventType(){return ETransportType.MARKET_DATA;}
 	
 	private final String tradeableInstrumentId = "";
 	private final Double price = 0.0; 

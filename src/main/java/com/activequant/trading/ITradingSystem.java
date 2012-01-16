@@ -4,7 +4,14 @@ import com.activequant.tools.streaming.IEventSink;
 
 public interface ITradingSystem extends IEventSink {
 
-	TradingSystemEnvironment container();
+	/**
+	 * sets the environment. 
+	 * 
+	 * @param env
+	 */
+	void environment(TradingSystemEnvironment env);
+	
+	void initialize();
 	
 	void start();
 

@@ -20,6 +20,7 @@
 		<constructor-arg  index="1"><value>EOD</value></constructor-arg>
 		<constructor-arg  index="2"><list><value>CLOSE</value></list></constructor-arg>
 		<constructor-arg  index="3"><ref bean="archiveFactory"></ref></constructor-arg>
+		<constructor-arg  index="4"><list/></constructor-arg>
 	</bean>
 
 </beans>

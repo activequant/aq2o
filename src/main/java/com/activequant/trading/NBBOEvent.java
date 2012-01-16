@@ -3,6 +3,7 @@ package com.activequant.trading;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 import com.activequant.tools.streaming.TimeStreamEvent;
+import com.activequant.transport.ETransportType;
 
 
 public class NBBOEvent extends TimeStreamEvent {
@@ -25,7 +26,7 @@ public class NBBOEvent extends TimeStreamEvent {
 		return bid;
 	}
 
-	public String getEventType(){return "NBBO";}
+	public ETransportType getEventType(){return ETransportType.MARKET_DATA;}
 	
 	public String getTradeableInstrumentId(){return tradeableId;}
 	

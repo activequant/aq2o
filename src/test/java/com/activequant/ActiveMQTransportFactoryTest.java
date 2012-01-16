@@ -47,7 +47,7 @@ public class ActiveMQTransportFactoryTest extends TestCase {
                 receivedMap.putAll(event);
             }
         };
-        rec2.getMsgRecEvent().addEventListener(localListener);
+        rec2.getRawMsgRecEvent().addEventListener(localListener);
         publisher.send(sentMap);
         //
         Thread.sleep(1000);
