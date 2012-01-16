@@ -17,7 +17,7 @@ Usage
 	...
 	<dependency>
 		<groupId>com.activequant</groupId>
-		<artifactId>framework</artifactId>
+		<artifactId>aq2o</artifactId>
 		<version>2.0</version>
 	</dependency>
 	...
