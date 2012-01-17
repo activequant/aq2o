@@ -9,6 +9,9 @@
 
 	<bean name="bbmapper" class="com.activequant.tools.mapping.BBMapper"
 		lazy-init="true">
+		<constructor-arg>
+			<ref bean="instrDao"/>
+		</constructor-arg>
 	</bean>
 
 	<bean name="mapperloop" class="com.activequant.tools.mapping.Mdi2InstrumentMapper"
