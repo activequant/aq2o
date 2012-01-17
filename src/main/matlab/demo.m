@@ -8,7 +8,7 @@ function demo()
     DAYRULE_WEEKDAYS = com.activequant.servicelayer.matlab.DayRule.WEEKDAYS;
 
     % instantiate the facade. 
-    msf = com.activequant.matlab.servicelayer.MatlabServiceFacade('debian-i386.local');
+    msf = com.activequant.servicelayer.matlab.MatlabServiceFacade('debian-i386.local');
     paramMap = java.util.HashMap()
 
     

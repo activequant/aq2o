@@ -11,6 +11,7 @@ public class InstanceFromMapInstantiator<T extends PersistentEntity> {
 	
 	/**
 	 * dirty. 
+	 * filtering out typical BB artifacts: NAs and #
 	 * 
 	 * @param inMap
 	 * @return
@@ -22,6 +23,7 @@ public class InstanceFromMapInstantiator<T extends PersistentEntity> {
 		while(it.hasNext())
 		{
 			Entry<String, String> e = it.next();
+			if(e.getValue().equals("n/a") || e.getValue().equals("#"))continue; 
 			tempMap.put(e.getKey(), e.getValue());
 		}
 		return load(tempMap);

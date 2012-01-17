@@ -25,7 +25,6 @@ import com.activequant.domainmodel.RollingSchedule;
 import com.activequant.domainmodel.SuperInstrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.exceptions.InvalidDate8Time6Input;
 import com.activequant.utils.events.IEventListener;
 import com.activequant.utils.worker.Worker;
 import com.activequant.utils.worker.WorkerThread;
