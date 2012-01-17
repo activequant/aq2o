@@ -39,6 +39,7 @@ public class Mdi2InstrumentMapper {
 				for (IMapper mapper : mappers) {
 					mapper.map(mdi);
 				}
+				mdidao.update(mdi);
 			}
 		}
 	}
