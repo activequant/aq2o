@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.activequant.domainmodel.trade.order.LimitOrder;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.exceptions.IncompleteOrderInstructions;
 import com.activequant.exceptions.UnsupportedOrderType;
 import com.activequant.tools.streaming.BBOEvent;
@@ -33,7 +34,10 @@ public class VirtualExchangeTest extends TestCase {
 		//
 		
 		VirtualExchange ve = new VirtualExchange();
-		IOrderTracker iot = ve.prepareOrder(new LimitOrder());
+		LimitOrder lo = new LimitOrder(); 
+		lo.setOrderSide(OrderSide.BUY);
+		lo.setTradInstId("TESTINST");
+		IOrderTracker iot = ve.prepareOrder(lo);
 		
 		
 		iot.submit();
