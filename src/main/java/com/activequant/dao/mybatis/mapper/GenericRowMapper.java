@@ -91,8 +91,8 @@ public interface GenericRowMapper {
     @Select("SELECT count(distinct(keyVal)) from ${table}")
     int count(@Param("table") String table);
 
-    @Select("SELECT keyVal from ${table} where fieldName='CLASSNAME' limit #{startIndex}, #{endIndex} order by keyVal")
-    List<String> findIDs(@Param("table") String table, int startIndex, int endIndex);
+    @Select("SELECT keyVal from ${table} where fieldName='CLASSNAME' order by keyVal limit #{startIndex}, #{endIndex}")
+    List<String> findIDs(@Param("table") String table,  @Param("startIndex") int startIndex, @Param("endIndex") int endIndex);
 
     @Select("SELECT distinct(keyVal) from ${table} where keyVal like #{id} order by keyVal limit #{amount} ")
     List<String> findIdsLike(@Param("table") String tableName, @Param("id") String idsLikeString,
