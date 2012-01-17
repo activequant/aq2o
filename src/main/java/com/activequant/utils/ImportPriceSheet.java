@@ -127,7 +127,7 @@ public class ImportPriceSheet {
 					
 					Long dl = Long.parseLong(date);
 					long seconds = (dl-25569l)*86400l;
-					Date d = new Date(seconds);
+					Date d = new Date(seconds * 1000l);
 					
 					
 					String time = "23:59:59.000";
