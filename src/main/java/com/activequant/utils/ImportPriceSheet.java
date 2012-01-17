@@ -153,6 +153,7 @@ public class ImportPriceSheet {
 
 							MarketDataInstrument mdi = mdiDao.findByProvId(mdprovider, key);
 							if(mdi==null)continue; 
+							System.out.println("Importing : " + ts.getDate()+ " - " + key + " - " + entry.getValue());
 							iaw.write(mdi.getId(), ts, "PX_SETTLE", 
 									Double.parseDouble(entry
 									.getValue()));
