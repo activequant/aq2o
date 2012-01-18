@@ -27,7 +27,7 @@ for (String id : ids2) {
 }
 
 // save it. 
-secChainDao.update(sc1);
+secChainDao.update(sc2);
 +-----+
 
 	Of course you can implement your own chains. Storing other chains is transparent, as long as they extend 
