@@ -77,4 +77,18 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
         return mdis.toArray(new MarketDataInstrument[] {});
     }
 
+	@Override
+	public MarketDataInstrument findFor(String providerId, Instrument instrument) {
+        List<String> insts = mapper.findBy2StringVals(tableName, "MdProvider".toUpperCase(), providerId,
+                "instrumentId".toUpperCase(), instrument.getId());
+        if (insts.size() > 1) {
+            throw new RuntimeException("Ambigous!");
+        }
+        if (insts.size() == 0)
+            return null;
+        String id = insts.get(0);
+        MarketDataInstrument mdi = load(id);
+        return mdi;
+	}
+
 }

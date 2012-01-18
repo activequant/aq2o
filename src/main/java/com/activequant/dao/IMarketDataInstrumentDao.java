@@ -18,6 +18,14 @@ public interface IMarketDataInstrumentDao extends IEntityDao<MarketDataInstrumen
     int countForProvider(String providerId);
 
     MarketDataInstrument[] findFor(Instrument instrument);
+    
+    /**
+     * 
+     * @param providerId for example BBGT
+     * @param instrument any instrument
+     * @return the MDI, in case it exists. if not, then null. 
+     */
+    MarketDataInstrument findFor(String providerId, Instrument instrument);
 
     MarketDataInstrument findByProvId(String providerId, String provSpecInstId);
 
