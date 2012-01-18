@@ -16,4 +16,7 @@ public interface IDaoFactory {
     IPositionDao positionDao();
 
     IPortfolioDao portfolioDao();
+    
+    ISecurityChainDao securityChainDao();
+    
 }

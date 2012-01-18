@@ -103,6 +103,18 @@
 			<ref bean="genMapper6"></ref>
 		</constructor-arg>
 	</bean>
+	
+	<bean id="genMapper7" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="securityChainDao" class="com.activequant.dao.mybatis.SecurityChainDao">
+		<constructor-arg>
+			<ref bean="genMapper7"></ref>
+		</constructor-arg>
+	</bean>
 
 
 	<bean id="ibatisDao" class="com.activequant.dao.mybatis.DaoFactory">
@@ -129,6 +141,9 @@
 		</constructor-arg>
 		<constructor-arg index="7">
 			<ref bean="portfolioDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="8">
+			<ref bean="securityChainDao"></ref>
 		</constructor-arg>
 	</bean>
 

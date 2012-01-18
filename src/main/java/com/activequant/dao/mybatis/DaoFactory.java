@@ -7,6 +7,7 @@ import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.dao.IPortfolioDao;
 import com.activequant.dao.IPositionDao;
 import com.activequant.dao.IRegionDao;
+import com.activequant.dao.ISecurityChainDao;
 import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.dao.IVenueDao;
 
@@ -26,10 +27,11 @@ public class DaoFactory implements IDaoFactory {
     private IMarketDataInstrumentDao mdiDao;
     private IPositionDao positionDao;
     private IPortfolioDao portfolioDao;
+    private ISecurityChainDao securityChainDao;
 
     public DaoFactory(ICountryDao countryDao, IRegionDao regionDao, IInstrumentDao instrDao, IVenueDao venueDao,
             ITradeableInstrumentDao tradInstDao, IMarketDataInstrumentDao mdiDao, IPositionDao positionDao,
-            IPortfolioDao portfolioDao) {
+            IPortfolioDao portfolioDao, ISecurityChainDao securityChainDao) {
         this.countryDao = countryDao;
         this.regionDao = regionDao;
         this.instrumentDao = instrDao;
@@ -38,6 +40,7 @@ public class DaoFactory implements IDaoFactory {
         this.tradInstDao = tradInstDao;
         this.positionDao = positionDao;
         this.portfolioDao = portfolioDao;
+        this.securityChainDao = securityChainDao; 
     }
 
     public ICountryDao countryDao() {
@@ -71,4 +74,9 @@ public class DaoFactory implements IDaoFactory {
     public IPositionDao positionDao() {
         return positionDao;
     }
+    
+    public ISecurityChainDao securityChainDao(){
+    	return securityChainDao; 
+    }
+    
 }
