@@ -1,6 +1,5 @@
 package com.activequant.tools.streaming;
 
-import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.transport.ETransportType;
 

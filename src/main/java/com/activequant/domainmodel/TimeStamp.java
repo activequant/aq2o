@@ -56,6 +56,10 @@ public final class TimeStamp implements Comparable<TimeStamp>, Serializable {
 		return value;
 	}
 	
+	public long getMilliseconds() {
+		return value/1000000L;
+	}
+	
 	public Date getDate() {
 		return new Date(value / NANOS_IN_MILLIS);
 	}
@@ -146,4 +150,14 @@ public final class TimeStamp implements Comparable<TimeStamp>, Serializable {
 	{
 		return new Time(this.getDate().getTime() % (1000 * 60 * 60 * 24));
 	}	
+	
+	/**
+	 * returns a new time stamp to which days are added. 
+	 * @param days
+	 * @return
+	 */
+	public TimeStamp addDays(long days){
+		return new TimeStamp(value + (days *   1000L * 1000L * 1000L * 60L * 60L * 24L));
+	}
+	
 }

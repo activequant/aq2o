@@ -9,7 +9,6 @@ import com.activequant.utils.annotations.Property;
 
 public class SecurityChainByDate extends SecurityChain {
 	
-	private String chainName; 
     private Long[] rollDates;
     private String[] validInstrumentIds;
     
@@ -70,7 +69,7 @@ public class SecurityChainByDate extends SecurityChain {
     
 	@Override
 	public String getId() {
-		return "SECCHAIN.DATE."+chainName;
+		return "SECCHAIN.DATE."+super.getChainName();
 	}
 
 	@Property()
@@ -83,22 +82,14 @@ public class SecurityChainByDate extends SecurityChain {
 	}
 
 	@Property()
-	public String[] getValidInstruments() {
+	public String[] getValidInstrumentIDs() {
 		return validInstrumentIds;
 	}
 
-	public void setValidInstrumentIds(String[] validInstrument) {
+	public void setValidInstrumentIDs(String[] validInstrument) {
 		this.validInstrumentIds = validInstrument;
 	}
 
-	@Property
-	public String getChainName() {
-		return chainName;
-	}
-
-
-	public void setChainName(String chainName) {
-		this.chainName = chainName;
-	}
+	
 
 }

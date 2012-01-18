@@ -22,8 +22,8 @@ public class SecurityChainByDateTest extends TestCase {
 		sc.add("B", 2011L);
 		assertEquals(2, sc.getRollDates().length);
 		
-		assertEquals("A", sc.getValidInstruments()[0]);
-		assertEquals("B", sc.getValidInstruments()[1]);
+		assertEquals("A", sc.getValidInstrumentIDs()[0]);
+		assertEquals("B", sc.getValidInstrumentIDs()[1]);
 		
 		assertEquals(new Long(2010L), sc.getRollDates()[0]);
 		assertEquals(new Long(2011L), sc.getRollDates()[1]);
