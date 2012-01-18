@@ -26,6 +26,8 @@
 				<item name="MdiIDs to InstIDs" href="instmapping.html" />
 				<item name="DAO" href="dao.html" />
 				<item name="Series Archive" href="seriesarchive.html" />
+				<item name="Security Chains" href="securitychains.html" />
+				
 				<item name="Events" href="messaging.html" />
 				<item name="Messaging" href="messaging.html" />
 				<item name="SNMP support" href="snmp.html" />
