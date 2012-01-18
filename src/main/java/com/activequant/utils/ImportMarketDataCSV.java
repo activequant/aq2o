@@ -19,10 +19,7 @@ import com.activequant.archive.IArchiveWriter;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.IMarketDataInstrumentDao;
-import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
-import com.activequant.domainmodel.RollingSchedule;
-import com.activequant.domainmodel.SuperInstrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.utils.events.IEventListener;
@@ -150,20 +147,6 @@ public class ImportMarketDataCSV {
 			}
 			final MarketDataInstrument mdi = tempMdi;
 			tempMdi = null;
-			SuperInstrument si = null;
-			RollingSchedule rs = null;
-			// check if we have a corresponding super instrument for later
-			// rolling schedule updating.
-			if (mdi.getInstrumentId() != null) {
-				Instrument i = idao.load(mdi.getInstrumentId());
-				if (i != null) {
-					if (i instanceof SuperInstrument) {
-						si = (SuperInstrument) i;
-						rs = si.rollingSchedule();
-						rs.clear();
-					}
-				}
-			}
 
 			//
 			final SimpleDateFormat sdf = new SimpleDateFormat(

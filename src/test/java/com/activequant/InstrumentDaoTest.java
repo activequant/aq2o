@@ -12,7 +12,6 @@ import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.domainmodel.FX;
 import com.activequant.domainmodel.Future;
-import com.activequant.domainmodel.SuperInstrument;
 
 /**
  * Unit test for simple App.
@@ -83,25 +82,6 @@ public class InstrumentDaoTest extends TestCase {
         assertEquals(future.getTickSize(), loadedFuture.getTickSize());
         assertEquals(future.getTickValue(), loadedFuture.getTickValue());
 
-    }
-
-    public void testCreateSuperInstrument() throws DaoException {
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("springtest.xml");
-        IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-        IInstrumentDao idao = idf.instrumentDao();
-
-        SuperInstrument si = new SuperInstrument();
-        si.setName("ABC");
-        si.setExchange("EXCH");
-        si.setCurrency("ABCD");
-        si.setValidInstrument(new String[] { "ABC", "DEF" });
-        idao.create(si);
-
-        SuperInstrument loadedSi = (SuperInstrument) idao.load(si.getId());
-        assertEquals(si.getId(), loadedSi.getId());
-        assertEquals(si.getValidInstrument().length, loadedSi.getValidInstrument().length);
-        assertEquals(si.getValidInstrument()[0], loadedSi.getValidInstrument()[0]);
-        assertEquals(si.getValidInstrument()[1], loadedSi.getValidInstrument()[1]);
     }
 
     public void testSearchIds() throws DaoException {
