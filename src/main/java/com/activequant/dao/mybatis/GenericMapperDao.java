@@ -234,7 +234,7 @@ class GenericMapperDao<T extends PersistentEntity> {
         return ret.toArray(new String[] {});
     }
 
-    public String[] findIdsLike(String idsLikeString, int resultAmount) {
+    public String[] findIDsLike(String idsLikeString, int resultAmount) {
         List<String> ret = mapper.findIdsLike(tableName, idsLikeString, resultAmount);
         return ret.toArray(new String[] {});
     }

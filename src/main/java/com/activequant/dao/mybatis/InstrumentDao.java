@@ -26,7 +26,8 @@ public class InstrumentDao extends GenericMapperDao<Instrument> implements IInst
     }
 
     public String[] searchById(String idsLikeString, int resultAmount) {
-        return findIdsLike(idsLikeString, resultAmount);
+        return findIDsLike(idsLikeString, resultAmount);
     }
+
 
 }
