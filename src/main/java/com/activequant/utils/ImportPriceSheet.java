@@ -130,7 +130,7 @@ public class ImportPriceSheet {
 					Date d = new Date(seconds * 1000l);
 					
 					
-					String time = "23:59:59.000";
+					String time = "23:59:00.000";
 					final String dateTime = sdf.format(d) + " " + time;
 					final Iterator<Entry<String, String>> it = event.entrySet()
 							.iterator();
