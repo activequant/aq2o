@@ -63,7 +63,7 @@
 
 		<plugins>
 			<plugin>
-			
+
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.0</version>
@@ -76,7 +76,7 @@
 				</dependencies>
 
 
-				<configuration>									
+				<configuration>
 					<reportPlugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -181,8 +181,8 @@
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>			
-					<outputDirectory>target/site/distribution</outputDirectory>					
+					</descriptorRefs>
+					<outputDirectory>target/site/distribution</outputDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -363,7 +363,16 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		<dependency>
+			<groupId>net.objectlab.kit</groupId>
+			<artifactId>datecalc-common</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.objectlab.kit</groupId>
+			<artifactId>datecalc-joda</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 
 	</dependencies>
 
