@@ -36,6 +36,7 @@ public class Portfolio extends PersistentEntity {
         this.tradeableInstrumentIds = positionIds;
     }
 
+    @Property
 	public double[] getPositions() {
 		return positions;
 	}
@@ -44,6 +45,7 @@ public class Portfolio extends PersistentEntity {
 		this.positions = positions;
 	}
 
+	@Property
 	public double[] getEntryPrice() {
 		return entryPrice;
 	}
