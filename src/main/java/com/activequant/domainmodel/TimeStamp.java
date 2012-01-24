@@ -85,7 +85,7 @@ public final class TimeStamp implements Comparable<TimeStamp>, Serializable {
 		if(nanos < 0 || nanos >= NANOS_IN_MILLIS) {
 			throw new IllegalArgumentException("nanosecond part must be between 0 and " + (NANOS_IN_MILLIS - 1));
 		}
-		this.value = dateValue.getTime() * NANOS_IN_MILLIS + nanos;
+		this.value = dateValue.getTime() * NANOS_IN_MILLIS + (long)nanos;
 		this.hashCode = computeHashCode(value);
 	}
 

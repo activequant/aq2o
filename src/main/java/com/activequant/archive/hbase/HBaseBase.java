@@ -10,6 +10,8 @@ import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.log4j.Logger;
 
+import com.activequant.utils.StringUtils;
+
 class HBaseBase {
 
     private Logger log = Logger.getLogger(HBaseBase.class);
@@ -34,6 +36,16 @@ class HBaseBase {
         htable.setScannerCaching(1000000);
     }
 
+    public String padded(String key){
+        int refLength = "1235526680000000000".length(); 
+        if(key.length()<refLength)
+        {
+            String padding = StringUtils.repeat('0', refLength - key.length());
+            key = padding+key;
+        }
+        return key; 
+    }
+    
     @Deprecated
     HBaseBase(final String tableName) throws IOException {
         this("localhost", tableName);

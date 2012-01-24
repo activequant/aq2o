@@ -18,6 +18,7 @@ import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 import com.activequant.utils.Date8Time6Parser;
+import com.activequant.utils.StringUtils;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
 /**
@@ -96,11 +97,12 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 		return ret;
 	}
 
+	
 	private ResultScanner getScanner(final String instrumentId,
 			final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp)
 			throws IOException {
-		String startKey = instrumentId + "_" + startTimeStamp.toString();
-		String stopKey = instrumentId + "_" + stopTimeStamp.toString();
+		String startKey = instrumentId + "_" + padded(startTimeStamp.toString());
+		String stopKey = instrumentId + "_" + padded(stopTimeStamp.toString());
 
 		Scan s = new Scan(startKey.getBytes(), stopKey.getBytes());
 		s.setMaxVersions(1);

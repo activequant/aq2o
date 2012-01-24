@@ -14,6 +14,7 @@ public class MarketDataInstrument extends PersistentEntity {
     private String instrumentId, mdProvider, providerSpecificId;
     // date8time6. TODO: typify all occurances.
     private double lastHistFetchTime = 0.0;
+    private double scalingFactor = 1.0;
 
     public MarketDataInstrument() {
         super(MarketDataInstrument.class.getCanonicalName());
@@ -25,8 +26,7 @@ public class MarketDataInstrument extends PersistentEntity {
 
     @Override
     public String toString() {
-        return nullSafe(mdProvider) + "/" + nullSafe(providerSpecificId) + "/" + nullSafe(instrumentId) + "/"
-                + lastHistFetchTime + "/" + getSnapshotTime();
+        return nullSafe(mdProvider) + "/" + nullSafe(providerSpecificId) + "/" + nullSafe(instrumentId) + "/" + lastHistFetchTime + "/" + getSnapshotTime();
     }
 
     @Property
@@ -63,5 +63,14 @@ public class MarketDataInstrument extends PersistentEntity {
 
     public void setProviderSpecificId(String providerSpecificId) {
         this.providerSpecificId = providerSpecificId;
+    }
+
+    @Property
+    public double getScalingFactor() {
+        return scalingFactor;
+    }
+
+    public void setScalingFactor(double scalingFactor) {
+        this.scalingFactor = scalingFactor;
     }
 }

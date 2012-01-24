@@ -90,7 +90,7 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
     public void write(String instrumentId, TimeStamp timeStamp, String key, Double value) {
         assert (key != null);
         assert (value != null);
-        String rowKey = instrumentId + "_" + timeStamp.toString();
+        String rowKey = instrumentId + "_" + padded(timeStamp.toString());
         Put p = new Put(rowKey.getBytes());
         p.add("numbers".getBytes(), key.getBytes(), Bytes.toBytes(value));
         p.add("numbers".getBytes(), "ts".getBytes(), Bytes.toBytes(timeStamp.getNanoseconds()));

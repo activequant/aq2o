@@ -23,12 +23,18 @@
 ****/
 package com.activequant.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @TODO desc<br>
@@ -76,4 +82,19 @@ public class FileUtils {
 		return dir.endsWith(File.separator) ? dir : dir + File.separator;
 	}
 
+	public static String[] readLines(String fileName) throws IOException{
+	    return readLines(new FileInputStream(fileName));
+	}
+	
+	public static String[] readLines(InputStream in) throws IOException{
+        List<String> r = new ArrayList<String>();
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String l = br.readLine();
+        while(l!=null){
+            r.add(l);
+            l = br.readLine();
+        }
+        return r.toArray(new String[]{});
+    }
+	
 }

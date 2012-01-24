@@ -40,7 +40,7 @@ public class Converters {
                 // get the field specific map
                 Map<TimeStamp, Double> fieldMap = instrumentMap.get(field);
                 for (int k = 0; k < timeStamps.size(); k++) {
-                    double date8time6 = parser.fromMilliseconds(timeStamps.get(k).getNanoseconds()/1000000);
+                    TimeStamp date8time6 = timeStamps.get(k);
                     if (fieldMap.containsKey(date8time6))
                         ret.values()[i][k][j] = fieldMap.get(date8time6);
                     else
