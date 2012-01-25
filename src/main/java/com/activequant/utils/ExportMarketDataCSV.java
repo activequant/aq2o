@@ -29,8 +29,8 @@ public class ExportMarketDataCSV {
     private IArchiveFactory archiveFactory;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-    public ExportMarketDataCSV(final String mdprovider, String springInitFile, TimeFrame inTimeFrame, String mdiId, String value,
-            String startDate, String stopDate) throws Exception {
+    public ExportMarketDataCSV(final String mdprovider, String springInitFile, TimeFrame inTimeFrame, String mdiId, String startDate, String stopDate,
+            String[] fields) throws Exception {
 
         appContext = new ClassPathXmlApplicationContext(springInitFile);
         archiveFactory = appContext.getBean("archiveFactory", IArchiveFactory.class);
@@ -44,33 +44,33 @@ public class ExportMarketDataCSV {
         TimeStamp stopTS = new TimeStamp(sdf.parse(stopDate));
 
         IArchiveReader iar = archiveFactory.getReader(inTimeFrame);
-        TSContainer container = iar.getTimeSeries(mdiId, value, startTS, stopTS);
-        TimeSeriesIterator iterator = iar.getTimeSeriesStream(mdiId, value, startTS, stopTS);
-        while(iterator.hasNext())
-        {
-            Tuple<TimeStamp, Double> val = iterator.next();
-            System.out.println(val.getA().getNanoseconds() +","+val.getB());
+
+        for (String value : fields) {
+            TSContainer container = iar.getTimeSeries(mdiId, value, startTS, stopTS);
+            TimeSeriesIterator iterator = iar.getTimeSeriesStream(mdiId, value, startTS, stopTS);
+            while (iterator.hasNext()) {
+                Tuple<TimeStamp, Double> val = iterator.next();
+                System.out.println(val.getA().getNanoseconds() + "," + val.getB());
+            }
         }
-        
-        // 
-        MatlabServiceFacade msf = new MatlabServiceFacade("ahlinux1");
-        TimeSeriesContainer ts = msf.fetchTSData(TimeFrame.EOD, "BBGT_BOK11 COMDTY", "PX_SETTLE", 0.0, new HashMap());
-        System.out.println(ts);
+        //
     }
 
     /**
      * @param args
      */
     public static void main(String[] args) throws Exception {
+        System.out.println("Exporter <mdprovider> <springfile> <timeframe>" + " <mdiid> <startts> <stopts> <series keys in \" and sep by ,> ");
+
         String mdprovider = args[0];
         String springFile = args[1];
         String timeFrame = args[2];
         String mdiId = args[3];
-        String seriesKey = args[4];
-        String startTs = args[5];
-        String stopTs = args[6];
+        String startTs = args[4];
+        String stopTs = args[5];
+        String seriesKeys = args[6];
 
-        new ExportMarketDataCSV(mdprovider, springFile, TimeFrame.valueOf(timeFrame), mdiId, seriesKey, startTs, stopTs);
+        new ExportMarketDataCSV(mdprovider, springFile, TimeFrame.valueOf(timeFrame), mdiId, startTs, stopTs, seriesKeys.split(","));
 
     }
 
