@@ -2,7 +2,6 @@ package com.activequant.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -14,8 +13,6 @@ import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.servicelayer.matlab.MatlabServiceFacade;
-import com.activequant.servicelayer.matlab.TimeSeriesContainer;
 
 /**
  * Exports market data from the archive.
@@ -23,6 +20,7 @@ import com.activequant.servicelayer.matlab.TimeSeriesContainer;
  * @author ustaudinger
  * 
  */
+// WORK IN PROGRESS.
 public class ExportMarketDataCSV {
 
     private final ApplicationContext appContext;
