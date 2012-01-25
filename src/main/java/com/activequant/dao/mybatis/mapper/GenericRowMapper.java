@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.activequant.domainmodel.GenericRow;
 
@@ -55,6 +56,7 @@ public interface GenericRowMapper {
     })
     List<GenericRow> load(@Param("table") String table, @Param("keyValue") String keyValue);
 
+    @Transactional
     @Insert("insert into ${table} values (#{row.created}, #{row.keyVal},#{row.fieldName},#{row.doubleVal},#{row.longVal},#{row.stringVal})")
     @Options(flushCache = true)
     void insert(@Param("table") String table, @Param("row") GenericRow row);
@@ -98,6 +100,7 @@ public interface GenericRowMapper {
     List<String> findIdsLike(@Param("table") String tableName, @Param("id") String idsLikeString,
             @Param("amount") int resultAmount);
 
+    @Transactional
     @Insert("replace into ${table} values (#{row.created}, #{row.keyVal},#{row.fieldName},#{row.doubleVal},#{row.longVal},#{row.stringVal})")
     @Options(flushCache = true)
     void update(@Param("table") String table, @Param("row") GenericRow row);

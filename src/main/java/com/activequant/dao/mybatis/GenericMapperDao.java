@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.apache.log4j.Logger;
 
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
@@ -136,7 +137,7 @@ class GenericMapperDao<T extends PersistentEntity> {
         mapper.delete(tableName, t.getId());
     }
 
-    public synchronized void update(T t) {
+    public synchronized void update(T t) {        
         List<GenericRow> rows = createGenRows(t);
         for (GenericRow row : rows)
             mapper.update(tableName, row);

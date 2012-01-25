@@ -91,6 +91,18 @@ public class MatlabServiceFacade {
         return fetchTSData(tf, marketInstrumentIds, fieldNames, startDate8Time6, d8t6p.now().doubleValue(), paramMap);
     }
 
+    public TimeSeriesContainer fetchTSData(TimeFrame tf, MarketDataInstrument[] marketInstruments, String[] fieldNames,
+            double startDate8Time6, double endDate8Time6, Map<Parameter, Object> paramMap) throws Exception {
+        String[] mdiIds = new String[marketInstruments.length];
+        for(int i=0;i<marketInstruments.length;i++)
+        {
+            mdiIds[i] = marketInstruments[i].getId();
+        }
+            
+        return fetchTSData(tf, mdiIds, fieldNames,
+                startDate8Time6, endDate8Time6, paramMap);
+    }
+    
     public TimeSeriesContainer fetchTSData(TimeFrame tf, String[] marketInstrumentIds, String[] fieldNames,
             double startDate8Time6, double endDate8Time6, Map<Parameter, Object> paramMap) throws Exception {
         //

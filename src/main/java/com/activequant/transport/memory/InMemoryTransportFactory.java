@@ -66,42 +66,42 @@ public class InMemoryTransportFactory implements ITransportFactory {
 	@Override
 	public IPublisher getPublisher(ETransportType transType,
 			Instrument instrument) throws TransportException {
-		String channelName = transType.toString()+":"+instrument.toString();
+		String channelName = transType.toString()+":"+instrument.getId();
 		return getIPub(channelName);
 	}
 
 	@Override
 	public IReceiver getReceiver(ETransportType transType, Instrument instrument)
 			throws TransportException {
-		String channelName = transType.toString()+":"+instrument.toString();
+		String channelName = transType.toString()+":"+instrument.getId();
 		return getIRecv(channelName);
 	}
 
 	@Override
 	public IPublisher getPublisher(ETransportType transType,
 			MarketDataInstrument instrument) throws TransportException {
-		String channelName = transType.toString()+":"+instrument.toString();
+		String channelName = transType.toString()+":"+instrument.getId();
 		return getIPub(channelName);
 	}
 
 	@Override
 	public IReceiver getReceiver(ETransportType transType,
 			MarketDataInstrument instrument) throws TransportException {
-		String channelName = transType.toString()+":"+instrument.toString();
+		String channelName = transType.toString()+":"+instrument.getId();
 		return getIRecv(channelName);
 	}
 
 	@Override
 	public IPublisher getPublisher(ETransportType transType,
 			TradeableInstrument instrument) throws TransportException {
-		String channelName = transType.toString()+":"+instrument.toString();
+		String channelName = transType.toString()+":"+instrument.getId();
 		return getIPub(channelName);
 	}
 
 	@Override
 	public IReceiver getReceiver(ETransportType transType,
 			TradeableInstrument instrument) throws TransportException {
-		String channelName = transType.toString()+":"+instrument.toString();
+		String channelName = transType.toString()+":"+instrument.getId();
 		return getIRecv(channelName);
 	}
 
