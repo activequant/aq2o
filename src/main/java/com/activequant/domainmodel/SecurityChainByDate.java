@@ -9,8 +9,10 @@ import com.activequant.utils.annotations.Property;
 
 public class SecurityChainByDate extends SecurityChain {
 
-    private Long[] rollDates;
-    private String[] validInstrumentIds;
+    private Long[] rollDates = null;
+    private String[] validInstrumentIds = null;
+    private Long lastHistFetchTime = null; 
+    private Long lastChainUpdateTime = null;
 
     public SecurityChainByDate() {
         super(SecurityChainByDate.class.getCanonicalName());
@@ -22,7 +24,7 @@ public class SecurityChainByDate extends SecurityChain {
         List<Tuple<Long, String>> chainList = new ArrayList<Tuple<Long, String>>();
         //
         for (int i = 0; i < rollDates.length; i++) {
-            chainList.add(new Tuple<Long, String>(rollDates[i], validInstrumentIds[i]));
+            if(rollDates[i]!=rollDate8)chainList.add(new Tuple<Long, String>(rollDates[i], validInstrumentIds[i]));
         }
         chainList.add(new Tuple<Long, String>(rollDate8, instrumentId));
         //
@@ -30,16 +32,10 @@ public class SecurityChainByDate extends SecurityChain {
     }
 
     public void add(String[] instrumentId, Long rollDate8[]) {
-        List<Tuple<Long, String>> chainList = new ArrayList<Tuple<Long, String>>();
-        //
-        for (int i = 0; i < rollDates.length; i++) {
-            chainList.add(new Tuple<Long, String>(rollDates[i], validInstrumentIds[i]));
+        for(int i=0;i<instrumentId.length;i++)
+        {
+            add(instrumentId[i], rollDate8[i]);            
         }
-        for (int i = 0; i < rollDate8.length; i++) {
-            chainList.add(new Tuple<Long, String>(rollDate8[i], instrumentId[i]));
-        }
-
-        sortAndSetChainList(chainList);
     }
 
     private void sortAndSetChainList(List<Tuple<Long, String>> chainList) {
@@ -81,6 +77,24 @@ public class SecurityChainByDate extends SecurityChain {
 
     public void setValidInstrumentIDs(String[] validInstrument) {
         this.validInstrumentIds = validInstrument;
+    }
+
+    @Property
+    public Long getLastHistFetchTime() {
+        return lastHistFetchTime;
+    }
+
+    public void setLastHistFetchTime(Long lastHistFetchTime) {
+        this.lastHistFetchTime = lastHistFetchTime;
+    }
+
+    @Property
+    public Long getLastChainUpdateTime() {
+        return lastChainUpdateTime;
+    }
+
+    public void setLastChainUpdateTime(Long lastChainUpdateTime) {
+        this.lastChainUpdateTime = lastChainUpdateTime;
     }
 
 }
