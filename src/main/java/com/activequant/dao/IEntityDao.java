@@ -25,5 +25,10 @@ public interface IEntityDao<T extends PersistentEntity> {
     public String[] findIDs(int startIndex, int endIndex);
 
     int count();
+    
+    int countForAttributeValue(String key, String sValue);
 
+    int countForAttributeValue(String key, Double dValue);
+
+    int countForAttributeValue(String key, Long lValue);
 }

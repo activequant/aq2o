@@ -74,7 +74,7 @@ public class ArrayUtils {
 		}
 	}
 	
-    public static String toString(Object[] input){
+    public static String toString(Double[] input){
         StringBuilder ret = new StringBuilder();
         for(Object o : input){
             ret.append("");
@@ -94,9 +94,19 @@ public class ArrayUtils {
         return ret.toString();
     }
     
-    public static String toString(Object[][] input){
+    public static String toString(String[] input){
         StringBuilder ret = new StringBuilder();
-        for(Object[] o : input){
+        for(String o : input){
+            ret.append(o);
+            ret.append(", ");
+        }
+        ret.delete(ret.length()-2, ret.length());
+        return ret.toString();
+    }
+    
+    public static String toString(Double[][] input){
+        StringBuilder ret = new StringBuilder();
+        for(Double[] o : input){
             ret.append(toString(o));
             ret.append("\n");
         }

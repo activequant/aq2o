@@ -25,24 +25,28 @@ public class SendMail {
         this.from = from;
     }
 
-    public String generateHtmlTable(String[] header, Object[][] cells){
+    public String generateHtmlTable(String[] header, Object[][] cells) {
         StringBuilder sb = new StringBuilder();
         sb.append("<table border='1'>");
         sb.append("<tr>");
-        for(String s : header)sb.append("<td><b>").append(s).append("</b></td>");
-        sb.append("</tr>");        
-        for(int i=0;i<cells.length;i++){
-            sb.append("<tr>");
-            for(int j=0;j<cells[i].length;j++) 
-            {
-                sb.append("<td>").append(cells[i][j]).append("</td>");
+        for (String s : header)
+            sb.append("<td><b>").append(s).append("</b></td>");
+        sb.append("</tr>");
+        for (int i = 0; i < cells.length; i++) {
+            boolean append = false; 
+            String line = ("<tr>");
+            for (int j = 0; j < cells[i].length; j++) {
+                if(cells[i][j]!=null)append = true; 
+                line+=("<td>")+(cells[i][j])+("</td>");
             }
-            sb.append("</tr>");
-        }        
+            
+            line +=("</tr>");
+            if(append)sb.append(line);
+        }
         sb.append("</table>");
         return sb.toString();
     }
-    
+
     public void sendMail(String[] recipients, String subject, String htmlBody) throws Exception {
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");

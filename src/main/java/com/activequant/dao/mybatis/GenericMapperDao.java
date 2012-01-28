@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.apache.log4j.Logger;
 
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
@@ -240,12 +239,35 @@ class GenericMapperDao<T extends PersistentEntity> {
         return ret.toArray(new String[] {});
     }
 
-    public int countForAttributeValue(String key, String value) {
-        return mapper.countForAttributeValue(tableName, key, value);
-    }
-
     public int count() {
         return mapper.count(tableName);
     }
 
+    public int countForAttributeValue(String key, String value) {
+        return mapper.countForStringValue(tableName, key, value);
+    }
+    
+    public int countForAttributeValue(String key, Double value) {
+        return mapper.countForDoubleValue(tableName, key, value);
+    }
+    
+    public int countForAttributeValue(String key, Long value) {
+        return mapper.countForLongValue(tableName, key, value);
+    }
+    
+    public String[] selectDistinctStringVal(String val) {
+        List<String> ret = mapper.selectDistinctStringVal(tableName, val);
+        return ret.toArray(new String[] {});
+    }
+    
+    public Long[] selectDistinctLongVal(String val) {
+        List<Long> ret = mapper.selectDistinctLongVal(tableName, val);
+        return ret.toArray(new Long[] {});
+    }
+    
+    public Double[] selectDistinctDoubleVal(String val) {
+        List<Double> ret = mapper.selectDistinctDoubleVal(tableName, val);
+        return ret.toArray(new Double[] {});
+    }
+    
 }

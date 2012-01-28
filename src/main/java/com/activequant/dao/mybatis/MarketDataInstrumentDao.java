@@ -43,7 +43,7 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
         List<String> insts = mapper.findBy2StringVals(tableName, "MdProvider".toUpperCase(), providerId,
                 "ProviderSpecificId".toUpperCase(), provSpecInstId);
         if (insts.size() > 1) {
-            throw new RuntimeException("Ambigous!");
+            throw new RuntimeException("Ambigous! "  + providerId + "/"+provSpecInstId);
         }
         if (insts.size() == 0)
             return null;
@@ -82,7 +82,7 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
         List<String> insts = mapper.findBy2StringVals(tableName, "MdProvider".toUpperCase(), providerId,
                 "instrumentId".toUpperCase(), instrument.getId());
         if (insts.size() > 1) {
-            throw new RuntimeException("Ambigous!");
+            throw new RuntimeException("Ambigous!" + providerId + "/"+instrument.getId());
         }
         if (insts.size() == 0)
             return null;
@@ -90,5 +90,10 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
         MarketDataInstrument mdi = load(id);
         return mdi;
 	}
+
+    @Override
+    public String[] getProviders() {      
+        return super.selectDistinctStringVal("MDPROVIDER");
+    }
 
 }

@@ -87,8 +87,25 @@ public interface GenericRowMapper {
             @Param("val") Long val);
 
     @Select("SELECT count(distinct(keyVal)) from ${table} where fieldName=#{fieldName} and stringVal=#{val}")
-    int countForAttributeValue(@Param("table") String table, @Param("fieldName") String fieldName,
+    int countForStringValue(@Param("table") String table, @Param("fieldName") String fieldName,
             @Param("val") String value);
+    
+    @Select("SELECT count(distinct(keyVal)) from ${table} where fieldName=#{fieldName} and longVal=#{val}")
+    int countForLongValue(@Param("table") String table, @Param("fieldName") String fieldName,
+            @Param("val") Long value);
+    
+    @Select("SELECT count(distinct(keyVal)) from ${table} where fieldName=#{fieldName} and doubleVal=#{val}")
+    int countForDoubleValue(@Param("table") String table, @Param("fieldName") String fieldName,
+            @Param("val") Double value);
+    
+    @Select("SELECT distinct(stringVal) from ${table} where fieldName=#{fieldName}")
+    List<String> selectDistinctStringVal(@Param("table") String table, @Param("fieldName") String fieldName);
+
+    @Select("SELECT distinct(longVal) from ${table} where fieldName=#{fieldName}")
+    List<Long> selectDistinctLongVal(@Param("table") String table, @Param("fieldName") String fieldName);
+
+    @Select("SELECT distinct(doubleVal) from ${table} where fieldName=#{fieldName}")
+    List<Double> selectDistinctDoubleVal(@Param("table") String table, @Param("fieldName") String fieldName);
 
     @Select("SELECT count(distinct(keyVal)) from ${table}")
     int count(@Param("table") String table);

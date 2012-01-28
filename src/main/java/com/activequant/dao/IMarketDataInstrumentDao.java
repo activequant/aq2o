@@ -16,6 +16,9 @@ public interface IMarketDataInstrumentDao extends IEntityDao<MarketDataInstrumen
     MarketDataInstrument[] findForProvider(String providerId);
 
     int countForProvider(String providerId);
+    
+    String[] getProviders();
+    
 
     MarketDataInstrument[] findFor(Instrument instrument);
     
