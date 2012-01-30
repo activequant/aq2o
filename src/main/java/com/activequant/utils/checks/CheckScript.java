@@ -24,7 +24,7 @@ public class CheckScript {
 	private final IMarketDataInstrumentDao mdiDao; 
 	private SendMail sendMail; 
 	
-	public CheckScript(String springInitFile)
+	public CheckScript(String springInitFile, String target)
 			throws Exception {
 
 		appContext = new ClassPathXmlApplicationContext(springInitFile);
@@ -46,7 +46,7 @@ public class CheckScript {
         setData(data, row++, "#Countries", ""+idf.countryDao().count());
         setData(data, row++, "#Venues", ""+idf.venueDao().count());
         
-        // try to load some data. 
+        // dump the providers.
         String[] providers = mdiDao.getProviders();
         setData(data, row++, "Providers", ""+ArrayUtils.toString(providers));
         
@@ -55,7 +55,11 @@ public class CheckScript {
             setData(data, row++, " #MDIs for "+providers[i], ""+mdiDao.countForAttributeValue("MDPROVIDER", providers[i]));
         }
         
-        sendMail.sendMail(new String[]{"ustaudinger@activequant.com"}, "Statistics", sendMail.generateHtmlTable(new String[]{"Property", "Value"}, data));
+        // dump the amount of MDIs created today. 
+        
+        
+        
+        sendMail.sendMail(new String[]{target}, "Statistics", sendMail.generateHtmlTable(new String[]{"Property", "Value"}, data));
 	}
 	
 	private void setData(Object[][] data, int row, String property, String value){
@@ -69,8 +73,9 @@ public class CheckScript {
 	 */
 	public static void main(String[] args) throws Exception {
 		String springFile = args[0];
-		System.out.println("Using spring configuration " + springFile);
-		new CheckScript(springFile);
+		String target = args[1];
+		System.out.println("Using spring configuration " + springFile+". Sending to " + target);
+		new CheckScript(springFile, target);
 
 	}
 

@@ -100,7 +100,7 @@ public class ArrayUtils {
             ret.append(o);
             ret.append(", ");
         }
-        ret.delete(ret.length()-2, ret.length());
+        if(ret.length()>2)ret.delete(ret.length()-2, ret.length());
         return ret.toString();
     }
     

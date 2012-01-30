@@ -20,7 +20,7 @@
 	contact  : contact@activestocks.eu
     homepage : http://www.activestocks.eu
 
-****/
+ ****/
 package com.activequant.utils;
 
 import java.io.BufferedReader;
@@ -39,62 +39,79 @@ import java.util.List;
 /**
  * @TODO desc<br>
  * <br>
- * <b>History:</b><br>
- *  - [30.09.2007] Created (Erik Nijkamp)<br>
- *
- *
- *  @author Erik Nijkamp
+ *       <b>History:</b><br>
+ *       - [30.09.2007] Created (Erik Nijkamp)<br>
+ * 
+ * 
+ * @author Erik Nijkamp
  */
 public class FileUtils {
-	
-	public static void copy(String source, String dest) throws IOException {
-		FileChannel in = null, out = null;
-		try {
-			in = new FileInputStream(source).getChannel();
-			out = new FileOutputStream(dest).getChannel();
 
-			long size = in.size();
-			MappedByteBuffer buf = in.map(FileChannel.MapMode.READ_ONLY, 0, 	size);
-			out.write(buf);
-		} finally {
-			if (in != null)	in.close();
-			if (out != null) out.close();
-		}
-	}
-	
-	public static void move(String source, String dest) throws IOException {
-		copy(source, dest);
-		new File(source).delete();
-	}
-	
-	public static String check(String dir) {
-		mkdir(dir);
-		return appendSlash(dir);
-	}
-	
-	public static void mkdir(String dir) {
-		if(!new File(dir).exists()) {
-			new File(dir).mkdirs();
-		}
-	}
-	
-	public static String appendSlash(String dir) {
-		return dir.endsWith(File.separator) ? dir : dir + File.separator;
-	}
+    public static void copy(String source, String dest) throws IOException {
+        FileChannel in = null, out = null;
+        try {
+            in = new FileInputStream(source).getChannel();
+            out = new FileOutputStream(dest).getChannel();
 
-	public static String[] readLines(String fileName) throws IOException{
-	    return readLines(new FileInputStream(fileName));
-	}
-	
-	public static String[] readLines(InputStream in) throws IOException{
+            long size = in.size();
+            MappedByteBuffer buf = in.map(FileChannel.MapMode.READ_ONLY, 0, size);
+            out.write(buf);
+        } finally {
+            if (in != null)
+                in.close();
+            if (out != null)
+                out.close();
+        }
+    }
+
+    public static void move(String source, String dest) throws IOException {
+        copy(source, dest);
+        new File(source).delete();
+    }
+
+    public static String check(String dir) {
+        mkdir(dir);
+        return appendSlash(dir);
+    }
+
+    public static void mkdir(String dir) {
+        if (!new File(dir).exists()) {
+            new File(dir).mkdirs();
+        }
+    }
+
+    public static String appendSlash(String dir) {
+        return dir.endsWith(File.separator) ? dir : dir + File.separator;
+    }
+
+    public static String[] readLines(String fileName) throws IOException {
+        return readLines(new FileInputStream(fileName));
+    }
+
+    public static String[] readLines(InputStream in) throws IOException {
         List<String> r = new ArrayList<String>();
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String l = br.readLine();
-        while(l!=null){
+        while (l != null) {
             r.add(l);
             l = br.readLine();
         }
-        return r.toArray(new String[]{});
+        return r.toArray(new String[] {});
     }
-	
+
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
+    }
+
 }

@@ -7,7 +7,11 @@ import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.domainmodel.Instrument;
 
-@WebService
+
+
+
+@WebService(endpointInterface = "com.activequant.servicelayer.soap.IMainService", 
+serviceName = "MainService")
 public class MainService implements IMainService {
 
     private IInstrumentDao idao;

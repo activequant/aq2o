@@ -20,6 +20,11 @@ public class SecurityChainByDate extends SecurityChain {
         validInstrumentIds = new String[0];
     }
 
+    /**
+     * Add will overwrite an existing value, so it should be rather called set. 
+     * @param instrumentId
+     * @param rollDate8
+     */
     public void add(String instrumentId, Long rollDate8) {
         List<Tuple<Long, String>> chainList = new ArrayList<Tuple<Long, String>>();
         //

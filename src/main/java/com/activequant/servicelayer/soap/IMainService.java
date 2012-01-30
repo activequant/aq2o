@@ -1,10 +1,11 @@
 package com.activequant.servicelayer.soap;
 
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import com.activequant.domainmodel.Instrument;
 
-@WebService(endpointInterface = "com.activequant.servicelayer.soap.MainService")
+@WebService
 public interface IMainService {
     public String[] instrumentKeys();
 
@@ -12,5 +13,6 @@ public interface IMainService {
 
     public int instrumentCount();
 
+    @WebMethod
     public int mdiCount();
 }
