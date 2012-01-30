@@ -24,6 +24,26 @@
 		</property>
 	</bean>
 
+
+	<bean id="sendMail" lazy-init="true"
+		class="com.activequant.utils.mail.SendMail">
+		<constructor-arg index="0">
+			<value>${sendMail.host}</value>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<value>${sendMail.port}</value>
+		</constructor-arg>
+		<constructor-arg index="2">
+			<value>${sendMail.username}</value>
+		</constructor-arg>
+		<constructor-arg index="3">
+			<value>${sendMail.password}</value>
+		</constructor-arg>
+		<constructor-arg index="4">
+			<value>${sendMail.from}</value>
+		</constructor-arg>
+	</bean>
+
 	<bean id="archiveFactory" lazy-init="true"
 		class="com.activequant.archive.hbase.HBaseArchiveFactory">
 		<constructor-arg>
