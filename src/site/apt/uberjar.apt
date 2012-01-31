@@ -1,7 +1,9 @@
 Uberjar
 
-	The uber-jar contains aq2o and all dependencies. Download it to get started immediately, for example with Matlab. 
+	The uber-jar contains aq2o and all dependencies. Download it to get started immediately, for example with Matlab.
 	
-	You can download the uber-jar from {{{./distribution/}our distribution folder}}. 
+	You can also use the uber-jar to start the AQ2o server with one click. It contains the aq2server.properties file and two basic run scripts (Feedback appreciated) for Windows and Linux/BSD derivatives.  
 	
-	 
+	You can download the uber-jar in zip form from {{{./distribution/}our distribution folder}}. 
+	
+

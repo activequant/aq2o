@@ -1,8 +1,10 @@
 package com.activequant.server;
 
+import java.io.FileInputStream;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.jruby.RubyProcess.Sys;
 
 public final class AQ2Server {
 
@@ -13,10 +15,44 @@ public final class AQ2Server {
 
     private boolean runFlag = true;
 
+    private void printBanner() throws InterruptedException{
+    String banner = "   \n" +
+" ______     ______     ______   __     __   __   ______\n" +    
+"/\\  __ \\   /\\  ___\\   /\\__  _\\ /\\ \\   /\\ \\ / /  /\\  ___\\   \n" +
+"\\ \\  __ \\  \\ \\ \\____  \\/_/\\ \\/ \\ \\ \\  \\ \\ \\'/   \\ \\  __\\   \n" +
+" \\ \\_\\ \\_\\  \\ \\_____\\    \\ \\_\\  \\ \\_\\  \\ \\__|    \\ \\_____\\ \n" +
+"  \\/_/\\/_/   \\/_____/     \\/_/   \\/_/   \\/_/      \\/_____/ \n" +
+"                                                           \n" +
+" ______     __  __     ______     __   __     ______  \n" +
+"/\\  __ \\   /\\ \\/\\ \\   /\\  __ \\   /\\ -.\\ \\   /\\__  _\\ \n" +
+"\\ \\ \\/\\_\\  \\ \\ \\_\\ \\  \\ \\  __ \\  \\ \\ \\-.  \\  \\/_/\\ \\/ \n" +
+" \\ \\___\\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\\\\\_\\    \\ \\_\\ \n" +
+"  \\/___/_/   \\/_____/   \\/_/\\/_/   \\/_/ \\/_/     \\/_/ \n" +
+"                                                      \n" +
+" __   __     ______     ______     ______   ______     ______\n" +    
+"/\\ -./  \\   /\\  __ \\   /\\  ___\\   /\\__  _\\ /\\  ___\\   /\\  == \\   \n" +
+"\\ \\ \\-./\\ \\  \\ \\  __ \\  \\ \\___  \\  \\/_/\\ \\/ \\ \\  __\\   \\ \\  __<   \n" +
+" \\ \\_\\ \\ \\_\\  \\ \\_\\ \\_\\  \\/\\_____\\    \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ \n" +
+"  \\/_/  \\/_/   \\/_/\\/_/   \\/_____/     \\/_/   \\/_____/   \\/_/ /_/ \n" +
+"                                                                  \n" +
+"\n" +
+" ______     ______     ______     __   __   ______     ______\n" +    
+"/\\  ___\\   /\\  ___\\   /\\  == \\   /\\ \\ / /  /\\  ___\\   /\\  == \\   \n" +
+"\\ \\___  \\  \\ \\  __\\   \\ \\  __<   \\ \\ \\'/   \\ \\  __\\   \\ \\  __<   \n" +
+" \\/\\_____\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\__|    \\ \\_____\\  \\ \\_\\ \\_\\ \n" +
+"  \\/_____/   \\/_____/   \\/_/ /_/   \\/_/      \\/_____/   \\/_/ /_/ \n" +
+"";                                                                 
+
+    System.out.println(banner);
+    System.out.println("Initializing system ... ");
+    Thread.sleep(3000);
+    }
+    
     public AQ2Server() throws Exception {
+        printBanner();
         log.info("Loading aq2server.properties from classpath.");
         Properties properties = new Properties();
-        properties.load(ClassLoader.getSystemResourceAsStream("aq2server.properties"));
+        properties.load(new FileInputStream("aq2server.properties"));
         log.info("Loaded.");
 
         if (isTrue(properties, "soapserver.start")) {
@@ -46,7 +82,7 @@ public final class AQ2Server {
         
         if (isTrue(properties, "hsqldb.start")) {
             log.info("Starting HSQLDB ....");
-            new LocalHSQLDBServer().start();
+            new LocalHSQLDBServer().start(Integer.parseInt(properties.getProperty("hsqldb.port")));
             log.info("Starting HSQLDB succeeded.");
         } else {
             log.info("Not starting HSQDLB server, as it has been disabled.");

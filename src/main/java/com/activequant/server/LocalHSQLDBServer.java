@@ -5,11 +5,11 @@ import org.hsqldb.persist.HsqlProperties;
 
 public class LocalHSQLDBServer {
 
-    public void start() throws Exception {
+    public void start(int port) throws Exception {
         HsqlProperties p = new HsqlProperties();
         p.setProperty("server.database.0", "file:.;user=aq2o;password=aq2o");
         p.setProperty("server.dbname.0", "aq2o");
-        p.setProperty("server.port", "1476");
+        p.setProperty("server.port", ""+port);
         Server server = new Server();
         server.setProperties(p);
         server.setLogWriter(null); // can use custom writer
