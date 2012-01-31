@@ -232,14 +232,12 @@
 
 						<mkdir dir="target/site/distribution" />
 						<zip
-							destfile="target2/site/distribution/${project.build.finalName}-bundle.zip">
+							destfile="target/site/distribution/${project.build.finalName}-bundle.zip">
 							<zipfileset dir="src/main/resources/" includes="aq2server.properties"
 								prefix="./" />
 							<zipfileset dir="target/site/distribution"
 								includes="${project.build.finalName}-jar-with-dependencies.jar"
-								prefix="./" />
-							<zipfileset dir="src/main/resources/" includes="aq2server.properties"
-								prefix="./" />
+								prefix="./" />							
 							<zipfileset dir="src/main/scripts/" includes="**"
 								prefix="./" />
 
