@@ -14,8 +14,7 @@ public class LocalHSQLDBServer {
         server.setProperties(p);
         server.setLogWriter(null); // can use custom writer
         server.setErrWriter(null); // can use custom writer
-        server.start();
-        
+        server.start();        
     }
     
 }
