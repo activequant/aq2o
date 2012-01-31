@@ -1,6 +1,7 @@
 package com.activequant.dao;
 
 import com.activequant.domainmodel.PersistentEntity;
+import com.activequant.domainmodel.TimeStamp;
 
 public interface IEntityDao<T extends PersistentEntity> {
 
@@ -31,4 +32,6 @@ public interface IEntityDao<T extends PersistentEntity> {
     int countForAttributeValue(String key, Double dValue);
 
     int countForAttributeValue(String key, Long lValue);
+    
+    public String[] findIDsWhereCreationDateBetween(TimeStamp startTs, TimeStamp endTs);
 }

@@ -26,10 +26,15 @@ public class LocalSoapServer {
     public void start() throws Exception {
         JettyHTTPServerEngineFactory eg = new JettyHTTPServerEngineFactory();
         eg.createJettyHTTPServerEngine(this.port, "http");
-
+        // bind the main service. 
         Object implementor = new MainService(idf);
         Endpoint ep = Endpoint.publish("http://"+hostName+":" + port + "/aq2o", implementor);
-        //org.apache.cxf.jaxws.EndpointImpl epImpl = (org.apache.cxf.jaxws.EndpointImpl) ep;
+        SOAPBinding soap = (SOAPBinding) ep.getBinding();
+        soap.setMTOMEnabled(true);
+    }
+    
+    public void addService(String serviceSuburl, Object serviceImplementor){
+        Endpoint ep = Endpoint.publish("http://"+hostName+":" + port + "/"+serviceSuburl, serviceImplementor);
         SOAPBinding soap = (SOAPBinding) ep.getBinding();
         soap.setMTOMEnabled(true);
     }

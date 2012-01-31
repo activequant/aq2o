@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.GenericRow;
 import com.activequant.domainmodel.PersistentEntity;
+import com.activequant.domainmodel.TimeStamp;
 
 class GenericMapperDao<T extends PersistentEntity> {
 
@@ -142,6 +143,13 @@ class GenericMapperDao<T extends PersistentEntity> {
             mapper.update(tableName, row);
     }
 
+    
+    public String[] findIDsWhereCreationDateBetween(TimeStamp startTs, TimeStamp endTs){
+        List<String> ids = mapper.findIDsBetween(tableName, startTs.getMilliseconds(), endTs.getMilliseconds());
+        return ids.toArray(new String[]{});
+
+    }
+    
     /**
      * Use this function to load all IDs
      * 

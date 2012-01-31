@@ -1,11 +1,15 @@
 package com.activequant.utils.checks;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.IMarketDataInstrumentDao;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.utils.ArrayUtils;
 import com.activequant.utils.mail.SendMail;
 
@@ -55,11 +59,34 @@ public class CheckScript {
             setData(data, row++, " #MDIs for "+providers[i], ""+mdiDao.countForAttributeValue("MDPROVIDER", providers[i]));
         }
         
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date midnightThisMorning = sdf.parse(sdf.format(new Date()));
+        
+        // dump instruments and MDIs that were generated today. 
+        String[] mdiids = mdiDao.findIDsWhereCreationDateBetween(new TimeStamp(midnightThisMorning), new TimeStamp());
+        StringBuffer mailBody = new StringBuffer("<h1>General information</h1>"+sendMail.generateHtmlTable(new String[]{"Property", "Value"}, data));
+        
+        mailBody.append("<h1>New MDIs</h1>"); 
+        for(String id : mdiids)
+        {
+            mailBody.append(id + "<br/>");
+        }
+        
+        String[] instruments = idao.findIDsWhereCreationDateBetween(new TimeStamp(midnightThisMorning), new TimeStamp());
+        mailBody.append("<h1>New Instruments</h1>"); 
+        for(String id : instruments)
+        {
+            mailBody.append(id + "<br/>");
+        }
+        
         // dump the amount of MDIs created today. 
-        
-        
-        
-        sendMail.sendMail(new String[]{target}, "Statistics", sendMail.generateHtmlTable(new String[]{"Property", "Value"}, data));
+        if(target.contains(",")){
+                sendMail.sendMail(target.split(","), "Statistics", mailBody.toString());
+        }
+        else
+        {
+            sendMail.sendMail(new String[]{target}, "Statistics",mailBody.toString());
+        }
 	}
 	
 	private void setData(Object[][] data, int row, String property, String value){
@@ -76,7 +103,6 @@ public class CheckScript {
 		String target = args[1];
 		System.out.println("Using spring configuration " + springFile+". Sending to " + target);
 		new CheckScript(springFile, target);
-
 	}
 
 }

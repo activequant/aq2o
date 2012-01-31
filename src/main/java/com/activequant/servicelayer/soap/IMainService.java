@@ -9,10 +9,16 @@ import com.activequant.domainmodel.Instrument;
 public interface IMainService {
     public String[] instrumentKeys();
 
+    @WebMethod
     public Instrument loadInstrument(String primaryKey);
 
+    @WebMethod
     public int instrumentCount();
 
     @WebMethod
     public int mdiCount();
+    
+    
+    
+    
 }

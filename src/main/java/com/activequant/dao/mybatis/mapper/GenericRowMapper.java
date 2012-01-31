@@ -113,6 +113,9 @@ public interface GenericRowMapper {
     @Select("SELECT keyVal from ${table} where fieldName='CLASSNAME' order by keyVal limit #{startIndex}, #{endIndex}")
     List<String> findIDs(@Param("table") String table,  @Param("startIndex") int startIndex, @Param("endIndex") int endIndex);
 
+    @Select("SELECT keyVal from ${table} where fieldName='CREATIONTIME' and longVal>#{startTime} and longVal<#{endTime} order by keyVal ")
+    List<String> findIDsBetween(@Param("table") String table,  @Param("startTime") long startTime, @Param("endTime") long endTime);
+    
     @Select("SELECT distinct(keyVal) from ${table} where keyVal like #{id} order by keyVal limit #{amount} ")
     List<String> findIdsLike(@Param("table") String tableName, @Param("id") String idsLikeString,
             @Param("amount") int resultAmount);

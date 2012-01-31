@@ -1,22 +1,15 @@
 package com.activequant.server;
 
-import java.io.File;
 import java.util.Properties;
 
-import org.apache.activemq.broker.BrokerService;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.master.HMaster;
-import org.apache.hadoop.hbase.regionserver.HRegionServer;
-import org.apache.hadoop.hbase.zookeeper.MiniZooKeeperCluster;
 import org.apache.log4j.Logger;
 
 public final class AQ2Server {
 
-    // three BL objects. 
-    
+    // three BL objects.
+
     private LocalSoapServer ss;
-    // 
+    //
     private Logger log = Logger.getLogger(AQ2Server.class);
 
     private boolean runFlag = true;
@@ -38,9 +31,7 @@ public final class AQ2Server {
 
         if (isTrue(properties, "hbase.start")) {
             log.info("Starting mighty HBase ....");
-            
             new LocalHBaseCluster().start();
-            
             log.info("Starting HBase succeeded.");
         } else {
             log.info("Not starting HBase server, as it has been disabled.");
@@ -54,12 +45,16 @@ public final class AQ2Server {
             log.info("Not starting JMS server, as it has been disabled.");
         }
         while (runFlag) {
-            Thread.sleep(1000);
+            Thread.sleep(250);
         }
     }
 
     private boolean isTrue(Properties properties, String key) {
         return properties.containsKey(key) && properties.getProperty(key).equals("true");
+    }
+    
+    public void stop(){
+        runFlag = false; 
     }
 
     /**
@@ -68,6 +63,10 @@ public final class AQ2Server {
      */
     public static void main(String[] args) throws Exception {
         new AQ2Server();
+    }
+
+    public LocalSoapServer getSoapServer() {
+        return ss;
     }
 
 }

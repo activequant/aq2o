@@ -16,7 +16,7 @@ public abstract class PersistentEntity {
     private String className;
     private long creationTime = System.currentTimeMillis();
     private long deletionTime = 0L;
-    private double snapshotTime = 0.0;
+    private long snapshotTime = 0L;
     private static Logger log = Logger.getLogger(PersistentEntity.class);
     private Map<String, Object> underlyingMap = new HashMap<String, Object>();
 
@@ -50,12 +50,11 @@ public abstract class PersistentEntity {
     public abstract String getId();
 
     /**
-     * Date8Time6.
-     * 
-     * @return when this value was stored, in date8time6 format.
+     *  
+     * @return when this value was stored, in ordinary milliseconds. 
      */
     @Property
-    public double getSnapshotTime() {
+    public long getSnapshotTime() {
         return snapshotTime;
     }
 
@@ -212,7 +211,7 @@ public abstract class PersistentEntity {
         this.deletionTime = deletionTime;
     }
 
-    public void setSnapshotTime(double snapshotTime) {
+    public void setSnapshotTime(long snapshotTime) {
         this.snapshotTime = snapshotTime;
     }
 
