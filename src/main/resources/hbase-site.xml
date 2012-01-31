@@ -13,7 +13,7 @@
 <configuration>
 	<property>
 		<name>hbase.zookeper.quorum</name>
-		<value>${ZOOKEEPER_QUORUM}</value>
+		<value>localhost</value>
 	</property>
 	<property>
 		<name>hbase.client.scanner.caching</name>

@@ -18,8 +18,14 @@ class HBaseBase {
     protected HTable htable;
 
     HBaseBase(final String zookeeperQuorumHost, final String tableName) throws IOException {
+        this(zookeeperQuorumHost, 2181, tableName);
+    }
+
+    HBaseBase(final String zookeeperQuorumHost, final int zookeeperPort, final String tableName) throws IOException {
         Configuration config = HBaseConfiguration.create();
-        config.set("hbase.zookeeper.quorum", zookeeperQuorumHost);
+        config.set("hbase.zookeeper.quorum", zookeeperQuorumHost+":"+zookeeperPort);
+        
+        
         HBaseAdmin admin = new HBaseAdmin(config);
         if (!admin.tableExists(tableName.getBytes())) {
             log.info("HTable doesn't exist. Creating it.");
@@ -36,6 +42,8 @@ class HBaseBase {
         htable.setScannerCaching(1000000);
     }
 
+    
+    
     public String padded(String key){
         int refLength = "1235526680000000000".length(); 
         if(key.length()<refLength)

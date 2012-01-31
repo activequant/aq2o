@@ -40,9 +40,15 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
 	HBaseArchiveReader(final String zookeeperHost, final TimeFrame tf)
 			throws IOException {
-		super(zookeeperHost, "TSDATA_" + tf.toString());
+		super(zookeeperHost, 2181, "TSDATA_" + tf.toString());
 	}
 
+	HBaseArchiveReader(final String zookeeperHost, int zookeeperPort, final TimeFrame tf)
+            throws IOException {
+        super(zookeeperHost, zookeeperPort, "TSDATA_" + tf.toString());
+    }
+
+	
 	@Deprecated
 	HBaseArchiveReader(final TimeFrame tf) throws IOException {
 		super("TSDATA_" + tf.toString());

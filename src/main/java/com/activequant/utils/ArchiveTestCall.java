@@ -1,9 +1,13 @@
 package com.activequant.utils;
 
+import java.util.Date;
+
 import com.activequant.archive.IArchiveReader;
+import com.activequant.archive.IArchiveWriter;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.exceptions.InvalidDate8Time6Input;
 
 /**
@@ -15,10 +19,22 @@ import com.activequant.exceptions.InvalidDate8Time6Input;
 public class ArchiveTestCall {
 
 	public static void main(String[] args) throws InvalidDate8Time6Input, Exception{
-        IArchiveReader iar = new HBaseArchiveFactory(args[0]).getReader(TimeFrame.EOD);
-        TSContainer container = iar.getTimeSeries("TEST_SERIES", "No-Series", new UniqueTimeStampGenerator().now());
+        
+	    HBaseArchiveFactory fac = new HBaseArchiveFactory(args[0]);
+        IArchiveReader iar = fac.getReader(TimeFrame.EOD);
+        IArchiveWriter iwr = fac.getWriter(TimeFrame.EOD);
+        
+        TimeStamp now = new TimeStamp(new Date());
+        iwr.write("TEST",now,"PX_SETTLE", Math.random());
+        iwr.commit();
+        
+        TSContainer container = iar.getTimeSeries("TEST", "PX_SETTLE", new TimeStamp(0L));
         if(container!=null && container.timeStamps.length==0)
-        	System.out.println("All ok.");
+        	System.out.println("All ok.");        
+        else{
+            System.out.println("Received: " + container.timeStamps.length + " values. ");
+        }
+        
 	}
 	
 }

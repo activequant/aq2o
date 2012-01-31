@@ -129,9 +129,13 @@ public class ImportPriceSheet {
 					long seconds = (dl-25569l)*86400l;
 					Date d = new Date(seconds * 1000l);
 					
-					
 					String time = "23:59:00.000";
-					final String dateTime = sdf.format(d) + " " + time;
+					String dateTime = sdf.format(d); 
+					if(!dateTime.contains("00.000"))
+					    dateTime += " " + time; 
+					
+					
+					
 					final Iterator<Entry<String, String>> it = event.entrySet()
 							.iterator();
 					TimeStamp ts;

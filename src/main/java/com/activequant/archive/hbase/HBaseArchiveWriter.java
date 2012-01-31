@@ -29,8 +29,14 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
     private List<Put> puts = new ArrayList<Put>();
 
     HBaseArchiveWriter(final String zookeeperHost, final TimeFrame tf) throws IOException {
-        super(zookeeperHost, "TSDATA_" + tf.toString());
+        super(zookeeperHost, 2181, "TSDATA_" + tf.toString());
     }
+    
+
+    HBaseArchiveWriter(final String zookeeperHost, final int zookeeperPort, final TimeFrame tf) throws IOException {
+        super(zookeeperHost, zookeeperPort, "TSDATA_" + tf.toString());
+    }
+    
 
     @Deprecated
     HBaseArchiveWriter(final TimeFrame tf) throws IOException {
