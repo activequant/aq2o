@@ -10,13 +10,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.servicelayer.soap.MainService;
 
-public class SoapServer {
+public class LocalSoapServer {
 
     private final int port;
     private final String hostName;
     private final IDaoFactory idf; 
 
-    public SoapServer(String hostName, int port) {
+    public LocalSoapServer(String hostName, int port) {
         this.port = port;
         this.hostName = hostName;         
         ApplicationContext appContext2 = new ClassPathXmlApplicationContext("fwspring.xml");
@@ -25,7 +25,7 @@ public class SoapServer {
 
     public void start() throws Exception {
         JettyHTTPServerEngineFactory eg = new JettyHTTPServerEngineFactory();
-        eg.createJettyHTTPServerEngine(8080, "http");
+        eg.createJettyHTTPServerEngine(this.port, "http");
 
         Object implementor = new MainService(idf);
         Endpoint ep = Endpoint.publish("http://"+hostName+":" + port + "/aq2o", implementor);
@@ -34,7 +34,4 @@ public class SoapServer {
         soap.setMTOMEnabled(true);
     }
     
-    public static void main(String[] argfs){
-        new SoapServer("", 10);
-    }
 }

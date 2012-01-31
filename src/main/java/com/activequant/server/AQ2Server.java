@@ -15,8 +15,7 @@ public final class AQ2Server {
 
     // three BL objects. 
     
-    private SoapServer ss;
-    private BrokerService broker;
+    private LocalSoapServer ss;
     // 
     private Logger log = Logger.getLogger(AQ2Server.class);
 
@@ -30,7 +29,7 @@ public final class AQ2Server {
 
         if (isTrue(properties, "soapserver.start")) {
             log.info("Starting soap server ....");
-            ss = new SoapServer(properties.getProperty("soapserver.hostname"), Integer.parseInt(properties.getProperty("soapserver.port")));
+            ss = new LocalSoapServer(properties.getProperty("soapserver.hostname"), Integer.parseInt(properties.getProperty("soapserver.port")));
             ss.start();
             log.info("Starting soap server succeeded.");
         } else {
@@ -40,20 +39,7 @@ public final class AQ2Server {
         if (isTrue(properties, "hbase.start")) {
             log.info("Starting mighty HBase ....");
             
-            Configuration config = HBaseConfiguration.create();
-            // have to set a data directory. 
-            
-            //
-            MiniZooKeeperCluster mzk = new MiniZooKeeperCluster(config);
-            mzk.setClientPort(2181);
-            mzk.startup(new File("."+File.separator));
-            
-            HMaster master = new HMaster(config);
-            master.start();
-            
-            HRegionServer hrs = new HRegionServer(config);
-            HRegionServer.startRegionServer(hrs);
-            
+            new LocalHBaseCluster().start();
             
             log.info("Starting HBase succeeded.");
         } else {
@@ -62,9 +48,7 @@ public final class AQ2Server {
 
         if (isTrue(properties, "activemq.start")) {
             log.info("Starting JMS ....");
-            broker = new BrokerService();
-            broker.addConnector("tcp://" + properties.getProperty("activemq.hostname") + ":" + properties.getProperty("activemq.port"));          
-            broker.start();
+            new LocalJMSServer().start(properties.getProperty("activemq.hostname"), Integer.parseInt(properties.getProperty("activemq.port")));
             log.info("Starting JMS succeeded.");
         } else {
             log.info("Not starting JMS server, as it has been disabled.");
