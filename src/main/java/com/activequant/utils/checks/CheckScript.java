@@ -15,7 +15,7 @@ import com.activequant.utils.mail.SendMail;
 
 /**
  * 
- * Various database checks and statistics. 
+ * Various database checks and statistics. Rather statistics than checks. 
  * 
  * @author ustaudinger
  * 

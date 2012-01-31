@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 public final class AQ2Server {
 
     // three BL objects.
-
     private LocalSoapServer ss;
     //
     private Logger log = Logger.getLogger(AQ2Server.class);
@@ -43,6 +42,14 @@ public final class AQ2Server {
             log.info("Starting JMS succeeded.");
         } else {
             log.info("Not starting JMS server, as it has been disabled.");
+        }
+        
+        if (isTrue(properties, "hsqldb.start")) {
+            log.info("Starting HSQLDB ....");
+            new LocalHSQLDBServer().start();
+            log.info("Starting HSQLDB succeeded.");
+        } else {
+            log.info("Not starting HSQDLB server, as it has been disabled.");
         }
         while (runFlag) {
             Thread.sleep(250);

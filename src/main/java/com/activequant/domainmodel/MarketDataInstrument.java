@@ -12,7 +12,6 @@ import com.activequant.utils.annotations.Property;
 public class MarketDataInstrument extends PersistentEntity {
 
     private String instrumentId, mdProvider, providerSpecificId;
-    // date8time6. TODO: typify all occurances.
     private double lastHistFetchTime = 0.0;
     private double scalingFactor = 1.0;
 
