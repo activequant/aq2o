@@ -181,11 +181,11 @@
 				<version>2.2.1</version>
 
 				<configuration>
-					<archive>
+					<!-- archive>
 						<manifest>
 							<mainClass>com.activequant.server.AQ2Server</mainClass>
 						</manifest>
-					</archive>
+					</archive -->
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
@@ -234,14 +234,12 @@
 						<zip
 							destfile="target/site/distribution/${project.build.finalName}-bundle.zip">
 							<zipfileset dir="src/main/resources/" includes="aq2server.properties"
-								prefix="./" />
+								prefix="aq2o" />
 							<zipfileset dir="target/site/distribution"
 								includes="${project.build.finalName}-jar-with-dependencies.jar"
-								prefix="./" />							
+								prefix="aq2o" />							
 							<zipfileset dir="src/main/scripts/" includes="**"
-								prefix="./" />
-
-
+								prefix="aq2o" />
 						</zip>
 						<delete
 							file="target/site/distribution/${project.build.finalName}-jar-with-dependencies.jar" />
