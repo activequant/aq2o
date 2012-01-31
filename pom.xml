@@ -240,6 +240,9 @@
 								prefix="./" />
 							<zipfileset dir="src/main/resources/" includes="aq2server.properties"
 								prefix="./" />
+							<zipfileset dir="src/main/scripts/" includes="**"
+								prefix="./" />
+
 
 						</zip>
 						<delete
