@@ -3,6 +3,7 @@ package com.activequant.utils;
 import java.io.FileInputStream;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -33,6 +34,7 @@ public class ImportInstrumentsCSV {
 	private final ApplicationContext appContext;
 	private final IDaoFactory idf;
 	private final IInstrumentDao idao;
+	private Logger log = Logger.getLogger(this.getClass());
 
 	public ImportInstrumentsCSV(String fileName, String springInitFile)
 			throws Exception {
@@ -50,8 +52,9 @@ public class ImportInstrumentsCSV {
 				// 
 				try {
 					idao.update(instr);
+					log.info("Created or updated instrument" + instr.getId());
 				} catch (DaoException e) {
-					System.err.println("Error while importing " + event);
+				    log.warn("Error while importing " + event, e);
 					e.printStackTrace();
 				}
 			}

@@ -3,6 +3,8 @@ package com.activequant.utils;
 import java.io.FileInputStream;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -31,6 +33,7 @@ public class ImportMarketDataInstrumentsCSV {
 	private final ApplicationContext appContext;
 	private final IDaoFactory idf;
 	private final IMarketDataInstrumentDao mdiDao;
+	private final Logger log = Logger.getLogger(this.getClass());
 
 	public ImportMarketDataInstrumentsCSV(String fileName, String springInitFile)
 			throws Exception {
@@ -48,6 +51,7 @@ public class ImportMarketDataInstrumentsCSV {
 				// 
 				try {
 					mdiDao.update(instr);
+					log.info("Updated or created instrument: " + instr.getId());
 				} catch (DaoException e) {
 					System.err.println("Error while importing " + event);
 					e.printStackTrace();

@@ -189,7 +189,7 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-					<outputDirectory>target/site/distribution</outputDirectory>
+					<outputDirectory>target</outputDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -235,14 +235,13 @@
 							destfile="target/site/distribution/${project.build.finalName}-bundle.zip">
 							<zipfileset dir="src/main/resources/" includes="aq2server.properties"
 								prefix="aq2o" />
-							<zipfileset dir="target/site/distribution"
+							<zipfileset dir="target/"
 								includes="${project.build.finalName}-jar-with-dependencies.jar"
 								prefix="aq2o" />							
 							<zipfileset dir="src/main/scripts/" includes="**"
 								prefix="aq2o" />
 						</zip>
-						<delete
-							file="target/site/distribution/${project.build.finalName}-jar-with-dependencies.jar" />
+						
 					</tasks>
 				</configuration>
 			</plugin>

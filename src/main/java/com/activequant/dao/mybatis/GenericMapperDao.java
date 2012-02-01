@@ -138,9 +138,8 @@ class GenericMapperDao<T extends PersistentEntity> {
     }
 
     public synchronized void update(T t) {        
-        List<GenericRow> rows = createGenRows(t);
-        for (GenericRow row : rows)
-            mapper.update(tableName, row);
+        this.delete(t);
+        this.create(t);
     }
 
     
