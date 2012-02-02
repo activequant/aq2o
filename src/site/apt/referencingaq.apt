@@ -28,7 +28,7 @@ Usage
 
 Installation/Preparation
 
-	<<Please check the {{{./qemuapp.html}QEmu appliance page}} to get a head start.>>
+	<<Please check the {{{./uberjar.html}UberJar page}} to get a head start.>>
 
 	By default, AQ relies on a MySQL database to store things like instrument specific information. This database has to be initialized for first use. Please see the {{{./dao.html}DAO}} page for details about how to do that. 
 
