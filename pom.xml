@@ -181,11 +181,11 @@
 				<version>2.2.1</version>
 
 				<configuration>
-					<!-- archive>
+					<archive>
 						<manifest>
 							<mainClass>com.activequant.server.AQ2Server</mainClass>
 						</manifest>
-					</archive -->
+					</archive>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
