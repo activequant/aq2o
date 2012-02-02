@@ -53,6 +53,7 @@ public class ImportMarketDataCSV {
 	private String mdProvider;
 	private IArchiveFactory archiveFactory;
 	private TimeFrame timeFrame;
+	private boolean rewriteFilenameForBB = true; 
 
 	public ImportMarketDataCSV(String directory, final String mdprovider,
 			String springInitFile, TimeFrame inTimeFrame) throws Exception {

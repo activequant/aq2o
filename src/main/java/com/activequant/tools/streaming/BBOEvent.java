@@ -6,11 +6,11 @@ import com.activequant.transport.ETransportType;
 
 public class BBOEvent extends MarketDataEvent {
 	
-	private double bid, ask, bidQuantity, askQuantity;  
+	private Double bid, ask, bidQuantity, askQuantity;  
 	private String tradeableId;
 
 	public BBOEvent(String mdiId, String tradeableId, TimeStamp ts, 
-			double bid, double bidQuantity, double ask, double askQuantity) {
+			Double bid, Double bidQuantity, Double ask, Double askQuantity) {
 		super(ts,BBOEvent.class.getCanonicalName(), mdiId);
 		this.tradeableId = tradeableId; 
 		this.ask = ask; 
@@ -23,35 +23,35 @@ public class BBOEvent extends MarketDataEvent {
 	
 	public String getTradeableInstrumentId(){return tradeableId;}
 
-	public double getBid() {
+	public Double getBid() {
 		return bid;
 	}
 
-	public void setBid(double bid) {
+	public void setBid(Double bid) {
 		this.bid = bid;
 	}
 
-	public double getAsk() {
+	public Double getAsk() {
 		return ask;
 	}
 
-	public void setAsk(double ask) {
+	public void setAsk(Double ask) {
 		this.ask = ask;
 	}
 
-	public double getBidQuantity() {
+	public Double getBidQuantity() {
 		return bidQuantity;
 	}
 
-	public void setBidQuantity(double bidQuantity) {
+	public void setBidQuantity(Double bidQuantity) {
 		this.bidQuantity = bidQuantity;
 	}
 
-	public double getAskQuantity() {
+	public Double getAskQuantity() {
 		return askQuantity;
 	}
 
-	public void setAskQuantity(double askQuantity) {
+	public void setAskQuantity(Double askQuantity) {
 		this.askQuantity = askQuantity;
 	}
 

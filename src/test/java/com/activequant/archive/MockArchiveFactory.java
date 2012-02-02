@@ -33,6 +33,12 @@ public class MockArchiveFactory implements IArchiveFactory {
                 // TODO Auto-generated method stub
                 return null;
             }
+
+            @Override
+            public MultiValueTimeSeriesIterator getMultiValueStream(String streamId, TimeStamp startTimeStamp, TimeStamp stopTimeStamp) throws Exception {
+                // TODO Auto-generated method stub
+                return null;
+            }
         };
     }
 

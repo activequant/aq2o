@@ -1,7 +1,9 @@
 package com.activequant.backtesting;
 
+import java.util.Map;
+
 import com.activequant.archive.IArchiveReader;
-import com.activequant.archive.TimeSeriesIterator;
+import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 import com.activequant.tools.streaming.BBOEvent;
@@ -10,33 +12,33 @@ import com.activequant.tools.streaming.StreamEventIterator;
 
 public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<MarketDataEvent> {
 
-	// time in nanoseconds.
-	private long endTime, startTime;
-	private String mdId; 
-	private TimeSeriesIterator tsi; 
+    // time in nanoseconds.
+    private long endTime, startTime;
+    private String mdId;
+    private MultiValueTimeSeriesIterator streamIterator; 
+    private Double bid, ask, bidQ, askQ; 
+    
+    public ArchiveStreamToMarketDataIterator(String mdiId, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
+        this.mdId = mdiId;
+        this.streamIterator = archiveReader.getMultiValueStream(mdiId, startTime, endTime);
 
-	public ArchiveStreamToMarketDataIterator(String mdiId, String key, TimeStamp startTime, TimeStamp endTime,
-			IArchiveReader archiveReader) throws Exception {
-		this.mdId = mdiId;
-		tsi = archiveReader.getTimeSeriesStream(mdiId, key, startTime, endTime);
-		
-	}
+    }
 
-	@Override
-	public boolean hasNext() {
-		return tsi.hasNext();
-	}
+    @Override
+    public boolean hasNext() {
+       return streamIterator.hasNext();
+    }
 
-	@Override
-	public MarketDataEvent next() {
+    @Override
+    public MarketDataEvent next() {
+        Tuple<TimeStamp, Map<String, Double>> valueMap = streamIterator.next();
+        if(valueMap.getB().containsKey("BID"))bid = valueMap.getB().get("BID");
+        if(valueMap.getB().containsKey("ASK"))ask = valueMap.getB().get("ASK");
+        if(valueMap.getB().containsKey("BIDQUANTITY"))bidQ = valueMap.getB().get("BIDQUANTITY");
+        if(valueMap.getB().containsKey("ASKQUANTITY"))askQ= valueMap.getB().get("ASKQUANTITY");
+        
+        
+        return new BBOEvent(this.mdId, this.mdId, valueMap.getA(), bid, bidQ, ask, askQ);
 
-		Tuple<TimeStamp, Double> tuple = tsi.next();
-		/*
-		BBOEvent bbo = new BBOEvent(mdId, tradId, new TimeStamp(currentTime),
-				Math.random(), Math.random(), Math.random(), Math.random());
-		//
-		return bbo;
-		*/
-		return null; 
-	}
+    }
 }
