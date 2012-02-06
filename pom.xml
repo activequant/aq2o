@@ -242,6 +242,8 @@
 								prefix="aq2o" />
 						</zip>
 						
+						<scp file="target/site/distribution/${project.build.finalName}-bundle.zip" todir="ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant"/>
+						
 					</tasks>
 				</configuration>
 			</plugin>
