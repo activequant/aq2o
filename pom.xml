@@ -237,15 +237,29 @@
 								prefix="aq2o" />
 							<zipfileset dir="target/"
 								includes="${project.build.finalName}-jar-with-dependencies.jar"
-								prefix="aq2o" />							
+								prefix="aq2o" />
 							<zipfileset dir="src/main/scripts/" includes="**"
 								prefix="aq2o" />
 						</zip>
-						
-						<scp file="target/site/distribution/${project.build.finalName}-bundle.zip" todir="ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant"/>
-						
+
+						<scp
+							file="target/site/distribution/${project.build.finalName}-bundle.zip"
+							todir="ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant" />
+
 					</tasks>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-jsch</artifactId>
+						<version>1.7.1</version>
+					</dependency>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>0.1.42</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 		</plugins>
