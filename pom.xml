@@ -241,10 +241,11 @@
 							<zipfileset dir="src/main/scripts/" includes="**"
 								prefix="aq2o" />
 						</zip>
+						<exec dir="${anthome.dir}" executable="scp" output="scpROOT.dir">
+							<arg
+								line=" target/site/distribution/${project.build.finalName}-bundle.zip ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant" />
+						</exec>
 
-						<scp
-							file="target/site/distribution/${project.build.finalName}-bundle.zip"
-							todir="ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant" />
 
 					</tasks>
 				</configuration>
