@@ -12,8 +12,6 @@ import com.activequant.tools.streaming.StreamEventIterator;
 
 public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<MarketDataEvent> {
 
-    // time in nanoseconds.
-    private long endTime, startTime;
     private String mdId;
     private MultiValueTimeSeriesIterator streamIterator; 
     private Double bid, ask, bidQ, askQ; 
