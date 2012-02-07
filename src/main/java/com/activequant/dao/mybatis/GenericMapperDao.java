@@ -14,14 +14,14 @@ import com.activequant.domainmodel.GenericRow;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;
 
-class GenericMapperDao<T extends PersistentEntity> {
+public class GenericMapperDao<T extends PersistentEntity> {
 
     private Logger log = Logger.getLogger(GenericMapperDao.class);
     protected GenericRowMapper mapper;
     private String tableName;
     private Class<? extends PersistentEntity> clazz;
 
-    GenericMapperDao(GenericRowMapper mapper, Class<? extends PersistentEntity> clazz, String table) {
+    public GenericMapperDao(GenericRowMapper mapper, Class<? extends PersistentEntity> clazz, String table) {
         log.info("Initializing GenericDao for table " + table);
         this.mapper = mapper;
         this.clazz = clazz;

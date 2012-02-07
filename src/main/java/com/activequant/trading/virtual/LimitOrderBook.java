@@ -30,11 +30,17 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 	private List<LimitOrder> sellSide = new ArrayList<LimitOrder>();
 	
 	private final LimitOrderBookMatcher matcher; 
+	private final VirtualExchange vex; 
 
 	public LimitOrderBook(VirtualExchange vex, String tradeableInstrumentId){
 		super(tradeableInstrumentId);
 		this.instrumentId = tradeableInstrumentId;
 		this.matcher = new LimitOrderBookMatcher(vex, this);
+		this.vex = vex; 
+	}
+	
+	public void match(){
+	    matcher.match();
 	}
 	
 	void weedOutForeignOrders(){
@@ -74,6 +80,11 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 			sellSide.add(order);
 			resortSellSide();
 		}
+		if(order.getWorkingTimeStamp()==null){
+		    // set the working timestamp. 
+		    order.setWorkingTimeStamp(vex.currentExchangeTime());
+		}
+		
 		// signal that there was an update. 
 		super.orderBookEvent(new OrderBookUpdated());
 

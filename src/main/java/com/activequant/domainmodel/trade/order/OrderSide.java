@@ -11,6 +11,11 @@ public enum OrderSide {
     public int getSide() {
         return this.side;
     }
+    
+    public boolean equals(OrderSide other){
+        return(this.getSide() == other.getSide());
+    }
+    
 
     public String toString() {
         if (side == 0)

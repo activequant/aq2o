@@ -22,7 +22,7 @@ import com.activequant.utils.events.IEventSource;
 public class VirtualExchange implements IExchange {
 
     private long virtexOrderId = 0L;
-    private TimeStamp currentExchangeTime;
+    private TimeStamp currentExchangeTime = new TimeStamp(0L);
     private Map<String, IOrderTracker> orderTrackers = new HashMap<String, IOrderTracker>();
     private Map<String, LimitOrderBook> lobs = new HashMap<String, LimitOrderBook>();
 
@@ -59,6 +59,13 @@ public class VirtualExchange implements IExchange {
         @Override
         public void submit() {
             getOrderBook(order.getTradInstId()).addOrder(order);
+            order.setOpenQuantity(order.getQuantity());
+            order.setWorkingTimeStamp(currentExchangeTime());
+            if(order.getOrderId()==null)
+                order.setOrderId("OID"+virtexOrderId++);
+            // add it to the list of local order trackers. 
+            orderTrackers.put(order.getOrderId(), this);
+
         }
 
         @Override
@@ -92,7 +99,14 @@ public class VirtualExchange implements IExchange {
         if (!(order instanceof LimitOrder))
             throw new UnsupportedOrderType("Order type not supported by exchange: " + order);
         LimitOrder limitOrder = (LimitOrder) order;
-        return new VirtualOrderTracker(limitOrder);
+        if(limitOrder.getQuantity()<=0.0)
+            throw new IncompleteOrderInstructions("Invalid quantity given: " + limitOrder.getQuantity());
+        if(limitOrder.getLimitPrice() == null)
+            throw new IncompleteOrderInstructions("No limit price given.");
+        if(limitOrder.getLimitPrice() <= 0.0)
+            throw new IncompleteOrderInstructions("Invalid negative limit price given.");
+        VirtualOrderTracker tracker = new VirtualOrderTracker(limitOrder);
+        return tracker;
     }
 
     public IOrderTracker getOrderTracker(Order order) {
@@ -150,6 +164,7 @@ public class VirtualExchange implements IExchange {
                 bestBid.setOrderSide(OrderSide.BUY);
                 bestBid.setLimitPrice(nbbo.getBid());
                 bestBid.setQuantity(nbbo.getBidQuantity());
+                bestBid.setOpenQuantity(bestBid.getQuantity());
                 lob.addOrder(bestBid);
             }
 
@@ -158,10 +173,13 @@ public class VirtualExchange implements IExchange {
                 bestAsk.setOrderSide(OrderSide.SELL);
                 bestAsk.setLimitPrice(nbbo.getAsk());
                 bestAsk.setQuantity(nbbo.getAskQuantity());
+                bestAsk.setOpenQuantity(bestAsk.getQuantity());
                 lob.addOrder(bestAsk);
 
             }
-
+            // rerun a match.
+            lob.match();
+            
         }
     }
 

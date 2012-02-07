@@ -2,13 +2,13 @@ package com.activequant.domainmodel.trade.order;
 
 public class LimitOrder extends SingleLegOrder {
 	
-	private double limitPrice;
+	private Double limitPrice;
 
-	public double getLimitPrice() {
+	public Double getLimitPrice() {
 		return limitPrice;
 	}
 
-	public void setLimitPrice(double limitPrice) {
+	public void setLimitPrice(Double limitPrice) {
 		this.limitPrice = limitPrice;
 	}
 
