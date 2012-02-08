@@ -41,6 +41,7 @@ public class InstrumentDaoTest extends TestCase {
             // have to make it unique, otherwise key failure
             fx.setTo("USD" + i);
             fx.setShortName("EURUSD" + i);
+            fx.setName("EURUSD"+i);
 
             long l1 = System.currentTimeMillis();
             idao.create(fx);
