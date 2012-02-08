@@ -30,7 +30,7 @@ public class FX extends Instrument {
 
     @Override
     public String getId() {
-        return "FX." + from + "/" + to;
+        return "FX." + nullSafe(getName());
     }
 
 }
