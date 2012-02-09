@@ -3,7 +3,7 @@
 	<groupId>com.activequant</groupId>
 	<artifactId>aq2o</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0-SNAPSHOT</version>
+	<version>2.0</version>
 	<name>ActiveQuant 2.o (AQ2o)</name>
 	<url>http://activequant.org</url>
 	<description>Security trading related source code platform</description>
@@ -14,9 +14,9 @@
 		<version>7</version>
 	</parent>
 	<scm>
-		<connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
-		<developerConnection>scm:svn:svn://activequant.org/opt/repositories/aq2o/trunk</developerConnection>
-		<url>http://activequant.org/svn/aq2o/trunk</url>
+		<connection>scm:svn:http://activequant.org/svn/aq2o/tags/aq2o-2.0</connection>
+		<developerConnection>scm:svn:svn://activequant.org/opt/repositories/aq2o/tags/aq2o-2.0</developerConnection>
+		<url>http://activequant.org/svn/aq2o/tags/aq2o-2.0</url>
 	</scm>
 	<licenses>
 		<license>
@@ -182,10 +182,10 @@
 				<version>1.4</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<!-- phase>package</phase>
 						<goals>
 							<goal>shade</goal>
-						</goals>
+						</goals -->
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
