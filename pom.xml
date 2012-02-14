@@ -310,10 +310,9 @@
 
 				<executions>
 					
-					<!-- phase: deploy -->
+				
 					<execution>
 						<configuration>
-							<!-- Tell your users that the project is deployed -->
 							<twitterStatus>Just released a new ${project.build.finalName} bundle.</twitterStatus>
 						</configuration>
 						<id>antrun-tweet</id>
