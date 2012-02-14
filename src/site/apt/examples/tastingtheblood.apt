@@ -9,7 +9,7 @@ The taste of ActiveQuant
 	Open a command line and create a maven java project. 
 	
 +----------+
-staudinger@baikal:~/work/activequant/closedsource/charter$ mvn archetype:create -DgroupId=com.activequant -DartifactId=charter
+ustaudinger@baikal:~/work/activequant/closedsource/charter$ mvn archetype:create -DgroupId=com.activequant -DartifactId=charter
 [INFO] Scanning for projects...
 [INFO]                                                                         
 [INFO] ------------------------------------------------------------------------
