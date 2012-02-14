@@ -1,0 +1,159 @@
+The taste of ActiveQuant
+
+	Let's get crashed on ActiveQuant. We'll create the first simple project. Now empty your mind and let's step right in. 
+	
+	Download the {{{../uberjar.apt}AQ2o-Server}} and start it. Give it a minute to fully initialize ...  
+	
+	Open Eclipse. 
+	
+	Open a command line and create a maven java project. 
+	
++----------+
+staudinger@baikal:~/work/activequant/closedsource/charter$ mvn archetype:create -DgroupId=com.activequant -DartifactId=charter
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-archetype-plugin:2.2:create (default-cli) @ standalone-pom ---
+[WARNING] This goal is deprecated. Please use mvn archetype:generate instead
+[INFO] Defaulting package to group ID: com.activequant
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/archetypes/maven-archetype-quickstart/maven-metadata.xml
+Downloaded: http://repo1.maven.org/maven2/org/apache/maven/archetypes/maven-archetype-quickstart/maven-metadata.xml (531 B at 0.8 KB/sec)
+[INFO] ----------------------------------------------------------------------------
+[INFO] Using following parameters for creating project from Old (1.x) Archetype: maven-archetype-quickstart:RELEASE
+[INFO] ----------------------------------------------------------------------------
+[INFO] Parameter: groupId, Value: com.activequant
+[INFO] Parameter: packageName, Value: com.activequant
+[INFO] Parameter: package, Value: com.activequant
+[INFO] Parameter: artifactId, Value: charter
+[INFO] Parameter: basedir, Value: /home/ustaudinger/work/activequant/closedsource/charter
+[INFO] Parameter: version, Value: 1.0-SNAPSHOT
+[INFO] project created from Old (1.x) Archetype in dir: /home/ustaudinger/work/activequant/closedsource/charter/charter
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 4.676s
+[INFO] Finished at: Mon Feb 13 19:16:31 CET 2012
+[INFO] Final Memory: 6M/58M
+[INFO] ------------------------------------------------------------------------
+ustaudinger@baikal:~/work/activequant/closedsource/charter$ 
++----------+		
+	
+	
+	Edit the project's object model (POM) file and add the AQ2o dependency, so that it looks like this. 
+	
++----------+
+ustaudinger@baikal:~/work/activequant/closedsource/charter$ cat pom.xml 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.activequant</groupId>
+  <artifactId>charter</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>charter</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+	<!------------ THE AQ2O DEPENDENCY --------------->
+        <dependency>
+                <groupId>com.activequant</groupId>
+                <artifactId>aq2o</artifactId>
+                <version>2.0</version>
+        </dependency>
+
+
+  </dependencies>
+</project>
+ustaudinger@baikal:~/work/activequant/closedsource/charter$ 
++----------+		 
+	
+	Still in the command line, create the eclipse project files with maven. 
+	
++---------+
+ustaudinger@baikal:~/work/activequant/closedsource/charter$ cat pom.xml 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.activequant</groupId>
+  <artifactId>charter</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>charter</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+        <dependency>
+                <groupId>com.activequant</groupId>
+                <artifactId>aq2o</artifactId>
+                <version>2.0</version>
+        </dependency>
+
+
+  </dependencies>
+</project>
+ustaudinger@baikal:~/work/activequant/closedsource/charter$ 
++---------+
+
+	In Eclipse, import the created project in "File" -> "Import" -> "Existing projects into workspace"
+	
+	Now, let's create a future definition, store it and retrieve it from the database. Edit the file App.java and add the following code into the main. 
+	
++---------+
+ApplicationContext appContext = new ClassPathXmlApplicationContext("springtest.xml");
+IDaoFactory idf = appContext.getBean("ibatisDao", IDaoFactory.class);
+IInstrumentDao idao = idf.instrumentDao();
+
+Future future = new Future();
+future.setCreationTime(0L);
+future.setDeletionTime(0L);
+future.setName("FDAX");
+future.setDescription("The dark dax");
+future.setExpiry(20111231l);
+future.setShortName("FDAX");
+future.setTickSize(10.0);
+future.setTickValue(10.0);
+idao.create(future);
+
+// load the future
+Future loadedFuture = (Future) idao.load(future.getId());
+System.out.println(loadedFuture.getDescription());
++---------+	 
+	
+	Resolve the imports. 
+	
+	
+	Free this beast and run it.  
+	
+
+	Enjoy. 	 
+	
+			

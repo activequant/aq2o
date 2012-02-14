@@ -9,7 +9,7 @@ MyBatis DAO layer
 * Setup
 	
 	Before you can use the MyBatis DAO layer, the database has to be initialized. The layer will generate tables and indices on tables itself, but expects that a database exists and is accessible for the framework. 
-	In case no database exists, create the database from within mysql with the following command. 
+	By default, AQ uses the HSQL database shipped in the {{{./uberjar.html}AQ2 Server}}. In case you want to use MySQL, you will have to create before first use the database from within mysql with the following command.  
 	 
 +---------+
 mysql> create database aq2o;
@@ -17,7 +17,8 @@ Query OK, 1 row affected (0.13 sec)
 mysql> 
 +---------+
 	
-	The database configuration is read from the file "framework.properties", which must reside somewhere in your classpath. The following snipplet shows all database related properties that have to be set in the properties file. 
+	The database configuration is read from the file "framework.properties", which must reside somewhere in your classpath. The following snipplet shows all database related properties that have to be set in the properties file.
+	You are free to modify the file to match a MySQL connector as shown below. 
 
 +------------------+
 #db
@@ -32,7 +33,7 @@ db.password=writerpwd
 * MyBatis DAO factory
 
 	The MyBatis DAO factory requires a database configuration properties file in the well-known Java properties file format. 
-	This properties file contains MySQL connection parameters. The MyBatis DAO factory will also initialize the database tables on initialization in case these tables do not exist. 	
+	The MyBatis DAO factory will also initialize the database tables on initialization in case these tables do not exist. 	
 
 
 
@@ -45,7 +46,7 @@ db.password=writerpwd
 	 
 +------------+
 ApplicationContext appContext = new ClassPathXmlApplicationContext("springtest.xml");
-IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+IDaoFactory idf = appContext.getBean("ibatisDao", IDaoFactory.class);
 IInstrumentDao idao = idf.instrumentDao();
 +------------+
 

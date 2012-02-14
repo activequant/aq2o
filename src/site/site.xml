@@ -34,11 +34,18 @@
 			</item>
 		</menu>
 
+		<menu name="Example code">
+			<item name="Taste the blood" href="examples/tastingtheblood.apt"/>
+		</menu>
+
 		<menu name="Service facades (SOA)">
 			<item name="Introduction" href="servicefacades.html" />
 			<item name="Matlab (and Java) Facade" href="matlabfacade.html" />
 			<item name="SOAP Facade" href="soapfacade.html" />
 		</menu>
+		
+		
+		
 
 		<menu name="Usage scenarios">
 			<item name="Importing timeseries data" href="importingdata.html" />
