@@ -35,7 +35,7 @@
 		</menu>
 
 		<menu name="Example code">
-			<item name="Taste the blood" href="examples/tastingtheblood.apt"/>
+			<item name="Taste the blood" href="examples/tastingtheblood.html"/>
 		</menu>
 
 		<menu name="Service facades (SOA)">
