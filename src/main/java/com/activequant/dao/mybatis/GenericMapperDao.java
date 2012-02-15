@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
@@ -26,7 +27,7 @@ public class GenericMapperDao<T extends PersistentEntity> {
         this.mapper = mapper;
         this.clazz = clazz;
         // don't know how to check with ibatis if a table exists - at least not
-        // in an easy way.
+        // in an easy w.
         // this one is easier, dirty and safe.
         try {
             mapper.init(table);
@@ -186,7 +187,7 @@ public class GenericMapperDao<T extends PersistentEntity> {
             if (value == null)
                 continue;
             GenericRow gr = null;
-            long createdTimeStamp = System.currentTimeMillis();
+            long createdTimeStamp = t.getCreationTime();
             if (value instanceof Object[]) {
                 // generate individual generic rows for all entries of this
                 // array.
@@ -275,6 +276,16 @@ public class GenericMapperDao<T extends PersistentEntity> {
     public Double[] selectDistinctDoubleVal(String val) {
         List<Double> ret = mapper.selectDistinctDoubleVal(tableName, val);
         return ret.toArray(new Double[] {});
+    }
+    
+    public List<String> findIDsBetweenCreationTime(String tableName, String parameter, String value, Long fromTimeStampInMs, Long toMs){
+        List<String> ids = mapper.findIDsBetweenCreationTime(tableName, parameter, value, fromTimeStampInMs, toMs);
+       return ids; 
+    }
+    
+    
+    public String findLastIdBeforeCreationTime(String tableName, String parameter, String value, Long timeStampInMs){
+        return mapper.findLastIdBeforeCreationTime(tableName, parameter, value, timeStampInMs);
     }
     
 }

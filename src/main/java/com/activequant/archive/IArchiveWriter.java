@@ -21,4 +21,12 @@ public interface IArchiveWriter {
 
     public abstract void write(String instrumentId, TimeStamp timeStamp, String key, Double value);
 
+    public abstract void delete(String seriesKey, String valueKey) throws IOException;
+    
+    public abstract void delete(String seriesKey, String valueKey, TimeStamp from, TimeStamp to) throws IOException;
+    
+    public abstract void delete(String seriesKey) throws IOException;
+    
+    public abstract void delete(String seriesKey, TimeStamp from, TimeStamp to) throws IOException;
+    
 }

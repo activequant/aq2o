@@ -97,15 +97,6 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
         return ret;
     }
 
-    private ResultScanner getScanner(final String instrumentId, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp) throws IOException {
-        String startKey = instrumentId + "_" + padded(startTimeStamp.toString());
-        String stopKey = instrumentId + "_" + padded(stopTimeStamp.toString());
-
-        Scan s = new Scan(startKey.getBytes(), stopKey.getBytes());
-        s.setMaxVersions(1);
-        ResultScanner scanner = htable.getScanner(s);
-        return scanner;
-    }
 
     public TimeSeriesIterator getTimeSeriesStream(String instrumentId, final String key, TimeStamp startTimeStamp, TimeStamp stopTimeStamp) throws Exception {
         final ResultScanner scanner = getScanner(instrumentId, startTimeStamp, stopTimeStamp);

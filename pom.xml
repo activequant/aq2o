@@ -303,26 +303,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--  plugin>
-				<groupId>com.vineetmanohar</groupId>
-				<artifactId>maven-twitter-plugin</artifactId>
-				<version>0.1</version>
-
-				<executions>
-					
-				
-					<execution>
-						<configuration>
-							<twitterStatus>Just released a new ${project.build.finalName} bundle.</twitterStatus>
-						</configuration>
-						<id>antrun-tweet</id>
-						<phase>package</phase>
-						<goals>
-							<goal>tweet</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>

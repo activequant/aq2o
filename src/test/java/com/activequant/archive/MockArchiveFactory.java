@@ -70,6 +70,31 @@ public class MockArchiveFactory implements IArchiveFactory {
                 // TODO Auto-generated method stub
                 
             }
+
+            @Override
+            public void delete(String seriesKey, String valueKey) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void delete(String seriesKey, String valueKey, TimeStamp from, TimeStamp to) {
+                // TODO Auto-generated method stub
+                
+            }
+
+			@Override
+			public void delete(String seriesKey) throws IOException {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void delete(String seriesKey, TimeStamp from, TimeStamp to)
+					throws IOException {
+				// TODO Auto-generated method stub
+				
+			}
         };
     }
 

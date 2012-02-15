@@ -119,7 +119,14 @@ public interface GenericRowMapper {
     @Select("SELECT distinct(keyVal) from ${table} where keyVal like #{id} order by keyVal limit #{amount} ")
     List<String> findIdsLike(@Param("table") String tableName, @Param("id") String idsLikeString,
             @Param("amount") int resultAmount);
-
+    
+    @Select("SELECT keyVal from ${table} where created<=#{timeStampInMs} and fieldName=#{parameter} and stringVal=#{val} order by created desc limit 1")
+    String findLastIdBeforeCreationTime(@Param("table") String tableName, @Param("parameter") String parameter, @Param("val") String value, @Param("timeStampInMs") long timeStampInMs);
+    
+    @Select("SELECT keyVal from ${table} where created>=#{fromt} and created<=#{to} and fieldName=#{parameter} and stringVal=#{val} order by created desc")
+    List<String> findIDsBetweenCreationTime(@Param("table") String tableName, @Param("parameter") String parameter, @Param("val") String value, @Param("fromt") long from, @Param("to") long to);
+    
+    
     @Transactional
     @Insert("replace into ${table} values (#{row.created}, #{row.keyVal},#{row.fieldName},#{row.doubleVal},#{row.longVal},#{row.stringVal})")
     @Options(flushCache = true)
