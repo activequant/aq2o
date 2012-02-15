@@ -141,4 +141,4 @@ Importing from md_yahoo all .csv files for YAHOO. Using spring configuration fws
 ....
 +----------+ 
 
-	Once done, all CSV files from md_yahoo will be available in the archive. 
+	Once done, all CSV files from md_yahoo will be available in your archive and you can load this data in your AQ applications. 
