@@ -158,6 +158,6 @@ mysql> select * from MarketDataInstrument where keyVal like "YAHOO_h%";
 mysql> 
 +-------+
 		
-	En voila, you can now look up MDIs for Instruments and vice versa. Of course also in Matlab. 
+	En voila, all data in database and you can use AQ's JAVA DAO implementation to use this MDI data. Of course also in Matlab. 
 	
 	Enjoy. 
