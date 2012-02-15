@@ -1,6 +1,6 @@
 Importing time series data
 	
-	<Note: This section describes the manual import processes which are part of aq2o's default bundle. Automated data downloaders and importers for well-known commercial data and trading venues are available on request.>
+	<Note: This section describes the manual import processes which are part of aq2o's default bundle. Automated data downloaders and importers for well-known commercial data and trading venues are available as commercial applications, contact {{{mailto:ustaudinger@activequant.com}Ulrich}}.>
 	
 	AQ2o includes a central import tool for importing time series data. The importer 
 	processes all <.csv> files in that folder and also traverses recursively through all sub folders. 

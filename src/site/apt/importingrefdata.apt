@@ -4,7 +4,7 @@ Importing reference data
 	Quick recap, each of these three types has its own properties and the latter two refer to an instrument data set through their instrumentId property. 
 	
 	<Note: This section describes the manual import processes which are part of aq2o's default bundle. 
-	Automated data downloaders and importers for well-known commercial data and trading venues are available on request.>
+	Automated data downloaders and importers for well-known commercial data and trading venues are available as commercial applications, contact {{{mailto:ustaudinger@activequant.com}Ulrich}}.>
 	
 	Now, let's import data manually in CSV form. Of course you could also setup some cron jobs in the appliance. You would also have to configure the run scripts (see below). 
 
