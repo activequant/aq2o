@@ -24,23 +24,25 @@ public class HBaseArchTestsMain {
         IArchiveWriter iwr = fac.getWriter(TimeFrame.EOD);
         
         System.out.println("About to write. ");
-        iwr.write("A", new TimeStamp(), new Tuple<String, Double>("ABCD", 1.0));
+        TimeStamp now = new TimeStamp();
+        iwr.write("A", now, new Tuple<String, Double>("ABCD", 1.0));
         iwr.commit();
         System.out.println("written.");
         // get that value
         TSContainer tsc = iar.getTimeSeries("A", "ABCD", new TimeStamp(0L));
         System.out.println(tsc.timeStamps.length);
         
-        // now let's delete it all. 
         iwr.delete("A");
         iwr.commit();
-        iwr.write("A", new TimeStamp(), new Tuple<String, Double>("ABCD", 2.0));
+
+        iwr.write("A", now, new Tuple<String, Double>("ABCD", 2.0));
         iwr.commit();
         tsc = iar.getTimeSeries("A", "ABCD", new TimeStamp(0L));
         System.out.println(tsc.timeStamps.length);
         System.out.println(tsc.values[0]);
         
-        
+        iwr.delete("A");
+        iwr.commit();
 
 	}
 
