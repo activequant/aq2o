@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.activequant.domainmodel.GenericRow;
 
-@CacheNamespace(size = 100000, flushInterval = (15 * 60 * 1000))
+@CacheNamespace(size = 100000, flushInterval = (1000))
 public interface GenericRowMapper {
 
     @Select("create table ${table} (created bigint not null, keyVal varchar(200) not null, fieldName varchar(200) not null, doubleVal double, longVal bigint, stringVal varchar(200))")
