@@ -12,6 +12,8 @@
 	<body>
 
 		<links>
+			<item name="DevCorner" href="http://developers.activequant.org/" />
+			<item name="ActiveQuant.com" href="http://www.activequant.com/" />
 			<item name="Apache" href="http://www.apache.org/" />
 		</links>
 
