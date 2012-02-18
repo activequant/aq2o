@@ -6,6 +6,7 @@ import java.util.List;
 import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Instrument;
+import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TradeableInstrument;
 
 public class TradeableInstrumentDao extends GenericMapperDao<TradeableInstrument> implements ITradeableInstrumentDao {
@@ -30,4 +31,19 @@ public class TradeableInstrumentDao extends GenericMapperDao<TradeableInstrument
         return mdis.toArray(new TradeableInstrument[] {});
     }
 
+    
+
+    public TradeableInstrument findByProvId(String providerId, String provSpecInstId) {
+        List<String> insts = mapper.findBy2StringVals(tableName, "TradingProvider".toUpperCase(), providerId,
+                "ProviderSpecificId".toUpperCase(), provSpecInstId);
+        if (insts.size() > 1) {
+            throw new RuntimeException("Ambigous tradeable! "  + providerId + "/"+provSpecInstId);
+        }
+        if (insts.size() == 0)
+            return null;
+        String id = insts.get(0);
+        TradeableInstrument tdi = load(id);
+        return tdi;
+    }
+    
 }
