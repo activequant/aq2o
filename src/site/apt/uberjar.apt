@@ -4,7 +4,7 @@ Uberjar
 	
 	You can also use the uber-jar to start the AQ2o server with one click. It contains the aq2server.properties file and two basic run scripts (Feedback appreciated) for Windows and Linux/BSD derivatives.  
 	
-	You can download the uber-jar in zip form from our {{{http://sourceforge.net/projects/activequant/files/}sourceforge project}} page. By downloading, you accept our {{{license.html}license}}.   
+	You can download the uber-jar in zip form from our {{{http://sourceforge.net/projects/activequant/files/}sourceforge project}} page. By downloading, you accept our {{{./license.html}license}}.   
 	
 	When you start the AQ2Server, you'll see something like: 
 	
