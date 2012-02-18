@@ -1,7 +1,7 @@
 Bloomberg™ connectors
 	
 	One of our commercial offers is a BB data downloader. This data downloader is a stand-alone application and enables you to 
-	download reference data and historical data, straight into {{{uberjar.html}your AQ installation}}. 
+	download reference data and historical data, straight into {{{./uberjar.html}your AQ installation}}. 
 	
 	<NOTE: You must have a SAPI license unless you want to store everything on your terminal machine. As BB's content license is a bit tricky and restrictive, don't hesitate to discuss this with us or Bloomberg.>
 	
