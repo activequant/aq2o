@@ -2,7 +2,7 @@ Usage
 
 	The ActiveQuant framework enables you to write applications based on ActiveQuant. Although it is in its core a framework, it is shipped with several utilities and tools for a variety of use cases. Details about included utilities and applications can be found on the corresponding documentation pages.
 
-	To use the ActiveQuant framework, your project needs to be a maven project. We do not recommend to use it in a non-maven context. Due to maven, all dependencies will be automatically included. Please double check the current AQ dependency tree if there is any conflict with other dependencies you might need. We are open for feedback.
+	To use the ActiveQuant framework, your project needs to be a maven project. We do not recommend to use it in a non-maven context. Due to maven, all dependencies will be automatically included. Please double check the current AQ dependency tree if there is any conflict with other dependencies you might need. We are open for feedback. By referencing AQ in your project, you accept our {{{license.html}license}}.
 
 * Using just the applications
 
