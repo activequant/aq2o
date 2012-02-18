@@ -1,3 +1,28 @@
-Bloomberg TradeBook
+Bloomberg connectors
 	
-	Available as a commercial implementation from us. More information available on request.
+	One of our commercial offers is a BB data downloader. This data downloader is a stand-alone application and enables you to 
+	download reference data and historical data, straight into {{{uberjar.html}your AQ installation}}. 
+	
+	<NOTE: You must have a SAPI license unless you want to store everything on your terminal machine.>
+	
+	It consists of several parts, which we describe in more detail below. 
+	
+* MDI generator
+
+	The MDI generator reads in a template file and generates a configurable amount of past instruments. A typical example of such a template description is <GX? INDEX;HMUZ>, which would generate 
+	the past future contracts as MDI contracts in your database. 
+	
+* Reference data downloader
+
+	This part reads the known MDIs and fetches a configurable set of fields (i.e. tick value, lot size, expiry, roll date, etc) from BB for each MDI. It also fetches the current future chain and generates new MDIs, in case these are not yet known. 
+	It will keep your entire instrument and MDI universe always up-to-date. 
+	
+*  History data downloader
+
+	This piece downloads for a configurable field set, historical data in configurable timeframes (i.e. hourly, 1-minute, etc) and stores these in your AQ archive. 
+	
+	
+	
+* Obtaining and trial
+
+	Available as a commercial implementation from us, including a 30 day trial period. Please contact {{{mailto:ustaudinger@activequant.com}Ulrich}} for additional information. 
