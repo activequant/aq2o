@@ -19,8 +19,44 @@
 		<menu name="Framework">
 			<item name="Welcome" href="index.html" />
 			<item name="High level overview" href="highlevel.html" />
-			<item name="Installation/Use/POM" href="referencingaq.html" />
-			<item name="Details" href="aboutdetails.html" collapse="false">
+			<item name="Installation/Use/POM" href="referencingaq.html" />		
+		</menu>
+
+		<menu name="Example code">
+			<item name="Taste the blood" href="examples/tastingtheblood.html"/>
+		</menu>
+	
+		<menu name="Downloads">
+			<!--   item name="QEmu Appliance" href="qemuapp.html" / -->
+			<item name="Uber-JAR" href="uberjar.html" />
+		</menu>
+		<menu name="Usage scenarios">
+			<item name="Importing timeseries data" href="importingdata.html" />
+			<item name="Importing reference data" href="importingrefdata.html" />
+			<item name="Backtesting" href="backtesting.html" />
+			<!--   item name="Live trading" href="livetrading.html" / -->
+			<item name="Research" href="research.html" />
+		</menu>
+
+
+		<menu name="Service facades (SOA)">
+			<item name="Introduction" href="servicefacades.html" />
+			<item name="Matlab (and Java) Facade" href="matlabfacade.html" />
+			<item name="SOAP Facade" href="soapfacade.html" />
+		</menu>
+
+		<menu name="Venue connectors">
+			<item name="Trading Technologies" href="tt.html" />
+			<item name="BB TradeBook" href="bbtb.html" />
+			<item name="CTS T4" href="cts.html" />
+		</menu>
+			<menu name="Support">
+			<item name="Forum" href="supp_forums.html" />
+			<item name="Bug tracker" href="bugtracker.html" />
+			<item name="Consulting" href="consulting.html" />
+			<item name="What you can do" href="yourinvolvement.html" />
+		</menu>
+		<menu name="Details" href="aboutdetails.html" collapse="false">
 				<item name="Introduction" href="aboutdetails.html" />
 				<item name="Domain model" href="domainmodel.html" />
 				<item name="MdiIDs to InstIDs" href="instmapping.html" />
@@ -31,53 +67,23 @@
 				<item name="Messaging" href="messaging.html" />
 				<item name="SNMP support" href="snmp.html" />
 				<item name="Worker Threads" href="workerpattern.html" />
-			</item>
-		</menu>
-
-		<menu name="Example code">
-			<item name="Taste the blood" href="examples/tastingtheblood.html"/>
-		</menu>
-
-		<menu name="Service facades (SOA)">
-			<item name="Introduction" href="servicefacades.html" />
-			<item name="Matlab (and Java) Facade" href="matlabfacade.html" />
-			<item name="SOAP Facade" href="soapfacade.html" />
-		</menu>
+			</menu>
+		
 		
 		
 		
 
-		<menu name="Usage scenarios">
-			<item name="Importing timeseries data" href="importingdata.html" />
-			<item name="Importing reference data" href="importingrefdata.html" />
-			<item name="Backtesting" href="backtesting.html" />
-			<item name="Live trading" href="livetrading.html" />
-			<item name="Research" href="research.html" />
-		</menu>
-		<menu name="Venue connectors">
-			<item name="Trading Technologies" href="tt.html" />
-			<item name="BB TradeBook" href="bbtb.html" />
-			<item name="CTS T4" href="cts.html" />
-		</menu>
-		<menu name="Downloads">
-			<!--   item name="QEmu Appliance" href="qemuapp.html" / -->
-			<item name="Uber-JAR" href="uberjar.html" />
-		</menu>
-		<menu name="Support">
-			<item name="Forum" href="supp_forums.html" />
-			<item name="Bug tracker" href="bugtracker.html" />
-			<item name="Consulting" href="consulting.html" />
-			<item name="What you can do" href="yourinvolvement.html" />
-		</menu>
+	
+	
 
-		<menu name="License, Disclaimer, etc">
+		<menu name="License, Disclaimer, etc" >
 			<item name="License" href="license.html" />
 			<item name="Legal" href="legal.html" />
 			<item name="Contact details" href="contact.html" />
 		</menu>
 
 
-		<menu ref="reports" />
+		<menu ref="reports" collapse="false" />
 
 	</body>
 </project>
