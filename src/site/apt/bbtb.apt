@@ -1,9 +1,9 @@
-Bloomberg connectors
+Bloomberg™ connectors
 	
 	One of our commercial offers is a BB data downloader. This data downloader is a stand-alone application and enables you to 
 	download reference data and historical data, straight into {{{uberjar.html}your AQ installation}}. 
 	
-	<NOTE: You must have a SAPI license unless you want to store everything on your terminal machine.>
+	<NOTE: You must have a SAPI license unless you want to store everything on your terminal machine. As BB's content license is a bit tricky and restrictive, don't hesitate to discuss this with us or Bloomberg.>
 	
 	It consists of several parts, which we describe in more detail below. 
 	
@@ -25,4 +25,8 @@ Bloomberg connectors
 	
 * Obtaining and trial
 
-	Available as a commercial implementation from us, including a 30 day trial period. Please contact {{{mailto:ustaudinger@activequant.com}Ulrich}} for additional information. 
+	Available as a commercial implementation from us, including a 30 day trial period. Please contact {{{mailto:ustaudinger@activequant.com}Ulrich}} for additional information.
+	
+	
+=====
+  	<Bloomberg is a registered trademark of Bloomberg Finance L.P., see {{{http://www.bloomberg.com/notices/trademarks.html}BB's trademark page}}.>	 
