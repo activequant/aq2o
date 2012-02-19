@@ -49,7 +49,7 @@
 
 		<menu name="Venue connectors">
 			<item name="Trading Technologies" href="tt.html" />
-			<item name="BB TradeBook" href="bbtb.html" />
+			<item name="Bloomberg Terminals" href="bbtb.html" />
 			<item name="CTS T4" href="cts.html" />
 		</menu>
 			<menu name="Support">
