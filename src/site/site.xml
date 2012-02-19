@@ -58,7 +58,7 @@
 			<item name="Consulting" href="consulting.html" />
 			<item name="What you can do" href="yourinvolvement.html" />
 		</menu>
-		<menu name="Details" href="aboutdetails.html">
+		<menu name="Details">
 				<item name="Introduction" href="aboutdetails.html" />
 				<item name="Domain model" href="domainmodel.html" />
 				<item name="MdiIDs to InstIDs" href="instmapping.html" />
