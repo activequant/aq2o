@@ -31,6 +31,7 @@
 		<menu name="Downloads">
 			<!--   item name="QEmu Appliance" href="qemuapp.html" / -->
 			<item name="Uber-JAR" href="uberjar.html" />
+			<item name="Source Code" href="source_code.html" />
 		</menu>
 		<menu name="Usage scenarios">
 			<item name="Importing timeseries data" href="importingdata.html" />
