@@ -26,7 +26,7 @@ public class Forward extends Derivative {
 	}
 
 	public String getId() {
-		return "FUT." + nullSafe(getExchangeCode()) + "." + nullSafe(getShortName());
+		return "FWD." + nullSafe(getExchangeCode()) + "." + nullSafe(getShortName());
 	}
 
 	@Property
