@@ -26,9 +26,7 @@ class HBaseBase {
 
     HBaseBase(final String zookeeperQuorumHost, final int zookeeperPort, final String tableName) throws IOException {
         Configuration config = HBaseConfiguration.create();
-        config.set("hbase.zookeeper.quorum", zookeeperQuorumHost+":"+zookeeperPort);
-        
-        
+        config.set("hbase.zookeeper.quorum", zookeeperQuorumHost+":"+zookeeperPort);               
         HBaseAdmin admin = new HBaseAdmin(config);
         if (!admin.tableExists(tableName.getBytes())) {
             log.info("HTable doesn't exist. Creating it.");
@@ -44,7 +42,6 @@ class HBaseBase {
         htable.setAutoFlush(false);
         htable.setScannerCaching(1000000);
     }
-
 
     protected ResultScanner getScanner(final String instrumentId, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp) throws IOException {
         String startKey = instrumentId + "_" + padded(startTimeStamp.toString());

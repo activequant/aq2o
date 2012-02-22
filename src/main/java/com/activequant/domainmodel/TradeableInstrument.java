@@ -6,12 +6,16 @@ public class TradeableInstrument extends PersistentEntity {
 
     private String instrumentId, tradingProvider, providerSpecificId;
 
+    public TradeableInstrument(String clazz){
+    	super(clazz);
+    }
+    
     public TradeableInstrument() {
         super(TradeableInstrument.class.getCanonicalName());
     }
 
     public String getId() {
-        return "TRADEABLE."+ instrumentId + "." + tradingProvider;
+        return "TRADEABLE."+ tradingProvider +"." + providerSpecificId;
     }
 
     @Property
