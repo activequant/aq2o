@@ -1,0 +1,11 @@
+ChangeLog
+
+* 2.1-SNAPSHOT
+
+** New features
+
+	* Tagging engine, for example to tag instruments. Tags could be a sector, a currency, a country, a market cap grouping, etc. Tags are not to be misunderstood as actual object properties.  
+
+* 2.0 (15 February 2012)
+
+	* First release of AQ2o. 
