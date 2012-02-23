@@ -4,7 +4,7 @@ import com.activequant.utils.annotations.Property;
 
 public abstract class Instrument extends PersistentEntity {
 
-    private String shortName, name, description, symbol;
+    private String shortName, name, description, symbolId; 
 
     public Instrument() {
         super(Instrument.class.getCanonicalName());
@@ -55,11 +55,12 @@ public abstract class Instrument extends PersistentEntity {
     }
 
     @Property
-	public String getSymbol() {
-		return symbol;
+	public String getSymbolId() {
+		return symbolId;
 	}
 
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
+	public void setSymbolId(String symbolId) {
+		this.symbolId = symbolId;
 	}
+ 
 }

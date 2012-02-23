@@ -6,6 +6,8 @@ ChangeLog
 
 	* Tagging engine, for example to tag instruments. Tags could be a sector, a currency, a country, a market cap grouping, etc. Tags are not to be misunderstood as actual object properties.  
 
+	* Adding a symbol class, extending Instrument. Adding a link from Instrument to SymbolId, so that instruments can be associated with a generic symbol. The location of this backlink might change in the future. 
+
 * 2.0 (15 February 2012)
 
 	* First release of AQ2o. 
