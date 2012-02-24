@@ -76,6 +76,7 @@ public interface GenericRowMapper {
             @Param("val") Double val);
 
     @Delete("DELETE FROM ${table} where keyVal=#{keyVal}")
+    @Options(flushCache = true)
     void delete(@Param("table") String table, @Param("keyVal") String keyVal);
 
     @Select("select distinct(A.keyVal) from ${table} A, ${table} B where (A.fieldName=#{fieldName1} and A.stringVal=#{val1}) and  (B.fieldName=#{fieldName2} and B.stringVal = #{val2}) and A.keyVal = B.keyVal")
