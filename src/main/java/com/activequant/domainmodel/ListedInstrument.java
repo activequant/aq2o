@@ -9,6 +9,7 @@ public abstract class ListedInstrument extends Instrument {
     private String quoteUnits;
     private Double tickValue;
     private Double tickSize;
+    private String cusip; 
 
     @Property()
     public Double getTickSize() {
@@ -58,5 +59,14 @@ public abstract class ListedInstrument extends Instrument {
     public ListedInstrument(String name) {
         super(name);
     }
+
+    @Property
+    public String getCusip() {
+		return cusip;
+	}
+
+	public void setCusip(String cusip) {
+		this.cusip = cusip;
+	}
 
 }

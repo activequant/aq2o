@@ -87,6 +87,10 @@ public interface GenericRowMapper {
     List<String> findIDsWhereLongValGreater(@Param("table") String table, @Param("fieldName") String fieldName,
             @Param("val") Long val);
 
+    @Select("SELECT keyVal from ${table} where fieldName=#{fieldName} and longVal>=#{val} and longVal<=#{val2}")
+    List<String> findIDsWhereLongValBetween(@Param("table") String table, @Param("fieldName") String fieldName,
+            @Param("val") Long val, @Param("val2") Long val2);
+    
     @Select("SELECT count(distinct(keyVal)) from ${table} where fieldName=#{fieldName} and stringVal=#{val}")
     int countForStringValue(@Param("table") String table, @Param("fieldName") String fieldName,
             @Param("val") String value);

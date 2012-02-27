@@ -26,6 +26,7 @@
 
 		<menu name="Example code">
 			<item name="Getting a taste ..." href="examples/atasteofactivequant.html"/>
+			<item name="Tagging?!!" href="examples/tagging.html"/>
 		</menu>
 		
 		<menu name="Documentation">

@@ -227,6 +227,13 @@ public class GenericMapperDao<T extends PersistentEntity> {
         return ret.toArray(new String[] {});
     }
 
+
+    public String[] findIDsWhereLongValBetween(String fieldName, long minValue, long maxValue) {
+        List<String> ret = mapper.findIDsWhereLongValBetween(tableName, fieldName, minValue, maxValue);
+        return ret.toArray(new String[] {});
+    }
+
+    
     public String[] findIDs(String key, Double dValue) {
         List<String> ret = mapper.findByDouble(tableName, key, dValue);
         return ret.toArray(new String[] {});
