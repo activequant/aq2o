@@ -6,10 +6,10 @@ QlikView Integration
 	
 	Setup an ODBC connection to your AQ database on Windows, for example as describe at {{{http://www.razorsql.com/docs/odbc_setup.html}RazorSQL}}.
 	
-[./images/aq2o_odbc.png] Setting up the ODBC connection 
+[../images/aq2o_odbc.png] Setting up the ODBC connection 
 
-[./images/aq3o_odbc.png] Selecting in QlikView the driver
+[../images/aq3o_odbc.png] Selecting in QlikView the driver
 
-[./images/aq4o_odbc.png] How the report looks like 
+[../images/aq4o_odbc.png] How the report looks like 
 	 
 	 You can get the QlikView report file for free from {{{mailto:ustaudinger@activeqant.com}Ulrich}}, simply send an email. 
