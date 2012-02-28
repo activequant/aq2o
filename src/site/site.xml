@@ -40,6 +40,7 @@
 			<item name="Source Code" href="source_code.html" />
 		</menu>
 		<menu name="Usage scenarios">
+			<item name="Using AQ with QlikView" href="integration/qlikview.html"/>
 			<item name="Importing timeseries data" href="importingdata.html" />
 			<item name="Importing reference data" href="importingrefdata.html" />
 			<item name="Backtesting" href="backtesting.html" />
