@@ -5,65 +5,45 @@ import com.activequant.transport.ETransportType;
 
 public class MarketDataSnapshot extends MarketDataEvent {
 
-	private double[] bidPrices, askPrices, bidSizes, askSizes;
-	private String tradeableId;
+	private final double[] bidPrices, askPrices, bidSizes, askSizes;
+	private final String mdiId;
 
-	public MarketDataSnapshot(String mdiId, String tradeableId, TimeStamp ts, double[] bidPrices, double[] askPrices,
-			double[] bidSizes, double[] askSizes) {
+	public MarketDataSnapshot(String mdiId, TimeStamp ts, double[] bidPrices, double[] askPrices, double[] bidSizes,
+			double[] askSizes) {
 		super(ts, MarketDataSnapshot.class.getCanonicalName(), mdiId);
-		this.tradeableId = tradeableId;
 		this.bidPrices = bidPrices;
-		this.askPrices = askPrices; 
-		this.bidSizes = bidSizes; 
-		this.askSizes = askSizes; 
+		this.askPrices = askPrices;
+		this.bidSizes = bidSizes;
+		this.askSizes = askSizes;
+		this.mdiId = mdiId;
 	}
 
 	public ETransportType getEventType() {
 		return ETransportType.MARKET_DATA;
 	}
 
-	public String getTradeableInstrumentId() {
-		return tradeableId;
+	public String getMarketDataId() {
+		return mdiId;
 	}
 
-	public String getTradeableId() {
-		return tradeableId;
-	}
-
-	public void setTradeableId(String tradeableId) {
-		this.tradeableId = tradeableId;
+	public String getMdiId() {
+		return mdiId;
 	}
 
 	public double[] getBidPrices() {
 		return bidPrices;
 	}
 
-	public void setBidPrices(double[] bidPrices) {
-		this.bidPrices = bidPrices;
-	}
-
 	public double[] getAskPrices() {
 		return askPrices;
-	}
-
-	public void setAskPrices(double[] askPrices) {
-		this.askPrices = askPrices;
 	}
 
 	public double[] getBidSizes() {
 		return bidSizes;
 	}
 
-	public void setBidSizes(double[] bidSizes) {
-		this.bidSizes = bidSizes;
-	}
-
 	public double[] getAskSizes() {
 		return askSizes;
-	}
-
-	public void setAskSizes(double[] askSizes) {
-		this.askSizes = askSizes;
 	}
 
 }
