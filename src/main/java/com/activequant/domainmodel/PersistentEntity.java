@@ -173,9 +173,20 @@ public abstract class PersistentEntity {
     public String nullSafe(Object val) {
         if (val == null)
             return "<NA>";
-        return val.toString();
+        String valString = val.toString();
+        // valString.replaceAll(" ", "_");
+        return valString; 
     }
 
+    public String nullSafeNoSpace(Object val) {
+        if (val == null)
+            return "<NA>";
+        String valString = val.toString();
+        valString.replaceAll(" ", "_");
+        return valString; 
+    }
+
+    
     /**
      * 
      * @return a clone of the property map.

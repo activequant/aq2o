@@ -3,6 +3,7 @@ package com.activequant.server;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.soap.SOAPBinding;
 
+import org.apache.cxf.binding.soap.SoapBindingFactory;
 import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -28,15 +29,16 @@ public class LocalSoapServer {
         eg.createJettyHTTPServerEngine(this.port, "http");
         // bind the main service. 
         Object implementor = new MainService(idf);
-        Endpoint ep = Endpoint.publish("http://"+hostName+":" + port + "/aq2o", implementor);
+        Endpoint ep = Endpoint.publish("http://"+hostName+":" + port + "/aq2o", implementor);             
         SOAPBinding soap = (SOAPBinding) ep.getBinding();
-        soap.setMTOMEnabled(true);
+        
+        soap.setMTOMEnabled(false);
     }
     
     public void addService(String serviceSuburl, Object serviceImplementor){
         Endpoint ep = Endpoint.publish("http://"+hostName+":" + port + "/"+serviceSuburl, serviceImplementor);
         SOAPBinding soap = (SOAPBinding) ep.getBinding();
-        soap.setMTOMEnabled(true);
+        soap.setMTOMEnabled(false);
     }
     
 }
