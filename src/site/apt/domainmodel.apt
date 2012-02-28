@@ -90,3 +90,18 @@ Domain model overview
 	Examples of how to consume these events are available in the trading system related section of this webpage. 	 
 		
 	   
+* Streaming
+
+	<Note. Currently I think about switching entirely to FIX, also for internal messaging. But this is entirely undecided and uncooked.>
+	
+** MarketDataEvent
+
+	All events derive from a StreamEvent, which is also the base class for a MarketDataEvent
+	
+** Ticks
+
+	Deliver tick data
+	
+** MarketDataSnapshot
+
+	Deliver market data snapshots. 		
