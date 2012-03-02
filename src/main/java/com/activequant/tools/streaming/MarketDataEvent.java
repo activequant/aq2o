@@ -9,6 +9,10 @@ public abstract class MarketDataEvent extends TimeStreamEvent {
 	
 	public ETransportType getEventType(){return ETransportType.MARKET_DATA;}
 	
+	public MarketDataEvent(String className){
+		super(className);
+	}
+	
 	public MarketDataEvent(TimeStamp ts, String className, String mdiId)
 	{
 		super(ts, className);

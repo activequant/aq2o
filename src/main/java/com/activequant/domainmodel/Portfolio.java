@@ -1,5 +1,8 @@
 package com.activequant.domainmodel;
 
+import java.util.List;
+
+import com.activequant.utils.ArrayUtils;
 import com.activequant.utils.annotations.Property;
 
 public class Portfolio extends PersistentEntity {
@@ -53,4 +56,39 @@ public class Portfolio extends PersistentEntity {
 	public void setEntryPrice(double[] entryPrice) {
 		this.entryPrice = entryPrice;
 	}
+
+	public void setPosition(String tradeableId, double price, double quantity){
+		if(tradeableInstrumentIds==null){
+			tradeableInstrumentIds = new String[0];
+			positions = new double[0];
+			entryPrice = new double[0];
+		}
+		int index = -1;
+		for(int i=0;i<tradeableInstrumentIds.length;i++){
+			if(tradeableInstrumentIds[i].equals(tradeableId)){
+				index = i;
+				break;
+			}
+		}
+		if(index==-1){
+			List<String> l = ArrayUtils.asList(tradeableInstrumentIds);
+			l.add(tradeableId);
+			tradeableInstrumentIds = ArrayUtils.asArray(l, String.class);
+			
+			double[] newPos = new double[positions.length+1];
+			System.arraycopy(positions, 0, newPos, 0, positions.length);
+			newPos[newPos.length-1] = quantity;
+			positions = newPos;
+			
+			double[] newPrice = new double[entryPrice.length+1];
+			System.arraycopy(entryPrice, 0, newPrice, 0, entryPrice.length);
+			newPrice[newPrice.length-1] = price;
+			entryPrice = newPrice;			
+		}
+		else{
+			entryPrice[index] = price; 
+			positions[index] = quantity; 
+		}
+	}
+
 }
