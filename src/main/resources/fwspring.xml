@@ -51,8 +51,8 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="tagDao" lazy-init="true"
-		class="com.activequant.archive.dao.TagDao">
+
+	<bean id="tagDao" lazy-init="true" class="com.activequant.dao.hbase.TagDao">
 		<constructor-arg>
 			<value>${hbase.zookeeper.host}</value>
 		</constructor-arg>
