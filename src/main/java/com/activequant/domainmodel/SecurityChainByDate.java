@@ -25,6 +25,7 @@ public class SecurityChainByDate extends SecurityChain {
      * @param instrumentId
      * @param rollDate8
      */
+    @Deprecated
     public void add(String instrumentId, Long rollDate8) {
         List<Tuple<Long, String>> chainList = new ArrayList<Tuple<Long, String>>();
         //
@@ -36,6 +37,7 @@ public class SecurityChainByDate extends SecurityChain {
         sortAndSetChainList(chainList);
     }
 
+    @Deprecated
     public void add(String[] instrumentId, Long rollDate8[]) {
         for(int i=0;i<instrumentId.length;i++)
         {
@@ -43,6 +45,7 @@ public class SecurityChainByDate extends SecurityChain {
         }
     }
 
+    @Deprecated
     private void sortAndSetChainList(List<Tuple<Long, String>> chainList) {
         //
         Collections.sort(chainList, new Comparator<Tuple<Long, String>>() {
@@ -67,37 +70,43 @@ public class SecurityChainByDate extends SecurityChain {
     }
 
     @Property()
+    @Deprecated
     public Long[] getRollDates() {
         return rollDates;
     }
-
+    @Deprecated
     public void setRollDates(Long[] rollDates) {
         this.rollDates = rollDates;
     }
 
     @Property()
+    @Deprecated
     public String[] getValidInstrumentIDs() {
         return validInstrumentIds;
     }
-
+    @Deprecated
     public void setValidInstrumentIDs(String[] validInstrument) {
         this.validInstrumentIds = validInstrument;
     }
 
     @Property
+    @Deprecated
     public Long getLastHistFetchTime() {
         return lastHistFetchTime;
     }
 
+    @Deprecated
     public void setLastHistFetchTime(Long lastHistFetchTime) {
         this.lastHistFetchTime = lastHistFetchTime;
     }
 
     @Property
+    @Deprecated
     public Long getLastChainUpdateTime() {
         return lastChainUpdateTime;
     }
 
+    @Deprecated
     public void setLastChainUpdateTime(Long lastChainUpdateTime) {
         this.lastChainUpdateTime = lastChainUpdateTime;
     }

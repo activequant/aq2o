@@ -56,6 +56,7 @@ public interface GenericRowMapper {
     })
     List<GenericRow> load(@Param("table") String table, @Param("keyValue") String keyValue);
 
+    
     @Transactional
     @Insert("insert into ${table} values (#{row.created}, #{row.keyVal},#{row.fieldName},#{row.doubleVal},#{row.longVal},#{row.stringVal})")
     @Options(flushCache = true)

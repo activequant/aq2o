@@ -1,5 +1,7 @@
 package com.activequant.dao.mybatis;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Instrument;
@@ -9,8 +11,8 @@ public class InstrumentDao extends GenericMapperDao<Instrument> implements IInst
     // private Logger log = Logger.getLogger(InstrumentDao.class);
     private static final String tableName = "Instrument";
 
-    public InstrumentDao(GenericRowMapper mapper) {
-        super(mapper, Instrument.class, tableName);
+    public InstrumentDao(GenericRowMapper mapper, SqlSessionFactory s) {
+        super(s, mapper, Instrument.class, tableName);
     }
 
     public String[] getNonExpiredInstruments(long date8) {

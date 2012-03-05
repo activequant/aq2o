@@ -14,6 +14,9 @@
 	<bean id="countryDao" class="com.activequant.dao.mybatis.CountryDao" lazy-init="true">
 		<constructor-arg>
 			<ref bean="countryMapper"></ref>
+		</constructor-arg>		
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
 		</constructor-arg>
 	</bean>
 
@@ -27,6 +30,9 @@
 		<constructor-arg>
 			<ref bean="regionMapper"></ref>
 		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
+		</constructor-arg>
 	</bean>
 
 	<bean id="genMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean" lazy-init="true">
@@ -38,6 +44,9 @@
 	<bean id="instrDao" class="com.activequant.dao.mybatis.InstrumentDao" lazy-init="true">
 		<constructor-arg>
 			<ref bean="genMapper1"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
 		</constructor-arg>
 	</bean>
 
@@ -53,6 +62,9 @@
 		<constructor-arg>
 			<ref bean="genMapper2"></ref>
 		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
+		</constructor-arg>
 	</bean>
 
 
@@ -66,6 +78,9 @@
 		<constructor-arg>
 			<ref bean="genMapper3"></ref>
 		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
+		</constructor-arg>
 	</bean>
 
 	<bean id="genMapper4" class="org.mybatis.spring.mapper.MapperFactoryBean" lazy-init="true">
@@ -77,6 +92,9 @@
 	<bean id="tradeableDao" class="com.activequant.dao.mybatis.TradeableInstrumentDao" lazy-init="true">
 		<constructor-arg>
 			<ref bean="genMapper4"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
 		</constructor-arg>
 	</bean>
 
@@ -90,6 +108,9 @@
 		<constructor-arg>
 			<ref bean="genMapper5"></ref>
 		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
+		</constructor-arg>
 	</bean>
 
 	<bean id="genMapper6" class="org.mybatis.spring.mapper.MapperFactoryBean" lazy-init="true">
@@ -101,6 +122,9 @@
 	<bean id="positionDao" class="com.activequant.dao.mybatis.PositionDao" lazy-init="true">
 		<constructor-arg>
 			<ref bean="genMapper6"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
 		</constructor-arg>
 	</bean>
 	
@@ -114,7 +138,26 @@
 		<constructor-arg>
 			<ref bean="genMapper7"></ref>
 		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
+		</constructor-arg>
 	</bean>
+
+	<bean id="genMapper8" class="org.mybatis.spring.mapper.MapperFactoryBean" lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="adjSrsDtEntryDao" class="com.activequant.dao.mybatis.AdjustedSeriesDateEntryDao" lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper8"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory"/>
+		</constructor-arg>
+	</bean>
+
 
 
 	<bean id="ibatisDao" class="com.activequant.dao.mybatis.DaoFactory" lazy-init="true">
@@ -144,6 +187,9 @@
 		</constructor-arg>
 		<constructor-arg index="8">
 			<ref bean="securityChainDao"></ref>
+		</constructor-arg>
+		<constructor-arg index="9">
+			<ref bean="adjSrsDtEntryDao"></ref>
 		</constructor-arg>
 	</bean>
 

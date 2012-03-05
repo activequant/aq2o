@@ -3,6 +3,8 @@ package com.activequant.dao.mybatis;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+
 import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Instrument;
@@ -13,8 +15,8 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
     // private Logger log = Logger.getLogger(InstrumentDao.class);
     private static final String tableName = "MarketDataInstrument";
 
-    public MarketDataInstrumentDao(GenericRowMapper mapper) {
-        super(mapper, MarketDataInstrument.class, tableName);
+    public MarketDataInstrumentDao(GenericRowMapper mapper, SqlSessionFactory s) {
+        super(s, mapper, MarketDataInstrument.class, tableName);
     }
 
     public MarketDataInstrument[] findFor(Instrument instrument) {

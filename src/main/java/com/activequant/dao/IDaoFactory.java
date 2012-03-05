@@ -19,4 +19,5 @@ public interface IDaoFactory {
     
     ISecurityChainDao securityChainDao();
     
+    IAdjustedSeriesDateEntryDao adjSerDtEntryDao();
 }

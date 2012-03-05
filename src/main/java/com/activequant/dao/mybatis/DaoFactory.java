@@ -1,5 +1,6 @@
 package com.activequant.dao.mybatis;
 
+import com.activequant.dao.IAdjustedSeriesDateEntryDao;
 import com.activequant.dao.ICountryDao;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
@@ -28,10 +29,11 @@ public class DaoFactory implements IDaoFactory {
     private IPositionDao positionDao;
     private IPortfolioDao portfolioDao;
     private ISecurityChainDao securityChainDao;
+    private IAdjustedSeriesDateEntryDao adjSDao;
 
     public DaoFactory(ICountryDao countryDao, IRegionDao regionDao, IInstrumentDao instrDao, IVenueDao venueDao,
             ITradeableInstrumentDao tradInstDao, IMarketDataInstrumentDao mdiDao, IPositionDao positionDao,
-            IPortfolioDao portfolioDao, ISecurityChainDao securityChainDao) {
+            IPortfolioDao portfolioDao, ISecurityChainDao securityChainDao, IAdjustedSeriesDateEntryDao aD) {
         this.countryDao = countryDao;
         this.regionDao = regionDao;
         this.instrumentDao = instrDao;
@@ -40,7 +42,8 @@ public class DaoFactory implements IDaoFactory {
         this.tradInstDao = tradInstDao;
         this.positionDao = positionDao;
         this.portfolioDao = portfolioDao;
-        this.securityChainDao = securityChainDao; 
+        this.securityChainDao = securityChainDao;
+        this.adjSDao = aD;
     }
 
     public ICountryDao countryDao() {
@@ -78,5 +81,10 @@ public class DaoFactory implements IDaoFactory {
     public ISecurityChainDao securityChainDao(){
     	return securityChainDao; 
     }
+
+	@Override
+	public IAdjustedSeriesDateEntryDao adjSerDtEntryDao() {
+		return adjSDao;
+	}
     
 }
