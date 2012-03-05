@@ -10,6 +10,8 @@ ChangeLog
 	
 	* Adding a MarketDataSnapshot class in addition to the BBOEvent 
 	
+	* Making SQL Session available in MyBatis DAO objects, for example to execute custom SQL statements.  
+	
 ** Varia
 
 	* Changing SOAP facade from SOAP 1.2 to SOAP 1.1 to ensure that .NET clients can access the service without problems (also disabling MTOM) 
