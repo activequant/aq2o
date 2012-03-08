@@ -35,6 +35,7 @@ db.password=writerpwd
 	The MyBatis DAO factory requires a database configuration properties file in the well-known Java properties file format. 
 	The MyBatis DAO factory will also initialize the database tables on initialization in case these tables do not exist. 	
 
+	Note: Use only type String, Double, Long and Integer in your classes and you'll be fine. Don't use the primitives. 
 
 
 * Example use: IInstrumentDao
