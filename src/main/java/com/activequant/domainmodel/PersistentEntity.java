@@ -77,6 +77,10 @@ public abstract class PersistentEntity {
     		if(input.getClass().isAssignableFrom(String.class))
     			return Long.parseLong(input.toString());    		
     	}
+    	else if(targetType.isArray())
+    	{
+    		return (double[]) input;
+    	}
     	return input; 
     }
     

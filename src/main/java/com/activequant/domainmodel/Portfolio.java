@@ -8,9 +8,9 @@ import com.activequant.utils.annotations.Property;
 public class Portfolio extends PersistentEntity {
 
     private String accountId;
-    private String[] tradeableInstrumentIds;
-    private double[] positions;
-    private double[] entryPrice; 
+    private String[] tradeableInstrumentIds = new String[0];
+    private double[] positions = new double[0];
+    private double[] entryPrice = new double[0];
 
     public Portfolio() {
         super(Portfolio.class.getCanonicalName());
@@ -56,7 +56,37 @@ public class Portfolio extends PersistentEntity {
 	public void setEntryPrice(double[] entryPrice) {
 		this.entryPrice = entryPrice;
 	}
+	
+	
+	public double getPosition(String tradeableId){
+		int index = -1;
+		for(int i=0;i<tradeableInstrumentIds.length;i++){
+			if(tradeableInstrumentIds[i].equals(tradeableId)){
+				index = i;
+				break;
+			}
+		}
+		if(index!=-1){
+			return positions[index];
+		}
+		return 0.0; 
+	}
 
+
+	public double getOpenPrice(String tradeableId){
+		int index = -1;
+		for(int i=0;i<tradeableInstrumentIds.length;i++){
+			if(tradeableInstrumentIds[i].equals(tradeableId)){
+				index = i;
+				break;
+			}
+		}
+		if(index!=-1){
+			return entryPrice[index];
+		}
+		return 0.0; 
+	}
+	
 	public void setPosition(String tradeableId, double price, double quantity){
 		if(tradeableInstrumentIds==null){
 			tradeableInstrumentIds = new String[0];
