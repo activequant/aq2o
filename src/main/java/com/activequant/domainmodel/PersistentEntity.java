@@ -75,11 +75,14 @@ public abstract class PersistentEntity {
     	}
     	else if(targetType.isAssignableFrom(long.class) || targetType.isAssignableFrom(Long.class)){
     		if(input.getClass().isAssignableFrom(String.class))
-    			return Long.parseLong(input.toString());    		
+    			return Long.parseLong(input.toString());    
     	}
-    	else if(targetType.isArray())
-    	{
-    		return (double[]) input;
+    	else if(targetType.isAssignableFrom(int.class) || targetType.isAssignableFrom(Integer.class)){
+    		if(input.getClass().isAssignableFrom(String.class))
+    			return Integer.parseInt(input.toString());  
+    		if(input.getClass().isAssignableFrom(Long.class)){
+    			return ((Long)input).intValue();
+    		}
     	}
     	return input; 
     }

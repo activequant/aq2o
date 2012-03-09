@@ -171,7 +171,7 @@ public class GenericMapperDao<T extends PersistentEntity> {
 		} else if (value instanceof String) {
 			gr = new GenericRow(createdTimeStamp, id, key, null, null, (String) value);
 		} else if (value instanceof Integer) {
-			gr = new GenericRow(createdTimeStamp, id, key, (Long) value, null, null);
+			gr = new GenericRow(createdTimeStamp, id, key, ((Integer) value).longValue(), null, null);
 		} else if (value instanceof Long) {
 			gr = new GenericRow(createdTimeStamp, id, key, (Long) value, null, null);
 		}
