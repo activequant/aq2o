@@ -69,4 +69,11 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="inmemoryTransport"
+		class="com.activequant.transport.memory.InMemoryTransportFactory"
+		lazy-init="true">
+	</bean>
+
+
+
 </beans>
