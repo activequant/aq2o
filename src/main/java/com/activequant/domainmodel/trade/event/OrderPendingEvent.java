@@ -11,4 +11,11 @@ public class OrderPendingEvent extends OrderTerminalEvent {
 	public void setCancellationMessage(String cancellationMessage) {
 		this.cancellationMessage = cancellationMessage;
 	}
+	
+	
+
+	public String toString(){
+		return "Order " + super.getRefOrderId() + " pending: " + cancellationMessage; 
+	}
+	
 }

@@ -201,4 +201,9 @@ public class VirtualExchange implements IExchange {
 		return lobs.get(tradeableInstrumentId);
 	}
 
+	@Override
+	public IOrderTracker getOrderTracker(String orderId) {
+		return orderTrackers.get(orderId);
+	}
+
 }

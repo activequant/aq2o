@@ -12,4 +12,9 @@ public class OrderRejectedEvent extends OrderEvent {
 		this.reason = reason;
 	} 
 	
+	
+
+	public String toString(){
+		return "Order " + super.getRefOrderId() + " rejected: " + reason; 
+	}
 }

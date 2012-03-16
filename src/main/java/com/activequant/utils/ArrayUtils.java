@@ -141,4 +141,22 @@ public class ArrayUtils {
 		}
 		return ret; 
 	}
+	
+	public List<Object[]> c(Object[][] in){
+		List<Object[]> rows = new ArrayList<Object[]>();
+		for(int i=0;i<in.length;i++){
+			rows.add(in[i]);
+		}
+		return rows; 
+	}
+	
+
+	public Object[][] c(List<Object[]> in){
+		Object[][] out = new Object[in.size()][];
+		for(int i=0;i<in.size();i++){
+			out[i] = in.get(i);
+		}
+		return out; 
+	}
+	
 }

@@ -86,7 +86,7 @@ public class Backtester {
 						rde.getInstrument()).send(se);
 			} else if (transportType.equals(ETransportType.TRAD_DATA)) {
 				TradingDataEvent tde = (TradingDataEvent) se;
-				transportFactory.getPublisher(transportType, tde.getTradInst())
+				transportFactory.getPublisher(transportType, tde.getTradInstId())
 						.send(se);
 
 				// send everything also to virtex exchange layer.

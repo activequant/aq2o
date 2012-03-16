@@ -1,20 +1,18 @@
 package com.activequant.tools.streaming;
 
-import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.transport.ETransportType;
 
 public abstract class TradingDataEvent extends TimeStreamEvent {
 	
-	private final TradeableInstrument instr; 
+	private final String tradInstId; 
 	
 	public ETransportType getEventType(){return ETransportType.TRAD_DATA;}
 	
-	public TradingDataEvent(TimeStamp ts, String className, TradeableInstrument instr)
+	public TradingDataEvent(TimeStamp ts, String className, String instr)
 	{
 		super(ts, className);
-		this.instr = instr; 
+		this.tradInstId = instr; 
 	}
 		
 	@Override
@@ -22,8 +20,8 @@ public abstract class TradingDataEvent extends TimeStreamEvent {
 		return getTimeStamp().toString();
 	}
 
-	public TradeableInstrument getTradInst() {
-		return instr;
+	public String getTradInstId() {
+		return tradInstId;
 	}
 
 }

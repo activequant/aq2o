@@ -13,6 +13,14 @@ public interface IExchange {
 	public abstract TimeStamp currentExchangeTime();
 
 	public abstract IOrderTracker prepareOrder(Order order) throws UnsupportedOrderType, IncompleteOrderInstructions;
+	
+	/**
+	 * May, but does not have to be implemented. 
+	 * 
+	 * @param orderId
+	 * @return
+	 */
+	public abstract IOrderTracker getOrderTracker(String orderId);
 
 	public abstract LimitOrderBook getOrderBook(String tradeableInstrumentId) throws NoSuchOrderBook;
 
