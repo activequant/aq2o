@@ -6,7 +6,7 @@ Uberjar
 	
 	* All necessary dependencies to get started immediately. 
 	
-	You can start the AQ2o server with one click. It contains the aq2server.properties file and two basic run scripts (Feedback appreciated) for Windows and Linux/BSD derivatives.  
+	You can start the AQ2o server with one click. It contains the aq2server.properties file and two basic run scripts (Feedback appreciated) for Windows and Linux/BSD derivatives. Unfortunately, HBase requires Cygwin (particulary the chmod command) on Windows. So, that means you need to have a minimal cygwin installation on disc.  
 	
 	Download the Uber-JAR as a ZIP from our {{{http://sourceforge.net/projects/activequant/files/}sourceforge project}} page. By downloading, you accept our {{{./license.html}license}}.   
 	

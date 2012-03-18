@@ -13,12 +13,18 @@ ChangeLog
 	* Making SQL Session available in MyBatis DAO objects, for example to execute custom SQL statements.  
 
 	* New domain model class: Spread, having a buySide instrument ID and a sellSide instrument ID. 
+
+	* IExchange now has to implement access to order trackers (using iexchange as an order tracker store)
+	
+	* added many more order stream events. 	
 	
 ** Varia
 
 	* Changing SOAP facade from SOAP 1.2 to SOAP 1.1 to ensure that .NET clients can access the service without problems (also disabling MTOM) 
 
 	* Improving portfolio class with some basic getters/setters
+	
+	* Many other changes in the pipeline. 
 
 * 2.0 (15 February 2012)
 
