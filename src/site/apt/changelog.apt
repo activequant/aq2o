@@ -16,7 +16,9 @@ ChangeLog
 
 	* IExchange now has to implement access to order trackers (using iexchange as an order tracker store)
 	
-	* added many more order stream events. 	
+	* added many more order stream events.
+	
+	* Added an import routine for tradeable instruments from CSV files. 	
 	
 ** Varia
 
