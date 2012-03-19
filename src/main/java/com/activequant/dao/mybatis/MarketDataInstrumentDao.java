@@ -82,6 +82,16 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
 
 	@Override
 	public MarketDataInstrument findFor(String providerId, Instrument instrument) {
+		if(instrument==null)
+		{
+			log.warn("Instrument is null. ");
+			return null; 
+		}
+		if(providerId==null)
+		{
+			log.warn("Provider ID is null. ");
+			return null; 
+		}
         List<String> insts = mapper.findBy2StringVals(tableName, "MdProvider".toUpperCase(), providerId,
                 "instrumentId".toUpperCase(), instrument.getId());
         if (insts.size() > 1) {
