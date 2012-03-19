@@ -28,7 +28,7 @@ public class VisualBacktester extends JFrame {
 	@SuppressWarnings("rawtypes")
 	private StreamEventIterator[] streamIters;
 	private ITradingSystem[] tradingSystems;
-	private int tickPlayAmount = Integer.MAX_VALUE;
+	private int tickPlayAmount = 0;
 	private FastStreamer fs;
 	long eventCount = 0;
 
@@ -107,7 +107,7 @@ public class VisualBacktester extends JFrame {
 		
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		super.setSize(400, 200);
+		super.setSize(600,75);
 		super.setVisible(true);
 		super.toFront();
 

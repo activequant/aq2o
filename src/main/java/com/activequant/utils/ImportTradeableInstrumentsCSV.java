@@ -4,14 +4,14 @@ import java.io.FileInputStream;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.mortbay.log.Log;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IMarketDataInstrumentDao;
+import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.utils.events.IEventListener;
 
 /**
@@ -28,29 +28,29 @@ import com.activequant.utils.events.IEventListener;
  * @author ustaudinger
  * 
  */
-public class ImportMarketDataInstrumentsCSV {
+public class ImportTradeableInstrumentsCSV {
 
 	private final ApplicationContext appContext;
 	private final IDaoFactory idf;
-	private final IMarketDataInstrumentDao mdiDao;
+	private final ITradeableInstrumentDao tdiDao;
 	private final Logger log = Logger.getLogger(this.getClass());
 
-	public ImportMarketDataInstrumentsCSV(String fileName, String springInitFile)
+	public ImportTradeableInstrumentsCSV(String fileName, String springInitFile)
 			throws Exception {
 
 		appContext = new ClassPathXmlApplicationContext(springInitFile);
 		idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		mdiDao = idf.mdiDao();
-		final InstanceFromMapInstantiator<MarketDataInstrument> i = new InstanceFromMapInstantiator<MarketDataInstrument>();
+		tdiDao = idf.tradeableDao();
+		final InstanceFromMapInstantiator<TradeableInstrument> i = new InstanceFromMapInstantiator<TradeableInstrument>();
 		
 		final CsvMapReader cmr = new CsvMapReader();
 		cmr.read(new IEventListener<Map<String, String>>() {
 			@Override
 			public void eventFired(Map<String, String> event) {
-				MarketDataInstrument instr = i.loadStringString(event);
+				TradeableInstrument instr = i.loadStringString(event);
 				// 
 				try {
-					mdiDao.update(instr);
+					tdiDao.update(instr);
 					log.info("Updated or created instrument: " + instr.getId());
 				} catch (DaoException e) {
 					System.err.println("Error while importing " + event);
@@ -70,7 +70,7 @@ public class ImportMarketDataInstrumentsCSV {
 		String springFile = args[1];
 		System.out.println("Importing from " + fileName
 				+ ". Using spring configuration " + springFile);
-		new ImportMarketDataInstrumentsCSV(fileName, springFile);
+		new ImportTradeableInstrumentsCSV(fileName, springFile);
 
 	}
 
