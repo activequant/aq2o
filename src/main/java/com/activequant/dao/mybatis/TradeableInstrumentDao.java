@@ -32,6 +32,23 @@ public class TradeableInstrumentDao extends GenericMapperDao<TradeableInstrument
         }
         return mdis.toArray(new TradeableInstrument[] {});
     }
+    
+    
+    public TradeableInstrument findFor(String providerId, Instrument instrument) {
+        // dirty. would have to use a field mapper table to ensure that
+        // INSTRUMENTID is always the same as in MarketDataInstrument.
+        // trade-off.
+
+        List<String> ids = mapper.findByString(tableName, "INSTRUMENTID", instrument.getId());
+        List<TradeableInstrument> mdis = new ArrayList<TradeableInstrument>();
+        for (String id : ids) {
+            TradeableInstrument tdi = this.load(id);
+            if(tdi.getTradingProvider().equals(providerId))
+            	return tdi;
+        }
+        return null;
+    }
+    
 
     
 

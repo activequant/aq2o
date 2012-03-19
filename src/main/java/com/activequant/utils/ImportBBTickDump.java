@@ -134,7 +134,7 @@ public class ImportBBTickDump {
             tempMdi = null;
 
             //
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss.SSS");
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss.SSS Z");
 
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 

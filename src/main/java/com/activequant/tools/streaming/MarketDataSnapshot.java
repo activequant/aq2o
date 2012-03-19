@@ -2,6 +2,7 @@ package com.activequant.tools.streaming;
 
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.transport.ETransportType;
+import com.activequant.utils.ArrayUtils;
 import com.activequant.utils.annotations.Property;
 
 public class MarketDataSnapshot extends MarketDataEvent {
@@ -23,6 +24,10 @@ public class MarketDataSnapshot extends MarketDataEvent {
 		this.mdiId = mdiId;
 	}
 
+	public String toString(){
+		return mdiId + " - " + getTimeStamp().getDate() + " - " + ArrayUtils.toString(bidPrices) + " - " + ArrayUtils.toString(askPrices); 
+	}
+	
 	public ETransportType getEventType() {
 		return ETransportType.MARKET_DATA;
 	}
