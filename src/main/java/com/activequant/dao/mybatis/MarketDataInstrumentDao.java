@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.log4j.Logger;
 
 import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
@@ -12,7 +13,7 @@ import com.activequant.domainmodel.MarketDataInstrument;
 
 public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrument> implements IMarketDataInstrumentDao {
 
-    // private Logger log = Logger.getLogger(InstrumentDao.class);
+    private Logger log = Logger.getLogger(MarketDataInstrumentDao.class);
     private static final String tableName = "MarketDataInstrument";
 
     public MarketDataInstrumentDao(GenericRowMapper mapper, SqlSessionFactory s) {
@@ -86,8 +87,10 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
         if (insts.size() > 1) {
             throw new RuntimeException("Ambigous!" + providerId + "/"+instrument.getId());
         }
-        if (insts.size() == 0)
+        if (insts.size() == 0){
+        	log.warn("Did not find instrument " + instrument.getId() + " for provider " + providerId);
             return null;
+        }
         String id = insts.get(0);
         MarketDataInstrument mdi = load(id);
         return mdi;
