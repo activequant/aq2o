@@ -53,6 +53,15 @@
 
 
 	<build>
+	  <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>framework.properties</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
@@ -250,6 +259,7 @@
 										<exclude>META-INF/*.SF</exclude>
 										<exclude>META-INF/*.DSA</exclude>
 										<exclude>META-INF/*.RSA</exclude>
+										<exclude>framework.properties</exclude>
 									</excludes>
 								</filter>
 							</filters>
