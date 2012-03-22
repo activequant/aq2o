@@ -17,6 +17,7 @@ import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.TimeStreamEvent;
 import com.activequant.trading.IOrderTracker;
 import com.activequant.utils.events.Event;
+import com.activequant.utils.events.IEventListener;
 import com.activequant.utils.events.IEventSource;
 
 public class VirtualExchange implements IExchange {
@@ -39,11 +40,18 @@ public class VirtualExchange implements IExchange {
 	class VirtualOrderTracker implements IOrderTracker {
 		private Event<OrderEvent> event = new Event<OrderEvent>();
 		private LimitOrder order;
+		private OrderEvent lastState; 
 
 		VirtualOrderTracker(LimitOrder order) throws IncompleteOrderInstructions {
 			this.order = order;
 			if (order.getTradInstId() == null)
 				throw new IncompleteOrderInstructions("TradInstID missing");
+			event.addEventListener(new IEventListener<OrderEvent>() {				
+				@Override
+				public void eventFired(OrderEvent event) {
+					lastState = event;
+				}
+			});
 
 		}
 
@@ -91,6 +99,10 @@ public class VirtualExchange implements IExchange {
 		@Override
 		public void cancel() {
 			getOrderBook(order.getTradInstId()).cancelOrder(order);
+		}
+
+		public OrderEvent lastState() {
+			return lastState;
 		}
 	}
 

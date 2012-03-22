@@ -50,8 +50,10 @@ import com.activequant.utils.events.IEventSource;
  * <br>
  * <b>History:</b><br>
  *  - [06.12.2007] Created (Mike Kroutikov)<br>
+ *  - [22.03.2012] Added last state (Ulrich Staudinger)<br>
  *
  *  @author Mike Kroutikov
+ *  @author Ulrich Staudinger
  */
 public interface IOrderTracker {
 	
@@ -107,5 +109,14 @@ public interface IOrderTracker {
 	 * @return order event source.
 	 */
 	IEventSource<OrderEvent> getOrderEventSource();
+
+	
+	/**
+	 * Returns the last state of this order. For example, if an order has been submitted, but not yet 
+	 * accepted, the last state would be OrderSubmitted. 
+	 * 
+	 * @return lastState the last state as an order event. 
+	 */
+	OrderEvent lastState(); 
 	
 }

@@ -5,6 +5,7 @@ import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.trading.IOrderTracker;
 import com.activequant.utils.events.Event;
+import com.activequant.utils.events.IEventListener;
 import com.activequant.utils.events.IEventSource;
 
 class VirtualOrderTracker implements IOrderTracker {
@@ -12,12 +13,19 @@ class VirtualOrderTracker implements IOrderTracker {
 	private final IExchange exchange;
 	private final Order order;
 	private final Event<OrderEvent> event = new Event<OrderEvent>();
-	private final String venueAssignedId; 
+	private final String venueAssignedId;
+	private OrderEvent lastState; 
 
 	VirtualOrderTracker(IExchange exchange, String venueAssignedId, Order order) {
 		this.exchange = exchange;
 		this.order = order;
 		this.venueAssignedId = venueAssignedId;  
+		event.addEventListener(new IEventListener<OrderEvent>() {				
+			@Override
+			public void eventFired(OrderEvent event) {
+				lastState = event;
+			}
+		});
 	}
 	
 	@Override
@@ -51,6 +59,10 @@ class VirtualOrderTracker implements IOrderTracker {
 	@Override
 	public IEventSource<OrderEvent> getOrderEventSource() {
 		return event;
+	}
+	
+	public OrderEvent lastState() {
+		return lastState;
 	}
 
 }
