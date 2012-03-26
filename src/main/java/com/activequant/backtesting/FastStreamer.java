@@ -1,6 +1,8 @@
 package com.activequant.backtesting;
 
-import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -22,7 +24,7 @@ public class FastStreamer {
 		}
 	}
 
-	private PriorityQueue<FastStreamEventContainer> fastQueue = new PriorityQueue<FastStreamEventContainer>();
+	private List<FastStreamEventContainer> fastQueue = new ArrayList<FastStreamEventContainer>();
 	private final FastStreamEventContainer[] containers;
 	private final StreamEventIterator<StreamEvent>[] iterators;
 
@@ -47,14 +49,15 @@ public class FastStreamer {
 	{
 		StreamEvent ret = null;
 		if(!fastQueue.isEmpty()){
-			FastStreamEventContainer event = fastQueue.poll();
+			FastStreamEventContainer event = fastQueue.get(0);
 			if(event==null)return null;
 			ret = event.streamEvent;
 			if(iterators[event.internalStreamId].hasNext())
-			{ 				
+			{
 				StreamEvent payload = iterators[event.internalStreamId].next();
 				event.streamEvent=payload;
 				fastQueue.add(event);
+				Collections.sort(fastQueue);
 			}
 			log.info(ret.getTimeStamp().getNanoseconds() + " -  " + ret.getTimeStamp().getDate() + " - " + ret.toString());
 		}

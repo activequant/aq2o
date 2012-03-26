@@ -14,7 +14,7 @@ import com.activequant.transport.ETransportType;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.TimeMeasurement;
 
-public class Backtester {
+public class Backtester extends AbstractBacktester {
 
 	private IExchange exchange;
 	private ITransportFactory transportFactory;
@@ -48,7 +48,7 @@ public class Backtester {
 		for (ITradingSystem s : tradingSystems) {
 			s.initialize();
 		}
-
+		
 	}
 
 	public void execute() throws Exception {

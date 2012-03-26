@@ -1,7 +1,7 @@
 package com.activequant.domainmodel.trade.event;
 
 
-public class OrderRejectedEvent extends OrderEvent {
+public class OrderUpdateRejectedEvent extends OrderEvent {
 	private String reason = "";
 
 	public String getReason() {
@@ -12,6 +12,8 @@ public class OrderRejectedEvent extends OrderEvent {
 		this.reason = reason;
 	} 
 	
+	
+
 	public String toString(){
 		return "Order " + super.getRefOrderId() + " rejected: " + reason; 
 	}

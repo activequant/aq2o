@@ -294,13 +294,13 @@ public class GenericMapperDao<T extends PersistentEntity> {
 		return ret.toArray(new Double[] {});
 	}
 
-	public List<String> findIDsBetweenCreationTime(String tableName, String parameter, String value,
+	public List<String> findIDsBetweenCreationTime(String parameter, String value,
 			Long fromTimeStampInMs, Long toMs) {
 		List<String> ids = mapper.findIDsBetweenCreationTime(tableName, parameter, value, fromTimeStampInMs, toMs);
 		return ids;
 	}
 
-	public String findLastIdBeforeCreationTime(String tableName, String parameter, String value, Long timeStampInMs) {
+	public String findLastIdBeforeCreationTime(String parameter, String value, Long timeStampInMs) {
 		return mapper.findLastIdBeforeCreationTime(tableName, parameter, value, timeStampInMs);
 	}
 

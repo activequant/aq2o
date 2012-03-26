@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
+import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
 import com.activequant.domainmodel.trade.event.OrderTerminalEvent;
+import com.activequant.domainmodel.trade.event.OrderUpdateSubmittedEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.domainmodel.trade.order.OrderSide;
@@ -26,6 +30,8 @@ public class VirtualExchange implements IExchange {
 	private TimeStamp currentExchangeTime = new TimeStamp(0L);
 	private Map<String, IOrderTracker> orderTrackers = new HashMap<String, IOrderTracker>();
 	private Map<String, LimitOrderBook> lobs = new HashMap<String, LimitOrderBook>();
+	private final Event<OrderEvent> globalOrderEvent = new Event<OrderEvent>();
+
 
 	/*
 	 * (non-Javadoc)
@@ -67,6 +73,14 @@ public class VirtualExchange implements IExchange {
 				this.order.setQuantity(le.getQuantity());
 				this.order.setLimitPrice(le.getLimitPrice());
 			}
+			// set out an update event. 
+			OrderEvent oe = new OrderUpdateSubmittedEvent();
+			getEvent().fire(oe);
+			
+			// 
+			oe = new OrderReplacedEvent();
+			getEvent().fire(oe);
+			
 		}
 
 		@Override
@@ -79,6 +93,7 @@ public class VirtualExchange implements IExchange {
 			// add it to the list of local order trackers.
 			orderTrackers.put(order.getOrderId(), this);
 
+			
 		}
 
 		@Override
@@ -99,6 +114,10 @@ public class VirtualExchange implements IExchange {
 		@Override
 		public void cancel() {
 			getOrderBook(order.getTradInstId()).cancelOrder(order);
+			OrderEvent oe = new OrderCancelSubmittedEvent();
+			getEvent().fire(oe);
+			oe = new OrderCancelledEvent();
+			getEvent().fire(oe);
 		}
 
 		public OrderEvent lastState() {

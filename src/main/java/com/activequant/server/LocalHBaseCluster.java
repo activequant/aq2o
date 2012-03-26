@@ -18,7 +18,7 @@ public class LocalHBaseCluster {
         Configuration config = HBaseConfiguration.create();
         // have to set a data directory. 
         config.set(HConstants.ZOOKEEPER_QUORUM, hostName);
-        config.set(HConstants.HBASE_DIR, dataDir);        
+        config.set(HConstants.HBASE_DIR, dataDir);             
         //
         MiniZooKeeperCluster mzk = new MiniZooKeeperCluster(config);
         mzk.setClientPort(port);

@@ -21,7 +21,7 @@ import com.activequant.transport.ETransportType;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.TimeMeasurement;
 
-public class VisualBacktester extends JFrame {
+public class VisualBacktester extends AbstractBacktester  {
 
 	private IExchange exchange;
 	private ITransportFactory transportFactory;
@@ -31,6 +31,7 @@ public class VisualBacktester extends JFrame {
 	private int tickPlayAmount = 0;
 	private FastStreamer fs;
 	long eventCount = 0;
+	private JFrame jframe = new JFrame();
 
 	@SuppressWarnings("rawtypes")
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
@@ -40,7 +41,6 @@ public class VisualBacktester extends JFrame {
 		this.exchange = exchange;
 		this.streamIters = streamIters;
 		this.transportFactory = transportFactory;
-		this.streamIters = streamIters;
 		this.tradingSystems = tradingSystems;
 
 		// construct the trading system environment.
@@ -65,11 +65,11 @@ public class VisualBacktester extends JFrame {
 			s.start();
 		}
 
-		super.setTitle("Market replay control tool");
-		super.getContentPane().setLayout(new GridLayout(1, 4));
+		jframe.setTitle("Market replay control tool");
+		jframe.getContentPane().setLayout(new GridLayout(1, 4));
 
 		JButton play = new JButton("Play");
-		super.getContentPane().add(play);
+		jframe.getContentPane().add(play);
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -84,7 +84,7 @@ public class VisualBacktester extends JFrame {
 				tickPlayAmount = 0;
 			}
 		});
-		super.getContentPane().add(pause);
+		jframe.getContentPane().add(pause);
 
 		JButton step = new JButton("1 step");
 		step.addActionListener(new ActionListener() {
@@ -94,7 +94,7 @@ public class VisualBacktester extends JFrame {
 			}
 		});
 
-		super.getContentPane().add(step);
+		jframe.getContentPane().add(step);
 		
 		JButton step50 = new JButton("50 steps");
 		step50.addActionListener(new ActionListener() {
@@ -103,13 +103,13 @@ public class VisualBacktester extends JFrame {
 				tickPlayAmount = 50;
 			}
 		});
-		super.getContentPane().add(step50);
+		jframe.getContentPane().add(step50);
 		
-		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		super.setSize(600,75);
-		super.setVisible(true);
-		super.toFront();
+		jframe.setSize(600,75);
+		jframe.setVisible(true);
+		jframe.toFront();
 
 		//
 
@@ -166,8 +166,7 @@ public class VisualBacktester extends JFrame {
 			}
 			
 			// checking every 100ms if we are to replay more. 
-			Thread.sleep(50);
-			
+			Thread.sleep(50);			
 		}
 	}
 
