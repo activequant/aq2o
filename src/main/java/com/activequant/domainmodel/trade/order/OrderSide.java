@@ -1,7 +1,7 @@
 package com.activequant.domainmodel.trade.order;
 
 public enum OrderSide {
-    BUY(0), SELL(1);
+    BUY(1), SELL(-1);
     private int side;
 
     private OrderSide(int side) {
@@ -18,7 +18,7 @@ public enum OrderSide {
     
 
     public String toString() {
-        if (side == 0)
+        if (side == 1)
             return "BUY";
         else
             return "SELL";

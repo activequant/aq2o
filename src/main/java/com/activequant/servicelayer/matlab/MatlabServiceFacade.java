@@ -79,7 +79,6 @@ public class MatlabServiceFacade {
             return mdi.getInstrumentId();
         }
         return null;
-
     }
 
     public MarketDataInstrument loadMarketDataInstrument(String mdiId) throws DaoException {

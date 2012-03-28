@@ -10,8 +10,8 @@ public class Crypter {
 
     private final String strkey;
 
-    public Crypter() {
-        this.strkey = "ABCD";
+    public Crypter(String key) {
+        this.strkey = key;
     }
 
     public String encryptBlowfish(String to_encrypt) {
