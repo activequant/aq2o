@@ -143,7 +143,10 @@ public class VisualBacktester extends AbstractBacktester  {
 				// only time events are sent to the generic transport layer.
 				if (transportType.equals(ETransportType.TIME)) {
 					transportFactory.getPublisher(transportType.toString()).send(se);
-				} else if (transportType.equals(ETransportType.MARKET_DATA)) {
+				}
+				
+				// everything's a time event, so i also have to catch the fucking rest. 
+				if (transportType.equals(ETransportType.MARKET_DATA)) {
 					MarketDataEvent mde = (MarketDataEvent) se;
 					transportFactory.getPublisher(transportType, mde.getMdiId()).send(se);
 
