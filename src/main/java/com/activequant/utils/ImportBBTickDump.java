@@ -118,7 +118,8 @@ public class ImportBBTickDump {
             for(int i=0;i<9;i++)
             {
                 if(p.matcher(providerspecificid).find()){
-                    providerspecificid = providerspecificid.replaceAll(""+i, "1"+i);
+                	// regex pattern
+                    providerspecificid = providerspecificid.replaceAll("[A-Z]"+i+" ", "1"+i);
                 }
             }
             

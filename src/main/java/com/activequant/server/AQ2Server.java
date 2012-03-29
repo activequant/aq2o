@@ -86,6 +86,16 @@ public final class AQ2Server {
         } else {
             log.info("Not starting HSQDLB server, as it has been disabled.");
         }
+        if (isTrue(properties, "jetty.start")) {
+            log.info("Starting JETTY ....");
+            new LocalJettyServer(Integer.parseInt(properties.getProperty("jetty.port")), "localhost").start();
+            log.info("Starting Jetty succeeded.");
+        } else {
+            log.info("Not starting JETTY server, as it has been disabled.");
+        }
+        
+        
+        
         while (runFlag) {
             Thread.sleep(250);
         }
