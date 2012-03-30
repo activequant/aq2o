@@ -20,7 +20,15 @@ ChangeLog
 	
 	* added an InformationalEvent for instruments. This can be used to distribute some information, for example chatter messages - whatever. 
 	
-	* Added an import routine for tradeable instruments from CSV files. 	
+	* Added an import routine for tradeable instruments from CSV files. 
+	
+	* Added CSV exporter to Master Server, so that R, etc. can fetch data from the monolith, ticket #60	
+	
+** Bugfixes 
+
+	* F!ed ticket #64
+	
+	* #11
 	
 ** Varia
 
@@ -28,7 +36,9 @@ ChangeLog
 
 	* Improving portfolio class with some basic getters/setters
 	
-	* Many other changes in the pipeline. 
+	* Many other changes in the pipeline.
+	
+  
 
 * 2.0 (15 February 2012)
 
