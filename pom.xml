@@ -330,10 +330,12 @@
 							<zipfileset dir="src/main/scripts/" includes="**"
 								prefix="aq2o" />
 						</zip>
-						<exec executable="scp" output="scpROOT.dir">
+						<echo message="Zipped. Pushing to SF" />
+						<exec executable="scp" output="scpROOT.dir" >
 							<arg
 								line=" -v target/${project.build.finalName}-bundle.zip ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant" />
 						</exec>
+						<echo message="Done" />
 
 
 					</tasks>
