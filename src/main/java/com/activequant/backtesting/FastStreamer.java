@@ -20,7 +20,7 @@ public class FastStreamer {
 		}
 		public int compareTo(FastStreamEventContainer other){			
 			if(streamEvent==null || other.streamEvent==null)return -1; 			
-			return other.streamEvent.getTimeStamp().compareTo(streamEvent.getTimeStamp());			
+			return streamEvent.getTimeStamp().compareTo(other.streamEvent.getTimeStamp());			
 		}
 	}
 
@@ -51,17 +51,30 @@ public class FastStreamer {
 		if(!fastQueue.isEmpty()){
 			FastStreamEventContainer event = fastQueue.get(0);
 			if(event==null)return null;
+			fastQueue.remove(0);
 			ret = event.streamEvent;
 			if(iterators[event.internalStreamId].hasNext())
 			{
 				StreamEvent payload = iterators[event.internalStreamId].next();
-				event.streamEvent=payload;
-				fastQueue.add(event);
+				FastStreamEventContainer newEvent = new FastStreamEventContainer(event.internalStreamId); 						
+				newEvent.streamEvent=payload;				
+				fastQueue.add(newEvent);
 				Collections.sort(fastQueue);
+				
+				//
+				// dumpQueue();
+				
 			}
-			log.info(ret.getTimeStamp().getNanoseconds() + " -  " + ret.getTimeStamp().getDate() + " - " + ret.toString());
+			// log.info(ret.getTimeStamp().getNanoseconds() + " -  " + ret.getTimeStamp().getDate() + " - " + ret.toString());
 		}
 		return ret; 
+	}
+	
+	private void dumpQueue(){
+		for(FastStreamEventContainer ec : fastQueue)
+		{
+			System.out.println(ec.streamEvent.getTimeStamp().getNanoseconds() + " - " + ec.streamEvent.getTimeStamp().getDate());
+		}
 	}
 	
 	public boolean moreDataInPipe() {

@@ -6,7 +6,6 @@ import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.tools.streaming.BBOEvent;
 import com.activequant.tools.streaming.MarketDataEvent;
 import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.tools.streaming.StreamEventIterator;
@@ -16,7 +15,7 @@ public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<Marke
     private String mdId;
     private MultiValueTimeSeriesIterator streamIterator; 
     private double[] bid, ask, bidQ, askQ; 
-    final private MarketDataSnapshot mds; 
+     
     public ArchiveStreamToMarketDataIterator(String mdiId, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
         this.mdId = mdiId;
         this.streamIterator = archiveReader.getMultiValueStream(mdiId, startTime, endTime);
@@ -24,8 +23,7 @@ public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<Marke
         ask = new double[1];
         bidQ = new double[1];
         askQ = new double[1];      
-        mds = new MarketDataSnapshot();
-        mds.setMdiId(this.mdId);
+    
     }
 
     @Override
@@ -42,6 +40,8 @@ public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<Marke
         if(valueMap.getB().containsKey("ASKQUANTITY"))askQ[0] = valueMap.getB().get("ASKQUANTITY");
         
 
+        MarketDataSnapshot mds = new MarketDataSnapshot();
+        mds.setMdiId(this.mdId);
         mds.setAskPrices(ask);
         mds.setBidPrices(bid);
         mds.setAskSizes(askQ);
