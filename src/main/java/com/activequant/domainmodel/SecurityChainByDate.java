@@ -80,12 +80,13 @@ public class SecurityChainByDate extends SecurityChain {
     }
     
     public String getValidInstrument(long date8){
-    	String instId = ""; 
+    	String instId = null; 
     	for(int i=0;i<rollDates.length;i++){
-    		
+    		if(rollDates[i]>date8)
+    			instId = validInstrumentIds[i];
+    		else
+    			break;
     	}
-    	
-    	
     	return instId; 
     }
 
