@@ -141,7 +141,12 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	public synchronized void delete(T t) {
 		mapper.delete(tableName, t.getId());
 	}
+	
+	public synchronized void deleteById(String id) {
+		mapper.delete(tableName, id);
+	}
 
+	
 	public synchronized void update(T t) {
 		this.delete(t);
 		this.create(t);

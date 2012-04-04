@@ -14,6 +14,8 @@ public interface IEntityDao<T extends PersistentEntity> {
     public void create(T t) throws DaoException;
 
     public void delete(T t) throws DaoException;
+    
+    public void deleteById(String id) throws DaoException;
 
     public void update(T t) throws DaoException;
 

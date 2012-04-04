@@ -18,6 +18,7 @@ public class Future extends Derivative {
     private Long firstNotice; 
     private String monthYear; 
     private Double tickValue;
+    private String product;
 
     public Future() {
         super(Future.class.getCanonicalName());
@@ -136,6 +137,15 @@ public class Future extends Derivative {
 
 	public void setMonthYear(String monthYear) {
 		this.monthYear = monthYear;
+	}
+
+	@Property
+	public String getProduct() {
+		return product;
+	}
+
+	public void setProduct(String product) {
+		this.product = product;
 	}
 
 }
