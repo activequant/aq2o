@@ -22,13 +22,16 @@ ChangeLog
 	
 	* Added an import routine for tradeable instruments from CSV files. 
 	
-	* Added CSV exporter to Master Server, so that R, etc. can fetch data from the monolith, ticket #60	
+	* Added CSV exporter to Master Server, so that R, etc. can fetch data from the monolith, ticket #60
+	
+	* Added first notice and monthYear info to future class / ticket #73	
 	
 ** Bugfixes 
 
 	* F!ed ticket #64
 	
 	* #11
+
 	
 ** Varia
 

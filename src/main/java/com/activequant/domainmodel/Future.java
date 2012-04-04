@@ -15,6 +15,8 @@ public class Future extends Derivative {
     private Long rollDate;
     private Long settlementDate;
     private Double tickSize;
+    private Long firstNotice; 
+    private String monthYear; 
     private Double tickValue;
 
     public Future() {
@@ -117,5 +119,23 @@ public class Future extends Derivative {
     public void setTickValue(Double tickValue) {
         this.tickValue = tickValue;
     }
+
+    @Property
+	public Long getFirstNotice() {
+		return firstNotice;
+	}
+
+	public void setFirstNotice(Long firstNotice) {
+		this.firstNotice = firstNotice;
+	}
+
+	@Property
+	public String getMonthYear() {
+		return monthYear;
+	}
+
+	public void setMonthYear(String monthYear) {
+		this.monthYear = monthYear;
+	}
 
 }

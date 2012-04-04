@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 
 import com.activequant.trading.virtual.LimitOrderBook;
 import com.activequant.trading.virtual.VirtualExchange;
+import com.activequant.transport.memory.InMemoryTransportFactory;
 
 public class LimitOrderBookTests extends TestCase {
 	/**
@@ -35,7 +36,7 @@ public class LimitOrderBookTests extends TestCase {
 		
 		// 
 		class LocalLimitOrderBook extends LimitOrderBook{
-			public LocalLimitOrderBook(String tradeableInstrumentId) {super(new VirtualExchange(), tradeableInstrumentId);}
+			public LocalLimitOrderBook(String tradeableInstrumentId) {super(new VirtualExchange(new InMemoryTransportFactory()), tradeableInstrumentId);}
 			public void fireTransaction(TransactionEvent te){super.transaction(te);};
 			public void fireMarketStateChange(MarketState newState){super.marketStateChange(newState);};			
 		}

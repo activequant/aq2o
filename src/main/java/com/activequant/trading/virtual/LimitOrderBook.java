@@ -69,8 +69,7 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 		resortSellSide();
 		// signal that there was an update. 
 		super.orderBookEvent(new OrderBookUpdated());
-	}
-		
+	}		
 	
 	public void addOrder(LimitOrder order) {
 		if (order.getOrderSide().equals(OrderSide.BUY)) {

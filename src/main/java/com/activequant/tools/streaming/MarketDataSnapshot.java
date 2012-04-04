@@ -9,6 +9,7 @@ public class MarketDataSnapshot extends MarketDataEvent {
 
 	private double[] bidPrices, askPrices, bidSizes, askSizes;
 	private String mdiId;
+	private String tdiId; 
 
 	public MarketDataSnapshot(){
 		super(MarketDataSnapshot.class.getCanonicalName());
@@ -22,6 +23,7 @@ public class MarketDataSnapshot extends MarketDataEvent {
 		this.bidSizes = bidSizes;
 		this.askSizes = askSizes;
 		this.mdiId = mdiId;
+		this.tdiId = tdiId; 
 	}
 
 	public String toString(){
@@ -74,6 +76,15 @@ public class MarketDataSnapshot extends MarketDataEvent {
 
 	public void setMdiId(String mdiId) {
 		this.mdiId = mdiId;
+	}
+
+	@Property
+	public String getTdiId() {
+		return tdiId;
+	}
+
+	public void setTdiId(String tdiId) {
+		this.tdiId = tdiId;
 	}
 
 }

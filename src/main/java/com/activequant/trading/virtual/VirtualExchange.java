@@ -3,23 +3,32 @@ package com.activequant.trading.virtual;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
+import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderTerminalEvent;
 import com.activequant.domainmodel.trade.event.OrderUpdateSubmittedEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.exceptions.IncompleteOrderInstructions;
+import com.activequant.exceptions.TransportException;
 import com.activequant.exceptions.UnsupportedOrderType;
 import com.activequant.tools.streaming.BBOEvent;
+import com.activequant.tools.streaming.MarketDataSnapshot;
+import com.activequant.tools.streaming.OrderStreamEvent;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.TimeStreamEvent;
 import com.activequant.trading.IOrderTracker;
+import com.activequant.transport.ETransportType;
+import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.events.Event;
 import com.activequant.utils.events.IEventListener;
 import com.activequant.utils.events.IEventSource;
@@ -31,7 +40,12 @@ public class VirtualExchange implements IExchange {
 	private Map<String, IOrderTracker> orderTrackers = new HashMap<String, IOrderTracker>();
 	private Map<String, LimitOrderBook> lobs = new HashMap<String, LimitOrderBook>();
 	private final Event<OrderEvent> globalOrderEvent = new Event<OrderEvent>();
+	private ITransportFactory transport;
+	private Logger log = Logger.getLogger(VirtualExchange.class);
 
+	public VirtualExchange(ITransportFactory transport) {
+		this.transport = transport;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -46,13 +60,13 @@ public class VirtualExchange implements IExchange {
 	class VirtualOrderTracker implements IOrderTracker {
 		private Event<OrderEvent> event = new Event<OrderEvent>();
 		private LimitOrder order;
-		private OrderEvent lastState; 
+		private OrderEvent lastState;
 
 		VirtualOrderTracker(LimitOrder order) throws IncompleteOrderInstructions {
 			this.order = order;
 			if (order.getTradInstId() == null)
 				throw new IncompleteOrderInstructions("TradInstID missing");
-			event.addEventListener(new IEventListener<OrderEvent>() {				
+			event.addEventListener(new IEventListener<OrderEvent>() {
 				@Override
 				public void eventFired(OrderEvent event) {
 					lastState = event;
@@ -68,20 +82,33 @@ public class VirtualExchange implements IExchange {
 		@Override
 		public void update(Order newOrder) {
 			if (newOrder instanceof LimitOrder) {
-				LimitOrder le = (LimitOrder)newOrder;
+				LimitOrder le = (LimitOrder) newOrder;
+				le.setWorkingTimeStamp(currentExchangeTime);
 				getOrderBook(le.getTradInstId()).updateOrder(le);
 				this.order.setQuantity(le.getQuantity());
 				this.order.setLimitPrice(le.getLimitPrice());
+
+				// set out an update event.
+				OrderEvent oe = new OrderUpdateSubmittedEvent();
+				oe.setCreationTimeStamp(currentExchangeTime);
+				oe.setRefOrder(le);
+				oe.setRefOrderId(le.getOrderId());
+				getEvent().fire(oe);
+				sendOrderEvent(le.getTradInstId(), oe);
+
+				//
+				oe = new OrderReplacedEvent();
+				oe.setRefOrder(le);
+				oe.setRefOrderId(le.getOrderId());
+				oe.setCreationTimeStamp(currentExchangeTime);
+				getEvent().fire(oe);
+				sendOrderEvent(le.getTradInstId(), oe);
+
+				getOrderBook(le.getTradInstId()).match();
 			}
-			// set out an update event. 
-			OrderEvent oe = new OrderUpdateSubmittedEvent();
-			getEvent().fire(oe);
-			
-			// 
-			oe = new OrderReplacedEvent();
-			getEvent().fire(oe);
-			
+
 		}
+
 
 		@Override
 		public void submit() {
@@ -93,6 +120,25 @@ public class VirtualExchange implements IExchange {
 			// add it to the list of local order trackers.
 			orderTrackers.put(order.getOrderId(), this);
 
+			// send out the submit event
+
+			OrderEvent oe = new OrderSubmittedEvent();
+			oe.setCreationTimeStamp(currentExchangeTime);
+			oe.setRefOrderId(order.getOrderId());
+			oe.setRefOrder(order);
+			getEvent().fire(oe);
+			sendOrderEvent(order.getTradInstId(), oe);
+
+			// ... and the accepted event
+
+			oe = new OrderAcceptedEvent();
+			oe.setCreationTimeStamp(currentExchangeTime);
+			oe.setRefOrderId(order.getOrderId());
+			oe.setRefOrder(order);
+			getEvent().fire(oe);
+			sendOrderEvent(order.getTradInstId(), oe);
+
+			getOrderBook(order.getTradInstId()).match();
 			
 		}
 
@@ -115,8 +161,10 @@ public class VirtualExchange implements IExchange {
 		public void cancel() {
 			getOrderBook(order.getTradInstId()).cancelOrder(order);
 			OrderEvent oe = new OrderCancelSubmittedEvent();
+			oe.setCreationTimeStamp(currentExchangeTime);
 			getEvent().fire(oe);
 			oe = new OrderCancelledEvent();
+			oe.setCreationTimeStamp(currentExchangeTime);
 			getEvent().fire(oe);
 		}
 
@@ -125,6 +173,16 @@ public class VirtualExchange implements IExchange {
 		}
 	}
 
+	private void sendOrderEvent(String tradInstId, OrderEvent oe) {
+		try {
+			transport.getPublisher(ETransportType.TRAD_DATA, tradInstId).send(
+					new OrderStreamEvent(tradInstId, oe.getCreationTimeStamp(), oe));
+		} catch (TransportException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -160,17 +218,22 @@ public class VirtualExchange implements IExchange {
 		if (trck instanceof VirtualOrderTracker) {
 			OrderFillEvent ofe = new OrderFillEvent();
 			ofe.setCreationTimeStamp(currentExchangeTime());
+			ofe.setRefOrder(order);
+			ofe.setRefOrderId(order.getOrderId());
 			ofe.setFillAmount(quantity);
 			ofe.setFillPrice(price);
 			((VirtualOrderTracker) trck).getEvent().fire(ofe);
-
+			sendOrderEvent(((LimitOrder)order).getTradInstId(), ofe);
+			
 			//
 			if (order instanceof LimitOrder) {
 				LimitOrder lo = (LimitOrder) order;
-				if (lo.getOpenQuantity() == 0) {
+				if (lo.getOpenQuantity() == 0.0) {
 					OrderTerminalEvent ote = new OrderTerminalEvent();
 					ote.setCreationTimeStamp(currentExchangeTime());
 					((VirtualOrderTracker) trck).getEvent().fire(ote);
+					// also send it to the internal event layer. 
+					
 					// clean up the order tracker.
 					orderTrackers.remove(trck);
 				}
@@ -182,7 +245,40 @@ public class VirtualExchange implements IExchange {
 		if (streamEvent instanceof TimeStreamEvent) {
 			currentExchangeTime = ((TimeStreamEvent) streamEvent).getTimeStamp();
 		}
-		if (streamEvent instanceof BBOEvent) {
+		if (streamEvent instanceof MarketDataSnapshot) {
+			MarketDataSnapshot mds = (MarketDataSnapshot) streamEvent;
+			String tdiId = mds.getTdiId();
+			// weed out non-tradeable market data.
+			if (tdiId == null)
+				return;
+
+			// lookup the tdi for this mdi id. 			
+			LimitOrderBook lob = getOrderBook(tdiId);
+			
+			// clear out limit order book except our own orders.
+			lob.weedOutForeignOrders();
+			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0) {
+				LimitOrder bestBid = new LimitOrder();
+				bestBid.setWorkingTimeStamp(currentExchangeTime);
+				bestBid.setOrderSide(OrderSide.BUY);
+				bestBid.setLimitPrice(mds.getBidPrices()[0]);
+				bestBid.setQuantity(mds.getBidSizes()[0]);
+				bestBid.setOpenQuantity(mds.getBidSizes()[0]);
+				lob.addOrder(bestBid);
+			}
+			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0) {
+				LimitOrder bestAsk = new LimitOrder();
+				bestAsk.setOrderSide(OrderSide.SELL);
+				bestAsk.setWorkingTimeStamp(currentExchangeTime);
+				bestAsk.setLimitPrice(mds.getAskPrices()[0]);
+				bestAsk.setQuantity(mds.getAskSizes()[0]);
+				bestAsk.setOpenQuantity(mds.getAskSizes()[0]);
+				lob.addOrder(bestAsk);
+			}
+			// rerun a match.
+			lob.match();
+
+		} else if (streamEvent instanceof BBOEvent) {
 			BBOEvent nbbo = (BBOEvent) streamEvent;
 			String instId = nbbo.getTradeableInstrumentId();
 			// weed out non-tradeable market data.
@@ -216,6 +312,8 @@ public class VirtualExchange implements IExchange {
 			// rerun a match.
 			lob.match();
 
+		} else {
+			log.info("Dropping unknown event type.");
 		}
 	}
 

@@ -12,6 +12,7 @@ import com.activequant.tools.streaming.BBOEvent;
 import com.activequant.trading.IOrderTracker;
 import com.activequant.trading.virtual.LimitOrderBook;
 import com.activequant.trading.virtual.VirtualExchange;
+import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
 public class VirtualExchangeTest extends TestCase {
@@ -34,7 +35,7 @@ public class VirtualExchangeTest extends TestCase {
         marketState = null;
         //
 
-        VirtualExchange ve = new VirtualExchange();
+        VirtualExchange ve = new VirtualExchange(new InMemoryTransportFactory());
         LimitOrder lo = new LimitOrder();
         lo.setOrderSide(OrderSide.BUY);
         lo.setLimitPrice(100.0);

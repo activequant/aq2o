@@ -16,6 +16,7 @@ import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.SecurityChainByDate;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.utils.Date8Time6Parser;
@@ -179,6 +180,11 @@ public class MatlabServiceFacade {
                 endDate8Time6, paramMap);
     }
 
+    public SecurityChainByDate loadSecChain(String chainId) throws Exception {
+        return (SecurityChainByDate)daoFactory.securityChainDao().load(chainId);
+    }
+    
+    
     /**
      * Used for basic and simple testing.
      * 

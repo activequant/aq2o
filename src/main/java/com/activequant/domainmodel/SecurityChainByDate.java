@@ -78,6 +78,16 @@ public class SecurityChainByDate extends SecurityChain {
     public void setRollDates(Long[] rollDates) {
         this.rollDates = rollDates;
     }
+    
+    public String getValidInstrument(long date8){
+    	String instId = ""; 
+    	for(int i=0;i<rollDates.length;i++){
+    		
+    	}
+    	
+    	
+    	return instId; 
+    }
 
     @Property()
     @Deprecated
