@@ -19,6 +19,7 @@ import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.SecurityChainByDate;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.servicelayer.matlab.reqhandlers.SynthUsedExpiry;
 import com.activequant.utils.Date8Time6Parser;
 
 /**
@@ -37,6 +38,8 @@ public class MatlabServiceFacade {
     private Date8Time6Parser d8t6p = new Date8Time6Parser();
     private Converters converter = new Converters();
     private IDaoFactory daoFactory;
+    // manually add request handlers for synthetic fields. 
+    private IRequestHandler[] reqHandlers;
 
     public MatlabServiceFacade() {
         this("localhost");
@@ -47,6 +50,7 @@ public class MatlabServiceFacade {
         archiveFactory = new HBaseArchiveFactory(zookeeperHost);
         ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
         daoFactory = (IDaoFactory) appContext.getBean("ibatisDao");
+        reqHandlers = new IRequestHandler[]{new SynthUsedExpiry(daoFactory, archiveFactory)};
     }
     
     public MatlabServiceFacade(IArchiveFactory af, IDaoFactory dao) {
@@ -130,7 +134,19 @@ public class MatlabServiceFacade {
                 fieldMap = instrumentMap.get(field);
                 TimeStamp t1 = new TimeStamp(parser.getNanoseconds(startDate8Time6));
                 TimeStamp t2 = new TimeStamp(parser.getNanoseconds(endDate8Time6));
-                TSContainer ts = archiveFactory.getReader(tf).getTimeSeries(instrument, field, t1, t2);
+                
+                ////////////// ordinary fields.
+                TSContainer ts = null; 
+                for(IRequestHandler h : reqHandlers){
+                	if(h.handles(field)){
+                		ts = h.handle(instrument, field, t1, t2);
+                		break; 
+                	}
+                }                
+                if(ts==null)
+                	ts = archiveFactory.getReader(tf).getTimeSeries(instrument, field, t1, t2);
+                ////////////// synthetic, custom fields.                 
+                                
                 if (ts.timeStamps.length > 0) {
                     for (int k = 0; k < ts.timeStamps.length; k++) {
                         TimeStamp timeStamp = ts.timeStamps[k];
