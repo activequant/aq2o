@@ -1,17 +1,17 @@
 package com.activequant.backtesting;
 
-import com.activequant.backtesting.reporting.FillExporter;
+import com.activequant.backtesting.reporting.CSVFileFillExporter;
 
 public abstract class AbstractBacktester {
 	
-	private FillExporter fillExporter;
+	private CSVFileFillExporter fillExporter;
 	protected OrderEventListener oelistener = new OrderEventListener();
 	
-	public FillExporter getFillExporter() {
+	public CSVFileFillExporter getFillExporter() {
 		return fillExporter;
 	}
 
-	public void setFillExporter(FillExporter fillExporter) {
+	public void setFillExporter(CSVFileFillExporter fillExporter) {
 		this.fillExporter = fillExporter;
 	} 
 
