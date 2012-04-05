@@ -5,7 +5,7 @@ import com.activequant.backtesting.reporting.FillExporter;
 public abstract class AbstractBacktester {
 	
 	private FillExporter fillExporter;
-	private OrderEventListener oelistener = new OrderEventListener();
+	protected OrderEventListener oelistener = new OrderEventListener();
 	
 	public FillExporter getFillExporter() {
 		return fillExporter;

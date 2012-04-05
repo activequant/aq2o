@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.activequant.domainmodel.Portfolio;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
@@ -24,6 +25,7 @@ import com.activequant.exceptions.UnsupportedOrderType;
 import com.activequant.tools.streaming.BBOEvent;
 import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.tools.streaming.OrderStreamEvent;
+import com.activequant.tools.streaming.PositionEvent;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.TimeStreamEvent;
 import com.activequant.trading.IOrderTracker;
@@ -42,6 +44,7 @@ public class VirtualExchange implements IExchange {
 	private final Event<OrderEvent> globalOrderEvent = new Event<OrderEvent>();
 	private ITransportFactory transport;
 	private Logger log = Logger.getLogger(VirtualExchange.class);
+	private Portfolio clientPortfolio = new Portfolio();
 
 	public VirtualExchange(ITransportFactory transport) {
 		this.transport = transport;
@@ -175,8 +178,10 @@ public class VirtualExchange implements IExchange {
 
 	private void sendOrderEvent(String tradInstId, OrderEvent oe) {
 		try {
+			
 			transport.getPublisher(ETransportType.TRAD_DATA, tradInstId).send(
 					new OrderStreamEvent(tradInstId, oe.getCreationTimeStamp(), oe));
+			globalOrderEvent.fire(oe);
 		} catch (TransportException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -225,6 +230,9 @@ public class VirtualExchange implements IExchange {
 			((VirtualOrderTracker) trck).getEvent().fire(ofe);
 			sendOrderEvent(((LimitOrder)order).getTradInstId(), ofe);
 			
+			updatePortfolio(((LimitOrder)order).getTradInstId(), price, quantity, ((LimitOrder)order).getOrderSide().getSide());
+			
+			
 			//
 			if (order instanceof LimitOrder) {
 				LimitOrder lo = (LimitOrder) order;
@@ -232,14 +240,47 @@ public class VirtualExchange implements IExchange {
 					OrderTerminalEvent ote = new OrderTerminalEvent();
 					ote.setCreationTimeStamp(currentExchangeTime());
 					((VirtualOrderTracker) trck).getEvent().fire(ote);
-					// also send it to the internal event layer. 
-					
+					// also send it to the internal event layer. 					
 					// clean up the order tracker.
-					orderTrackers.remove(trck);
+					orderTrackers.remove(trck);					
+					// ok, we also send out the position event. 					
 				}
-			}
+			}			
 		}
 	}
+	
+	
+	private void updatePortfolio(String tdiId, Double price, Double lastFill, int side) {
+		// update the position.
+		//
+		double currentPosition = clientPortfolio.getPosition(tdiId);
+		log.info("Current position " + currentPosition);
+		double openPrice = clientPortfolio.getOpenPrice(tdiId);
+		double newPosition = currentPosition + side * lastFill;
+		double newOpenPrice = ((currentPosition * openPrice) + (lastFill * side * price));
+		//
+		if (newPosition == 0.0)
+			newOpenPrice = 0.0;
+
+		setPosition(tdiId, newOpenPrice, newPosition);
+		log.info("Order side: " + side + ", " + price + ", " + lastFill);
+		log.info("Portfolio updated. New position for " + tdiId + ": " + newPosition + " @ " + newOpenPrice);
+		//
+	}
+
+	private void setPosition(String tradeableId, Double price, Double newPosition) {
+		clientPortfolio.setPosition(tradeableId, price, newPosition);
+		// send out a position event.
+		PositionEvent pe = new PositionEvent(tradeableId, new TimeStamp(), price, newPosition);
+		try {
+			transport.getPublisher(ETransportType.TRAD_DATA, tradeableId).send(pe);
+		} catch (TransportException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	public void processStreamEvent(StreamEvent streamEvent) {
 		if (streamEvent instanceof TimeStreamEvent) {
@@ -333,6 +374,10 @@ public class VirtualExchange implements IExchange {
 	@Override
 	public IOrderTracker getOrderTracker(String orderId) {
 		return orderTrackers.get(orderId);
+	}
+
+	public Event<OrderEvent> getGlobalOrderEvent() {
+		return globalOrderEvent;
 	}
 
 }

@@ -17,6 +17,7 @@ import com.activequant.tools.streaming.TradingDataEvent;
 import com.activequant.trading.ITradingSystem;
 import com.activequant.trading.TradingSystemEnvironment;
 import com.activequant.trading.virtual.IExchange;
+import com.activequant.trading.virtual.VirtualExchange;
 import com.activequant.transport.ETransportType;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.TimeMeasurement;
@@ -32,6 +33,7 @@ public class VisualBacktester extends AbstractBacktester  {
 	private FastStreamer fs;
 	long eventCount = 0;
 	private JFrame jframe = new JFrame();
+	private boolean runFlag = true; 
 
 	@SuppressWarnings("rawtypes")
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
@@ -42,6 +44,12 @@ public class VisualBacktester extends AbstractBacktester  {
 		this.streamIters = streamIters;
 		this.transportFactory = transportFactory;
 		this.tradingSystems = tradingSystems;
+		
+		// add the order event listener 
+		if(exchange instanceof VirtualExchange){
+			((VirtualExchange)exchange).getGlobalOrderEvent().addEventListener(oelistener);
+		}
+		
 
 		// construct the trading system environment.
 		TradingSystemEnvironment env = new TradingSystemEnvironment();
@@ -66,7 +74,7 @@ public class VisualBacktester extends AbstractBacktester  {
 		}
 
 		jframe.setTitle("Market replay control tool");
-		jframe.getContentPane().setLayout(new GridLayout(1, 4));
+		jframe.getContentPane().setLayout(new GridLayout(1, 5));
 
 		JButton play = new JButton("Play");
 		jframe.getContentPane().add(play);
@@ -105,6 +113,21 @@ public class VisualBacktester extends AbstractBacktester  {
 		});
 		jframe.getContentPane().add(step50);
 		
+		
+		JButton stop = new JButton("Stop");
+		stop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					stop();
+				}
+				catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}
+		});
+		jframe.getContentPane().add(step50);
+		
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		jframe.setSize(600,75);
@@ -126,12 +149,17 @@ public class VisualBacktester extends AbstractBacktester  {
 		long difference = TimeMeasurement.getRuntime("BACKTEST");
 		System.out.println("Replayed " + eventCount + " events in " + difference + "ms. That's "
 				+ (eventCount / (double) difference) + " events/ms");
+		runFlag = false;
+		
+		
+		// generate the report. 
+		super.generateReport();
 
 	}
 
 	public void execute() throws Exception {
 
-		while (true) {
+		while (runFlag) {
 
 			// iterate over all data and feed it into the event bus.
 			while (fs.moreDataInPipe() && tickPlayAmount > 0) {
@@ -150,7 +178,7 @@ public class VisualBacktester extends AbstractBacktester  {
 					MarketDataEvent mde = (MarketDataEvent) se;
 					transportFactory.getPublisher(transportType, mde.getMdiId()).send(se);
 
-					// send also to virtex exchange layer.
+					// send it also into our VIRTEX vortex
 					exchange.processStreamEvent(se);
 				} else if (transportType.equals(ETransportType.REF_DATA)) {
 					ReferenceDataEvent rde = (ReferenceDataEvent) se;

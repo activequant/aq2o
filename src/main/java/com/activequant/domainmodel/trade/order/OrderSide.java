@@ -8,6 +8,10 @@ public enum OrderSide {
         this.side = side;
     }
 
+    /**
+     * integer that can be used to multiply with a quantity 
+     * @return 1 for buy, -1 for sell.
+     */
     public int getSide() {
         return this.side;
     }
@@ -16,7 +20,9 @@ public enum OrderSide {
         return(this.getSide() == other.getSide());
     }
     
-
+    /**
+     * @return BUY for the buy, SELL for the sell value of this enum. 
+     */
     public String toString() {
         if (side == 1)
             return "BUY";
