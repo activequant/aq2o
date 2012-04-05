@@ -4,7 +4,7 @@ import com.activequant.backtesting.reporting.CSVFileFillExporter;
 
 public abstract class AbstractBacktester {
 	
-	private CSVFileFillExporter fillExporter;
+	private CSVFileFillExporter fillExporter = new CSVFileFillExporter();
 	protected OrderEventListener oelistener = new OrderEventListener();
 	
 	public CSVFileFillExporter getFillExporter() {

@@ -221,21 +221,24 @@ public class VirtualExchange implements IExchange {
 			return;
 		// can only handle our own virtual trackers.
 		if (trck instanceof VirtualOrderTracker) {
+			LimitOrder lo = ((LimitOrder)order);
 			OrderFillEvent ofe = new OrderFillEvent();
 			ofe.setCreationTimeStamp(currentExchangeTime());
 			ofe.setRefOrder(order);
 			ofe.setRefOrderId(order.getOrderId());
+			ofe.setSide(lo.getOrderSide().toString());
+			ofe.setOptionalInstId(lo.getTradInstId());
 			ofe.setFillAmount(quantity);
 			ofe.setFillPrice(price);
 			((VirtualOrderTracker) trck).getEvent().fire(ofe);
-			sendOrderEvent(((LimitOrder)order).getTradInstId(), ofe);
+			sendOrderEvent(lo.getTradInstId(), ofe);
 			
-			updatePortfolio(((LimitOrder)order).getTradInstId(), price, quantity, ((LimitOrder)order).getOrderSide().getSide());
+			updatePortfolio(lo.getTradInstId(), price, quantity, lo.getOrderSide().getSide());
 			
 			
 			//
 			if (order instanceof LimitOrder) {
-				LimitOrder lo = (LimitOrder) order;
+				LimitOrder lo2 = (LimitOrder) order;
 				if (lo.getOpenQuantity() == 0.0) {
 					OrderTerminalEvent ote = new OrderTerminalEvent();
 					ote.setCreationTimeStamp(currentExchangeTime());
@@ -272,6 +275,8 @@ public class VirtualExchange implements IExchange {
 		clientPortfolio.setPosition(tradeableId, price, newPosition);
 		// send out a position event.
 		PositionEvent pe = new PositionEvent(tradeableId, new TimeStamp(), price, newPosition);
+		pe.setTimeStamp(currentExchangeTime);
+		pe.setCreationTime(currentExchangeTime.getNanoseconds());
 		try {
 			transport.getPublisher(ETransportType.TRAD_DATA, tradeableId).send(pe);
 		} catch (TransportException e) {

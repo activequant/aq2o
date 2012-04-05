@@ -126,7 +126,7 @@ public class VisualBacktester extends AbstractBacktester  {
 				}
 			}
 		});
-		jframe.getContentPane().add(step50);
+		jframe.getContentPane().add(stop);
 		
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -154,6 +154,7 @@ public class VisualBacktester extends AbstractBacktester  {
 		
 		// generate the report. 
 		super.generateReport();
+		System.exit(0);;
 
 	}
 

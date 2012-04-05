@@ -38,12 +38,12 @@ public class LimitOrderBookMatcher {
 
             if (difference > 0) {
                 // buy side larger.
-                executed = buyOrder.getOpenQuantity() + difference;
+                executed = buyOrder.getOpenQuantity() - difference;
                 buyOrder.setOpenQuantity(difference);
                 sellOrder.setOpenQuantity(0);
             } else if (difference < 0) {
-                executed = sellOrder.getOpenQuantity() + difference;
                 // sell side larger.
+                executed = sellOrder.getOpenQuantity() + difference;
                 buyOrder.setOpenQuantity(0);
                 sellOrder.setOpenQuantity(Math.abs(difference));
             } else {
