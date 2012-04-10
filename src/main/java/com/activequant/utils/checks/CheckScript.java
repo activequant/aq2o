@@ -79,6 +79,8 @@ public class CheckScript {
             mailBody.append(id + "<br/>");
         }
         
+        System.out.println(mailBody);
+        
         // dump the amount of MDIs created today. 
         if(target.contains(",")){
                 sendMail.sendMail(target.split(","), "Statistics", mailBody.toString());
