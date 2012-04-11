@@ -4,8 +4,8 @@ import com.activequant.utils.annotations.Property;
 
 public class Spread extends Instrument {
 
-	private String buySideInstrumentId, sellSideInstrumentId;
-	private Integer buySideQuantity, sellSideQuantity; 
+	private String instrument1, instrument2;
+	private Integer quantity1, quantity2;
 	private String spreadType, exchange, currency;
 
 	public Spread() {
@@ -16,24 +16,6 @@ public class Spread extends Instrument {
 	public String getId() {
 		return "SPREAD." + nullSafe(super.getSymbolId()) + "." + nullSafe(super.getShortName()) + "."
 				+ nullSafe(spreadType) + "." + nullSafe(exchange) + "." + nullSafe(currency);
-	}
-
-	@Property
-	public String getBuySideInstrumentId() {
-		return buySideInstrumentId;
-	}
-
-	public void setBuySideInstrumentId(String leg1Id) {
-		this.buySideInstrumentId = leg1Id;
-	}
-
-	@Property
-	public String getSellSideInstrumentId() {
-		return sellSideInstrumentId;
-	}
-
-	public void setSellSideInstrumentId(String leg2Id) {
-		this.sellSideInstrumentId = leg2Id;
 	}
 
 	@Property
@@ -62,21 +44,41 @@ public class Spread extends Instrument {
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
+
 	@Property
-	public Integer getBuySideQuantity() {
-		return buySideQuantity;
+	public String getInstrument1() {
+		return instrument1;
 	}
 
-	public void setBuySideQuantity(Integer buySideQuantity) {
-		this.buySideQuantity = buySideQuantity;
-	}
-	@Property
-	public Integer getSellSideQuantity() {
-		return sellSideQuantity;
+	public void setInstrument1(String instrument1) {
+		this.instrument1 = instrument1;
 	}
 
-	public void setSellSideQuantity(Integer sellSideQuantity) {
-		this.sellSideQuantity = sellSideQuantity;
+	@Property
+	public String getInstrument2() {
+		return instrument2;
+	}
+
+	public void setInstrument2(String instrument2) {
+		this.instrument2 = instrument2;
+	}
+
+	@Property
+	public Integer getQuantity1() {
+		return quantity1;
+	}
+
+	public void setQuantity1(Integer quantity1) {
+		this.quantity1 = quantity1;
+	}
+
+	@Property
+	public Integer getQuantity2() {
+		return quantity2;
+	}
+
+	public void setQuantity2(Integer quantity2) {
+		this.quantity2 = quantity2;
 	}
 
 }
