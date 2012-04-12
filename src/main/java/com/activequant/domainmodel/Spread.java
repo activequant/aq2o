@@ -5,7 +5,7 @@ import com.activequant.utils.annotations.Property;
 public class Spread extends Instrument {
 
 	private String instrument1, instrument2;
-	private Integer quantity1, quantity2;
+	private Double quantity1, quantity2;
 	private String spreadType, exchange, currency;
 
 	public Spread() {
@@ -64,20 +64,20 @@ public class Spread extends Instrument {
 	}
 
 	@Property
-	public Integer getQuantity1() {
+	public Double getQuantity1() {
 		return quantity1;
 	}
 
-	public void setQuantity1(Integer quantity1) {
+	public void setQuantity1(Double quantity1) {
 		this.quantity1 = quantity1;
 	}
 
 	@Property
-	public Integer getQuantity2() {
+	public Double getQuantity2() {
 		return quantity2;
 	}
 
-	public void setQuantity2(Integer quantity2) {
+	public void setQuantity2(Double quantity2) {
 		this.quantity2 = quantity2;
 	}
 
