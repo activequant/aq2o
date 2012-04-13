@@ -7,6 +7,7 @@ import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
 import com.activequant.domainmodel.Instrument;
+import com.activequant.domainmodel.TimeFrame;
 
 @WebService
 @MTOM(enabled=false)
@@ -23,6 +24,8 @@ public interface IMainService {
     @WebMethod
     public int mdiCount();
     
+    @WebMethod
+    public double[][] getTimeSeries(String seriesId, String column, TimeFrame timeFrame, long date8Start, long date8End) throws Exception ;
     
     
     
