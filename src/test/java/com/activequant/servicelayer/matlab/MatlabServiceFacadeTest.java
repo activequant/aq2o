@@ -7,6 +7,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.activequant.archive.TSContainer;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TimeFrame;
 
@@ -49,7 +50,16 @@ public class MatlabServiceFacadeTest extends TestCase {
 		Instrument[] instruments = msf.getActiveInstruments("SECCHAIN.DATE.BBGT_AD CURNCY_OPEN_INTEREST", 20120101);
 		assertNotNull(instruments);
 		
+	}
+	
+	public void testTwoInstr() throws Exception{
 		
+		MatlabServiceFacade msf = new MatlabServiceFacade("192.168.10.150");
+		Map<Parameter, Object> paramMap = new HashMap<Parameter, Object>();
+		paramMap.put(Parameter.INTERPOLRULE, InterpolationRule.CARRY_FORWARD);
+		paramMap.put(Parameter.DAYRULE, DayRule.WEEKDAYS);
+		TimeSeriesContainer tsc = msf.fetchTSData(TimeFrame.EOD, new String[]{"SECCHAIN.DATE.BBGT_AD CURNCY_OPEN_INTEREST"}, new String[]{"OPEN"},20000101000000.0, paramMap);
+		System.out.println(tsc.timeStamps().length);
 		
 	}
 }
