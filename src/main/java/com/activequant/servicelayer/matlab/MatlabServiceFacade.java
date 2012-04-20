@@ -1,8 +1,11 @@
 package com.activequant.servicelayer.matlab;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +49,7 @@ public class MatlabServiceFacade {
 	private IDaoFactory daoFactory;
 	// manually add request handlers for synthetic fields.
 	private IRequestHandler[] reqHandlers;
+	private SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
 
 	public MatlabServiceFacade() {
 		this("localhost");
@@ -164,8 +168,36 @@ public class MatlabServiceFacade {
 			}
 		}
 
+		// check if we have an EOD request.
+		if (TimeFrame.EOD.equals(tf)) {
+			if (paramMap.containsKey(Parameter.DAYRULE) && paramMap.get(Parameter.DAYRULE).equals(DayRule.WEEKDAYS)) {
+				// generate a day map with all days.
+				TimeStamp t1 = new TimeStamp(parser.getNanoseconds(startDate8Time6));
+				TimeStamp t2 = new TimeStamp(parser.getNanoseconds(endDate8Time6));
+
+				Calendar cal = GregorianCalendar.getInstance();
+				cal.setTime(t1.getDate());
+				while (cal.getTime().before(t2.getDate())) {
+					if (!containsDataForDay(timeStamps, date8.format(cal.getTime())))
+						timeStamps.add(new TimeStamp(cal.getTime()));
+					cal.add(Calendar.DATE, 1);
+				}
+				//
+			}
+
+		}
+
 		return converter.convertDataMap(timeStamps, dataMap, marketInstrumentIds, fieldNames, paramMap);
 
+	}
+
+	private boolean containsDataForDay(List<TimeStamp> timeStamps, String d8) {
+		for (TimeStamp ts : timeStamps) {
+			String ref = date8.format(ts.getDate());
+			if (ref.equals(d8))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -208,38 +240,39 @@ public class MatlabServiceFacade {
 		// have to load the adjusted series entries
 		for (String s : d.findIDs("CHAINNAME", sc.getId())) {
 			AdjustedSeriesDateEntry e = d.load(s);
-			sc.add(e.getInstrumentId(), e.getDate());			
-		}				
-		// 
-		return sc; 
-		
+			sc.add(e.getInstrumentId(), e.getDate());
+		}
+		//
+		return sc;
+
 	}
 
 	public Future[] getActiveInstruments(String secChainId, long date8) throws Exception {
 		IInstrumentDao idao = daoFactory.instrumentDao();
-		
+
 		IAdjustedSeriesDateEntryDao d = daoFactory.adjSerDtEntryDao();
 		List<Future> activeInstruments = new ArrayList<Future>();
-		
+
 		// have to load the adjusted series entries
 		for (String s : d.findIDs("CHAINNAME", secChainId)) {
-			AdjustedSeriesDateEntry e = d.load(s);			
+			AdjustedSeriesDateEntry e = d.load(s);
 			Instrument instrument = idao.load(e.getInstrumentId());
-			if(instrument instanceof Future){
-				Future f = (Future)instrument; 
-				if(f.getFirstTradingDate()<=date8 && f.getLastTradingDate()>=date8){
+			if (instrument instanceof Future) {
+				Future f = (Future) instrument;
+				if (f.getFirstTradingDate() <= date8 && f.getLastTradingDate() >= date8) {
 					activeInstruments.add(f);
 				}
 			}
 		}
-		// 
-		Collections.sort(activeInstruments, new Comparator<Future>(){
+		//
+		Collections.sort(activeInstruments, new Comparator<Future>() {
 			@Override
 			public int compare(Future o1, Future o2) {
-				return o1.getFirstTradingDate().compareTo(o2.getFirstTradingDate());						
-			}});
-		// 
-		return activeInstruments.toArray(new Future[]{});
+				return o1.getFirstTradingDate().compareTo(o2.getFirstTradingDate());
+			}
+		});
+		//
+		return activeInstruments.toArray(new Future[] {});
 	}
 
 	/**

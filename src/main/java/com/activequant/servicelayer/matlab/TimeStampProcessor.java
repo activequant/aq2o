@@ -16,6 +16,10 @@ public class TimeStampProcessor {
             throws InvalidDate8Time6Input {
         List<TimeStamp> ret = timeStamps;
         TimeTools tt = new TimeTools();
+        
+        // 
+        
+        
         // TODO: put into utility class.
         // check if we have a week-day only parameter
         if (paramMap.containsKey(Parameter.DAYRULE)) {
@@ -28,6 +32,10 @@ public class TimeStampProcessor {
                 ret = tsTemp;
             }
         }
+        
+        // 
+        
+        
         return ret;
 
     }

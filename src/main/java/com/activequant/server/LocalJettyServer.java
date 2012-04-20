@@ -91,7 +91,8 @@ public class LocalJettyServer {
 						response.getWriter().println();
 						response.getWriter().flush();
 					}
-				} catch (ParseException e) {		
+				} catch (ParseException e) {
+					
 					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.jruby.RubyProcess.Sys;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -66,6 +67,8 @@ public class ImportMarketDataCSV {
 				IArchiveFactory.class);
 		this.timeFrame = inTimeFrame;
 		// will recurse into directory.
+		File f = new File(directory);
+		System.out.println("Traversing directory " + f.getAbsolutePath());
 		this.mdProvider = mdprovider;
 		new FileTraversal() {
 			public void onFile(final File f) {
@@ -80,7 +83,7 @@ public class ImportMarketDataCSV {
 					}
 				}
 			}
-		}.traverse(new File(directory));
+		}.traverse(f);
 
 		for (int i = 0; i < 100; i++) {
 			fileNameQueue.add("TERMINATE");

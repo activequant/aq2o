@@ -12,6 +12,12 @@ public class ReturnMapProcessor {
         double[][][] ret = input;
         // TODO: make smarter.
         // check if we have an NAN interpolation roule.
+        
+        /// 
+        
+        
+        
+        ///
         if (paramMap.containsKey(Parameter.INTERPOLRULE)) {
             if (paramMap.get(Parameter.INTERPOLRULE) == InterpolationRule.CARRY_FORWARD) {
                 for (int i = 0; i < input.length; i++) {
@@ -24,10 +30,10 @@ public class ReturnMapProcessor {
                     if (fields < 1)
                         continue;
                     for (int field = 0; field < fields; field++) {
-                        Double lastVal = null;
+                        Double lastVal = Double.NaN;
                         for (int day = 0; day < days; day++) {
                             Double currentVal = input[i][day][field];
-                            if (currentVal == null || Double.isNaN(currentVal))
+                            if ( (currentVal == null || Double.isNaN(currentVal))  && lastVal != null )  
                                 ret[i][day][field] = lastVal;
                             else
                                 lastVal = currentVal;
@@ -36,6 +42,8 @@ public class ReturnMapProcessor {
                 }
             }
         }
+        
+        
 
         return ret;
 
