@@ -5,6 +5,13 @@ public abstract class Worker<T> {
 
     public abstract void process(T t);
 
+    /**
+     * called when the queue is empty. May be implemented by 
+     */
+    public void queueEmpty() {
+    	return;
+    }
+    
     public boolean runFlag() {
         return runFlag;
     }
