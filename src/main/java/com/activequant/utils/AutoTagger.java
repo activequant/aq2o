@@ -22,22 +22,45 @@ public class AutoTagger {
 		String l = br.readLine();
 		while(l!=null){
 			// 
-			
-			
+			if(!l.startsWith("#"))
+			{
+				String[] p = l.split(";");
+				// ok, parse it. 
+				String tableName = p[0];
+				String pattern = p[1];
+				String[] tags = p[2].split(" ");
+				TagDesc td = new TagDesc();
+				td.tableName = tableName;
+				td.pattern = pattern; 
+				td.tagValues = tags; 
+				tagDescs.add(td);
+			}
 			// 
 			l = br.readLine();
 		}
+		
 	}
 	
-	public AutoTagger(){
+	public AutoTagger() throws IOException{
+		parseTagDescFile();
+		for(TagDesc td : tagDescs){
+			process(td);
+		}
+	}
+	
+	private void process(TagDesc td){
+		// find all IDs that match
+		
+		
 		
 	}
 	
 	
 	/**
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new AutoTagger();
 	}
 

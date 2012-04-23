@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
 
+import com.activequant.dao.DaoException;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.GenericRow;
 import com.activequant.domainmodel.PersistentEntity;
@@ -167,6 +168,14 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	public String[] loadIDs() {
 		List<String> iids = mapper.loadKeyList(tableName);
 		return iids.toArray(new String[] {});
+	}
+	
+	
+	
+	public String[] findIdsLike(String pattern) throws DaoException
+	{
+		List<String> ret = mapper.findIdsLike(tableName, pattern, Integer.MAX_VALUE);
+		return ret.toArray(new String[]{});
 	}
 
 	private GenericRow genRow(long createdTimeStamp, String id, String key, Object value) {

@@ -10,6 +10,8 @@ public interface IEntityDao<T extends PersistentEntity> {
     public T[] loadAll() throws DaoException;
 
     public String[] loadIDs() throws DaoException;
+    
+    public String[] findIdsLike(String pattern) throws DaoException; 
 
     public void create(T t) throws DaoException;
 
