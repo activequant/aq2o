@@ -6,6 +6,23 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.activequant.dao.DaoException;
+import com.activequant.dao.IDaoFactory;
+import com.activequant.dao.hbase.TagDao;
+import com.activequant.domainmodel.Instrument;
+import com.activequant.domainmodel.MarketDataInstrument;
+
+/**
+ * Can handle only Instruments and MarketDataInstruments.  
+ * Calls tagDao.tag(Instrument.class.getSimpleName(), s, tag); 
+ * or the pendant for MarketDataInstrument.  
+ * 
+ * @author ustaudinger
+ *
+ */
 public class AutoTagger {
 
 	class TagDesc{
@@ -16,6 +33,8 @@ public class AutoTagger {
 	
 	private String tagDescriptionFile = "tags.def";
 	private List<TagDesc> tagDescs = new ArrayList<TagDesc>();
+	private IDaoFactory idf;
+	private TagDao tagDao; 
 	
 	private void parseTagDescFile() throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(AutoTagger.class.getResourceAsStream(tagDescriptionFile)));
@@ -41,26 +60,46 @@ public class AutoTagger {
 		
 	}
 	
-	public AutoTagger() throws IOException{
+	public AutoTagger() throws IOException, DaoException{
+		
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
+        idf = (IDaoFactory) appContext.getBean("ibatisDao");
+        tagDao = appContext.getBean("tagDao", TagDao.class);
 		parseTagDescFile();
 		for(TagDesc td : tagDescs){
 			process(td);
 		}
 	}
 	
-	private void process(TagDesc td){
+	private void process(TagDesc td) throws DaoException{
 		// find all IDs that match
+		// get the corresponding mapper ... 
 		
-		
-		
+		if(td.tableName.equals(Instrument.class.getSimpleName())){
+			// get the instrument dao.
+			String[] ids = idf.instrumentDao().findIdsLike(td.pattern);
+			for(String s : ids){
+				for(String tag : td.tagValues)
+					tagDao.tag(Instrument.class.getSimpleName(), s, tag);
+			}
+		}
+		else if(td.tableName.equals(MarketDataInstrument.class.getSimpleName())){
+			// get the instrument dao.
+			String[] ids = idf.mdiDao().findIdsLike(td.pattern);
+			for(String s : ids){
+				for(String tag : td.tagValues)
+					tagDao.tag(MarketDataInstrument.class.getSimpleName(), s, tag);
+			}
+		}
 	}
 	
 	
 	/**
 	 * @param args
 	 * @throws IOException 
+	 * @throws DaoException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, DaoException {
 		new AutoTagger();
 	}
 

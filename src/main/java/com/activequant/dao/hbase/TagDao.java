@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import com.activequant.dao.DaoException;
 
 public class TagDao {
+	
 	private List<Put> puts = new ArrayList<Put>();
 	protected HTable htable;
 	private final Logger log = Logger.getLogger(TagDao.class);
