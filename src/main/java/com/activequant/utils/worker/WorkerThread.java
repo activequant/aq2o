@@ -13,7 +13,7 @@ public class WorkerThread<T> implements Runnable {
         this.queue = queue;
         this.worker = worker;
     }
-
+    
     public void run() {
         try {
             while (worker.runFlag()) {
