@@ -22,7 +22,7 @@ public class HBaseArchTestsMain {
 	    HBaseArchiveFactory fac = new HBaseArchiveFactory("127.0.0.1");
         IArchiveReader iar = fac.getReader(TimeFrame.EOD);
         IArchiveWriter iwr = fac.getWriter(TimeFrame.EOD);
-        
+             
         System.out.println("About to write. ");
         TimeStamp now = new TimeStamp();
         iwr.write("A", now, new Tuple<String, Double>("ABCD", 1.0));
