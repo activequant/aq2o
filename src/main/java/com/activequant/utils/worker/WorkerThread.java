@@ -19,6 +19,8 @@ public class WorkerThread<T> implements Runnable {
             while (worker.runFlag()) {
                 T t = queue.take();
                 worker.process(t);
+                // signalling to the worker that the queue is now empty.  
+                if(queue.isEmpty())worker.queueEmpty();
             }
         } catch (Exception ex) {
             log.error("Error while processing work load. ", ex);
