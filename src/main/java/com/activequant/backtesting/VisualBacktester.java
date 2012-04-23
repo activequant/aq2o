@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 import com.activequant.archive.IArchiveFactory;
 import com.activequant.dao.IDaoFactory;
+import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.tools.streaming.MarketDataEvent;
 import com.activequant.tools.streaming.ReferenceDataEvent;
 import com.activequant.tools.streaming.StreamEvent;
@@ -21,6 +22,7 @@ import com.activequant.trading.virtual.VirtualExchange;
 import com.activequant.transport.ETransportType;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.TimeMeasurement;
+import com.activequant.utils.events.IEventListener;
 
 public class VisualBacktester extends AbstractBacktester  {
 
@@ -33,7 +35,8 @@ public class VisualBacktester extends AbstractBacktester  {
 	private FastStreamer fs;
 	long eventCount = 0;
 	private JFrame jframe = new JFrame();
-	private boolean runFlag = true; 
+	private boolean runFlag = true;
+	private boolean runUntilOrderEvent = false; 
 
 	@SuppressWarnings("rawtypes")
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
@@ -48,6 +51,14 @@ public class VisualBacktester extends AbstractBacktester  {
 		// add the order event listener 
 		if(exchange instanceof VirtualExchange){
 			((VirtualExchange)exchange).getGlobalOrderEvent().addEventListener(oelistener);
+			((VirtualExchange)exchange).getGlobalOrderEvent().addEventListener(new IEventListener<OrderEvent>(){
+				@Override
+				public void eventFired(OrderEvent event) {
+					if(runUntilOrderEvent)
+						tickPlayAmount = 0;
+				}				
+			});
+		
 		}
 		
 
@@ -74,7 +85,7 @@ public class VisualBacktester extends AbstractBacktester  {
 		}
 
 		jframe.setTitle("Market replay control tool");
-		jframe.getContentPane().setLayout(new GridLayout(1, 5));
+		jframe.getContentPane().setLayout(new GridLayout(1, 6));
 
 		JButton play = new JButton("Play");
 		jframe.getContentPane().add(play);
@@ -82,6 +93,7 @@ public class VisualBacktester extends AbstractBacktester  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tickPlayAmount = Integer.MAX_VALUE;
+				runUntilOrderEvent = false;
 			}
 		});
 
@@ -90,6 +102,7 @@ public class VisualBacktester extends AbstractBacktester  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tickPlayAmount = 0;
+				runUntilOrderEvent = false;
 			}
 		});
 		jframe.getContentPane().add(pause);
@@ -99,6 +112,7 @@ public class VisualBacktester extends AbstractBacktester  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tickPlayAmount = 1;
+				runUntilOrderEvent = false;
 			}
 		});
 
@@ -109,9 +123,21 @@ public class VisualBacktester extends AbstractBacktester  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tickPlayAmount = 50;
+				runUntilOrderEvent = false; 
 			}
 		});
 		jframe.getContentPane().add(step50);
+		
+		JButton runUntilExecutionButton = new JButton("Run to next execution");
+		runUntilExecutionButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tickPlayAmount = Integer.MAX_VALUE;
+				runUntilOrderEvent = true; 
+			}
+		});
+		jframe.getContentPane().add(runUntilExecutionButton);
+
 		
 		
 		JButton stop = new JButton("Stop");
@@ -168,6 +194,7 @@ public class VisualBacktester extends AbstractBacktester  {
 				//
 				StreamEvent se = fs.getOneFromPipes();
 				ETransportType transportType = se.getEventType();
+				
 
 				// only time events are sent to the generic transport layer.
 				if (transportType.equals(ETransportType.TIME)) {
@@ -178,20 +205,18 @@ public class VisualBacktester extends AbstractBacktester  {
 				if (transportType.equals(ETransportType.MARKET_DATA)) {
 					MarketDataEvent mde = (MarketDataEvent) se;
 					transportFactory.getPublisher(transportType, mde.getMdiId()).send(se);
-
 					// send it also into our VIRTEX vortex
 					exchange.processStreamEvent(se);
 				} else if (transportType.equals(ETransportType.REF_DATA)) {
 					ReferenceDataEvent rde = (ReferenceDataEvent) se;
 					transportFactory.getPublisher(transportType, rde.getInstrument()).send(se);
 				} else if (transportType.equals(ETransportType.TRAD_DATA)) {
-					TradingDataEvent tde = (TradingDataEvent) se;
+					TradingDataEvent tde = (TradingDataEvent) se;					
 					transportFactory.getPublisher(transportType, tde.getTradInstId()).send(se);
-
 					// send everything also to virtex exchange layer.
 					exchange.processStreamEvent(se);
 				}
-
+				
 				//
 				eventCount++;
 				tickPlayAmount--;
