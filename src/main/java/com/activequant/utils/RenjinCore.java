@@ -31,7 +31,10 @@ public class RenjinCore {
 		RenjinCore r = new RenjinCore();
 		r.put("a", 1);		
 		r.execute("b = c(a, sqrt(a + 1));");
-		System.out.println("Obj: " + r.get("b") + " " + r.get("b").getClass());		
+		r.execute("b = c(a, sqrt(a + 1), sqrt(50));");
+		r.execute("sdb = sd(b);");
+		System.out.println("Obj: " + r.get("b") + " " + r.get("b").getClass());
+		System.out.println(r.get("sdb"));
 	}
 
 }
