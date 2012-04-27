@@ -27,7 +27,7 @@ public class Date8Time6Parser extends SimpleDateFormat {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
         otherSymbols.setDecimalSeparator('.');
         dcf = new DecimalFormat("00000000000000.000000000", otherSymbols);
-        setTimeZone(TimeZone.getTimeZone("UTC"));
+//        setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     public long getMicroseconds(Double d8t6) throws InvalidDate8Time6Input {
@@ -59,7 +59,7 @@ public class Date8Time6Parser extends SimpleDateFormat {
 
     public Double now() throws InvalidDate8Time6Input {
         GregorianCalendar cal = new GregorianCalendar();
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         return Double.parseDouble(new Date8Time6Parser().format(cal.getTime()));
     }
     

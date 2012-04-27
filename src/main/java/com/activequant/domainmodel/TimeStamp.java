@@ -48,7 +48,7 @@ public final class TimeStamp implements Comparable<TimeStamp>, Serializable {
 	private final int hashCode;
 	
 	/**
-	 * Returns time in nanoseconds since Unix epoch (Jan 1, 1970 UTC).
+	 * Returns time in nanoseconds since Unix epoch (Jan 1, 1970 GMT).
 	 * 
 	 * @return
 	 */
@@ -67,7 +67,7 @@ public final class TimeStamp implements Comparable<TimeStamp>, Serializable {
 	/**
 	 * Creates new Timestamp object from nanosecond value.
 	 * 
-	 * @param value nanoseconds since Jan 1, 1970 UTC.
+	 * @param value nanoseconds since Jan 1, 1970 GMT.
 	 */
 	public TimeStamp(long value) {
 		this.value = value;

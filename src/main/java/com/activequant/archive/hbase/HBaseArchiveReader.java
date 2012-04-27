@@ -38,7 +38,6 @@ import com.activequant.utils.UniqueTimeStampGenerator;
 class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
     private UniqueTimeStampGenerator timeStampGenerator = new UniqueTimeStampGenerator();
-    private Date8Time6Parser d8t6p = new Date8Time6Parser();
     private Logger log = Logger.getLogger(HBaseArchiveReader.class);
 
     HBaseArchiveReader(final String zookeeperHost, final TimeFrame tf) throws IOException {
