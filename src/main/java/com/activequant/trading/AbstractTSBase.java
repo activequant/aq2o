@@ -347,11 +347,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			{
 				getQuoteTable().setValueAt(mds.getBidPrices()[0], row, QuoteTable.Columns.BID.colIdx());
 				getQuoteTable().setValueAt(mds.getBidSizes()[0], row, QuoteTable.Columns.BIDSIZE.colIdx());
-			}
-			// calculate the midpoint
-			if(bid!=null && ask!=null){
-				getQuoteTable().setValueAt( (bid+ask)/2.0, row, QuoteTable.Columns.MID.colIdx());
-			}			
+			}		
 			// signaling that this row has changed.
 			getQuoteTable().getRowUpdateEvent().fire(row);
 			getQuoteTable().signalUpdate();

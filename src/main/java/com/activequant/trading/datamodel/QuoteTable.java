@@ -13,11 +13,10 @@ public class QuoteTable extends AQTableDataBaseAlpha {
 		INSTRUMENTID(0),
 		BIDSIZE(1), 
 		BID(2), 
-		MID(3),
-		ASK(4),
-		ASKSIZE(5), 
-		TRADE(6),
-		TRADESIZE(7);		
+		ASK(3),
+		ASKSIZE(4), 
+		TRADE(5),
+		TRADESIZE(6);		
 		
 		// 
 		int colIdx;		
