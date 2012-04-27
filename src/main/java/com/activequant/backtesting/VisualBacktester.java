@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import com.activequant.aqviz.GlobalVizEvents;
 import com.activequant.archive.IArchiveFactory;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.trade.event.OrderEvent;
@@ -140,7 +141,7 @@ public class VisualBacktester extends AbstractBacktester  {
 
 		
 		
-		JButton stop = new JButton("Stop");
+		JButton stop = new JButton("Exit");
 		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -180,6 +181,10 @@ public class VisualBacktester extends AbstractBacktester  {
 		
 		// generate the report. 
 		super.generateReport();
+		
+		// 
+		GlobalVizEvents.getInstance().getEvent().fire("EXIT");
+		
 		System.exit(0);;
 
 	}
@@ -222,7 +227,7 @@ public class VisualBacktester extends AbstractBacktester  {
 				tickPlayAmount--;
 			}
 			
-			// checking every 100ms if we are to replay more. 
+			// checking every 100ms if we are to replay more. This delay does not impact the backtesting performance. 
 			Thread.sleep(50);			
 		}
 	}
