@@ -1,7 +1,6 @@
 package com.activequant.tools.streaming;
 
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.transport.ETransportType;
 
 public class PositionEvent extends TradingDataEvent {

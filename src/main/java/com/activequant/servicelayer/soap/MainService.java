@@ -1,7 +1,5 @@
 package com.activequant.servicelayer.soap;
 
-import java.text.ParseException;
-
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;

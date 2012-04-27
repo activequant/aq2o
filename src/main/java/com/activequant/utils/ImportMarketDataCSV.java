@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.jruby.RubyProcess.Sys;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

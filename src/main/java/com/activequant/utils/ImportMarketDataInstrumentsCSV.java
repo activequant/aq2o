@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.mortbay.log.Log;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

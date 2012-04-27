@@ -10,7 +10,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.ITradeableInstrumentDao;
-import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.utils.events.IEventListener;
 

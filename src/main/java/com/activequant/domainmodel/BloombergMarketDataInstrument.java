@@ -1,6 +1,5 @@
 package com.activequant.domainmodel;
 
-import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.utils.annotations.Property;
 
 public class BloombergMarketDataInstrument extends MarketDataInstrument {

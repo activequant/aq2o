@@ -1,9 +1,6 @@
 package com.activequant.backtesting;
 
-import java.util.Map;
-
 import com.activequant.archive.IArchiveReader;
-import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
