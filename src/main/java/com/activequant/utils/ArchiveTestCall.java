@@ -22,7 +22,7 @@ public class ArchiveTestCall {
 	    HBaseArchiveFactory fac = new HBaseArchiveFactory(args[0]);
         IArchiveReader iar = fac.getReader(TimeFrame.EOD);
         IArchiveWriter iwr = fac.getWriter(TimeFrame.EOD);
-        
+        System.out.println("writer and reader received. ");
         TimeStamp now = new TimeStamp(new Date());
         double value = Math.random(); 
         iwr.write("TEST",now,"PX_SETTLE", value);
@@ -34,6 +34,11 @@ public class ArchiveTestCall {
         else{
             System.out.println("Received: " + container.timeStamps.length + " values. ");
         }
+        
+        container = fac.getReader(TimeFrame.MINUTES_5).getTimeSeries("TICKDATA_AUH12", "CLOSE", new TimeStamp(0L));
+        System.out.println(container.timeStamps[0].getDate());
+        System.out.println(container.timeStamps[1].getDate());
+        System.out.println(container.timeStamps.length);
         
 	}
 	
