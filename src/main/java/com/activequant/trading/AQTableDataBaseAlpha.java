@@ -13,12 +13,12 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase implements
 	private List<Tuple<Integer, Integer>> alphaList = new ArrayList<Tuple<Integer, Integer>>();
 	private Object[][] alpha = new Integer[0][];
 	private boolean enableBlinking;
-
+	private int sleepTime = 100;
 	public AQTableDataBaseAlpha() {
 		super();
 		setEnableBlinking(false);
 	}
-
+	
 	public AQTableDataBaseAlpha(AbstractTSBase abstractTSBase) {
 		super(abstractTSBase);
 		setEnableBlinking(false);
@@ -94,5 +94,13 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase implements
 		List<Object[]> l = c(alpha);
 		l.add(new_row);
 		alpha = c(l);
+	}
+
+	public int getSleepTime() {
+		return sleepTime;
+	}
+
+	public void setSleepTime(int sleepTime) {
+		this.sleepTime = sleepTime;
 	}
 }

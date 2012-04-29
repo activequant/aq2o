@@ -1,6 +1,7 @@
 package com.activequant.archive;
 
-import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.domainmodel.TimeFrame;
@@ -43,6 +44,38 @@ public class HBaseArchTestsMain {
         
         iwr.delete("A");
         iwr.commit();
+        
+        
+        
+        // 
+        iar = fac.getReader(TimeFrame.RAW);
+        iwr = fac.getWriter(TimeFrame.RAW);
+        iwr.write("TZTEST", new TimeStamp(0L), new Tuple<String, Double>("A",1.0));
+        
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.set(Calendar.YEAR, 2000);
+        cal.set(Calendar.MONTH, Calendar.MAY);
+        cal.set(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 8);
+        cal.set(Calendar.MINUTE, 30);
+        cal.set(Calendar.SECOND, 15);
+        cal.set(Calendar.MILLISECOND, 10);
+                
+        iwr.write("TZTEST", new TimeStamp(cal.getTime()), new Tuple<String, Double>("A",13.0));        
+        iwr.commit();
+        tsc = iar.getTimeSeries("TZTEST", "A", new TimeStamp(0L));
+        
+        for(int i=0;i<tsc.timeStamps.length;i++){
+        	System.out.println("I " + i);
+        	System.out.println(tsc.timeStamps[i].getDate());
+            System.out.println(tsc.timeStamps[i].getMilliseconds());
+            System.out.println(tsc.values[i]);
+        }
+        
+        // 
+        
+        
+        
 
 	}
 
