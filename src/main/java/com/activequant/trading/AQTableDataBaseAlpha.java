@@ -1,43 +1,59 @@
 package com.activequant.trading;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.swing.Timer;
 
 import com.activequant.domainmodel.Tuple;
 import com.activequant.trading.datamodel.AQTableDataBase;
 
-public abstract class AQTableDataBaseAlpha extends AQTableDataBase implements
-		ActionListener {
-	private List<Tuple<Integer, Integer>> alphaList = new ArrayList<Tuple<Integer, Integer>>();
-	private Object[][] alpha = new Integer[0][];
+public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
+	private ConcurrentHashMap<String, Integer> alphaList = new ConcurrentHashMap<String, Integer>();
 	private boolean enableBlinking;
-	//Sleep time
-	private int sleepTime = 100;
+	// Sleep time
+	private int sleepTime = 10;
+
+	Timer time = null;
+
 	public AQTableDataBaseAlpha() {
 		super();
 		setEnableBlinking(false);
 	}
-	
+
 	public AQTableDataBaseAlpha(AbstractTSBase abstractTSBase) {
 		super(abstractTSBase);
 		setEnableBlinking(false);
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (!enableBlinking) {
-			return;
-		}
-		synchronized (alphaList) {
-			for (Tuple<Integer, Integer> t : alphaList) {
-				if ((Integer) alpha[t.getA()][t.getB()] == 0) {
-					alphaList.remove(t);
-					return;
+		/*
+		 * Timer timer = new Timer(sleepTime, this);
+		 * timer.setInitialDelay(sleepTime); timer.start();
+		 */
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				try {
+					while (true) {
+						synchronized (alphaList) {
+							for (String t : alphaList.keySet()) {
+								if ((Integer) alphaList.get(t) == 0) {
+									alphaList.remove(t);
+								} else {
+									int newAlpha = alphaList.get(t) - 20;
+									alphaList.put(t, newAlpha);
+								}
+							}
+						}
+						Thread.sleep((long) (sleepTime));
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
-		}
+		});
+
+		t.setDaemon(true);
+		t.start();
 	}
 
 	public void setValueAt(Object value, int row, int col) {
@@ -45,40 +61,32 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase implements
 		if (!enableBlinking) {
 			return;
 		}
-		try {
-			alpha[row][col] = 100;
-		} catch (ArrayIndexOutOfBoundsException ex) {
-			initRow(col);
-		}
 		synchronized (alphaList) {
-			alphaList.add(new Tuple<Integer, Integer>(row, col));
+			alphaList.put("" + row + col, 100);
 		}
-		fireTableCellUpdated(row, col);
 	}
 
 	public int getAlpha(int row, int col) {
 		if (!enableBlinking) {
 			return 0;
 		}
-		try {
-			if (alpha[row][col] == null) {
-				alpha[row][col] = 100;
-			}
-		} catch (ArrayIndexOutOfBoundsException ex) {
-			initRow(col);
-		}
 		synchronized (alphaList) {
-			alphaList.add(new Tuple<Integer, Integer>(row, col));
+			if (alphaList.get(""+row+col) == null) {
+				alphaList.put(""+row+col, 100);
+				return 100;
+			} else {
+				return alphaList.get(""+row+col);
+			}
 		}
-		fireTableCellUpdated(row, col);
-		return (Integer) alpha[row][col];
 	}
 
 	public void setAlpha(int row, int col, int alpha) {
 		if (!enableBlinking) {
 			return;
 		}
-		this.alpha[row][col] = alpha;
+		synchronized (alphaList) {
+			alphaList.put(""+row+col, alpha);
+		}
 	}
 
 	public boolean isEnableBlinking() {
@@ -87,21 +95,5 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase implements
 
 	public void setEnableBlinking(boolean enableBlinking) {
 		this.enableBlinking = enableBlinking;
-	}
-
-	private void initRow(int col) {
-		Object[] new_row = new Integer[getHeader().length];
-		new_row[col] = 100;
-		List<Object[]> l = c(alpha);
-		l.add(new_row);
-		alpha = c(l);
-	}
-
-	public int getSleepTime() {
-		return sleepTime;
-	}
-
-	public void setSleepTime(int sleepTime) {
-		this.sleepTime = sleepTime;
 	}
 }
