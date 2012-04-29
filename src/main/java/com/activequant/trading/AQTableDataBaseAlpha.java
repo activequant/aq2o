@@ -13,6 +13,7 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase implements
 	private List<Tuple<Integer, Integer>> alphaList = new ArrayList<Tuple<Integer, Integer>>();
 	private Object[][] alpha = new Integer[0][];
 	private boolean enableBlinking;
+	//Sleep time
 	private int sleepTime = 100;
 	public AQTableDataBaseAlpha() {
 		super();
