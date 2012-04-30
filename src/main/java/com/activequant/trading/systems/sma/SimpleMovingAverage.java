@@ -9,9 +9,14 @@ import javax.script.ScriptException;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
+import com.activequant.domainmodel.trade.order.MarketOrder;
+import com.activequant.domainmodel.trade.order.OrderSide;
+import com.activequant.exceptions.IncompleteOrderInstructions;
+import com.activequant.exceptions.UnsupportedOrderType;
 import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.trading.AbstractTSBase;
+import com.activequant.trading.IOrderTracker;
 import com.activequant.transport.ETransportType;
 import com.activequant.utils.RenjinCore;
 
@@ -24,14 +29,16 @@ public class SimpleMovingAverage extends AbstractTSBase {
 	
 	private List<Double> closes = new ArrayList<Double>();
 	private RenjinCore R = new RenjinCore();
-	private int currentPos = 0;
-	private DecimalFormat dcf = new DecimalFormat("#.###");
+	private double currentPos = 0;
+	private DecimalFormat dcf = new DecimalFormat("#.00");
+	private MarketDataInstrument mdi; 
+	private TradeableInstrument  tdi; 
 	
 	@Override
 	public void start() throws Exception {		
 		// 
-		MarketDataInstrument mdi = new MarketDataInstrument("CSV", "SOY");		
-		TradeableInstrument tdi = new TradeableInstrument("CSV", "SOY");
+		mdi = new MarketDataInstrument("CSV", "SOY");		
+		tdi = new TradeableInstrument("CSV", "SOY");
 		// add to local memory environment. 
 		addInstrument(mdi, tdi);			
 	}
@@ -66,7 +73,25 @@ public class SimpleMovingAverage extends AbstractTSBase {
 					Double sma = R.getDoubleVector("sma").getElementAsObject(0);
 					double tgtPos = Math.signum(mid - sma.doubleValue());
 					System.out.println(ts.getDate()+ " \tClose: " + dcf.format(mid) + " \tMean: " + dcf.format(sma) + "\tPos: " + dcf.format(tgtPos));
+					
+					// creating orders ... 
+					if(tgtPos != currentPos){
+						// 
+						double posDifference = Math.abs(currentPos - tgtPos); 
+						currentPos = tgtPos;
+						// 
+						MarketOrder mo = new MarketOrder();
+						mo.setTradInstId(tdi.getId());
+						mo.setQuantity(posDifference);
+						mo.setOrderSide(tgtPos>0?OrderSide.BUY:OrderSide.SELL);
+						IOrderTracker ot = this.env.getExchange().prepareOrder(mo);
+						ot.submit();
+					}					
 				} catch (ScriptException e) {
+					e.printStackTrace();
+				} catch (UnsupportedOrderType e) {
+					e.printStackTrace();
+				} catch (IncompleteOrderInstructions e) {
 					e.printStackTrace();
 				}				
 			}
