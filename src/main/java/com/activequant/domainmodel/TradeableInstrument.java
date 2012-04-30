@@ -14,6 +14,12 @@ public class TradeableInstrument extends PersistentEntity {
         super(TradeableInstrument.class.getCanonicalName());
     }
 
+    public TradeableInstrument(String tradProvider, String specId){
+    	this.tradingProvider = tradProvider; 
+    	this.providerSpecificId = specId;
+    }
+    
+    
     public String getId() {
         return "TRADEABLE."+ tradingProvider +"." + providerSpecificId;
     }

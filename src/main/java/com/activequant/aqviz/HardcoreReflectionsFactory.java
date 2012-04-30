@@ -25,12 +25,11 @@ public class HardcoreReflectionsFactory {
 
 	
 	public HardcoreReflectionsFactory(String firstSearchPackage){
-		// TODO Auto-generated method stub
 		Reflections reflections = new Reflections(firstSearchPackage);
 		subTypes = reflections.getSubTypesOf(IVisualTable.class);
 		System.out.println(subTypes);
 
-		if (subTypes == null) {
+		if (subTypes.isEmpty()) {
 			// scan for the default viz implementation - the doing-nothing
 			// implementation.
 			reflections = new Reflections("com.activequant.aqviz.noviz");
@@ -56,7 +55,7 @@ public class HardcoreReflectionsFactory {
 				return (IQuoteTableViz)constr.newInstance(s, aqt, exch);
 			}
 		}
-		throw new RuntimeException("Could not instantiate visual table. This installation is totally screwed up.");
+		throw new RuntimeException("Could not instantiate quote table. This installation is totally screwed up.");
 		
 	}
 
@@ -68,7 +67,7 @@ public class HardcoreReflectionsFactory {
 				return (IOrderTableViz)constr.newInstance(s, aqt, exch);
 			}
 		}
-		throw new RuntimeException("Could not instantiate visual table. This installation is totally screwed up.");
+		throw new RuntimeException("Could not instantiate order table. This installation is totally screwed up.");
 		
 	}
 
@@ -80,7 +79,7 @@ public class HardcoreReflectionsFactory {
 				return (IInstrumentTableViz)constr.newInstance(s, aqt, exch);
 			}
 		}
-		throw new RuntimeException("Could not instantiate visual table. This installation is totally screwed up.");
+		throw new RuntimeException("Could not instantiate instrument table. This installation is totally screwed up.");
 		
 	}
 

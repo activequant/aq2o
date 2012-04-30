@@ -1,14 +1,19 @@
 package com.activequant.aqviz.noviz;
 
 import com.activequant.aqviz.interfaces.IQuoteTableViz;
+import com.activequant.trading.datamodel.AQTableDataBase;
+import com.activequant.trading.virtual.IExchange;
 /**
  * intentionally left blank. 
  * 
  * @author ustaudinger
  *
  */
-public class QuoteTableViz implements IQuoteTableViz {
+public class QuoteTableViz extends VisualTable implements IQuoteTableViz  {
 
+	public QuoteTableViz(String stub, AQTableDataBase tableBase, IExchange exchange ){
+		super(stub, tableBase);
+	}
 	@Override
 	public void setTitle(String title) {
 		// TODO Auto-generated method stub

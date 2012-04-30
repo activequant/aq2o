@@ -23,10 +23,10 @@ public class FieldToBidAskConverterStream extends StreamEventIterator<MarketData
     private double bidQuantity, askQuantity, bidOffset, askOffset;
      
     
-    public FieldToBidAskConverterStream(String mdiId, String fieldName, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
+    public FieldToBidAskConverterStream(String mdiId, String field, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
         this.mdiId = mdiId;
         this.tdiId = mdiId; 
-        this.fieldName = fieldName;
+        this.fieldName = field;
         this.streamIterator = archiveReader.getTimeSeriesStream(mdiId, fieldName, startTime, endTime);
         bid = new double[1];
         ask = new double[1];
@@ -34,9 +34,9 @@ public class FieldToBidAskConverterStream extends StreamEventIterator<MarketData
         askQ = new double[1];          
     }
     
-    public FieldToBidAskConverterStream(String mdiId, String tdiId, String fieldName, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
+    public FieldToBidAskConverterStream(String mdiId, String tdiId, String field, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
         this.mdiId = mdiId;
-        this.fieldName = fieldName; 
+        this.fieldName = field; 
         this.streamIterator = archiveReader.getTimeSeriesStream(mdiId, fieldName, startTime, endTime);
         bid = new double[1];
         ask = new double[1];

@@ -144,14 +144,20 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		// set up the instrument table and subscribe to one instrument.
 		MarketDataInstrument mdi = env.getDaoFactory().mdiDao().load(mdiId);
 		TradeableInstrument tdi = env.getDaoFactory().tradeableDao().load(tdiId);
-		
+
 		// 
 		if(mdi==null || tdi == null)
 		{
 			throw new DaoException("Could not load " + mdiId + " or " + tdiId);
 		}
 
+	}
+	
+	public void addInstrument(MarketDataInstrument mdi, TradeableInstrument tdi) throws TransportException{
+
 		
+		String mdiId = mdi.getId(); 
+		String tdiId = tdi.getId();
 		// add the instrument to our list of instruments. 
 		getInstrumentTable().addInstrument(mdiId, tdiId, "", 0L, 1.0, 1.0, 80000.0, 220000.0);
 		getQuoteTable().addInstrument(mdiId);

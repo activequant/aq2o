@@ -1,6 +1,8 @@
 package com.activequant.aqviz.noviz;
 
 import com.activequant.aqviz.interfaces.IVisualTable;
+import com.activequant.trading.datamodel.AQTableDataBase;
+import com.activequant.trading.virtual.IExchange;
 
 /**
  * intentionally left blank. 
@@ -10,6 +12,10 @@ import com.activequant.aqviz.interfaces.IVisualTable;
  */
 public class VisualTable implements IVisualTable{
 
+	public VisualTable(String stub, AQTableDataBase tableBase){
+		
+	}
+	
 	@Override
 	public void setTitle(String title) {
 		
