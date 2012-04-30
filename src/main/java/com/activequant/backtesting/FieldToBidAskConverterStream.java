@@ -20,7 +20,7 @@ public class FieldToBidAskConverterStream extends StreamEventIterator<MarketData
     private String mdiId, tdiId, fieldName;  
     private TimeSeriesIterator streamIterator; 
     private double[] bid, ask, bidQ, askQ; 
-    private double bidQuantity, askQuantity, bidOffset, askOffset;
+    private double bidQuantity = 1000000, askQuantity = 1000000, bidOffset = -0.0001, askOffset = +0.0001;
      
     
     public FieldToBidAskConverterStream(String mdiId, String field, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
