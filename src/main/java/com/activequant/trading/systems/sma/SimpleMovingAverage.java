@@ -53,19 +53,17 @@ public class SimpleMovingAverage extends AbstractTSBase {
 			mid /= 2.0; 
 			closes.add(mid);
 			// restricting total length of our stored data ... 
-			if(closes.size()>100)
+			if(closes.size()>20)
 				closes.remove(0);
-			
-			
 			// size calculation
-			if(closes.size()>50){
+			if(closes.size()==20){
 				// calculate some stuff.
 				try {
 					R.put("x", closes.toArray(new Double[]{}));
 					R.execute("sma = mean(x)");
 					Double sma = R.getDoubleVector("sma").getElementAsObject(0);
 					double tgtPos = Math.signum(mid - sma.doubleValue());
-					System.out.println("Calculated mean : " + sma + " \t\t--> " + tgtPos);
+					System.out.println(ts.getDate()+ " \t\tClose" + mid + " \tCalculated mean: " + sma + " \t\t--> " + tgtPos);
 				} catch (ScriptException e) {
 					e.printStackTrace();
 				}				
