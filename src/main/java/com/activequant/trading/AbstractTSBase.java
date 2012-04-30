@@ -150,6 +150,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		{
 			throw new DaoException("Could not load " + mdiId + " or " + tdiId);
 		}
+		
+		addInstrument(mdi, tdi);
 
 	}
 	
