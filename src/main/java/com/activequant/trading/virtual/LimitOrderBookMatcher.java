@@ -3,6 +3,7 @@ package com.activequant.trading.virtual;
 import java.util.List;
 
 import com.activequant.domainmodel.trade.order.LimitOrder;
+import com.activequant.domainmodel.trade.order.MarketOrder;
 
 /**
  * 
@@ -35,6 +36,11 @@ public class LimitOrderBookMatcher {
             // determine the relevant price.
             if (buyOrder.getWorkingTimeStamp().compareTo(sellOrder.getWorkingTimeStamp()) < 0)
                 relevantPrice = buyOrder.getLimitPrice();
+            // now also checking if the order that we put in is a market order .. 
+            if(sellOrder instanceof MarketOrder && sellOrder.getOrderId()!=null)
+            	relevantPrice = buyOrder.getLimitPrice();
+            if(buyOrder instanceof MarketOrder && buyOrder.getOrderId()!=null)
+            	relevantPrice = sellOrder.getLimitPrice();	
 
             if (difference > 0) {
                 // buy side larger.

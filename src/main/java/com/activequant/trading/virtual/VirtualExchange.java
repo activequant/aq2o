@@ -202,8 +202,8 @@ public class VirtualExchange implements IExchange {
 			throw new IncompleteOrderInstructions("Invalid quantity given: " + limitOrder.getQuantity());
 		if (limitOrder.getLimitPrice() == null)
 			throw new IncompleteOrderInstructions("No limit price given.");
-		if (limitOrder.getLimitPrice() <= 0.0)
-			throw new IncompleteOrderInstructions("Invalid negative limit price given.");
+//		if (limitOrder.getLimitPrice() <= 0.0)
+//			throw new IncompleteOrderInstructions("Invalid negative limit price given.");
 		VirtualOrderTracker tracker = new VirtualOrderTracker(limitOrder);
 		return tracker;
 	}
