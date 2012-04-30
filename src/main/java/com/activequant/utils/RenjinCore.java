@@ -3,6 +3,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import r.lang.DoubleVector;
+
 public class RenjinCore {
 
 	private ScriptEngine engine;
@@ -25,6 +27,10 @@ public class RenjinCore {
 
 	public Object get(String key){
 		return engine.get(key);
+	}
+	
+	public DoubleVector getDoubleVector(String key){
+		return(DoubleVector)engine.get(key);
 	}
 	
 	public static void main(String[] args) throws ScriptException {

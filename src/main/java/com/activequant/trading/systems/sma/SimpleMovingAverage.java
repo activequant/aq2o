@@ -46,7 +46,7 @@ public class SimpleMovingAverage extends AbstractTSBase {
 	public void process(StreamEvent se) {
 		super.process(se);
 		TimeStamp ts = se.getTimeStamp();
-		System.out.println(ts.getDate()+ " - " + se.getEventType());
+		// System.out.println(ts.getDate()+ " - " + se.getEventType());
 		// 
 		if(se.getEventType().equals(ETransportType.MARKET_DATA)){
 			Double mid = ((MarketDataSnapshot)se).getBidPrices()[0] +  ((MarketDataSnapshot)se).getAskPrices()[0];
@@ -63,10 +63,9 @@ public class SimpleMovingAverage extends AbstractTSBase {
 				try {
 					R.put("x", closes.toArray(new Double[]{}));
 					R.execute("sma = mean(x)");
-					Double sma = (Double)R.get("sma");
-					System.out.println("Calculated mean : " + sma);
+					Double sma = R.getDoubleVector("sma").getElementAsObject(0);
 					double tgtPos = Math.signum(mid - sma.doubleValue());
-					System.out.println(tgtPos);
+					System.out.println("Calculated mean : " + sma + " \t\t--> " + tgtPos);
 				} catch (ScriptException e) {
 					e.printStackTrace();
 				}				
