@@ -63,7 +63,7 @@ public class SimpleMovingAverage extends AbstractTSBase {
 					R.execute("sma = mean(x)");
 					Double sma = R.getDoubleVector("sma").getElementAsObject(0);
 					double tgtPos = Math.signum(mid - sma.doubleValue());
-					System.out.println(ts.getDate()+ " \t\tClose" + mid + " \tCalculated mean: " + sma + " \t\t--> " + tgtPos);
+					System.out.println(ts.getDate()+ " \tClose: " + mid + " \t\tCalculated mean: " + sma + " \t\t--> " + tgtPos);
 				} catch (ScriptException e) {
 					e.printStackTrace();
 				}				
