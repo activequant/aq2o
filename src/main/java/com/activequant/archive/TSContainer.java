@@ -17,4 +17,14 @@ public class TSContainer {
         timeStamps = ts;
         values = v;
     }
+    
+
+    public Double getElementAtDate(TimeStamp ts){
+    	return null; 
+    }
+    
+    public Long getPosition(TimeStamp ts){
+    	return null; 
+    }    
+    
 }
