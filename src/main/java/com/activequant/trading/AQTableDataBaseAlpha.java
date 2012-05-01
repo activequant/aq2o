@@ -13,7 +13,7 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
 	private ConcurrentHashMap<String, Integer> alphaList = new ConcurrentHashMap<String, Integer>();
 	private boolean enableBlinking;
 	// Sleep time
-	private int sleepTime = 10;
+	private int sleepTime = 50;
 
 	Timer time = null;
 
@@ -39,12 +39,13 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
 								if ((Integer) alphaList.get(t) == 0) {
 									alphaList.remove(t);
 								} else {
-									int newAlpha = alphaList.get(t) - 20;
+									int newAlpha = alphaList.get(t) - 10;
 									alphaList.put(t, newAlpha);
 								}
 							}
 						}
 						Thread.sleep((long) (sleepTime));
+						signalUpdate();
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -62,7 +63,7 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
 			return;
 		}
 		synchronized (alphaList) {
-			alphaList.put("" + row + col, 100);
+			alphaList.put("" + row + ":" + col, 100);
 		}
 	}
 
@@ -71,11 +72,10 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
 			return 0;
 		}
 		synchronized (alphaList) {
-			if (alphaList.get(""+row+col) == null) {
-				alphaList.put(""+row+col, 100);
-				return 100;
+			if (alphaList.get(""+row+":"+col) == null) {
+				return 0;
 			} else {
-				return alphaList.get(""+row+col);
+				return alphaList.get(""+row+":"+col);
 			}
 		}
 	}
@@ -85,7 +85,7 @@ public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
 			return;
 		}
 		synchronized (alphaList) {
-			alphaList.put(""+row+col, alpha);
+			alphaList.put(""+row+":"+col, alpha);
 		}
 	}
 
