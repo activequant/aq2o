@@ -59,6 +59,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private boolean auditLog = true;
 	private boolean vizLayer = true;
 	private long currentMinute = 0L;
+	private double epsilon = 0.001; 
 	private IVisualTable instViz, quoteViz, execViz, orderViz, posViz, auditViz;
 
 	// an internal listener.
@@ -168,8 +169,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 						f.getTickSize(), f.getTickValue(), 80000.0, 220000.0);
 			} else if (i instanceof Stock) {
 				Stock s = (Stock) i;
-				getInstrumentTable().addInstrument(mdiId, tdiId, s.getCurrency(), 0L,
-						s.getTickSize(), s.getTickValue(), 80000.0, 220000.0);
+				getInstrumentTable().addInstrument(mdiId, tdiId, s.getCurrency(), 0L, s.getTickSize(),
+						s.getTickValue(), 80000.0, 220000.0);
 			}
 		} else
 			// add the instrument to our list of instruments.
@@ -361,22 +362,33 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			getQuoteTable().signalUpdate();
 
 			// recalculate the positions.
-			Double currentPos = (Double) getPositionTable().getCell(row, PositionTable.Columns.POSITION.colIdx()); 
-			if(currentPos != null){
+			Double currentPos = (Double) getPositionTable().getCell(row, PositionTable.Columns.POSITION.colIdx());
+			if (currentPos != null) {
 				Double openPrice = (Double) getPositionTable().getCell(row, PositionTable.Columns.ENTRYPRICE.colIdx());
-				if(currentPos > 0.0 && bid!=null){
-					double pnl = (openPrice - bid) * currentPos;
-					getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
-				}
-				else if (currentPos < 0.0 && ask!=null ){
-					double pnl = (ask - openPrice) * currentPos;
-					getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
-				}
-				else{
-					getPositionTable().setValueAt(0.0, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());	
+				Double currentPnl = (Double) getPositionTable().getCell(row,
+						PositionTable.Columns.PNLATLIQUIDATION.colIdx());		
+				if(currentPnl == null)currentPnl = 0.0; 
+				if (currentPos > 0.0 && bid != null) {
+					Double pnl = (openPrice - bid) * currentPos;
+					if (currentPnl!=null && Math.abs( currentPnl - pnl ) > epsilon) {
+						getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
+						getPositionTable().signalUpdate();
+					}
+				} else if (currentPos < 0.0 && ask != null) {
+					Double pnl = (ask - openPrice) * currentPos;
+					if (currentPnl!=null  && Math.abs( currentPnl - pnl ) > epsilon) {
+						getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
+						getPositionTable().signalUpdate();
+					}
+				} else {
+					Double pnl = 0.0; 
+					if (currentPnl!=null && Math.abs( currentPnl - pnl ) > epsilon) {
+						getPositionTable().setValueAt(0.0, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
+						getPositionTable().signalUpdate();
+					}
 				}
 			}
-			
+
 			//
 		} else {
 			log.info("Dropping data for unknown instrument. ");
