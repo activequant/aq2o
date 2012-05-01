@@ -43,4 +43,8 @@ public class LocalSoapServer {
         soap.setMTOMEnabled(false);
     }
     
+    public static void main(String[] args) throws Exception {
+    	new LocalSoapServer("localhost", 8765).start();
+    }
+    
 }
