@@ -11,12 +11,12 @@ public class InstrumentTable extends AQTableDataBase {
 	public enum Columns{
 		INSTRUMENTID(0),
 		TRADEABLEID(1),
-		BIDSIZE(2), 
-		BID(3), 
-		ASK(4),
-		ASKSIZE(5), 
-		TRADE(6),
-		TRADESIZE(7);		
+		CURRENCY(2), 
+		LASTTRADDATE(3), 
+		TICKSIZE(4),
+		TICKVALUE(5), 
+		OPENTIME(6),
+		CLOSETIME(7);		
 		
 		// 
 		int colIdx;		
@@ -82,12 +82,23 @@ public class InstrumentTable extends AQTableDataBase {
 		return false; 
 	}
 	
-	public int getPosition(String instId){
+	
+	public int getRowIndexOf(String mdiId){
 		int pos = -1; 
 		for(Object[] row : data){
 			pos++; 
-			if(row[0].equals(instId))return pos; 
+			if(row[0].equals(mdiId))return pos; 
 		}
-		throw new RuntimeException("Instrument ID not present in current system configuration. Cannot continue. ");
+		throw new RuntimeException("MDI ID not present in current system configuration. Cannot continue. ");
+	}
+	
+	/**
+	 * rather use getRowIndexOf
+	 * @param instId
+	 * @return
+	 */
+	@Deprecated
+	public int getPosition(String instId){
+		return getRowIndexOf(instId);
 	}
 }

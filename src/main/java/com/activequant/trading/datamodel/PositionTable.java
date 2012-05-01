@@ -9,15 +9,19 @@ import com.activequant.trading.AbstractTSBase;
 public class PositionTable extends AQTableDataBase {
 
 	public enum Columns{
-		INSTRUMENTID(0),
-		POSITION(1), 
-		ENTRYPRICE(2);		
+		INSTRUMENTID(0, "InstrumentID"),
+		POSITION(1, "Position"), 
+		ENTRYPRICE(2, "EntryPX"), 
+		PNLATLIQUIDATION(3, "Liquidation PnL");
 		// 
-		int colIdx;		
-		private Columns(int pos){
+		int colIdx;	
+		String colname; 
+		private Columns(int pos, String colname){
 			this.colIdx = pos; 
+			this.colname = colname; 
 		}		
 		public int colIdx(){return colIdx;}
+		public String colName(){return colname;}
 	}
 	
 	
@@ -39,7 +43,7 @@ public class PositionTable extends AQTableDataBase {
 		super(abstractTSBase);
 		header = new String[Columns.values().length];
 		for(int i=0;i<header.length;i++){
-			header[i] = Columns.values()[i].name();
+			header[i] = Columns.values()[i].colName();
 		}
 	}
 	
@@ -76,6 +80,8 @@ public class PositionTable extends AQTableDataBase {
 		List<Object[]> l = c(data);		
 		Object[] row = new Object[header.length];
 		row[Columns.INSTRUMENTID.colIdx] = instrumentId;
+		row[Columns.POSITION.colIdx] = 0.0;
+		row[Columns.ENTRYPRICE.colIdx] = 0.0;
 		l.add(row);		
 		data = c(l);
 	}

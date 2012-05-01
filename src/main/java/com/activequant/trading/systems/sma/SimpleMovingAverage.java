@@ -17,6 +17,7 @@ import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.trading.AbstractTSBase;
 import com.activequant.trading.IOrderTracker;
+import com.activequant.trading.datamodel.InstrumentTable;
 import com.activequant.transport.ETransportType;
 import com.activequant.utils.RenjinCore;
 
@@ -41,6 +42,9 @@ public class SimpleMovingAverage extends AbstractTSBase {
 		tdi = new TradeableInstrument("CSV", "SOY");
 		// add to local memory environment. 
 		addInstrument(mdi, tdi);			
+		getInstrumentTable().setValueAt(0.01, getInstrumentTable().getRowIndexOf(mdi.getId()), InstrumentTable.Columns.TICKSIZE.colIdx());
+		getInstrumentTable().setValueAt(12.50, getInstrumentTable().getRowIndexOf(mdi.getId()), InstrumentTable.Columns.TICKVALUE.colIdx());
+		getInstrumentTable().signalUpdate();
 	}
 
 	@Override

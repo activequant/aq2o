@@ -7,8 +7,11 @@ import org.apache.log4j.Logger;
 import com.activequant.aqviz.HardcoreReflectionsFactory;
 import com.activequant.aqviz.interfaces.IVisualTable;
 import com.activequant.dao.DaoException;
+import com.activequant.domainmodel.Future;
+import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.PersistentEntity;
+import com.activequant.domainmodel.Stock;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
@@ -47,13 +50,12 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private final AuditLogTable auditLogTable = new AuditLogTable(this);
 	private final Logger log = Logger.getLogger(AbstractTSBase.class);
 	protected TradingSystemEnvironment env;
-    protected TimeStamp currentTime;
+	protected TimeStamp currentTime;
 
-    protected SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
-    protected SimpleDateFormat date8time6 = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-    
-	
-	// visuals. 
+	protected SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
+	protected SimpleDateFormat date8time6 = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+
+	// visuals.
 	private boolean auditLog = true;
 	private boolean vizLayer = true;
 	private long currentMinute = 0L;
@@ -116,7 +118,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		env.getTransportFactory().getReceiver(ETransportType.MARKET_DATA, mdiId).getMsgRecEvent()
 				.removeEventListener(internalListener);
 	}
-	
+
 	protected void unsubscribe(TradeableInstrument tdi) throws TransportException {
 		unsubscribeTdi(tdi.getId());
 	}
@@ -126,15 +128,13 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		env.getTransportFactory().getReceiver(ETransportType.TRAD_DATA, tdiId).getMsgRecEvent()
 				.removeEventListener(internalListener);
 	}
-	
-	
+
 	public void addInstrument(String mdiId) throws DaoException, TransportException {
 		addInstrument(mdiId, mdiId);
 	}
-	
-	
+
 	/**
-	 * Adds an instrument to our environment. 
+	 * Adds an instrument to our environment.
 	 * 
 	 * @param mdiId
 	 * @throws DaoException
@@ -145,63 +145,70 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		MarketDataInstrument mdi = env.getDaoFactory().mdiDao().load(mdiId);
 		TradeableInstrument tdi = env.getDaoFactory().tradeableDao().load(tdiId);
 
-		// 
-		if(mdi==null || tdi == null)
-		{
+		//
+		if (mdi == null || tdi == null) {
 			throw new DaoException("Could not load " + mdiId + " or " + tdiId);
 		}
-		
+
 		addInstrument(mdi, tdi);
 
 	}
-	
-	public void addInstrument(MarketDataInstrument mdi, TradeableInstrument tdi) throws TransportException{
 
-		
-		String mdiId = mdi.getId(); 
+	public void addInstrument(MarketDataInstrument mdi, TradeableInstrument tdi) throws TransportException,
+			DaoException {
+
+		String mdiId = mdi.getId();
 		String tdiId = tdi.getId();
-		// add the instrument to our list of instruments. 
-		getInstrumentTable().addInstrument(mdiId, tdiId, "", 0L, 1.0, 1.0, 80000.0, 220000.0);
+		if (mdi.getInstrumentId() != null && !mdi.getInstrumentId().isEmpty()) {
+			// try to load the instrument.
+			Instrument i = env.getDaoFactory().instrumentDao().load(mdi.getInstrumentId());
+			if (i instanceof Future) {
+				Future f = (Future) i;
+				getInstrumentTable().addInstrument(mdiId, tdiId, f.getCurrency(), f.getLastTradingDate(),
+						f.getTickSize(), f.getTickValue(), 80000.0, 220000.0);
+			} else if (i instanceof Stock) {
+				Stock s = (Stock) i;
+				getInstrumentTable().addInstrument(mdiId, tdiId, s.getCurrency(), 0L,
+						s.getTickSize(), s.getTickValue(), 80000.0, 220000.0);
+			}
+		} else
+			// add the instrument to our list of instruments.
+			getInstrumentTable().addInstrument(mdiId, tdiId, "", 0L, 1.0, 1.0, 80000.0, 220000.0);
 		getQuoteTable().addInstrument(mdiId);
-				
+
 		getPositionTable().addInstrument(tdiId);
-		
-		// signal updates to our tables. 
+
+		// signal updates to our tables.
 		getInstrumentTable().signalUpdate();
 		getQuoteTable().signalUpdate();
 		getPositionTable().signalUpdate();
-		
-		
-		
+
 		// subscribe to market data and to instrument data.
 		subscribe(mdi);
 		subscribe(tdi);
 	}
-	
+
 	/**
-	 * removes an instrument from our environment. 
+	 * removes an instrument from our environment.
 	 * 
 	 * @param mdiId
 	 * @throws TransportException
 	 */
-	public void removeInstrument(String mdiId, String tdiId) throws TransportException{
+	public void removeInstrument(String mdiId, String tdiId) throws TransportException {
 		getInstrumentTable().deleteInstrument(mdiId);
 		getQuoteTable().deleteInstrument(mdiId);
-		getPositionTable().deleteInstrument(mdiId);		
+		getPositionTable().deleteInstrument(mdiId);
 		// unsubscribe from market data and to instrument data.
 		unsubscribeMdi(mdiId);
 		unsubscribeTdi(tdiId);
 	}
-	
-	
 
 	public void initialize() throws Exception {
 
-		
 		// subscribe to time data.
 		env.getTransportFactory().getReceiver(ETransportType.TIME.toString()).getMsgRecEvent()
 				.addEventListener(internalListener);
-		
+
 		if (vizLayer) {
 			HardcoreReflectionsFactory hrf = new HardcoreReflectionsFactory();
 			// plug in two visual tables for the underlying table models.
@@ -235,7 +242,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	}
 
 	/**
-	 * Called if there is a new market stream data event. 
+	 * Called if there is a new market stream data event.
 	 */
 	@Override
 	public void process(StreamEvent se) {
@@ -251,8 +258,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			process((OrderStreamEvent) se);
 			// log it to audit, too.
 			auditLog(se.getTimeStamp(), ((OrderStreamEvent) se).getOe().toString());
-		}
-		else if(se instanceof InformationalEvent){
+		} else if (se instanceof InformationalEvent) {
 			auditLog(se.getTimeStamp(), ((InformationalEvent) se).getText());
 		}
 		if (se instanceof TimeStreamEvent) {
@@ -310,21 +316,18 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private void addOrSetOrderTable(Order refOrder) {
 		if (refOrder instanceof MarketOrder) {
 			MarketOrder mo = (MarketOrder) refOrder;
-			getOrderTable()
-					.addOrder(refOrder.getOrderId(), mo.getTradInstId(), "MKT", mo.getOrderSide().toString(),
-							Double.NaN, mo.getQuantity(), mo.getQuantity() - mo.getOpenQuantity());
+			getOrderTable().addOrder(refOrder.getOrderId(), mo.getTradInstId(), "MKT", mo.getOrderSide().toString(),
+					Double.NaN, mo.getQuantity(), mo.getQuantity() - mo.getOpenQuantity());
 		}
 		if (refOrder instanceof LimitOrder) {
 			LimitOrder lo = (LimitOrder) refOrder;
-			getOrderTable().addOrder(refOrder.getOrderId(), lo.getTradInstId(), "LMT",
-					lo.getOrderSide().toString(), lo.getLimitPrice(), lo.getQuantity(),
-					lo.getQuantity() - lo.getOpenQuantity());
+			getOrderTable().addOrder(refOrder.getOrderId(), lo.getTradInstId(), "LMT", lo.getOrderSide().toString(),
+					lo.getLimitPrice(), lo.getQuantity(), lo.getQuantity() - lo.getOpenQuantity());
 		}
 		if (refOrder instanceof StopOrder) {
 			StopOrder so = (StopOrder) refOrder;
-			getOrderTable().addOrder(refOrder.getOrderId(), so.getTradInstId(), "STP",
-					so.getOrderSide().toString(), so.getStopPrice(), so.getQuantity(),
-					so.getQuantity() - so.getOpenQuantity());
+			getOrderTable().addOrder(refOrder.getOrderId(), so.getTradInstId(), "STP", so.getOrderSide().toString(),
+					so.getStopPrice(), so.getQuantity(), so.getQuantity() - so.getOpenQuantity());
 		}
 		getOrderTable().signalUpdate();
 	}
@@ -333,33 +336,47 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		// update the current mkt quotes table.
 		String mdiId = mds.getMdiId();
 		if (getInstrumentTable().containsInstrumentId(mdiId)) {
-			int row = getInstrumentTable().getPosition(mdiId);
-			
+			int row = getInstrumentTable().getRowIndexOf(mdiId);
+
 			// update the quote table.
-			Double bid = null, ask = null; 
+			Double bid = null, ask = null;
 			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0) {
 				ask = mds.getAskPrices()[0];
 				getQuoteTable().setValueAt(mds.getAskPrices()[0], row, QuoteTable.Columns.ASK.colIdx());
 				getQuoteTable().setValueAt(mds.getAskSizes()[0], row, QuoteTable.Columns.ASKSIZE.colIdx());
-			}
-			else{
+			} else {
 				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.ASK.colIdx());
 				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.ASKSIZE.colIdx());
 			}
 			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0) {
-				bid = mds.getBidPrices()[0];				
+				bid = mds.getBidPrices()[0];
+				getQuoteTable().setValueAt(mds.getBidPrices()[0], row, QuoteTable.Columns.BID.colIdx());
+				getQuoteTable().setValueAt(mds.getBidSizes()[0], row, QuoteTable.Columns.BIDSIZE.colIdx());
+			} else {
 				getQuoteTable().setValueAt(mds.getBidPrices()[0], row, QuoteTable.Columns.BID.colIdx());
 				getQuoteTable().setValueAt(mds.getBidSizes()[0], row, QuoteTable.Columns.BIDSIZE.colIdx());
 			}
-			else
-			{
-				getQuoteTable().setValueAt(mds.getBidPrices()[0], row, QuoteTable.Columns.BID.colIdx());
-				getQuoteTable().setValueAt(mds.getBidSizes()[0], row, QuoteTable.Columns.BIDSIZE.colIdx());
-			}		
 			// signaling that this row has changed.
 			getQuoteTable().getRowUpdateEvent().fire(row);
 			getQuoteTable().signalUpdate();
 
+			// recalculate the positions.
+			Double currentPos = (Double) getPositionTable().getCell(row, PositionTable.Columns.POSITION.colIdx()); 
+			if(currentPos != null){
+				Double openPrice = (Double) getPositionTable().getCell(row, PositionTable.Columns.ENTRYPRICE.colIdx());
+				if(currentPos > 0.0 && bid!=null){
+					double pnl = (openPrice - bid) * currentPos;
+					getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
+				}
+				else if (currentPos < 0.0 && ask!=null ){
+					double pnl = (ask - openPrice) * currentPos;
+					getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
+				}
+				else{
+					getPositionTable().setValueAt(0.0, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());	
+				}
+			}
+			
 			//
 		} else {
 			log.info("Dropping data for unknown instrument. ");
@@ -463,6 +480,6 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	public Logger getLog() {
 		return log;
-	}	
-	
+	}
+
 }

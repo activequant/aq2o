@@ -260,7 +260,16 @@ public class VirtualExchange implements IExchange {
 		log.info("Current position " + currentPosition);
 		double openPrice = clientPortfolio.getOpenPrice(tdiId);
 		double newPosition = currentPosition + side * lastFill;
-		double newOpenPrice = ((currentPosition * openPrice) + (lastFill * side * price));
+		
+		double newOpenPrice = price; 
+		/// ((currentPosition * openPrice) + (lastFill * side * price));
+		
+		if(Math.signum(newPosition)==Math.signum(currentPosition)){
+			newOpenPrice = ((currentPosition * openPrice) + (lastFill * price)) / newPosition;
+		}
+		
+		
+		
 		//
 		if (newPosition == 0.0)
 			newOpenPrice = 0.0;

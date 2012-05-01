@@ -208,18 +208,18 @@ public class VisualBacktester extends AbstractBacktester  {
 				
 				// everything's a time event, so i also have to catch the fucking rest. 
 				if (transportType.equals(ETransportType.MARKET_DATA)) {
+					exchange.processStreamEvent(se);
 					MarketDataEvent mde = (MarketDataEvent) se;
 					transportFactory.getPublisher(transportType, mde.getMdiId()).send(se);
 					// send it also into our VIRTEX vortex
-					exchange.processStreamEvent(se);
 				} else if (transportType.equals(ETransportType.REF_DATA)) {
 					ReferenceDataEvent rde = (ReferenceDataEvent) se;
 					transportFactory.getPublisher(transportType, rde.getInstrument()).send(se);
 				} else if (transportType.equals(ETransportType.TRAD_DATA)) {
+					exchange.processStreamEvent(se);
 					TradingDataEvent tde = (TradingDataEvent) se;					
 					transportFactory.getPublisher(transportType, tde.getTradInstId()).send(se);
 					// send everything also to virtex exchange layer.
-					exchange.processStreamEvent(se);
 				}
 				
 				//
