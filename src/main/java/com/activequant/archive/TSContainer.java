@@ -18,7 +18,6 @@ public class TSContainer {
         values = v;
     }
     
-
     public Double getElementAtDate(TimeStamp ts){
     	return null; 
     }
