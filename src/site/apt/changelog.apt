@@ -8,6 +8,8 @@ ChangeLog
 
 ** New features
 
+	* Added Renjin as a dependency - allows using R in Java without having an R installation somewhere.
+
 	* Tagging engine, for example to tag instruments. Tags could be a sector, a currency, a country, a market cap grouping, etc. Tags are not to be misunderstood as actual object properties.  
 
 	* New domain model class: Adding a symbol class, extending Instrument. Adding a link from Instrument to SymbolId, so that instruments can be associated with a generic symbol. The location of this backlink might change in the future.

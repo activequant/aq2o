@@ -1,11 +1,19 @@
 The taste of ActiveQuant
 
-	Let's get crashed on ActiveQuant. We'll create the first simple project. Now empty your mind and let's step right in. 
+
+	+Purpose:+ This page walks you through creating a simple sample project with AQ2o. We will save a Future definition into the master server and will retrieve it from there. We will set up a simple eclipse project to do so.   
+	 
+
+	Let's get crashed on ActiveQuant. We'll create the first simple project. Now empty your mind and let's step right in.
 	
-	Download the {{{../uberjar.html}AQ2o-Server}} and start it. Give it a minute to fully initialize ...  
+	We assume you are on a Linux or a MAC-OS-X box (no Windows, dudes - unless you are eager to run HBase on it). 
 	
-	Open Eclipse. 
+* Deploy the master server	
 	
+	Download the {{{../uberjar.html}AQ2o-Server}} and start it - it does not require an installation, just unzip and run. Give it a minute to fully initialize ...  
+	
+* Create the java project
+
 	Open a command line and create a maven java project. 
 	
 +----------+
@@ -82,6 +90,8 @@ ustaudinger@baikal:~/work/activequant/closedsource/charter$ cat pom.xml
 </project>
 ustaudinger@baikal:~/work/activequant/closedsource/charter$ 
 +----------+		 
+
+* Create the eclipse project 
 	
 	Still in the command line, create the eclipse project files with maven. 
 	
@@ -92,6 +102,10 @@ ustaudinger@baikal:~/work/activequant/closedsource/charter$
 +---------+
 
 	In Eclipse, import the created project in "File" -> "Import" -> "Existing projects into workspace"
+	
+	If you see some classpath errors similar to "M2_REPO/... not found", consult {{{http://maven.apache.org/guides/mini/guide-ide-eclipse.html#Maven_2_repository}the Maven help pages, section 'Maven 2 repository'}}.    
+
+* Final step: add Java code 
 	
 	Now, let's create a future definition, store it and retrieve it from the database. Edit the file App.java and add the following code into the main. 
 	
@@ -125,3 +139,6 @@ System.out.println(loadedFuture.getDescription());
 	Enjoy. 	 
 	
 			
+* Where to go next
+
+	Join the community, spread the word that you succeeded and make world peace. 			
