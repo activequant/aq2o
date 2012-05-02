@@ -2,6 +2,10 @@ ChangeLog
 
 * 2.1-SNAPSHOT
 
+** New trading systems
+
+	* SimpleMovingAverage trading system
+
 ** New features
 
 	* Tagging engine, for example to tag instruments. Tags could be a sector, a currency, a country, a market cap grouping, etc. Tags are not to be misunderstood as actual object properties.  
@@ -24,7 +28,11 @@ ChangeLog
 	
 	* Added CSV exporter to Master Server, so that R, etc. can fetch data from the monolith, ticket #60
 	
-	* Added first notice and monthYear info to future class / ticket #73	
+	* Added first notice and monthYear info to future class / ticket #73
+	
+	* GUI base tables and interfaces. Really cool but too much to explain.	
+	
+	* Added AbstractTSBase	
 	
 ** Bugfixes 
 
