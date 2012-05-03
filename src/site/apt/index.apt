@@ -16,7 +16,7 @@ Typical use cases
 	You might also want to plug in applications written in other languages through 
 	a SOAP Service Facade or Matlab to access that data. It is also possible simulate trading, high frequency and low frequency and to move seamlessly from simulation to production through one of the trading venue interface implementations.
 	
-	Proceed to {{{examples/atasteofactivequant.html}our example page}}.
+	Proceed to {{{./examples/atasteofactivequant.html}our example page}}.
 
 	
 
