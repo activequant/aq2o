@@ -36,7 +36,7 @@ public class LocalJettyServer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		LocalJettyServer s = new LocalJettyServer(44444, "localhost");
+		LocalJettyServer s = new LocalJettyServer(44444, "192.168.10.150");
 		s.start();
 	}
 
@@ -70,7 +70,7 @@ public class LocalJettyServer {
 					&& paramMap.containsKey("STARTDATE") && paramMap.containsKey("ENDDATE")) {
 
 				String timeFrame = ((String[]) paramMap.get("FREQ"))[0]; 
-				System.out.println(timeFrame);
+				
 				TimeFrame tf = TimeFrame.valueOf(timeFrame);
 				String mdiId = ((String[]) paramMap.get("SERIESID"))[0]; 
 				String field = ((String[]) paramMap.get("FIELD"))[0]; 
@@ -78,14 +78,19 @@ public class LocalJettyServer {
 				String sd = ((String[]) paramMap.get("STARTDATE"))[0];
 				String ed = ((String[]) paramMap.get("ENDDATE"))[0]; 
 
+				System.out.println("Fetching: " + timeFrame + " - " + mdiId + " - " + field + " - " + sd + " - " + ed );
+				
 				TimeStamp start;
 				try {
 					start = new TimeStamp(sdf.parse(sd));
 
 					TimeStamp end = new TimeStamp(sdf.parse(ed));
 					TSContainer container = archFactory.getReader(tf).getTimeSeries(mdiId, field, start, end);
+					response.getWriter().print("TimeStampNanos,DateTime,"+field+"\n");
 					for(int i=0;i<container.timeStamps.length;i++){
 						response.getWriter().print(container.timeStamps[i]);
+						response.getWriter().print(",");
+						response.getWriter().print(container.timeStamps[i].getDate());
 						response.getWriter().print(",");
 						response.getWriter().print(container.values[i]);
 						response.getWriter().println();
