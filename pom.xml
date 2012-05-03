@@ -523,7 +523,7 @@
 			<groupId>com.bedatadriven.renjin</groupId>
 			<artifactId>renjin-core</artifactId>
 			<version>0.1.2-SNAPSHOT</version>
-			
+
 			<exclusions>
 				<exclusion>
 					<groupId>asm</groupId>
@@ -534,9 +534,14 @@
 					<artifactId>asm-tree</artifactId>
 				</exclusion>
 			</exclusions>
-			
+
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>10.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
