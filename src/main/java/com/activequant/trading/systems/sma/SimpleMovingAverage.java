@@ -29,7 +29,7 @@ import com.activequant.utils.RenjinCore;
 public class SimpleMovingAverage extends AbstractTSBase {
 	
 	private List<Double> closes = new ArrayList<Double>();
-	private RenjinCore R = new RenjinCore();
+ 	private RenjinCore R = new RenjinCore();
 	private double currentPos = 0;
 	private DecimalFormat dcf = new DecimalFormat("#.00");
 	private MarketDataInstrument mdi; 
@@ -73,8 +73,9 @@ public class SimpleMovingAverage extends AbstractTSBase {
 				// calculate some stuff.
 				try {
 					R.put("x", closes.toArray(new Double[]{}));
-					R.execute("sma = mean(x)");
-					Double sma = R.getDoubleVector("sma").getElementAsObject(0);
+					R.execute("sma = sum(x)");
+					Double sma = R.getDoubleVector("sma").getElementAsObject(0)/closes.size();
+					
 					double tgtPos = Math.signum(mid - sma.doubleValue());
 					System.out.println(ts.getDate()+ " \tClose: " + dcf.format(mid) + " \tMean: " + dcf.format(sma) + "\tPos: " + dcf.format(tgtPos));
 					

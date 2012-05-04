@@ -18,7 +18,10 @@ public class LocalHBaseCluster {
         Configuration config = HBaseConfiguration.create();
         // have to set a data directory. 
         config.set(HConstants.ZOOKEEPER_QUORUM, hostName);
-        config.set(HConstants.HBASE_DIR, dataDir);             
+        config.set(HConstants.HBASE_DIR, dataDir);    
+        config.set(HConstants.CLUSTER_IS_LOCAL, "TRUE");
+        
+        
         //
         MiniZooKeeperCluster mzk = new MiniZooKeeperCluster(config);
         mzk.setClientPort(port);
@@ -29,6 +32,10 @@ public class LocalHBaseCluster {
         
         HRegionServer hrs = new HRegionServer(config);
         HRegionServer.startRegionServer(hrs);
+    }
+    
+    public static void main(String[] args) throws Exception {
+    	new LocalHBaseCluster().start();
     }
     
 }
