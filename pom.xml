@@ -520,10 +520,9 @@
 			<version>1.4.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.bedatadriven.renjin</groupId>
+			<groupId>org.renjin</groupId>
 			<artifactId>renjin-core</artifactId>
-			<version>0.1.2-SNAPSHOT</version>
-
+			<version>0.6.4-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>asm</groupId>
@@ -553,6 +552,8 @@
 			<artifactId>asm</artifactId>
 			<version>3.3</version>
 		</dependency>
+
+
 
 
 	</dependencies>
