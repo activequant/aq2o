@@ -344,7 +344,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 			// update the quote table.
 			Double bid = null, ask = null;
-			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0) {
+			if (mds.getAskPrices() != null && mds.getAskPrices()[0] != 0.0) {
 				ask = mds.getAskPrices()[0];
 				getQuoteTable().setValueAt(mds.getAskPrices()[0], row, QuoteTable.Columns.ASK.colIdx());
 				getQuoteTable().setValueAt(mds.getAskSizes()[0], row, QuoteTable.Columns.ASKSIZE.colIdx());
@@ -352,13 +352,13 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.ASK.colIdx());
 				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.ASKSIZE.colIdx());
 			}
-			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0) {
+			if (mds.getBidPrices() != null && mds.getBidPrices()[0] != 0.0) {
 				bid = mds.getBidPrices()[0];
 				getQuoteTable().setValueAt(mds.getBidPrices()[0], row, QuoteTable.Columns.BID.colIdx());
 				getQuoteTable().setValueAt(mds.getBidSizes()[0], row, QuoteTable.Columns.BIDSIZE.colIdx());
 			} else {
-				getQuoteTable().setValueAt(mds.getBidPrices()[0], row, QuoteTable.Columns.BID.colIdx());
-				getQuoteTable().setValueAt(mds.getBidSizes()[0], row, QuoteTable.Columns.BIDSIZE.colIdx());
+				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.BID.colIdx());
+				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.BIDSIZE.colIdx());
 			}
 			// signaling that this row has changed.
 			getQuoteTable().getRowUpdateEvent().fire(row);
