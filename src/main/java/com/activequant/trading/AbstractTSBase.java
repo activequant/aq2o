@@ -165,9 +165,12 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			Instrument i = env.getDaoFactory().instrumentDao().load(mdi.getInstrumentId());
 			if (i instanceof Future) {
 				Future f = (Future) i;
+	//			getInstrumentTable().addInstrument(mdiId, tdiId, f.getCurrency(), f.getLastTradingDate(),
+	//					f.getTickSize(), f.getTickValue(), 80000.0, 220000.0);
+	//          code above doesnt work because f.getTickValue() is null.   Add some checking here please 
 				getInstrumentTable().addInstrument(mdiId, tdiId, f.getCurrency(), f.getLastTradingDate(),
-						f.getTickSize(), f.getTickValue(), 80000.0, 220000.0);
-			} else if (i instanceof Stock) {
+						f.getTickSize(), 0, 80000.0, 220000.0);
+					} else if (i instanceof Stock) {
 				Stock s = (Stock) i;
 				getInstrumentTable().addInstrument(mdiId, tdiId, s.getCurrency(), 0L, s.getTickSize(),
 						s.getTickValue(), 80000.0, 220000.0);
