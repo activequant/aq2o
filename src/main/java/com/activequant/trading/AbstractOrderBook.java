@@ -8,7 +8,12 @@ import com.activequant.trading.orderbook.IOrderBookListener;
 import com.activequant.trading.orderbook.MarketState;
 import com.activequant.trading.orderbook.OrderBookChange;
 import com.activequant.trading.orderbook.TransactionEvent;
-
+/**
+ * 
+ * @author ustaudinger
+ *
+ * @param <T>
+ */
 public abstract class AbstractOrderBook<T extends Order> implements IOrderBook<T> {
 
 	private final String tradeableId;
