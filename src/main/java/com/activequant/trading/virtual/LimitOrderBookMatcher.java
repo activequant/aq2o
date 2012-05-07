@@ -62,11 +62,14 @@ public class LimitOrderBookMatcher {
             exchange.execution(buyOrder, relevantPrice, executed);
             exchange.execution(sellOrder, relevantPrice, executed);
             //
-            if (sellOrder.getOpenQuantity() == 0)
-                sellSide.remove(0);
+            if (sellOrder.getOpenQuantity() == 0){
+            	if(sellSide.size()>0)sellSide.remove(0);
+            }
 
-            if (buyOrder.getOpenQuantity() == 0)
-                buySide.remove(0);
+            if (buyOrder.getOpenQuantity() == 0){
+                if(buySide.size()>0)buySide.remove(0);
+            }
+                
 
         }
 

@@ -87,10 +87,13 @@ public class VirtualExchange implements IExchange {
 			if (newOrder instanceof LimitOrder) {
 				LimitOrder le = (LimitOrder) newOrder;
 				le.setWorkingTimeStamp(currentExchangeTime);
-				getOrderBook(le.getTradInstId()).updateOrder(le);
+				
+				this.order.setWorkingTimeStamp(currentExchangeTime);
 				this.order.setQuantity(le.getQuantity());
 				this.order.setLimitPrice(le.getLimitPrice());
 
+				getOrderBook(le.getTradInstId()).updateOrder(this.order);
+				
 				// set out an update event.
 				OrderEvent oe = new OrderUpdateSubmittedEvent();
 				oe.setCreationTimeStamp(currentExchangeTime);
@@ -221,7 +224,9 @@ public class VirtualExchange implements IExchange {
 			return;
 		// can only handle our own virtual trackers.
 		if (trck instanceof VirtualOrderTracker) {
-			LimitOrder lo = ((LimitOrder)order);
+			if(quantity == 0.0)
+				return;
+			LimitOrder lo = (LimitOrder)trck.getOrder();
 			OrderFillEvent ofe = new OrderFillEvent();
 			ofe.setCreationTimeStamp(currentExchangeTime());
 			ofe.setRefOrder(order);
@@ -230,11 +235,14 @@ public class VirtualExchange implements IExchange {
 			ofe.setOptionalInstId(lo.getTradInstId());
 			ofe.setFillAmount(quantity);
 			ofe.setFillPrice(price);
+			// forgot to set left quantity. 
+			ofe.setLeftQuantity(lo.getOpenQuantity());
+			
+			
 			((VirtualOrderTracker) trck).getEvent().fire(ofe);
-			sendOrderEvent(lo.getTradInstId(), ofe);
-			
+			sendOrderEvent(lo.getTradInstId(), ofe);			
 			updatePortfolio(lo.getTradInstId(), price, quantity, lo.getOrderSide().getSide());
-			
+			// Note: open quantity is updated limit order book matcher.   
 			
 			//
 			if (order instanceof LimitOrder) {
