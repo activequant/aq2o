@@ -59,7 +59,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private boolean auditLog = true;
 	private boolean vizLayer = true;
 	private long currentMinute = 0L;
-	private double epsilon = 0.001; 
+	private double epsilon = 0.001;
 	private IVisualTable instViz, quoteViz, execViz, orderViz, posViz, auditViz;
 
 	// an internal listener.
@@ -165,21 +165,19 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			Instrument i = env.getDaoFactory().instrumentDao().load(mdi.getInstrumentId());
 			if (i instanceof Future) {
 				Future f = (Future) i;
-	//			getInstrumentTable().addInstrument(mdiId, tdiId, f.getCurrency(), f.getLastTradingDate(),
-	//					f.getTickSize(), f.getTickValue(), 80000.0, 220000.0);
-	//          code above doesnt work because f.getTickValue() is null.   Add some checking here please 
+				assert (f.getTickValue() != null);
 				getInstrumentTable().addInstrument(mdiId, tdiId, f.getCurrency(), f.getLastTradingDate(),
-						f.getTickSize(), 0, 80000.0, 220000.0);
-					} else if (i instanceof Stock) {
+						f.getTickSize(), f.getTickValue(), 80000.0, 220000.0);
+			} else if (i instanceof Stock) {
 				Stock s = (Stock) i;
 				getInstrumentTable().addInstrument(mdiId, tdiId, s.getCurrency(), 0L, s.getTickSize(),
 						s.getTickValue(), 80000.0, 220000.0);
 			}
-		} else
+		} else 
 			// add the instrument to our list of instruments.
 			getInstrumentTable().addInstrument(mdiId, tdiId, "", 0L, 1.0, 1.0, 80000.0, 220000.0);
+		// add the instrument also to the rest. 
 		getQuoteTable().addInstrument(mdiId);
-
 		getPositionTable().addInstrument(tdiId);
 
 		// signal updates to our tables.
@@ -201,7 +199,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	public void removeInstrument(String mdiId, String tdiId) throws TransportException {
 		getInstrumentTable().deleteInstrument(mdiId);
 		getQuoteTable().deleteInstrument(mdiId);
-		getPositionTable().deleteInstrument(mdiId);
+		getPositionTable().deleteInstrument(tdiId);
 		// unsubscribe from market data and to instrument data.
 		unsubscribeMdi(mdiId);
 		unsubscribeTdi(tdiId);
@@ -369,23 +367,24 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			if (currentPos != null) {
 				Double openPrice = (Double) getPositionTable().getCell(row, PositionTable.Columns.ENTRYPRICE.colIdx());
 				Double currentPnl = (Double) getPositionTable().getCell(row,
-						PositionTable.Columns.PNLATLIQUIDATION.colIdx());		
-				if(currentPnl == null)currentPnl = 0.0; 
+						PositionTable.Columns.PNLATLIQUIDATION.colIdx());
+				if (currentPnl == null)
+					currentPnl = 0.0;
 				if (currentPos > 0.0 && bid != null) {
 					Double pnl = (openPrice - bid) * currentPos;
-					if (currentPnl!=null && Math.abs( currentPnl - pnl ) > epsilon) {
+					if (currentPnl != null && Math.abs(currentPnl - pnl) > epsilon) {
 						getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
 						getPositionTable().signalUpdate();
 					}
 				} else if (currentPos < 0.0 && ask != null) {
 					Double pnl = (ask - openPrice) * currentPos;
-					if (currentPnl!=null  && Math.abs( currentPnl - pnl ) > epsilon) {
+					if (currentPnl != null && Math.abs(currentPnl - pnl) > epsilon) {
 						getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
 						getPositionTable().signalUpdate();
 					}
 				} else {
-					Double pnl = 0.0; 
-					if (currentPnl!=null && Math.abs( currentPnl - pnl ) > epsilon) {
+					Double pnl = 0.0;
+					if (currentPnl != null && Math.abs(currentPnl - pnl) > epsilon) {
 						getPositionTable().setValueAt(0.0, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
 						getPositionTable().signalUpdate();
 					}
