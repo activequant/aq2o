@@ -11,6 +11,7 @@ import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.domainmodel.Instrument;
+import com.activequant.domainmodel.PerformanceReport;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.utils.Date8Time6Parser;
@@ -79,6 +80,10 @@ public class MainService implements IMainService {
 		} catch (Exception e) {		
 			throw e;
 		}
+	}
+	
+	public void createOrUpdatePerformanceReport(PerformanceReport report){
+		
 	}
 
 }

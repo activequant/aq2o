@@ -3,6 +3,11 @@ package com.activequant.domainmodel;
 import com.activequant.domainmodel.exceptions.NoEntryForDate;
 import com.activequant.utils.annotations.Property;
 
+/**
+ * 
+ * @author ustaudinger
+ *
+ */
 public class InstrumentChain extends Instrument {
 
 	private Long[] rollDates;

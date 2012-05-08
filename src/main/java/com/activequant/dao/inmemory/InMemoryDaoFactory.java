@@ -5,6 +5,7 @@ import com.activequant.dao.ICountryDao;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.IMarketDataInstrumentDao;
+import com.activequant.dao.IPerformanceReportDao;
 import com.activequant.dao.IPortfolioDao;
 import com.activequant.dao.IPositionDao;
 import com.activequant.dao.IRegionDao;
@@ -12,7 +13,13 @@ import com.activequant.dao.ISecurityChainDao;
 import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.dao.IVenueDao;
 import com.activequant.domainmodel.Instrument;
-
+/**
+ * Can be used for in memory daos. 
+ * Hugely underdeveloped. 
+ * 
+ * @author GhostRider
+ *
+ */
 public class InMemoryDaoFactory implements IDaoFactory {
 
 	@Override
@@ -62,6 +69,11 @@ public class InMemoryDaoFactory implements IDaoFactory {
 
 	@Override
 	public IAdjustedSeriesDateEntryDao adjSerDtEntryDao() {
+		return null;
+	}
+
+	@Override
+	public IPerformanceReportDao perfDao() {
 		return null;
 	}
 
