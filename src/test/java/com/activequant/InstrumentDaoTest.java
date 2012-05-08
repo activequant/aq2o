@@ -114,5 +114,34 @@ public class InstrumentDaoTest extends TestCase {
         assertEquals("FUT.<NA>.FDAX2.20111231", ids[0]);
 
     }
+    
+    
+    public void testCreateWithAdditionalProperties() throws DaoException {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("springtest.xml");
+        IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+        IInstrumentDao idao = idf.instrumentDao();
+
+
+        Future future = new Future();
+        future.setCreationTime(0L);
+        future.setDeletionTime(0L);
+        future.setName("test");
+        future.setDescription("The dax future");
+        future.setExpiry(20111231l);
+        future.setShortName("test");
+        future.setTickSize(10.0);
+        future.setTickValue(10.0);
+        
+        future.getUnderlyingMap().put("DECORATION", "DECORATION");
+        
+        idao.create(future);
+        
+        Future loaded = (Future) idao.load(future.getId());
+        assertNotNull(loaded);
+        assertEquals("test", future.getShortName());
+        assertEquals("DECORATION", loaded.getUnderlyingMap().get("DECORATION"));
+        
+    }
+    
 
 }

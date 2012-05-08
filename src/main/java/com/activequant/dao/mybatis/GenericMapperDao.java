@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
@@ -18,6 +20,12 @@ import com.activequant.domainmodel.GenericRow;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;
 
+/**
+ * 
+ * @author ustaudinger
+ *
+ * @param <T>
+ */
 public class GenericMapperDao<T extends PersistentEntity> {
 
 	private Logger log = Logger.getLogger(GenericMapperDao.class);
@@ -34,57 +42,64 @@ public class GenericMapperDao<T extends PersistentEntity> {
 		// don't know how to check with ibatis if a table exists - at least not
 		// in an easy w.
 		// this one is easier, dirty and safe.
+//		SqlSession sqlSession = sqlSessionFactory.openSession();		
+//		sqlSession.select("SHOW INDEX FROM " + table, new ResultHandler(){
+//			@Override
+//			public void handleResult(ResultContext arg0) {
+//				System.out.println(arg0);
+//			}});
+//		sqlSession.close();
 		try {
 			mapper.init(table);
 		} catch (Exception ex) {
-			log.debug("Message while creating table, can be ignored on consecutive runs: " + ex.getStackTrace()[0]);
+			//log.debug("Message while creating table, can be ignored on consecutive runs: " + ex.getStackTrace()[0]);
 		}
 		this.tableName = table;
 		// same story here.
 		try {
 			mapper.genIndex1(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genIndex2(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genIndex3(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genIndex4(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genIndex5(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genIndex6(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genIndex7(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genIndex8(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 		try {
 			mapper.genKey9(table);
 		} catch (Exception ex) {
-			log.debug("Index already exists.");
+			//log.debug("Index already exists.");
 		}
 	}
 

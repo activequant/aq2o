@@ -174,7 +174,14 @@ public abstract class PersistentEntity {
                 }
             }
         }
-
+        
+        // weeding out load time artifacts. 
+        Iterator<Entry<String, Object>> it = underlyingMap.entrySet().iterator();
+    	while(it.hasNext()){
+    		Entry<String, Object> entry = it.next();
+    		if(entry.getKey().startsWith("["))
+    			underlyingMap.remove(entry.getKey());
+    	}
     }
 
     public String nullSafe(Object val) {
@@ -199,8 +206,11 @@ public abstract class PersistentEntity {
      * @return a clone of the property map.
      */
     public Map<String, Object> propertyMap() {
-        // returns a clone of the underlying map.
-        underlyingMap.clear();
+        //
+        
+    	
+        
+        
         Method[] methods = this.getClass().getMethods();
         for (Method m : methods) {
             if (m.getName().startsWith("get") && m.isAnnotationPresent(Property.class)) {
@@ -232,5 +242,9 @@ public abstract class PersistentEntity {
     public void setSnapshotTime(long snapshotTime) {
         this.snapshotTime = snapshotTime;
     }
+
+	public Map<String, Object> getUnderlyingMap() {
+		return underlyingMap;
+	}
 
 }
