@@ -6,7 +6,9 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
+import com.activequant.dao.DaoException;
 import com.activequant.domainmodel.Instrument;
+import com.activequant.domainmodel.PerformanceReport;
 import com.activequant.domainmodel.TimeFrame;
 
 @WebService
@@ -26,7 +28,8 @@ public interface IMainService {
     
     @WebMethod
     public double[][] getTimeSeries(String seriesId, String column, TimeFrame timeFrame, long date8Start, long date8End) throws Exception ;
-    
-    
+
+    @WebMethod
+	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException;
     
 }

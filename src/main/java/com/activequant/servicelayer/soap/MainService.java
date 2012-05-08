@@ -10,6 +10,7 @@ import com.activequant.archive.TSContainer;
 import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
+import com.activequant.dao.IPerformanceReportDao;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.PerformanceReport;
 import com.activequant.domainmodel.TimeFrame;
@@ -23,10 +24,12 @@ public class MainService implements IMainService {
 
 	private IInstrumentDao idao;
 	private IArchiveFactory archFac;
+	private IPerformanceReportDao perfDao;
 
 	public MainService(IDaoFactory daoFactory, IArchiveFactory factory) {
 		this.idao = daoFactory.instrumentDao();
 		this.archFac = factory;
+		this.perfDao = daoFactory.perfDao();
 	}
 
 	public String[] instrumentKeys() {
@@ -82,8 +85,9 @@ public class MainService implements IMainService {
 		}
 	}
 	
-	public void createOrUpdatePerformanceReport(PerformanceReport report){
-		
+	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException{
+		perfDao.delete(report);
+		perfDao.create(report);
 	}
 
 }
