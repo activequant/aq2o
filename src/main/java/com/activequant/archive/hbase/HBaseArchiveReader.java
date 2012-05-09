@@ -21,7 +21,7 @@ import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.utils.Date8Time6Parser;
+import com.activequant.timeseries.TSContainer2;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
 /**

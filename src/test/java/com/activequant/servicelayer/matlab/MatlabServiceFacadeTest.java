@@ -7,9 +7,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.activequant.archive.TSContainer;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.timeseries.TSContainer2;
 
 public class MatlabServiceFacadeTest extends TestCase {
 	/**
