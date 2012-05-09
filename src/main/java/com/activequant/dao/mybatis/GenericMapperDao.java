@@ -36,6 +36,7 @@ public class GenericMapperDao<T extends PersistentEntity> {
 
 	public GenericMapperDao(SqlSessionFactory sqlSessionFactory, GenericRowMapper mapper, Class<? extends PersistentEntity> clazz, String table) {
 		log.info("Initializing GenericDao for table " + table);
+		this.tableName = table;
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.mapper = mapper;
 		this.clazz = clazz;
@@ -50,56 +51,18 @@ public class GenericMapperDao<T extends PersistentEntity> {
 //			}});
 //		sqlSession.close();
 		try {
-			mapper.init(table);
-		} catch (Exception ex) {
-			//log.debug("Message while creating table, can be ignored on consecutive runs: " + ex.getStackTrace()[0]);
-		}
-		this.tableName = table;
-		// same story here.
-		try {
+			mapper.init(table);		
 			mapper.genIndex1(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genIndex2(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genIndex3(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genIndex4(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genIndex5(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genIndex6(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genIndex7(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genIndex8(table);
-		} catch (Exception ex) {
-			//log.debug("Index already exists.");
-		}
-		try {
 			mapper.genKey9(table);
 		} catch (Exception ex) {
-			//log.debug("Index already exists.");
+			log.info("Error creating table, possibly it exists already. "+ ex.getStackTrace()[0]);
 		}
 	}
 

@@ -27,6 +27,7 @@ import com.activequant.exceptions.TransportException;
 import com.activequant.tools.streaming.InformationalEvent;
 import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.tools.streaming.OrderStreamEvent;
+import com.activequant.tools.streaming.PNLChangeEvent;
 import com.activequant.tools.streaming.PositionEvent;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.Tick;
@@ -51,6 +52,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private final Logger log = Logger.getLogger(AbstractTSBase.class);
 	protected TradingSystemEnvironment env;
 	protected TimeStamp currentTime;
+	protected IRiskCalculator riskCalculator = new PositionRiskCalculator(this);
 
 	protected SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
 	protected SimpleDateFormat date8time6 = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
@@ -72,6 +74,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	public void environment(TradingSystemEnvironment env) {
 		this.env = env;
+		this.riskCalculator.setTransportFactory(env.getTransportFactory());
 	}
 
 	public InstrumentTable getInstrumentTable() {
@@ -279,6 +282,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	public void process(PositionEvent pe) {
 		getPositionTable().setPosition(pe.getTradInstId(), pe.getPrice(), pe.getQuantity());
 		getPositionTable().signalUpdate();
+		//
+		// riskCalculator.positionUpdated(getPositionTable().getPosition(pe.getTradInstId()));
+		//
 	}
 
 	public void process(OrderStreamEvent ose) {
@@ -288,6 +294,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			OrderFillEvent ofe = (OrderFillEvent) ose.getOe();
 			getExecutionsTable().addExecution(ofe.getRefOrderId(), ofe.getOptionalInstId(), ofe.getSide(),
 					ofe.getFillPrice(), ofe.getFillAmount());
+			// also signal the execution to the risk calculator. 
+			riskCalculator.execution(ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe.getSide().startsWith("B")?1.0:-1.0)*ofe.getFillAmount());
+			
 			//
 			if (ofe.getLeftQuantity() == 0) {
 				getOrderTable().delOrder(ofe.getRefOrderId());
@@ -338,58 +347,32 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		// update the current mkt quotes table.
 		String mdiId = mds.getMdiId();
 		if (getInstrumentTable().containsInstrumentId(mdiId)) {
-			int row = getInstrumentTable().getRowIndexOf(mdiId);
+			int rowIndx = getInstrumentTable().getRowIndexOf(mdiId);
 
 			// update the quote table.
 			Double bid = null, ask = null;
 			if (mds.getAskPrices() != null && mds.getAskPrices()[0] != 0.0) {
 				ask = mds.getAskPrices()[0];
-				getQuoteTable().setValueAt(mds.getAskPrices()[0], row, QuoteTable.Columns.ASK.colIdx());
-				getQuoteTable().setValueAt(mds.getAskSizes()[0], row, QuoteTable.Columns.ASKSIZE.colIdx());
+				getQuoteTable().setValueAt(mds.getAskPrices()[0], rowIndx, QuoteTable.Columns.ASK.colIdx());
+				getQuoteTable().setValueAt(mds.getAskSizes()[0], rowIndx, QuoteTable.Columns.ASKSIZE.colIdx());
 			} else {
-				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.ASK.colIdx());
-				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.ASKSIZE.colIdx());
+				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.ASK.colIdx());
+				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.ASKSIZE.colIdx());
 			}
 			if (mds.getBidPrices() != null && mds.getBidPrices()[0] != 0.0) {
 				bid = mds.getBidPrices()[0];
-				getQuoteTable().setValueAt(mds.getBidPrices()[0], row, QuoteTable.Columns.BID.colIdx());
-				getQuoteTable().setValueAt(mds.getBidSizes()[0], row, QuoteTable.Columns.BIDSIZE.colIdx());
+				getQuoteTable().setValueAt(mds.getBidPrices()[0], rowIndx, QuoteTable.Columns.BID.colIdx());
+				getQuoteTable().setValueAt(mds.getBidSizes()[0], rowIndx, QuoteTable.Columns.BIDSIZE.colIdx());
 			} else {
-				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.BID.colIdx());
-				getQuoteTable().setValueAt(null, row, QuoteTable.Columns.BIDSIZE.colIdx());
+				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.BID.colIdx());
+				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.BIDSIZE.colIdx());
 			}
 			// signaling that this row has changed.
-			getQuoteTable().getRowUpdateEvent().fire(row);
+			getQuoteTable().getRowUpdateEvent().fire(rowIndx);
 			getQuoteTable().signalUpdate();
 
-			// recalculate the positions.
-			Double currentPos = (Double) getPositionTable().getCell(row, PositionTable.Columns.POSITION.colIdx());
-			if (currentPos != null) {
-				Double openPrice = (Double) getPositionTable().getCell(row, PositionTable.Columns.ENTRYPRICE.colIdx());
-				Double currentPnl = (Double) getPositionTable().getCell(row,
-						PositionTable.Columns.PNLATLIQUIDATION.colIdx());
-				if (currentPnl == null)
-					currentPnl = 0.0;
-				if (currentPos > 0.0 && bid != null) {
-					Double pnl = (openPrice - bid) * currentPos;
-					if (currentPnl != null && Math.abs(currentPnl - pnl) > epsilon) {
-						getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
-						getPositionTable().signalUpdate();
-					}
-				} else if (currentPos < 0.0 && ask != null) {
-					Double pnl = (ask - openPrice) * currentPos;
-					if (currentPnl != null && Math.abs(currentPnl - pnl) > epsilon) {
-						getPositionTable().setValueAt(pnl, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
-						getPositionTable().signalUpdate();
-					}
-				} else {
-					Double pnl = 0.0;
-					if (currentPnl != null && Math.abs(currentPnl - pnl) > epsilon) {
-						getPositionTable().setValueAt(0.0, row, PositionTable.Columns.PNLATLIQUIDATION.colIdx());
-						getPositionTable().signalUpdate();
-					}
-				}
-			}
+			// recalculate the current position values. 
+			riskCalculator.pricesUpdated(rowIndx);
 
 			//
 		} else {
@@ -401,14 +384,16 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		// update the current mkt quotes table.
 		String mdiId = mds.getMdiId();
 		if (getInstrumentTable().containsInstrumentId(mdiId)) {
-			int row = getInstrumentTable().getPosition(mdiId);
+			int row = getInstrumentTable().getRowIndexOf(mdiId);
 			// update the quote table.
 
 			getQuoteTable().setValueAt(mds.getPrice(), row, QuoteTable.Columns.TRADE.colIdx());
 			getQuoteTable().setValueAt(mds.getQuantity(), row, QuoteTable.Columns.TRADESIZE.colIdx());
 
 			getQuoteTable().getRowUpdateEvent().fire(row);
-			getQuoteTable().signalUpdate();
+			getQuoteTable().signalUpdate();		
+			//
+			riskCalculator.pricesUpdated(row);
 			//
 		} else {
 			log.info("Dropping data for unknown instrument. ");
@@ -494,6 +479,22 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	public Logger getLog() {
 		return log;
+	}
+
+	public boolean isAuditLog() {
+		return auditLog;
+	}
+
+	public void setAuditLog(boolean auditLog) {
+		this.auditLog = auditLog;
+	}
+
+	public IRiskCalculator getRiskCalculator() {
+		return riskCalculator;
+	}
+
+	public void setRiskCalculator(IRiskCalculator riskCalculator) {
+		this.riskCalculator = riskCalculator;
 	}
 
 }

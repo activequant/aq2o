@@ -17,6 +17,8 @@ public abstract class AbstractBacktester {
 
 	public void generateReport(){
 		getFillExporter().export(oelistener.getFillEvents());
+		// generate PNL report
+		
 	}
 	
 }

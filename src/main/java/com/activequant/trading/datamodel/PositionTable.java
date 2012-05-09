@@ -65,7 +65,24 @@ public class PositionTable extends AQTableDataBase {
 		return false; 
 	}
 	
+	/**
+	 * Use getRowIdx instead
+	 * @param instId
+	 * @return
+	 */
+	@Deprecated
 	public int getPosition(String instId){
+		return getRowIdx(instId);
+	}
+	
+	/**
+	 * returns the row index in which information is stored.
+	 * This information never changes unless the table is emptied and new instruments are added. 
+	 * 
+	 * @param instId
+	 * @return
+	 */
+	public int getRowIdx(String instId){
 		int pos = -1; 
 		for(Object[] row : data){
 			pos++; 

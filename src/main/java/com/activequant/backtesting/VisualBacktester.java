@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 import com.activequant.aqviz.GlobalVizEvents;
 import com.activequant.archive.IArchiveFactory;
+import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.tools.streaming.MarketDataEvent;
@@ -25,7 +26,7 @@ import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.TimeMeasurement;
 import com.activequant.utils.events.IEventListener;
 
-public class VisualBacktester extends AbstractBacktester  {
+public class VisualBacktester extends AbstractBacktester {
 
 	private IExchange exchange;
 	private ITransportFactory transportFactory;
@@ -37,7 +38,8 @@ public class VisualBacktester extends AbstractBacktester  {
 	long eventCount = 0;
 	private JFrame jframe = new JFrame();
 	private boolean runFlag = true;
-	private boolean runUntilOrderEvent = false; 
+	private boolean runUntilOrderEvent = false;
+	private PNLMonitor pnlMonitor;
 
 	@SuppressWarnings("rawtypes")
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
@@ -48,20 +50,21 @@ public class VisualBacktester extends AbstractBacktester  {
 		this.streamIters = streamIters;
 		this.transportFactory = transportFactory;
 		this.tradingSystems = tradingSystems;
-		
-		// add the order event listener 
-		if(exchange instanceof VirtualExchange){
-			((VirtualExchange)exchange).getGlobalOrderEvent().addEventListener(oelistener);
-			((VirtualExchange)exchange).getGlobalOrderEvent().addEventListener(new IEventListener<OrderEvent>(){
+
+		// add the order event listener
+		if (exchange instanceof VirtualExchange) {
+			((VirtualExchange) exchange).getGlobalOrderEvent().addEventListener(oelistener);
+			((VirtualExchange) exchange).getGlobalOrderEvent().addEventListener(new IEventListener<OrderEvent>() {
 				@Override
 				public void eventFired(OrderEvent event) {
-					if(runUntilOrderEvent)
+					if (runUntilOrderEvent)
 						tickPlayAmount = 0;
-				}				
+				}
 			});
-		
+
 		}
-		
+		pnlMonitor = new PNLMonitor(transportFactory);
+		pnlMonitor.showLiveChart();
 
 		// construct the trading system environment.
 		TradingSystemEnvironment env = new TradingSystemEnvironment();
@@ -118,46 +121,43 @@ public class VisualBacktester extends AbstractBacktester  {
 		});
 
 		jframe.getContentPane().add(step);
-		
+
 		JButton step50 = new JButton("50 steps");
 		step50.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tickPlayAmount = 50;
-				runUntilOrderEvent = false; 
+				runUntilOrderEvent = false;
 			}
 		});
 		jframe.getContentPane().add(step50);
-		
+
 		JButton runUntilExecutionButton = new JButton("Run to next execution");
 		runUntilExecutionButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tickPlayAmount = Integer.MAX_VALUE;
-				runUntilOrderEvent = true; 
+				runUntilOrderEvent = true;
 			}
 		});
 		jframe.getContentPane().add(runUntilExecutionButton);
 
-		
-		
 		JButton stop = new JButton("Exit");
 		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try{
+				try {
 					stop();
-				}
-				catch(Exception ex){
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 		});
 		jframe.getContentPane().add(stop);
-		
+
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		jframe.setSize(600,75);
+		jframe.setSize(600, 75);
 		jframe.setVisible(true);
 		jframe.toFront();
 
@@ -177,15 +177,15 @@ public class VisualBacktester extends AbstractBacktester  {
 		System.out.println("Replayed " + eventCount + " events in " + difference + "ms. That's "
 				+ (eventCount / (double) difference) + " events/ms");
 		runFlag = false;
-		
-		
-		// generate the report. 
+
+		// generate the report.
 		super.generateReport();
-		
-		// 
+
+		//
 		GlobalVizEvents.getInstance().getEvent().fire("EXIT");
-		
-		System.exit(0);;
+
+		System.exit(0);
+		;
 
 	}
 
@@ -199,14 +199,14 @@ public class VisualBacktester extends AbstractBacktester  {
 				//
 				StreamEvent se = fs.getOneFromPipes();
 				ETransportType transportType = se.getEventType();
-				
 
 				// only time events are sent to the generic transport layer.
 				if (transportType.equals(ETransportType.TIME)) {
 					transportFactory.getPublisher(transportType.toString()).send(se);
 				}
-				
-				// everything's a time event, so i also have to catch the fucking rest. 
+
+				// everything's a time event, so i also have to catch the
+				// fucking rest.
 				if (transportType.equals(ETransportType.MARKET_DATA)) {
 					exchange.processStreamEvent(se);
 					MarketDataEvent mde = (MarketDataEvent) se;
@@ -217,18 +217,19 @@ public class VisualBacktester extends AbstractBacktester  {
 					transportFactory.getPublisher(transportType, rde.getInstrument()).send(se);
 				} else if (transportType.equals(ETransportType.TRAD_DATA)) {
 					exchange.processStreamEvent(se);
-					TradingDataEvent tde = (TradingDataEvent) se;					
+					TradingDataEvent tde = (TradingDataEvent) se;
 					transportFactory.getPublisher(transportType, tde.getTradInstId()).send(se);
 					// send everything also to virtex exchange layer.
 				}
-				
+
 				//
 				eventCount++;
 				tickPlayAmount--;
 			}
-			
-			// checking every 100ms if we are to replay more. This delay does not impact the backtesting performance. 
-			Thread.sleep(50);			
+
+			// checking every 100ms if we are to replay more. This delay does
+			// not impact the backtesting performance.
+			Thread.sleep(50);
 		}
 	}
 

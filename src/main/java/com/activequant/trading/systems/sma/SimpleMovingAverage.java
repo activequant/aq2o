@@ -59,8 +59,6 @@ public class SimpleMovingAverage extends AbstractTSBase {
 	public void process(StreamEvent se) {
 		super.process(se);
 		TimeStamp ts = se.getTimeStamp();
-		// System.out.println(ts.getDate()+ " - " + se.getEventType());
-		// 
 		if(se.getEventType().equals(ETransportType.MARKET_DATA)){
 			Double mid = ((MarketDataSnapshot)se).getBidPrices()[0] +  ((MarketDataSnapshot)se).getAskPrices()[0];
 			mid /= 2.0; 
