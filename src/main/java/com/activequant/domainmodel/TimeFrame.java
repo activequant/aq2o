@@ -1,7 +1,15 @@
 package com.activequant.domainmodel;
 
+/**
+ * Enumeration about time frames. 
+ * Resolution in minutes. 
+ * New timeframes can be added on request, just open a support ticket.  
+ * 
+ * @author GhostRider
+ *
+ */
 public enum TimeFrame {
-    EOD(-1), MINUTES_1(1), MINUTES_5(5), MINUTES_10(10), MINUTES_30(30), HOURS_1(60), RAW(0);
+    EOD(1440), MINUTES_1(1), MINUTES_5(5), MINUTES_10(10), MINUTES_30(30), HOURS_1(60), RAW(0), EOM(43200);
     private int minutes;
 
     private TimeFrame(int minutes) {
