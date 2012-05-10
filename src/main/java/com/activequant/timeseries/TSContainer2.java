@@ -1,5 +1,7 @@
 package com.activequant.timeseries;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,22 +22,22 @@ public class TSContainer2 {
 	private List<TimeStamp> timeStamps = new ArrayList<TimeStamp>();
 	private List<String> columnHeaders = new ArrayList<String>();
 
-	
 	// to specify a series granularity, 0 for no time-framing.
 	private long resolutionInNanoseconds = 0;
 
-	
 	/**
 	 * contains the series ID.
 	 */
 	private final String seriesId;
 
-	private int windowSize = 0; 
+	private int windowSize = 0;
 
-	public TSContainer2(final String seriesId, List<String> columnHeaders, List<TypedColumn> columns) {
+	public TSContainer2(final String seriesId, List<String> columnHeaders,
+			List<TypedColumn> columns) {
 		// initialize the data array
 		this.columns = new ArrayList<TypedColumn>();
-		// initialize the column headers. Copying into an array list to get rid of possible immutable classes. 
+		// initialize the column headers. Copying into an array list to get rid
+		// of possible immutable classes.
 		this.columnHeaders = new ArrayList<String>(columnHeaders);
 		// initialize the data lists.
 		this.columns = new ArrayList<TypedColumn>(columns);
@@ -89,7 +91,7 @@ public class TSContainer2 {
 		this.columnHeaders.add(headerName);
 		// 2. add column
 		this.columns.add(tc);
-		if(tc.size()!=getNumRows()){
+		if (tc.size() != getNumRows()) {
 			tc.clear();
 		}
 		// initialize column with null values.
@@ -100,7 +102,7 @@ public class TSContainer2 {
 
 	public void deleteColumn(String headerName) {
 		int index = getColumnIndex(headerName);
-		if (index > -1){
+		if (index > -1) {
 			this.columns.remove(index);
 			this.columnHeaders.remove(index);
 		}
@@ -118,28 +120,26 @@ public class TSContainer2 {
 			throw new IllegalArgumentException("Timestamp is null");
 		}
 		if (values.length != getNumColumns()) {
-			throw new IllegalArgumentException("Values has length " + values.length + " but expected "
-					+ this.columns.size());
+			throw new IllegalArgumentException("Values has length "
+					+ values.length + " but expected " + this.columns.size());
 		}
 		int targetIndex = Collections.binarySearch(timeStamps, ts);
-		
+
 		boolean overwrite = false;
 		if (targetIndex >= 0 && timeStamps.get(targetIndex).equals(ts))
 			overwrite = true;
-		
-		if (overwrite) {			
+
+		if (overwrite) {
 			for (int i = 0; i < values.length; i++) {
 				columns.get(i).set(targetIndex, values[i]);
-			}			
-		}
-		else{
+			}
+		} else {
 			targetIndex = Math.abs(targetIndex + 1);
-			// checking if the list is at the maximum window size. 
-			if(windowSize == timeStamps.size() && timeStamps.size() > 0) {
-				if(targetIndex == 0) {
+			// checking if the list is at the maximum window size.
+			if (windowSize == timeStamps.size() && timeStamps.size() > 0) {
+				if (targetIndex == 0) {
 					delete(getNumRows() - 1);
-				}
-				else{
+				} else {
 					delete(0);
 					targetIndex--;
 				}
@@ -150,31 +150,32 @@ public class TSContainer2 {
 			}
 		}
 	}
-	
+
 	/**
-	 * Set a value in a column for a specific timestamp. Will insert column if not found. Will insert timestamp if not found. 
-	 * Rows at newly inserted Timestamp will be initialized with null. 
+	 * Set a value in a column for a specific timestamp. Will insert column if
+	 * not found. Will insert timestamp if not found. Rows at newly inserted
+	 * Timestamp will be initialized with null.
 	 * 
 	 * @param headerName
 	 * @param ts
 	 * @param value
 	 */
-	
-	public void setValue(String headerName, TimeStamp ts, Double value){
+
+	public void setValue(String headerName, TimeStamp ts, Double value) {
 		int colIdx = getColumnIndex(headerName);
-		if(colIdx == -1){
-			// add a column. 
+		if (colIdx == -1) {
+			// add a column.
 			addColumn(headerName, new DoubleColumn());
 		}
-		// check if we find that timestamp. 
+		// check if we find that timestamp.
 		int rowIdx = getIndex(ts);
-		if(rowIdx < 0 ){
-			//add a row.
+		if (rowIdx < 0) {
+			// add a row.
 			setRow(ts, new Object[getNumColumns()]);
 		}
 		rowIdx = getIndex(ts);
 		getColumn(headerName).set(rowIdx, value);
-		
+
 	}
 
 	public void delete(TimeStamp ts) {
@@ -182,8 +183,9 @@ public class TSContainer2 {
 			throw new IllegalArgumentException("Timestamp is null");
 		}
 		int index = Collections.binarySearch(this.timeStamps, ts);
-		if(index<0) return;
-		if(this.timeStamps.get(index).equals(ts)){
+		if (index < 0)
+			return;
+		if (this.timeStamps.get(index).equals(ts)) {
 			delete(index);
 		}
 	}
@@ -207,8 +209,8 @@ public class TSContainer2 {
 	public Object[] getRow(TimeStamp ts) {
 		int index = getIndex(ts);
 
-		Object[] data = new Object[getNumColumns()];		
-		for (int i = 0; i < getNumColumns()-1; i++) {
+		Object[] data = new Object[getNumColumns()];
+		for (int i = 0; i < getNumColumns(); i++) {
 			data[i] = columns.get(i).get(index);
 		}
 
@@ -230,26 +232,26 @@ public class TSContainer2 {
 		return index;
 	}
 
-	// if there is a match - return index, else - return index of the 
+	// if there is a match - return index, else - return index of the
 	// closest timestamp before given one
 	public int getIndexBeforeOrEqual(TimeStamp ts) {
 		int targetIndex = Collections.binarySearch(timeStamps, ts);
-		if(targetIndex < 0) {
+		if (targetIndex < 0) {
 			return Math.abs(targetIndex + 2);
 		}
 		return targetIndex;
 	}
-	
+
 	// if there is a match, then index + 1 is returned
 	// if there is not match, then closest timestamp before + 1 is returned
 	public int getIndexAfter(TimeStamp ts) {
 		int targetIndex = Collections.binarySearch(timeStamps, ts);
-		if(targetIndex < 0) {
+		if (targetIndex < 0) {
 			return Math.abs(targetIndex + 1);
 		}
 		return targetIndex + 1;
 	}
-	
+
 	// not sure if this needed
 	// could be implemented as Collections.max(timeSeries.getColumn("Ask"));
 	// the Object should implement Comparable interface
@@ -257,12 +259,12 @@ public class TSContainer2 {
 	public Object getMax(String headerName) {
 		List l = getColumn(headerName);
 		Object o = l.get(0);
-		if(o instanceof Comparable) {
+		if (o instanceof Comparable) {
 			return Collections.max(l);
 		}
 		return null;
 	}
-	
+
 	// not sure if this needed
 	// could be implemented as Collections.min(timeSeries.getColumn("Ask"));
 	// the Object should implement Comparable interface
@@ -270,7 +272,7 @@ public class TSContainer2 {
 	public Object getMin(String headerName) {
 		List l = getColumn(headerName);
 		Object o = l.get(0);
-		if(o instanceof Comparable) {
+		if (o instanceof Comparable) {
 			return Collections.min(l);
 		}
 		return null;
@@ -279,7 +281,7 @@ public class TSContainer2 {
 	public TimeStamp getMinTimestamp() {
 		return timeStamps.get(0);
 	}
-	
+
 	public TimeStamp getMaxTimestamp() {
 		return timeStamps.get(timeStamps.size() - 1);
 	}
@@ -287,12 +289,11 @@ public class TSContainer2 {
 	public void setMaxWindow(int windowSize) {
 		this.windowSize = windowSize;
 	}
-	
+
 	public int getMaxWindow() {
 		return windowSize;
 	}
-	
-	
+
 	public List<TypedColumn> getColumns() {
 		return columns;
 	}
@@ -309,14 +310,14 @@ public class TSContainer2 {
 		this.timeStamps = timeStamps;
 	}
 
-	// delete non-inclusive
+	// delete inclusive
 	public void deleteBefore(TimeStamp ts) {
 		deleteBefore(getIndex(ts));
 	}
-	
+
 	// delete inclusive
 	public void deleteBefore(int index) {
-		if (index < 0  || index > this.timeStamps.size()) {
+		if (index < 0 || index > this.timeStamps.size()) {
 			throw new IllegalArgumentException("index is out of range");
 		}
 		for (int i = 0; i <= index; i++) {
@@ -326,15 +327,42 @@ public class TSContainer2 {
 
 	// delete inclusive
 	public void deleteAfter(int index) {
-		if (index < 0  || index > this.timeStamps.size()) {
+		if (index < 0 || index > this.timeStamps.size()) {
 			throw new IllegalArgumentException("index is out of range");
 		}
 		int count = this.timeStamps.size() - index;
-		for (int i = 0; i<count; i++) {
+		for (int i = 0; i < count; i++) {
 			delete(index);
 		}
 	}
-	
+
+	// delete inclusive
+	public void deleteAfter(TimeStamp ts) {
+		deleteAfter(getIndex(ts));
+	}
+
+	private void addValuesToColumns(TimeStamp ts, Object... values) {
+		int rowIndex = getIndex(ts);
+		for (int i = 0; i < columns.size(); i++) {
+			columns.get(i).set(rowIndex,
+					(Double) columns.get(i).get(rowIndex) + (Double) values[i]);
+		}
+	}
+
+	// not specified why we need boolean param
+	public void addTimeSeries(TSContainer2 timeSeries, boolean param) {
+		for (TimeStamp ts : timeSeries.getTimeStamps()) {
+			// do sum of values
+			if (this.timeStamps.contains(ts)) {
+				int rowIndex = getIndex(ts);
+				this.addValuesToColumns(ts, timeSeries.getRow(ts));
+			} else {
+				// add a new row
+				this.setRow(ts, timeSeries.getRow(ts));
+			}
+		}
+	}
+
 	public List<String> getColumnHeaders() {
 		return columnHeaders;
 	}
@@ -343,4 +371,53 @@ public class TSContainer2 {
 		this.columnHeaders = columnHeaders;
 	}
 
+	public TSContainer2 getTimeFrame(TimeStamp tsFrom, TimeStamp tsTo) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+		if (tsFrom.getMilliseconds() > tsTo.getMilliseconds()) {
+			throw new IllegalArgumentException(
+					"From time stamp should be less than To time stamp");
+		}
+		List<TypedColumn> l = getColumns();
+		List<TypedColumn> l_ret = new ArrayList<TypedColumn>();
+
+		int indexFrom = getIndex(tsFrom);
+		int indexTo = getIndex(tsTo);
+
+		
+		for(int i=0; i<l.size(); i++) {
+			Class ctClass = l.get(i).getClass();
+			Constructor constructor = ctClass.getConstructor(new Class[] { List.class });
+			Object ll = constructor.newInstance(new Object[] {l.get(i).subList(indexFrom, indexTo)});
+			l_ret.add(i, (TypedColumn) ll);
+		}
+
+		TSContainer2 tsc_ret = new TSContainer2(getSeriesId() + ":" + tsFrom.getMilliseconds() +":" + tsTo.getMilliseconds(),
+				getColumnHeaders(), l_ret);
+		
+
+		tsc_ret.setTimeStamps(getTimeStamps().subList(indexFrom,  indexTo));
+
+		return tsc_ret;
+	}
+
+	@Override
+	public String toString() {
+		String str = "";
+
+		// output header
+		str += "Date\t\t\t\tMilliseconds\t\t";
+		for (String headerName : columnHeaders) {
+			str += headerName + "\t";
+		}
+		str += "\n";
+
+		// output data rows
+		for (TimeStamp ts : timeStamps) {
+			str += ts.getDate() + "\t" + ts.toString() + "\t";
+			for (int i = 0; i < this.columns.size(); i++) {
+				str += columns.get(i).get(getIndex(ts)) + "\t";
+			}
+			str += "\n";
+		}
+		return str;
+	}
 }

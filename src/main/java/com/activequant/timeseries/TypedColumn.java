@@ -1,6 +1,7 @@
 package com.activequant.timeseries;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -15,6 +16,18 @@ public abstract class TypedColumn<T> extends ArrayList<T>{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public TypedColumn(List list) {
+		super(list);
+	}
+
+	public TypedColumn() {
+		super();
+	}
+
+	public TypedColumn(ArrayList column) {
+		super(column);
+	}
+
 	/**
 	 * Overwrite null with a value. 
 	 * @param value
@@ -24,5 +37,5 @@ public abstract class TypedColumn<T> extends ArrayList<T>{
 			if(super.get(i)==null)super.set(i, value);
 		}
 	}
-	
+
 }
