@@ -11,7 +11,8 @@ import com.activequant.domainmodel.TimeStamp;
 /**
  * Trivial container class, even without getters and setters.
  * 
- * @author ustaudinger
+ * @author GhostRider
+ * @author BrownChipmunk
  * 
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -115,7 +116,15 @@ public class TSContainer2 {
 	 * @param ts
 	 * @param values
 	 */
-	public void setRow(TimeStamp ts, Object... values) {
+	public void setRow(TimeStamp tsIn, Object... values) {
+		TimeStamp ts = tsIn; 
+		// check if a resolution has been set. 
+		if(resolutionInNanoseconds!=0){
+			// ok, we must snap it to the next resolution. 
+			long ns = (long) (Math.ceil((double)(tsIn.getNanoseconds()/resolutionInNanoseconds)) * resolutionInNanoseconds);
+			ts = new TimeStamp(ns);
+		}
+		
 		if (ts == null) {
 			throw new IllegalArgumentException("Timestamp is null");
 		}
@@ -161,7 +170,15 @@ public class TSContainer2 {
 	 * @param value
 	 */
 
-	public void setValue(String headerName, TimeStamp ts, Double value) {
+	public void setValue(String headerName, TimeStamp tsIn, Double value) {
+		TimeStamp ts = tsIn; 
+		// check if a resolution has been set. 
+		if(resolutionInNanoseconds!=0){
+			// ok, we must snap it to the next resolution. 
+			long ns = (long) (Math.ceil((double)(tsIn.getNanoseconds()/resolutionInNanoseconds)) * resolutionInNanoseconds);
+			ts = new TimeStamp(ns);
+		}
+		
 		int colIdx = getColumnIndex(headerName);
 		if (colIdx == -1) {
 			// add a column.
@@ -382,7 +399,6 @@ public class TSContainer2 {
 		int indexFrom = getIndex(tsFrom);
 		int indexTo = getIndex(tsTo);
 
-		
 		for(int i=0; i<l.size(); i++) {
 			Class ctClass = l.get(i).getClass();
 			Constructor constructor = ctClass.getConstructor(new Class[] { List.class });
@@ -392,8 +408,6 @@ public class TSContainer2 {
 
 		TSContainer2 tsc_ret = new TSContainer2(getSeriesId() + ":" + tsFrom.getMilliseconds() +":" + tsTo.getMilliseconds(),
 				getColumnHeaders(), l_ret);
-		
-
 		tsc_ret.setTimeStamps(getTimeStamps().subList(indexFrom,  indexTo));
 
 		return tsc_ret;

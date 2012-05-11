@@ -403,8 +403,36 @@ public class TSContainerTest extends TestCase {
 		System.out.println(timeSeries.toString());
 		System.out.println("====");
 		System.out.println(tsc.toString());
-*/		 
+*/		
+		
+		List<TypedColumn> columns = new ArrayList<TypedColumn>();
+		columns.add(new StringColumn());
+		columns.add(new StringColumn());
+		columns.add(new StringColumn());
+		columns.add(new StringColumn());
+
+		TSContainer2 timeSeries2 = new TSContainer2(TSContainerTest.class.getName(),
+				Arrays.asList(headers), columns);
+
+		timeSeries2.setRow(new TimeStamp(new Date(1336305521100L)),
+				new Double[] { 2.0, 2.1, 2.2, 2.3 });
+		timeSeries2.setRow(new TimeStamp(new Date(1336305521300L)),
+				new Double[] { 4.0, 4.1, 4.2, 4.3 });
+		timeSeries2.setRow(new TimeStamp(new Date(1336305521000L)),
+				new Double[] { 1.0, 1.1, 1.2, 1.3 });
+		timeSeries2.setRow(new TimeStamp(new Date(1336305521200L)),
+				new Double[] { 3.0, 3.1, 3.2, 3.3 });
+
+		TSContainer2 tsc2 = timeSeries.getTimeFrame(new TimeStamp(new Date(
+				1336305521000L)), new TimeStamp(new Date(1336305521200L)));
+
+/*		System.out.println("====");
+		System.out.println(timeSeries2.toString());
+		System.out.println("====");
+		System.out.println(tsc2.toString());
+*/		
 		assertEquals(2, tsc.getNumRows());
+		assertEquals(2, tsc2.getNumRows());
 		//fail("Not implemented");
 	}
 }
