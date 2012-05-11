@@ -47,6 +47,7 @@
 			<item name="Backtesting" href="backtesting.html" />
 			<!--   item name="Live trading" href="livetrading.html" / -->
 			<item name="Research" href="research.html" />
+			<item name="Storing your own data" href="impldommod.apt"/>
 		</menu>
 
 
