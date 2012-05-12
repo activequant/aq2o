@@ -169,7 +169,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			if (i instanceof Future) {
 				Future f = (Future) i;
 				assert (f.getTickValue() != null);
-				getInstrumentTable().addInstrument(mdiId, tdiId, f.getCurrency(), f.getLastTradingDate(),
+				getInstrumentTable().addInstrument(mdiId, tdiId, f.getCurrency(), f.getLastTradingDate()==null?0L:f.getLastTradingDate(),
 						f.getTickSize()==null?1.0:f.getTickSize(), f.getTickValue()==null?1.0:f.getTickValue(), 80000.0, 220000.0);
 			} else if (i instanceof Stock) {
 				Stock s = (Stock) i;

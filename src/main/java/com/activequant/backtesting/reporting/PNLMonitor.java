@@ -159,4 +159,12 @@ public class PNLMonitor {
 
 	}
 
+	public TSContainer2 getCumulatedTSContainer() {
+		return cumulatedTSContainer;
+	}
+
+	public void setCumulatedTSContainer(TSContainer2 cumulatedTSContainer) {
+		this.cumulatedTSContainer = cumulatedTSContainer;
+	}
+
 }

@@ -2,6 +2,7 @@ package com.activequant.timeseries;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import com.activequant.domainmodel.TimeStamp;
@@ -16,6 +17,7 @@ import com.activequant.domainmodel.TimeStamp;
 public class CSVExporter {
 
 	private OutputStream out; 
+	private DecimalFormat dcf = new DecimalFormat("#.########");
 	private TSContainer2 data; 
 	/**
 	 * call write() to trigger writing. 
@@ -51,7 +53,11 @@ public class CSVExporter {
 			for(int j=0;j<header.size();j++){
 				Object o = data.getColumns().get(j).get(i);
 				if(o!=null){
-					out.write(o.toString().getBytes());	
+					if(o instanceof Double)
+						out.write(dcf.format((Double)o).getBytes());
+					else
+						out.write(o.toString().getBytes());
+						
 				}				
 				if(j<(header.size()-1))
 					out.write(",".getBytes());

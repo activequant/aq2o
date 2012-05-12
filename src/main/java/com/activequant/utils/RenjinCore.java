@@ -15,16 +15,9 @@ public class RenjinCore {
 	private ScriptEngine engine;
 
 	public RenjinCore() {
-		try {
-			// create a script engine manager
-			// ScriptEngineManager factory = new ScriptEngineManager();
-			// create an R engine
-			FileSystemManager fileSystemManager = VFS.getManager();
-			//FileObject jarFile = fileSystemManager.resolveFile( "jar:file:///home/ustaudinger/.m2/repository/org/renjin/renjin-core/0.6.4-SNAPSHOT/renjin-core-0.6.4-SNAPSHOT.jar");
-			//fileSystemManager.getFilesCache().putFile(jarFile);
-			
-			FileObject workingDirectory = fileSystemManager.getBaseFile();
-			Context context = Context.newTopLevelContext(fileSystemManager, "./", workingDirectory);
+		try {			
+			Context context = Context.newTopLevelContext();
+			context.getGlobals().setLibraryPaths("");
 			engine = new RenjinScriptEngineFactory().getScriptEngine(context);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -46,6 +39,17 @@ public class RenjinCore {
 	public DoubleVector getDoubleVector(String key) {
 		return (DoubleVector) engine.get(key);
 	}
+	
+	/**
+	 * Returns a single value as double.
+	 * @param key
+	 * @return
+	 */
+	public Double getDouble(String key){
+		return ((DoubleVector) engine.get(key)).get(0);	
+	}
+	
+	
 
 	public static void main(String[] args) throws Exception {
 		RenjinCore r = new RenjinCore();

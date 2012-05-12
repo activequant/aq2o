@@ -66,6 +66,8 @@ public class VisualBacktester extends AbstractBacktester {
 		pnlMonitor = new PNLMonitor(transportFactory);
 		pnlMonitor.showLiveChart();
 
+		super.setPnlMonitor(pnlMonitor);
+		
 		// construct the trading system environment.
 		TradingSystemEnvironment env = new TradingSystemEnvironment();
 		env.setArchiveFactory(factory);

@@ -20,6 +20,9 @@ public class PerformanceReport extends PersistentEntity {
 			returnSinceStratInception, 
 			sharpeRatio, sortinoRatio, worstDrawdown, 
 			skewness, excessKurtosis, annualizedVolatility; 
+	
+	
+	
 	/**
 	 * TimeStamps contains the timestamps in nanoseconds that correspond to performance measures.
 	 * They must be aligned.  
