@@ -1,5 +1,14 @@
 Backtesting 
 
+* General information
+
+	Backtesting a trading system is a crucial step to assess profitabily before going to production with a trading system. The key components in this system are a market and trading data source, a replay service, a trading system and the report generators. 
+	
+	Every backtest has to setup the backtest environment and has to setup some feeds, which will generate events. 
+
+
+* Some general trading system remarks
+
 	All trading systems know of a trade system environment, which contains environment specific pointers. 
 	
 	The trade system environment is injected by the outer runtime environment, such as a backtester. The 
@@ -14,7 +23,4 @@ Backtesting
 	The trading system MUST not register to or use operating system time events (such as System.currentTimeMillis()). 
 	All activity must be deducted from trading time, which MUST be and is in UTC.
 	
-		   
-	 
 	
-	   
