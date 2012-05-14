@@ -1,12 +1,15 @@
 package com.activequant.servicelayer.soap;
 
-import javax.jws.WebMethod;
+import java.io.IOException;
+
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
 import com.activequant.archive.IArchiveFactory;
+import com.activequant.archive.IArchiveReader;
+import com.activequant.archive.IArchiveWriter;
 import com.activequant.archive.TSContainer;
 import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
@@ -91,8 +94,10 @@ public class MainService implements IMainService {
 		perfDao.create(report);
 	}
 
-	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, String key, Object value) {
-
+	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, long nanoSeconds, String key, Object value) throws IOException {
+		IArchiveWriter w = archFac.getWriter(timeFrame);
+		w.write(seriesKey, new TimeStamp(nanoSeconds), key, (Double)value);
+		w.commit();
 	}
 
 }

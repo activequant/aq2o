@@ -1,5 +1,7 @@
 package com.activequant.servicelayer.soap;
 
+import java.io.IOException;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
@@ -34,6 +36,6 @@ public interface IMainService {
     
     
     @WebMethod 
-    public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, String key, Object value);
+	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, long nanoSeconds, String key, Object value) throws IOException;
     
 }
