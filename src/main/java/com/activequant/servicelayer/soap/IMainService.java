@@ -32,4 +32,8 @@ public interface IMainService {
     @WebMethod
 	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException;
     
+    
+    @WebMethod 
+    public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, String key, Object value);
+    
 }

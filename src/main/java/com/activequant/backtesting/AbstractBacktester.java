@@ -1,6 +1,5 @@
 package com.activequant.backtesting;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import com.activequant.backtesting.reporting.CSVFileFillExporter;

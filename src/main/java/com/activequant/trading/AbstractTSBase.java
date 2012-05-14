@@ -406,8 +406,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			long minute = currentTime.getNanoseconds() / (1000l * 1000l * 1000l * 60l);
 			if (minute != currentMinute) {
 				currentMinute = minute;
-			}
-			setWindowTitles(date8time6.format(currentTime.getDate()));
+				setWindowTitles(date8time6.format(currentTime.getDate()));
+			}			
 			// log.info("It is now " + ((TimeStreamEvent)
 			// se).getTimeStamp().getDate());
 		}

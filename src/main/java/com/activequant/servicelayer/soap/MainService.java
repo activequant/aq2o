@@ -1,5 +1,6 @@
 package com.activequant.servicelayer.soap;
 
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
@@ -80,14 +81,18 @@ public class MainService implements IMainService {
 				}
 			}
 			return ret;
-		} catch (Exception e) {		
+		} catch (Exception e) {
 			throw e;
 		}
 	}
-	
-	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException{
+
+	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException {
 		perfDao.delete(report);
 		perfDao.create(report);
+	}
+
+	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, String key, Object value) {
+
 	}
 
 }

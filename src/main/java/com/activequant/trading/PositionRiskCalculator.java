@@ -13,15 +13,17 @@ import com.activequant.transport.ITransportFactory;
 
 public class PositionRiskCalculator implements IRiskCalculator {
 
-	private AbstractTSBase tsBase; 
+	private AbstractTSBase tsBase;
 	private Map<String, Double> positions = new HashMap<String, Double>();
 	private Map<String, Double> lastValPrices = new HashMap<String, Double>();
-	private ITransportFactory transportFactory; 
-	private IPublisher riskDataPublisher = null;  
-	// 
-	public PositionRiskCalculator(AbstractTSBase tsBase){
-		this.tsBase = tsBase;		
-		
+	private ITransportFactory transportFactory;
+	private IPublisher riskDataPublisher = null;
+	private long lastMinute = 0L;
+
+	//
+	public PositionRiskCalculator(AbstractTSBase tsBase) {
+		this.tsBase = tsBase;
+
 	}
 
 	@Override
@@ -34,52 +36,52 @@ public class PositionRiskCalculator implements IRiskCalculator {
 		}
 	}
 
-	public void execution(String tid, double price, double quantity){
+	public void execution(String tid, double price, double quantity) {
 		pnl(tid, price, quantity);
 	}
-	
-	private void pnl(String tid, double price, double posChange){
+
+	private void pnl(String tid, double price, double posChange) {
 		Double formerPos = positions.get(tid);
 		Double lastValuationPrice = lastValPrices.get(tid);
-		if(formerPos == null){
-			formerPos = 0.0; 
-			lastValuationPrice = 0.0; 
-		}		
-		if(formerPos!=0.0){
-			// revalue the former position. 
+		if (formerPos == null) {
+			formerPos = 0.0;
+			lastValuationPrice = 0.0;
+		}
+		if (formerPos != 0.0) {
+			// revalue the former position.
 			double pnlChange = (price - lastValuationPrice) * formerPos;
 			PNLChangeEvent pce = new PNLChangeEvent(tsBase.currentTime, tid, pnlChange);
 			try {
 				riskDataPublisher.send(pce);
-			} catch (Exception e) {				
+			} catch (Exception e) {
 				e.printStackTrace();
-			}			
-		}		
+			}
+		}
 		positions.put(tid, formerPos + posChange);
-		lastValPrices.put(tid,  price);		
+		lastValPrices.put(tid, price);
 	}
-	
 
 	@Override
 	public void pricesUpdated(int rowIndex) {
-		String mdiId = (String)tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.INSTRUMENTID.colIdx());
-		// get the tradeable ID. 
-		int rowIndex2 = tsBase.getInstrumentTable().getRowIndexOf(mdiId);
-		String tid = (String)tsBase.getInstrumentTable().getCell(rowIndex2, InstrumentTable.Columns.TRADEABLEID.colIdx());		
-		Double position = positions.get(tid);
-		if(position!=null && position!=0.0){
-			Double valPrice = null;
-			if(position > 0.0)
-				valPrice = (Double)tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.BID.colIdx());
-			else
-				valPrice = (Double) tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.ASK.colIdx());
-			//	
-			if(valPrice!=null)
-				pnl(tid, valPrice, 0.0); 
+		if (tsBase.getCurrentMinute() != lastMinute) {
+			String mdiId = (String) tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.INSTRUMENTID.colIdx());
+			// get the tradeable ID.
+			int rowIndex2 = tsBase.getInstrumentTable().getRowIndexOf(mdiId);
+			String tid = (String) tsBase.getInstrumentTable().getCell(rowIndex2,
+					InstrumentTable.Columns.TRADEABLEID.colIdx());
+			Double position = positions.get(tid);
+			if (position != null && position != 0.0) {
+				Double valPrice = null;
+				if (position > 0.0)
+					valPrice = (Double) tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.BID.colIdx());
+				else
+					valPrice = (Double) tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.ASK.colIdx());
+				//
+				if (valPrice != null)
+					pnl(tid, valPrice, 0.0);
+			}
+			lastMinute = tsBase.getCurrentMinute();
 		}
 	}
-	
-	
-	
-	
+
 }
