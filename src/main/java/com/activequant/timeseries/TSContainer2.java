@@ -35,14 +35,25 @@ public class TSContainer2 {
 
 	public TSContainer2(final String seriesId, List<String> columnHeaders,
 			List<TypedColumn> columns) {
-		// initialize the data array
-		this.columns = new ArrayList<TypedColumn>();
+		this(seriesId, columnHeaders, columns, 0L);
+	}
+	
+	
+	public TSContainer2(final String seriesId, List<String> columnHeaders,
+			List<TypedColumn> columns, long resolutionInNanos) {
 		// initialize the column headers. Copying into an array list to get rid
 		// of possible immutable classes.
 		this.columnHeaders = new ArrayList<String>(columnHeaders);
 		// initialize the data lists.
-		this.columns = new ArrayList<TypedColumn>(columns);
+		this.columns = new ArrayList<TypedColumn>();
+		for(TypedColumn tc : columns){
+			this.columns.add((TypedColumn)tc.clone());
+		}
+		
+		
+		//
 		this.seriesId = seriesId;
+		this.resolutionInNanoseconds = resolutionInNanos;
 	}
 
 	// It is not possible to change SeriesId after creation of the time series
@@ -222,6 +233,7 @@ public class TSContainer2 {
 			delete(indexFrom);
 		}
 	}
+	
 
 	public Object[] getRow(TimeStamp ts) {
 		int index = getIndex(ts);
@@ -433,5 +445,22 @@ public class TSContainer2 {
 			str += "\n";
 		}
 		return str;
+	}
+	
+	/**
+	 * empties everything. 
+	 */
+	public void emptyColumns(){
+		for(TypedColumn tc : this.columns)
+			tc.clear();
+		this.timeStamps.clear();
+	}
+
+	public long getResolutionInNanoseconds() {
+		return resolutionInNanoseconds;
+	}
+
+	public void setResolutionInNanoseconds(long resolutionInNanoseconds) {
+		this.resolutionInNanoseconds = resolutionInNanoseconds;
 	}
 }

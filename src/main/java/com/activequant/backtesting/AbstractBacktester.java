@@ -35,6 +35,9 @@ public abstract class AbstractBacktester {
 			e.printStackTrace();
 		}
 	
+		// calculate some statistics. 
+		
+		
 	}
 
 	public PNLMonitor getPnlMonitor() {

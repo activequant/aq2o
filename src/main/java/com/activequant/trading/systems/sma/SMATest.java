@@ -22,53 +22,71 @@ import com.activequant.transport.ITransportFactory;
 import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.Date8Time6Parser;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class SMATest {
+
+	/**
+	 * will be moved soon to AbstractBacktester
+	 * @author GhostRider
+	 *
+	 */
+	private class BasicBacktestEnv {
+
+		
+
+		public void backtest(ITradingSystem[] its, List<StreamEventIterator> listOfStreams) throws Exception {
+			//
+			//
+			//
+			ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
+			IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+			IArchiveFactory archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
+			//
+			//
+			// initialize transport layer and VirtEX
+			ITransportFactory transport = new InMemoryTransportFactory();
+			VirtualExchange virtEx = new VirtualExchange(transport);
+			//
+			//
+			// initialize the backtester
+			VisualBacktester bt = new VisualBacktester(archiveFactory, transport, idf, virtEx, its,
+					listOfStreams.toArray(new StreamEventIterator[] {}));
+			//
+			//
+			// ok, now that we have all initialized ... execute the backtest.
+			bt.execute();
+			//
+		}
+		
+	}
+
 	public SMATest() throws Exception {
-		ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
-		System.out.println("Starting up and fetching idf");
-		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		IArchiveFactory archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
-		System.out.println("Fetched.");
 		Date8Time6Parser p = new Date8Time6Parser();
 		TimeStamp startTime = new TimeStamp(p.getNanoseconds(20000101000000.0));
 		TimeStamp endTime = new TimeStamp(p.getNanoseconds(20111205000000.0));
-		// TimeStamp endTime = new
-		// TimeStamp(p.getNanoseconds(20120101000000.0));
 
+	
 		// construct the stream list
 		@SuppressWarnings("rawtypes")
 		List<StreamEventIterator> tempList = new ArrayList<StreamEventIterator>();
-		// add the trading time stream, one interval every minute.
-		
-		//tempList.add(new TradingTimeStreamIterator(startTime, endTime, 60L * 1000l * 1000l * 1000l * 60l));
+		// add the trading time stream, one interval every hour.
+		// tempList.add(new TradingTimeStreamIterator(startTime, endTime, 60L *
+		// 1000l * 1000l * 1000l * 60l));
 
-		SimpleMovingAverage ssts = new SimpleMovingAverage();
-		
-		MarketDataInstrument mdi = new MarketDataInstrument("CSV", "SOY");		
+		MarketDataInstrument mdi = new MarketDataInstrument("CSV", "SOY");
 		TradeableInstrument tdi = new TradeableInstrument("CSV", "SOY");
-		
-		tempList.add(new FieldToBidAskConverterStream(mdi.getId(),tdi.getId(), "PX_SETTLE",startTime,endTime,
+
+		tempList.add(new FieldToBidAskConverterStream(mdi.getId(), tdi.getId(), "PX_SETTLE", startTime, endTime,
 				new CsvArchiveReaderFormat1("./src/test/resources/sampledata/soybean_future_rolled.csv")));
 
-		// tempList.add(new ArchiveStreamToMarketDataIterator(ssts.mdiId2,
-		// ssts.tdiId2, startTime, endTime, archiveFactory
-		// .getReader(TimeFrame.RAW)));
-
-		ITransportFactory transport = new InMemoryTransportFactory();
-
-		// instantiate a virtual exchange, which we will inject.
-		VirtualExchange virtEx = new VirtualExchange(transport);
-		//
+		SimpleMovingAverage ssts = new SimpleMovingAverage();
 		ssts.setVizLayer(true);
-
-		//
-		// initialize the backtester
-		VisualBacktester bt = new VisualBacktester(archiveFactory, transport, idf, virtEx,
-				new ITradingSystem[] { ssts }, tempList.toArray(new StreamEventIterator[] {}));
-		// ok, now that we have all initialized ...
-
-		// execute the backtest.
-		bt.execute();
+		
+		new BasicBacktestEnv().backtest(new ITradingSystem[]{ssts}, tempList);
 
 	}
 
