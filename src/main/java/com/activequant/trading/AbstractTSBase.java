@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import com.activequant.aqviz.HardcoreReflectionsFactory;
 import com.activequant.aqviz.interfaces.IVisualTable;
 import com.activequant.dao.DaoException;
+import com.activequant.domainmodel.FX;
 import com.activequant.domainmodel.Future;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
@@ -27,7 +28,6 @@ import com.activequant.exceptions.TransportException;
 import com.activequant.tools.streaming.InformationalEvent;
 import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.tools.streaming.OrderStreamEvent;
-import com.activequant.tools.streaming.PNLChangeEvent;
 import com.activequant.tools.streaming.PositionEvent;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.Tick;
@@ -176,6 +176,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				getInstrumentTable().addInstrument(mdiId, tdiId, s.getCurrency(), 0L, s.getTickSize(),
 						s.getTickValue(), 80000.0, 220000.0);
 			}
+			else 
+				getInstrumentTable().addInstrument(mdiId, tdiId, "", 0L, 1.0,1.0, 80000.0, 220000.0);
 		} else 
 			// add the instrument to our list of instruments.
 			getInstrumentTable().addInstrument(mdiId, tdiId, "", 0L, 1.0, 1.0, 80000.0, 220000.0);
