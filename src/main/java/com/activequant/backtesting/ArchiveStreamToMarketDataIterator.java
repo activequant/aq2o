@@ -10,6 +10,11 @@ import com.activequant.tools.streaming.MarketDataEvent;
 import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.tools.streaming.StreamEventIterator;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<MarketDataEvent> {
 
     private String mdiId, tdiId; 

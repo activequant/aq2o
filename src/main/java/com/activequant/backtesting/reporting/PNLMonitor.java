@@ -131,7 +131,7 @@ public class PNLMonitor {
 				while (true) {
 					try {
 						Thread.sleep(500);
-						if (dataChanged.get()==true) {
+						if (dataChanged.get() == true) {
 							dataChanged = new AtomicBoolean(false);
 							TimeSeriesCollection tempDataSet = new TimeSeriesCollection();
 
@@ -156,7 +156,24 @@ public class PNLMonitor {
 		});
 		t.setDaemon(true);
 		t.start();
+	}
 
+	public JFreeChart getStaticChart() {
+
+		TimeSeriesCollection tempDataSet = new TimeSeriesCollection();
+
+		for (int i = 0; i < cumulatedTSContainer.getNumColumns(); i++) {
+			DoubleColumn dc = (DoubleColumn) cumulatedTSContainer.getColumns().get(i);
+			List<TimeStamp> ts = cumulatedTSContainer.getTimeStamps();
+			TimeSeries tsNew = new TimeSeries(cumulatedTSContainer.getColumnHeaders().get(i));
+			for (int j = 0; j < dc.size(); j++)
+				tsNew.addOrUpdate(new Millisecond(ts.get(j).getDate()), dc.get(j));
+			// add a new series.
+			tempDataSet.addSeries(tsNew);
+
+		}
+		JFreeChart chart = ChartFactory.createTimeSeriesChart("PNL", "Time", "Value", tempDataSet, true, true, false);
+		return chart;
 	}
 
 	public TSContainer2 getCumulatedTSContainer() {

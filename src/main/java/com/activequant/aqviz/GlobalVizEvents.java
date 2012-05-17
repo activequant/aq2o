@@ -3,10 +3,10 @@ package com.activequant.aqviz;
 import com.activequant.utils.events.Event;
 
 /**
- * Can and should be used to signal things throughout the application. 
+ * Can and should be used to signal visualization related things throughout the application. 
  * Such as a QUIT or EXIT command.   
  * 
- * @author ustaudinger
+ * @author GhostRider
  *
  */
 public class GlobalVizEvents {

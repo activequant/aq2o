@@ -33,10 +33,7 @@ public class MarketDataSnapshot extends MarketDataEvent {
 	public ETransportType getEventType() {
 		return ETransportType.MARKET_DATA;
 	}
-	@Property
-	public String getMarketDataId() {
-		return mdiId;
-	}
+	
 	@Property
 	public String getMdiId() {
 		return mdiId;

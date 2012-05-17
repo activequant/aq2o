@@ -36,7 +36,7 @@ public class LocalJettyServer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		LocalJettyServer s = new LocalJettyServer(44444, "192.168.10.150");
+		LocalJettyServer s = new LocalJettyServer(44444, "localhost");
 		s.start();
 	}
 
@@ -84,10 +84,14 @@ public class LocalJettyServer {
 				try {
 					start = new TimeStamp(sdf.parse(sd));
 
+					int counter = 0;
+					int maxRows = 1000000;
 					TimeStamp end = new TimeStamp(sdf.parse(ed));
 					TSContainer container = archFactory.getReader(tf).getTimeSeries(mdiId, field, start, end);
 					response.getWriter().print("TimeStampNanos,DateTime,"+field+"\n");
 					for(int i=0;i<container.timeStamps.length;i++){
+						// limiting to 1million rows. 
+						if(i>=maxRows)break;
 						response.getWriter().print(container.timeStamps[i]);
 						response.getWriter().print(",");
 						response.getWriter().print(container.timeStamps[i].getDate());

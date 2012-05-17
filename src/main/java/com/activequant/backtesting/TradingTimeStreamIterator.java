@@ -4,6 +4,11 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.tools.streaming.StreamEventIterator;
 import com.activequant.tools.streaming.TimeStreamEvent;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class TradingTimeStreamIterator extends StreamEventIterator<TimeStreamEvent> {
 
 	// time in nanoseconds. 

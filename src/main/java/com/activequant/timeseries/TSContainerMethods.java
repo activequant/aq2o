@@ -10,7 +10,6 @@ import com.activequant.domainmodel.TimeStamp;
  * 
  */
 public class TSContainerMethods {
-
 	
 	public void merge(TSContainer ts1, TSContainer ts2) {
 		
@@ -28,8 +27,7 @@ public class TSContainerMethods {
 		for(TimeStamp ts : in.getTimeStamps()){
 			Object[] row = in.getRow(ts);
 			ret.setRow(ts, row);
-		}
-		
+		}		
 		return ret; 
 	}
 }

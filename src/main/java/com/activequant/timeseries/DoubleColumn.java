@@ -1,12 +1,11 @@
 package com.activequant.timeseries;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DoubleColumn extends TypedColumn<Double> {
 	private static final long serialVersionUID = 1L;
 
-	public DoubleColumn(List list) {
+	public DoubleColumn(List<Double> list) {
 		super(list);
 	}
 	
@@ -62,5 +61,5 @@ public class DoubleColumn extends TypedColumn<Double> {
 		}
 		return ret;
 	}
-
+	
 }

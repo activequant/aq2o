@@ -2,7 +2,6 @@ package com.activequant.trading.datamodel;
 
 import java.util.List;
 
-import com.activequant.trading.AQTableDataBaseAlpha;
 import com.activequant.trading.AbstractTSBase;
 
 @SuppressWarnings("serial")

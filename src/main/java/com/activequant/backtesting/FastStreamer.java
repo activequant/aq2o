@@ -9,6 +9,11 @@ import org.apache.log4j.Logger;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.StreamEventIterator;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class FastStreamer {
 
 	private final Logger log = Logger.getLogger(FastStreamer.class);

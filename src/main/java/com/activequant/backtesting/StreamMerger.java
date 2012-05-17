@@ -6,6 +6,11 @@ import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class StreamMerger {
 
 	class FastStreamEventContainer implements Comparable<FastStreamEventContainer> {

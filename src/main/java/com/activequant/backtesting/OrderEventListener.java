@@ -7,6 +7,11 @@ import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.utils.events.IEventListener;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class OrderEventListener implements IEventListener<OrderEvent> {
 	
 	private List<OrderFillEvent> fillEvents = new ArrayList<OrderFillEvent>();

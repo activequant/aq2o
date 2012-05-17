@@ -26,6 +26,11 @@ import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.TimeMeasurement;
 import com.activequant.utils.events.IEventListener;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class VisualBacktester extends AbstractBacktester {
 
 	private IExchange exchange;
@@ -41,6 +46,17 @@ public class VisualBacktester extends AbstractBacktester {
 	private boolean runUntilOrderEvent = false;
 	private PNLMonitor pnlMonitor;
 
+	/**
+	 * Dependency injection constructor. 
+	 * 
+	 * @param factory
+	 * @param transportFactory
+	 * @param daoFactory
+	 * @param exchange
+	 * @param tradingSystems
+	 * @param streamIters
+	 * @throws Exception
+	 */
 	@SuppressWarnings("rawtypes")
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
 			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters) throws Exception {

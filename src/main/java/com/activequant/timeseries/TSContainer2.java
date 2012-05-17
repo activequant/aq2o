@@ -48,9 +48,7 @@ public class TSContainer2 {
 		this.columns = new ArrayList<TypedColumn>();
 		for(TypedColumn tc : columns){
 			this.columns.add((TypedColumn)tc.clone());
-		}
-		
-		
+		}		
 		//
 		this.seriesId = seriesId;
 		this.resolutionInNanoseconds = resolutionInNanos;

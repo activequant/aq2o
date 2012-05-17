@@ -23,10 +23,10 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 	protected int colSelected = -1;
 	protected boolean toogleSelection;
 
-	protected final DecimalFormat dcf = new DecimalFormat("#.####");
+	protected DecimalFormat dcf = new DecimalFormat("#.####");
 
 	public AQTableDataBase() {
-		dcf.setGroupingUsed(false);
+		dcf.setGroupingUsed(false);		
 	}
 
 	public AQTableDataBase(AbstractTSBase abstractTSBase) {
@@ -48,6 +48,13 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 		return getHeader().length;
 	}
 
+	/**
+	 * Returns a FORMATTED representation of the data. 
+	 * This is used by Java's SWING layer. 
+	 * Do not use this to get the value at a cell.
+	 * 
+	 * Rather use getCell.
+	 */
 	public Object getValueAt(int row, int col) {
 		Object o = getCell(row, col);
 		if (o == null)
@@ -135,6 +142,18 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 
 	public void setToogleSelection(boolean toogleSelection) {
 		this.toogleSelection = toogleSelection;
+	}
+
+	public DecimalFormat getDCF() {
+		return dcf;
+	}
+
+	/**
+	 * You can inject a new Decimal Format here. 
+	 * @param dcf
+	 */
+	public void setDCF(DecimalFormat dcf) {
+		this.dcf = dcf;
 	}
 
 }

@@ -15,6 +15,11 @@ import com.activequant.transport.ETransportType;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.TimeMeasurement;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class Backtester extends AbstractBacktester {
 
 	private IExchange exchange;

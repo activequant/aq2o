@@ -1,6 +1,7 @@
 package com.activequant.backtesting.reporting;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -11,9 +12,9 @@ import com.activequant.domainmodel.trade.event.OrderFillEvent;
 public class CSVFileFillExporter {
 
 	private DecimalFormat dcf = new DecimalFormat("#.######");
-	public void export(List<OrderFillEvent> fills) {
+	public void export(String targetFolder, List<OrderFillEvent> fills) {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("report.csv"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(targetFolder + File.separator + "report.csv"));
 			bw.write("'InstId';'RefOrderID';'Side';'creationTimeInMilliseconds';'FillAmount';'FillPrice';'LeftQuantity';");
 			bw.newLine();			
 			for (OrderFillEvent ofe : fills) {

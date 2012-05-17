@@ -5,6 +5,11 @@ import com.activequant.tools.streaming.BBOEvent;
 import com.activequant.tools.streaming.MarketDataEvent;
 import com.activequant.tools.streaming.StreamEventIterator;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class RandomMarketDataIterator extends StreamEventIterator<MarketDataEvent> {
 
 	// time in nanoseconds.

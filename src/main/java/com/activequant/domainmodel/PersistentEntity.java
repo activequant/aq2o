@@ -84,6 +84,9 @@ public abstract class PersistentEntity {
     			return ((Long)input).intValue();
     		}
     	}
+    	else if(targetType.isAssignableFrom(TimeStamp.class)){
+    		return new TimeStamp((Long)input);
+    	}
     	return input; 
     }
     

@@ -1,4 +1,4 @@
-package com.activequant.trading;
+package com.activequant.trading.datamodel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.Timer;
 
 import com.activequant.domainmodel.Tuple;
-import com.activequant.trading.datamodel.AQTableDataBase;
+import com.activequant.trading.AbstractTSBase;
 
 public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
 	private ConcurrentHashMap<String, Integer> alphaList = new ConcurrentHashMap<String, Integer>();
