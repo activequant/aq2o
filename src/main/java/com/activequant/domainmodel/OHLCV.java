@@ -113,7 +113,8 @@ public class OHLCV extends TimeStreamEvent {
 	}
 	
 	public void clear(){
-		open = high = low = close = volume = null; 		
+		open = high = low = close = volume = null;
+		setTimeStamp(null);
 	}
 	
 	public OHLCV clone(){
