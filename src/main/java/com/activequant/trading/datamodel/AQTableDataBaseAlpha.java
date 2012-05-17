@@ -1,15 +1,16 @@
 package com.activequant.trading.datamodel;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Timer;
 
-import com.activequant.domainmodel.Tuple;
 import com.activequant.trading.AbstractTSBase;
 
 public abstract class AQTableDataBaseAlpha extends AQTableDataBase {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ConcurrentHashMap<String, Integer> alphaList = new ConcurrentHashMap<String, Integer>();
 	private boolean enableBlinking;
 	// Sleep time
