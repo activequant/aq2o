@@ -122,9 +122,11 @@ public class MDSRecorder {
 			l = br.readLine();
 		}		
 		for(String s : instruments){
+			log.info("Subscribing to "  + s);
 			transFac.getReceiver(ETransportType.MARKET_DATA, s).getMsgRecEvent().addEventListener(new IEventListener<PersistentEntity>() {
 				@Override
 				public void eventFired(PersistentEntity event) {
+					System.out.print(".");
 					if(event instanceof MarketDataSnapshot){
 						collectionList.add((MarketDataSnapshot)event);
 					}
