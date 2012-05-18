@@ -402,4 +402,8 @@ public class VirtualExchange implements IExchange {
 		return globalOrderEvent;
 	}
 
+	public Portfolio getClientPortfolio() {
+		return clientPortfolio;
+	}
+
 }
