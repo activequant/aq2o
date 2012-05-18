@@ -133,6 +133,23 @@ public class PositionTable extends AQTableDataBase {
 		getRowUpdateEvent().fire(rowIndex);
 	}
 	
+	/**
+	 * returns the current position for a tradeable.
+	 * @param instrumentId
+	 * @return
+	 */
+	public double getCurrentPosition(String instrumentId){
+		int pos = -1; 
+		for(Object[] row : data){
+			pos++; 
+			if(row[Columns.INSTRUMENTID.colIdx].equals(instrumentId))break; 
+		}
+		if(pos!=-1){
+			return ((Double)data[pos][Columns.POSITION.colIdx]).doubleValue();
+		}
+		return 0.0; 
+	}
+	
 	@Override
 	public Object[][] getData() {
 		return data;
