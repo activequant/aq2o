@@ -151,7 +151,7 @@ public class PositionTable extends AQTableDataBase {
 	}
 	
 	/**
-	 * returns the current position for a tradeable.
+	 * returns the current entry price for a tradeable.
 	 * @param instrumentId
 	 * @return
 	 */
