@@ -58,6 +58,7 @@
 		</menu>
 
 		<menu name="Venue connectors">
+			<item name="Currenex FX" href="venueconnectivity/cnx.html" />
 			<item name="Trading Technologies" href="tt.html" />
 			<item name="Bloomberg Terminals" href="bbtb.html" />
 			<item name="CTS T4" href="cts.html" />

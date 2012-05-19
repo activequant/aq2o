@@ -17,6 +17,8 @@
 	<p>Our people are available for consulting, please contact <a href="mailto:ustaudinger@activequant.com">Ulrich</a> to get in touch with us to make your security trading happen.</p>	
     </section>
 	
+	
+	
 
     <section name="Typical use cases">
     <p>
@@ -25,6 +27,15 @@
 	You might also want to plug in applications written in other languages through 
 	a SOAP Service Facade or Matlab to access that data. It is also possible simulate trading, high frequency and low frequency and to move seamlessly from simulation to production through one of the trading venue interface implementations.
 	</p>
+	<p>
+		The following diagram shows you briefly, what a typical use case for the price feed part of ActiveQuant looks like. Notice, YOU GET THIS UP AND RUNNING MUCH QUICKER, IF YOU SIMPLY BOOK US FOR A DAY OR TWO!   
+	</p>	
+	<p>
+		<img src="http://activequant.com/sites/default/files/aq_gui3.png"/>
+	</p>
+
+	</section>
+	<section name="How to get started">
 
 	<p>
 		Proceed to <a href="./examples/atasteofactivequant.html">our example page</a>.	
