@@ -13,6 +13,7 @@ import com.activequant.backtesting.reporting.CSVFileFillExporter;
 import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.TSContainer2;
+import com.activequant.utils.CsvMapWriter;
 
 /**
  * 
@@ -50,12 +51,21 @@ public abstract class AbstractBacktester {
 			e.printStackTrace();
 		}
 		
-		// generate 
+		// generate a chart. 
 		ChartUtilities.saveChartAsPNG(new File(targetFolder+File.separator+"pnl.png"), pnlMonitor.getStaticChart(), 800,600);
 	
 		// calculate some statistics. 
 		BacktestStatistics bs = new BacktestStatistics();
 		bs.calculateStatistics(pnlContainer);
+		
+		// dump the stats
+		try {
+			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
+			new CsvMapWriter().write(bs.getStatistics(), fout);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
