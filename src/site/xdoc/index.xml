@@ -13,7 +13,9 @@
 
     <!-- The body of the document contains a number of sections -->
     <section name="Welcome">
-   	<p>You have reached the landing site of the ActiveQuant securities trading framework.</p> 
+   	<p>You have reached the landing site of the ActiveQuant securities trading framework. </p>
+   	<p>This project is an Open Source project, but not free software, but it is provided free of charge to academics and hobbyists. You could also say it is an OpenCore software, but it's not cripple ware. We provide various commercial services around the Open Core.</p>
+   	<p><strong>RESPECT OUR <a href="license.html">LICENSE</a>.</strong></p> 
 	<p>Our people are available for consulting, please contact <a href="mailto:ustaudinger@activequant.com">Ulrich</a> to get in touch with us to make your security trading happen.</p>	
     </section>
 	
@@ -28,7 +30,7 @@
 	a SOAP Service Facade or Matlab to access that data. It is also possible simulate trading, high frequency and low frequency and to move seamlessly from simulation to production through one of the trading venue interface implementations.
 	</p>
 	<p>
-		The following diagram shows you briefly, what a typical use case for the price feed part of ActiveQuant looks like. Notice, YOU GET THIS UP AND RUNNING MUCH QUICKER, IF YOU SIMPLY BOOK US FOR A DAY OR TWO!   
+		The following diagram shows you briefly, what a typical use case for the price feed part of ActiveQuant looks like. Notice, YOU GET THIS UP AND RUNNING MUCH QUICKER, IF YOU SIMPLY BOOK US FOR A DAY OR TWO!  
 	</p>	
 	<p>
 		<img src="http://activequant.com/sites/default/files/aq_gui3.png"/>

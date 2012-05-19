@@ -23,4 +23,8 @@ Backtesting
 	The trading system MUST not register to or use operating system time events (such as System.currentTimeMillis()). 
 	All activity must be deducted from trading time, which MUST be and is in UTC.
 	
+	 
 	
+* Backtest reports
+
+	The backtest reports use HTML templating, where variables in the report template are replaced with their corresponding values. 
