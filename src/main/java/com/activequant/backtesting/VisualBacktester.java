@@ -239,6 +239,10 @@ public class VisualBacktester extends AbstractBacktester {
 					transportFactory.getPublisher(transportType, tde.getTradInstId()).send(se);
 					// send everything also to virtex exchange layer.
 				}
+				else{
+					// push it out over its ID.
+					transportFactory.getPublisher(se.getId()).send(se);					
+				}
 
 				//
 				eventCount++;
