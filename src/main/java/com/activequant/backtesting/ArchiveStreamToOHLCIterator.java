@@ -20,7 +20,8 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
 
     private String mdiId, tdiId; 
     private double open, high, low, close;
-    private int resInSeconds; 
+    private int resInSeconds;
+    private long offset; 
     private String OPEN="OPEN", HIGH = "HIGH", LOW="LOW", CLOSE = "CLOSE", VOL="VOLUME";
     private MultiValueTimeSeriesIterator streamIterator; 
      
@@ -28,7 +29,8 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
     public ArchiveStreamToOHLCIterator(String mdiId, TimeFrame timeFrame, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
         this.mdiId = mdiId;
         this.tdiId = mdiId; 
-        resInSeconds = timeFrame.getMinutes()*60;       
+        resInSeconds = timeFrame.getMinutes()*60;
+        offset = resInSeconds * 1000l * 1000l * 1000l; 
         this.streamIterator = archiveReader.getMultiValueStream(mdiId, startTime, endTime);
      
     }
@@ -56,7 +58,8 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
         o.setClose(close);
         o.setVolume(0.0);
         o.setResolutionInSeconds(resInSeconds);
-        o.setTimeStamp(valueMap.getA());
+        // shift it, so that it looks as if it emitted at the end of a candle. 
+        o.setTimeStamp(new TimeStamp(valueMap.getA().getNanoseconds() + offset));
         return o; 
 
     }
