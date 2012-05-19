@@ -61,7 +61,7 @@ public class Rechandler {
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.add(Calendar.DATE, dayOffset);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		endTimeStamp = new TimeStamp(sdf.parse(sdf.format(cal)));
+		endTimeStamp = new TimeStamp(sdf.parse(sdf.format(cal.getTime())));
 		endTimeStamp = new TimeStamp(endTimeStamp.getNanoseconds() - 1L);
 		cal.add(Calendar.DATE, -days);
 		startTimeStamp = new TimeStamp(sdf.parse(sdf.format(cal)));
