@@ -37,17 +37,19 @@
 	</section>
 	<section name="How to get started">
 
-	<p>
-		Proceed to <a href="./examples/atasteofactivequant.html">our example page</a>.	
-	</p>
-
 
 	<p>
-		Also, have a look at our jump start video below that shows you the steps to set up AQ2o in your Eclipse IDE, assuming you have the <a href="uberjar.html">AQ Master Server</a>, SVN and Maven up and running.  
+		We invite you to have a look at our jump start video below that shows you the steps to set up AQ2o in your Eclipse IDE, assuming you have the <a href="uberjar.html">AQ Master Server</a>, SVN and Maven up and running.  
 		</p>
 	<p>
 		<iframe width="640" height="360" src="http://www.youtube.com/embed/v4UH0-f_pzc" frameborder="0"></iframe>
 	</p>
+	
+	<p>
+		Proceed to <a href="./examples/atasteofactivequant.html">our example page</a> for more information.	
+	</p>
+
+	
 
     </section>
     
