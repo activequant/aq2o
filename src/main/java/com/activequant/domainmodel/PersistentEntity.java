@@ -2,8 +2,10 @@ package com.activequant.domainmodel;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -180,11 +182,14 @@ public abstract class PersistentEntity {
         
         // weeding out load time artifacts. 
         Iterator<Entry<String, Object>> it = underlyingMap.entrySet().iterator();
+        List<String> weedOutKeys = new ArrayList<String>();
     	while(it.hasNext()){
     		Entry<String, Object> entry = it.next();
     		if(entry.getKey().startsWith("["))
-    			underlyingMap.remove(entry.getKey());
+    			weedOutKeys.add(entry.getKey());
     	}
+    	for(String s : weedOutKeys)
+    		underlyingMap.remove(s);
     }
 
     public String nullSafe(Object val) {
