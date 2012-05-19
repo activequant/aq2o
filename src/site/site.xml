@@ -40,6 +40,13 @@
 			<item name="Uber-JAR" href="uberjar.html" />
 			<item name="Source Code" href="source_code.html" />
 		</menu>
+		
+		<menu name="Venue connectors">
+			<item name="Currenex FX" href="venueconnectivity/cnx.html" />
+			<item name="Trading Technologies" href="tt.html" />
+			<item name="Bloomberg Terminals" href="bbtb.html" />
+			<item name="CTS T4" href="cts.html" />
+		</menu>
 		<menu name="Usage scenarios">
 			<item name="Using AQ with QlikView" href="integration/qlikview.html"/>
 			<item name="Importing timeseries data" href="importingdata.html" />
@@ -57,12 +64,6 @@
 			<item name="SOAP Facade" href="soapfacade.html" />
 		</menu>
 
-		<menu name="Venue connectors">
-			<item name="Currenex FX" href="venueconnectivity/cnx.html" />
-			<item name="Trading Technologies" href="tt.html" />
-			<item name="Bloomberg Terminals" href="bbtb.html" />
-			<item name="CTS T4" href="cts.html" />
-		</menu>
 			<menu name="Support">
 			<item name="Forum" href="supp_forums.html" />
 			<item name="Bug tracker" href="bugtracker.html" />
