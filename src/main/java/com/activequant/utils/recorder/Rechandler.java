@@ -64,7 +64,7 @@ public class Rechandler {
 		endTimeStamp = new TimeStamp(sdf.parse(sdf.format(cal.getTime())));
 		endTimeStamp = new TimeStamp(endTimeStamp.getNanoseconds() - 1L);
 		cal.add(Calendar.DATE, -days);
-		startTimeStamp = new TimeStamp(sdf.parse(sdf.format(cal)));
+		startTimeStamp = new TimeStamp(sdf.parse(sdf.format(cal.getTime())));
 
 		//
 		System.out.println("Processing data from " + startTimeStamp.getDate() + " to " + endTimeStamp.getDate());
