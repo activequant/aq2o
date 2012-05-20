@@ -8,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.activequant.archive.IArchiveFactory;
 import com.activequant.archive.csv.CsvArchiveReaderFormat1;
+import com.activequant.backtesting.BacktestConfiguration;
 import com.activequant.backtesting.FieldToBidAskConverterStream;
 import com.activequant.backtesting.TradingTimeStreamIterator;
 import com.activequant.backtesting.VisualBacktester;
@@ -55,6 +56,13 @@ public class SMATest {
 			// initialize the backtester
 			VisualBacktester bt = new VisualBacktester(archiveFactory, transport, idf, virtEx, its,
 					listOfStreams.toArray(new StreamEventIterator[] {}));
+			// set the backtest config, for later reporting. 
+			BacktestConfiguration btCfg = new BacktestConfiguration();
+			btCfg.setBacktesterImplementation(bt.getClass().getCanonicalName());
+			btCfg.setDate8Time6Start(date8Time6Start);
+			btCfg.setDate8Time6End(date8Time6End);
+			bt.setBtConfig(btCfg);
+			
 			//
 			//
 			// ok, now that we have all initialized ... execute the backtest.
@@ -64,10 +72,13 @@ public class SMATest {
 		
 	}
 
+	private double date8Time6Start = 20000101000000.0;
+	private double date8Time6End = 20130101000000.0; 
+	
 	public SMATest() throws Exception {
 		Date8Time6Parser p = new Date8Time6Parser();
-		TimeStamp startTime = new TimeStamp(p.getNanoseconds(20000101000000.0));
-		TimeStamp endTime = new TimeStamp(p.getNanoseconds(20111205000000.0));
+		TimeStamp startTime = new TimeStamp(p.getNanoseconds(date8Time6Start));
+		TimeStamp endTime = new TimeStamp(p.getNanoseconds(date8Time6End));
 
 	
 		// construct the stream list

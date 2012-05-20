@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import com.activequant.aqviz.HardcoreReflectionsFactory;
 import com.activequant.aqviz.interfaces.IVisualTable;
 import com.activequant.dao.DaoException;
-import com.activequant.domainmodel.FX;
+import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.Future;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
@@ -52,6 +52,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private final Logger log = Logger.getLogger(AbstractTSBase.class);
 	protected TradingSystemEnvironment env;
 	protected TimeStamp currentTime;
+	private AlgoConfig algoConfig = new AlgoConfig();
 	protected IRiskCalculator riskCalculator = new PositionRiskCalculator(this);
 
 	protected SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
@@ -72,6 +73,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		}
 	};
 
+	
 	public void environment(TradingSystemEnvironment env) {
 		this.env = env;
 		this.riskCalculator.setTransportFactory(env.getTransportFactory());
@@ -497,6 +499,14 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	public void setRiskCalculator(IRiskCalculator riskCalculator) {
 		this.riskCalculator = riskCalculator;
+	}
+
+	public AlgoConfig getAlgoConfig() {
+		return algoConfig;
+	}
+
+	public void setAlgoConfig(AlgoConfig algoConfig) {
+		this.algoConfig = algoConfig;
 	}
 
 }

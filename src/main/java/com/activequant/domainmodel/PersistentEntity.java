@@ -210,8 +210,10 @@ public abstract class PersistentEntity {
 
     
     /**
+     * recreates the entire property map and stores it in the underlying map. 
+     * use getUnderlyingMap() for consecutive calls. 
      * 
-     * @return a clone of the property map.
+     * @return the underlying map
      */
     public Map<String, Object> propertyMap() {
         //
@@ -251,6 +253,11 @@ public abstract class PersistentEntity {
         this.snapshotTime = snapshotTime;
     }
 
+    /**
+     * Use this if you have called property map before and no properties changed in between. 
+     * 
+     * @return a map with all properties
+     */
 	public Map<String, Object> getUnderlyingMap() {
 		return underlyingMap;
 	}

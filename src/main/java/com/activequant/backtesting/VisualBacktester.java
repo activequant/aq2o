@@ -3,6 +3,8 @@ package com.activequant.backtesting;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,6 +13,7 @@ import com.activequant.aqviz.GlobalVizEvents;
 import com.activequant.archive.IArchiveFactory;
 import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.dao.IDaoFactory;
+import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.tools.streaming.MarketDataEvent;
 import com.activequant.tools.streaming.ReferenceDataEvent;
@@ -29,7 +32,7 @@ import com.activequant.utils.events.IEventListener;
 /**
  * 
  * @author GhostRider
- *
+ * 
  */
 public class VisualBacktester extends AbstractBacktester {
 
@@ -46,8 +49,13 @@ public class VisualBacktester extends AbstractBacktester {
 	private boolean runUntilOrderEvent = false;
 	private PNLMonitor pnlMonitor;
 
+	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
+			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters) throws Exception {
+		this(factory, transportFactory, daoFactory, exchange, tradingSystems, streamIters, true);
+	}
+
 	/**
-	 * Dependency injection constructor. 
+	 * Dependency injection constructor.
 	 * 
 	 * @param factory
 	 * @param transportFactory
@@ -59,7 +67,8 @@ public class VisualBacktester extends AbstractBacktester {
 	 */
 	@SuppressWarnings("rawtypes")
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
-			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters) throws Exception {
+			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters, boolean interactive)
+			throws Exception {
 
 		//
 		this.exchange = exchange;
@@ -80,10 +89,10 @@ public class VisualBacktester extends AbstractBacktester {
 
 		}
 		pnlMonitor = new PNLMonitor(transportFactory);
-		pnlMonitor.showLiveChart();
+		
 
 		super.setPnlMonitor(pnlMonitor);
-		
+
 		// construct the trading system environment.
 		TradingSystemEnvironment env = new TradingSystemEnvironment();
 		env.setArchiveFactory(factory);
@@ -171,23 +180,36 @@ public class VisualBacktester extends AbstractBacktester {
 				}
 			}
 		});
-		jframe.getContentPane().add(stop);
 
-		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		jframe.setSize(600, 75);
-		jframe.setVisible(true);
-		jframe.toFront();
-
-		//
-
+		if (interactive) {
+			jframe.getContentPane().add(stop);
+			jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			jframe.setSize(600, 75);
+			jframe.setVisible(true);
+			jframe.toFront();
+			// also show the live chart. 
+			pnlMonitor.showLiveChart();
+			//
+		}
+		else{
+			// doing all in one go. 
+			tickPlayAmount = Integer.MAX_VALUE;
+			runUntilOrderEvent = false;
+			execute();
+			stop();
+		}
+	
 	}
 
 	public void stop() throws Exception {
 
+		List<AlgoConfig> algoConfigs = new ArrayList<AlgoConfig>();
 		for (ITradingSystem s : tradingSystems) {
 			s.stop();
+			algoConfigs.add(s.getAlgoConfig());
 		}
+
+		super.setAlgoConfigs(algoConfigs.toArray(new AlgoConfig[] {}));
 
 		TimeMeasurement.stop("BACKTEST");
 
@@ -238,20 +260,21 @@ public class VisualBacktester extends AbstractBacktester {
 					TradingDataEvent tde = (TradingDataEvent) se;
 					transportFactory.getPublisher(transportType, tde.getTradInstId()).send(se);
 					// send everything also to virtex exchange layer.
-				}
-				else{
+				} else {
 					// push it out over its ID.
-					transportFactory.getPublisher(se.getId()).send(se);					
+					transportFactory.getPublisher(se.getId()).send(se);
 				}
 
 				//
 				eventCount++;
 				tickPlayAmount--;
 			}
-
 			// checking every 100ms if we are to replay more. This delay does
 			// not impact the backtesting performance.
 			Thread.sleep(50);
+			// check if there would still be more.
+			if (!fs.moreDataInPipe())
+				runFlag = false;
 		}
 	}
 

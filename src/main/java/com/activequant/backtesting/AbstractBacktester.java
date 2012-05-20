@@ -11,32 +11,37 @@ import org.jfree.chart.ChartUtilities;
 import com.activequant.backtesting.reporting.BacktestStatistics;
 import com.activequant.backtesting.reporting.CSVFileFillExporter;
 import com.activequant.backtesting.reporting.PNLMonitor;
+import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.timeseries.CSVExporter;
+import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.utils.CsvMapWriter;
 
 /**
  * 
  * @author GhostRider
- *
+ * 
  */
 public abstract class AbstractBacktester {
-	
-	private CSVFileFillExporter fillExporter = new CSVFileFillExporter();
-	private PNLMonitor pnlMonitor;
+
+	protected CSVFileFillExporter fillExporter = new CSVFileFillExporter();
+	protected PNLMonitor pnlMonitor;
 	protected OrderEventListener oelistener = new OrderEventListener();
-	
+	protected BacktestConfiguration btConfig;
+	protected AlgoConfig[] algoConfigs;
+	protected BacktestStatistics bs;
+
 	public CSVFileFillExporter getFillExporter() {
 		return fillExporter;
 	}
 
 	public void setFillExporter(CSVFileFillExporter fillExporter) {
 		this.fillExporter = fillExporter;
-	} 
+	}
 
-	public void generateReport() throws IOException{
-		
-		String targetFolder = "reports"+File.separator+new SimpleDateFormat("yyyyMMdd").format(new Date());
+	public void generateReport() throws IOException {
+
+		String targetFolder = "reports" + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date());
 		new File(targetFolder).mkdirs();
 		getFillExporter().export(targetFolder, oelistener.getFillEvents());
 		// generate PNL report
@@ -50,14 +55,56 @@ public abstract class AbstractBacktester {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		// generate a PNL chart.
+		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "pnl.png"), pnlMonitor.getStaticChart(),
+				800, 600);
+
+		try {
+			fout = new FileOutputStream(targetFolder + File.separator + "positions.csv");
+			CSVExporter c = new CSVExporter(fout, oelistener.getPositionOverTime());
+			c.write();
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// generate a position chart.
 		
-		// generate a chart. 
-		ChartUtilities.saveChartAsPNG(new File(targetFolder+File.separator+"pnl.png"), pnlMonitor.getStaticChart(), 800,600);
-	
-		// calculate some statistics. 
-		BacktestStatistics bs = new BacktestStatistics();
-		bs.calculateStatistics(pnlContainer);
-		
+		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "poschange.png"), ChartUtils.getStepChart("delta(Position)", oelistener.getPositionOverTime()),
+				800, 600);
+
+		// dump all used algo configs.
+		try {
+			if (algoConfigs != null) {
+				for (AlgoConfig ac : algoConfigs) {
+					fout = new FileOutputStream(targetFolder + File.separator + "algoconfig_" + ac.getId() + "_.csv");
+					new CsvMapWriter().write(ac.propertyMap(), fout);
+					fout.close();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// dump the backtest config.
+		try {
+			if (btConfig != null) {
+
+				fout = new FileOutputStream(targetFolder + File.separator + "btconfig_" + btConfig.getId() + "_.csv");
+				new CsvMapWriter().write(btConfig.propertyMap(), fout);
+				fout.close();
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// calculate some statistics.
+		bs = new BacktestStatistics();
+		bs.calcPNLStats(pnlContainer);
+		bs.calcPosStats(oelistener.getPositionOverTime());
+
 		// dump the stats
 		try {
 			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
@@ -66,7 +113,7 @@ public abstract class AbstractBacktester {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public PNLMonitor getPnlMonitor() {
@@ -76,5 +123,21 @@ public abstract class AbstractBacktester {
 	public void setPnlMonitor(PNLMonitor pnlMonitor) {
 		this.pnlMonitor = pnlMonitor;
 	}
-	
+
+	public BacktestConfiguration getBtConfig() {
+		return btConfig;
+	}
+
+	public void setBtConfig(BacktestConfiguration btConfig) {
+		this.btConfig = btConfig;
+	}
+
+	public AlgoConfig[] getAlgoConfigs() {
+		return algoConfigs;
+	}
+
+	public void setAlgoConfigs(AlgoConfig[] algoConfigs) {
+		this.algoConfigs = algoConfigs;
+	}
+
 }
