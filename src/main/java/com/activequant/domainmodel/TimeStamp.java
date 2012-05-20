@@ -25,7 +25,9 @@ package com.activequant.domainmodel;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.activequant.utils.IdentityUtils;
 
@@ -60,8 +62,23 @@ public final class TimeStamp implements Comparable<TimeStamp>, Serializable {
 		return value/1000000L;
 	}
 	
+	/**
+	 * better use getCalendar
+	 * @return
+	 */
+	@Deprecated
 	public Date getDate() {
 		return new Date(value / NANOS_IN_MILLIS);
+	}
+	
+	/**
+	 * Returns this timestamp as a calendar object. 
+	 * @return
+	 */
+	public Calendar getCalendar(){
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.setTimeInMillis(this.getMilliseconds());
+		return cal; 
 	}
 	
 	/**
