@@ -13,7 +13,7 @@
 
     <!-- The body of the document contains a number of sections -->
     <section name="Welcome">
-   	<p>You have reached the landing site of the ActiveQuant securities trading framework. </p>
+   	<p>You have reached the landing site of the ActiveQuant securities trading framework. <i><strong>University? We would be happy to support you and your students in your voyage into quantitative finance! What about a guest lecture?</strong></i> </p>
    	<p>This project is an Open Source project, but not free software, but it is provided free of charge to academics and hobbyists. You could also say it is an OpenCore software, but it's not cripple ware. We provide various commercial services around the Open Core.</p>
    	<p><strong>RESPECT OUR <a href="license.html">LICENSE</a>.</strong></p> 
 	<p>Our people are available for consulting, please contact <a href="mailto:ustaudinger@activequant.com">Ulrich</a> to get in touch with us to make your security trading happen.</p>	
