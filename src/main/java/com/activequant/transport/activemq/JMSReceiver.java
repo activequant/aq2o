@@ -80,6 +80,7 @@ class JMSReceiver implements IReceiver, MessageListener {
         				map.put(key, js.toArray());
         				if(js.size()>0){
         					Object o = js.get(0);
+        					if(o==null)continue; 
         					String simpleName = o.getClass().getSimpleName();
 
         					if(simpleName.startsWith("Double"))
