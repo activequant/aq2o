@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Backtest report from {REPORTID}</title>
+<link rel="stylesheet" href="report.css" type="text/css" />
+</head>
+<body>
+
+<div class="header">
+<div class="title">Report {REPORTID}</div>
+<div class="logo"><img src="http://aq2o.activequant.org/images/logo.png"/></div>
+</div>
+
+
+<div class="content">
+<table>
+<tr>
+<td>
+
+<table>
+<caption>Generics</caption>
+<tr><td>Instruments</td><td>{INSTRUMENTS}</td></tr>
+<tr><td>Start</td><td>{REPORTSTART}</td></tr>
+<tr><td>End</td><td>{REPORTEND}</td></tr>
+<tr><td>Report resolution</td><td>{REPORTRESOLUTION}</td></tr>
+</table>
+
+<!-- LEG_MARKER_START -->
+<table>
+<caption>Statistics for {INSTRUMENTID}</caption>
+<tr><td>Final PNL</td><td>{FINALPNL}</td></tr>
+<tr><td>Final Return</td><td>{FINALRETURN}</td></tr>
+<tr><td>Avg. P&L</td><td>{AVGSLOTPNL}</td></tr>
+<tr><td>Avg. return</td><td>{AVGSLOTPNL}</td></tr>
+<tr><td>Std.Dev of returns</td><td>{AVGSLOTPNL}</td></tr>
+<tr><td>P&L per trade</td><td>{PNLPERTRADE}</td></tr>
+<tr><td># order fills</td><td>{TOTALFILLEVENTS}</td></tr>
+<tr><td># order updates</td><td>{TOTALORDERUPDATES}</td></tr>
+<tr><td># order cancellations</td><td>{TOTALORDERCANCELLATIONS}</td></tr>
+</table>
+<!-- LEG_MARKER_END -->
+
+
+</td>
+<td class="pnlTD">
+<img src="pnl.png"/><br/>
+<img src="position.png"/>
+</td>
+</tr>
+</table>
+</div>
+
+<div class="footer">
+<p class="footertext">
+The results shown above are calculated automatically. The underlying equations have 
+been thoroughly reviewed and are assumed to be correct. The creator of these reports
+is not liable for any losses incurred by deducting investment decisions from these 
+reports.  
+</p>
+</div>
+
+</body>
+</html>
