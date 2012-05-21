@@ -10,7 +10,6 @@ import com.activequant.archive.IArchiveFactory;
 import com.activequant.archive.csv.CsvArchiveReaderFormat1;
 import com.activequant.backtesting.BacktestConfiguration;
 import com.activequant.backtesting.FieldToBidAskConverterStream;
-import com.activequant.backtesting.TradingTimeStreamIterator;
 import com.activequant.backtesting.VisualBacktester;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.MarketDataInstrument;

@@ -1,10 +1,12 @@
 package com.activequant.timeseries;
 
+import java.awt.Color;
 import java.util.List;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -28,6 +30,10 @@ public class ChartUtils {
 
 		}
 		JFreeChart chart = ChartFactory.createXYStepChart(title, "Time", "Value", tempDataSet, PlotOrientation.VERTICAL, true, true, false);
+		chart.setBackgroundPaint(Color.WHITE);
+		chart.getPlot().setBackgroundPaint(Color.WHITE);
+		((XYPlot)chart.getPlot()).setDomainGridlinePaint(Color.LIGHT_GRAY);
+		((XYPlot)chart.getPlot()).setRangeGridlinePaint(Color.LIGHT_GRAY);
 		
 		return chart;
 	}

@@ -97,6 +97,13 @@ public class FileUtils {
         }
         return r.toArray(new String[] {});
     }
+    
+    public static String readFully(InputStream in ) throws IOException {
+    	StringBuffer sb = new StringBuffer() ;
+    	for(String s : readLines(in))
+    		sb.append(s).append("\n");
+    	return sb.toString();
+    }
 
     public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {

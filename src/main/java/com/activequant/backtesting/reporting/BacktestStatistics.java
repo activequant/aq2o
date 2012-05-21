@@ -13,6 +13,8 @@ import com.activequant.timeseries.TSContainer2;
  */
 public class BacktestStatistics {
 	
+	private String reportId; 
+	private String instrumentIDs; 
 	final private Map<String, Object> statistics = new HashMap<String, Object>();
 	
 	public void calcPNLStats(TSContainer2 cumPnlSeries){
@@ -28,6 +30,14 @@ public class BacktestStatistics {
 	
 	public Map<String, Object> getStatistics() {
 		return statistics;
+	}
+
+	public String getReportId() {
+		return reportId;
+	}
+
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
 	}
 	
 }

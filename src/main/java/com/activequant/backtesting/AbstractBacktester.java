@@ -10,6 +10,7 @@ import org.jfree.chart.ChartUtilities;
 
 import com.activequant.backtesting.reporting.BacktestStatistics;
 import com.activequant.backtesting.reporting.CSVFileFillExporter;
+import com.activequant.backtesting.reporting.HTMLReportGen;
 import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.timeseries.CSVExporter;
@@ -71,7 +72,7 @@ public abstract class AbstractBacktester {
 
 		// generate a position chart.
 		
-		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "poschange.png"), ChartUtils.getStepChart("delta(Position)", oelistener.getPositionOverTime()),
+		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"), ChartUtils.getStepChart("Position", oelistener.getPositionOverTime()),
 				800, 600);
 
 		// dump all used algo configs.
@@ -102,8 +103,9 @@ public abstract class AbstractBacktester {
 
 		// calculate some statistics.
 		bs = new BacktestStatistics();
+		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
 		bs.calcPNLStats(pnlContainer);
-		bs.calcPosStats(oelistener.getPositionOverTime());
+		bs.calcPosStats(oelistener.getPositionOverTime());		
 
 		// dump the stats
 		try {
@@ -114,6 +116,11 @@ public abstract class AbstractBacktester {
 			e.printStackTrace();
 		}
 
+		// generate the html report. 
+		HTMLReportGen h = new HTMLReportGen(targetFolder);
+		h.setTemplateFolder("./src/main/resources/templates");
+		h.generate(bs);
+		
 	}
 
 	public PNLMonitor getPnlMonitor() {
