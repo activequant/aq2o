@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
+import org.jruby.RubyProcess.Sys;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -87,12 +88,13 @@ public class MDSRecorder {
 		
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[]{springFile});
 
-		System.out.println("Starting up and fetching idf");
+		log.info("Starting up and fetching idf");
 		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
 		archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
-		
+		log.info("Archive fetched.");
 		rawWriter = archiveFactory.getWriter(TimeFrame.RAW);
-		transFac = appContext.getBean("jmsTransport", ITransportFactory.class);		
+		transFac = appContext.getBean("jmsTransport", ITransportFactory.class);
+		log.info("Transport initialized.");
 		subscribe(mdiFile);
 		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
 //		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
