@@ -44,11 +44,11 @@ public class VisualBacktester extends AbstractBacktester {
 	private int tickPlayAmount = 0;
 	private FastStreamer fs;
 	long eventCount = 0;
-	private JFrame jframe = new JFrame();
+	private JFrame jframe;
 	private boolean runFlag = true;
 	private boolean runUntilOrderEvent = false;
 	private PNLMonitor pnlMonitor;
-	private boolean interactive = true; 
+	private boolean interactive = true;
 
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
 			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters) throws Exception {
@@ -76,7 +76,7 @@ public class VisualBacktester extends AbstractBacktester {
 		this.streamIters = streamIters;
 		this.transportFactory = transportFactory;
 		this.tradingSystems = tradingSystems;
-		this.interactive = interactive; 
+		this.interactive = interactive;
 
 		// add the order event listener
 		if (exchange instanceof VirtualExchange) {
@@ -91,7 +91,6 @@ public class VisualBacktester extends AbstractBacktester {
 
 		}
 		pnlMonitor = new PNLMonitor(transportFactory);
-		
 
 		super.setPnlMonitor(pnlMonitor);
 
@@ -117,84 +116,85 @@ public class VisualBacktester extends AbstractBacktester {
 			s.start();
 		}
 
-		jframe.setTitle("Market replay control tool");
-		jframe.getContentPane().setLayout(new GridLayout(1, 6));
-
-		JButton play = new JButton("Play");
-		jframe.getContentPane().add(play);
-		play.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tickPlayAmount = Integer.MAX_VALUE;
-				runUntilOrderEvent = false;
-			}
-		});
-
-		JButton pause = new JButton("Pause");
-		pause.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tickPlayAmount = 0;
-				runUntilOrderEvent = false;
-			}
-		});
-		jframe.getContentPane().add(pause);
-
-		JButton step = new JButton("1 step");
-		step.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tickPlayAmount = 1;
-				runUntilOrderEvent = false;
-			}
-		});
-
-		jframe.getContentPane().add(step);
-
-		JButton step50 = new JButton("50 steps");
-		step50.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tickPlayAmount = 50;
-				runUntilOrderEvent = false;
-			}
-		});
-		jframe.getContentPane().add(step50);
-
-		JButton runUntilExecutionButton = new JButton("Run to next execution");
-		runUntilExecutionButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tickPlayAmount = Integer.MAX_VALUE;
-				runUntilOrderEvent = true;
-			}
-		});
-		jframe.getContentPane().add(runUntilExecutionButton);
-
-		JButton stop = new JButton("Exit");
-		stop.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					stop();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-
 		if (interactive) {
+
+			jframe = new JFrame();
+			jframe.setTitle("Market replay control tool");
+			jframe.getContentPane().setLayout(new GridLayout(1, 6));
+
+			JButton play = new JButton("Play");
+			jframe.getContentPane().add(play);
+			play.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tickPlayAmount = Integer.MAX_VALUE;
+					runUntilOrderEvent = false;
+				}
+			});
+
+			JButton pause = new JButton("Pause");
+			pause.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tickPlayAmount = 0;
+					runUntilOrderEvent = false;
+				}
+			});
+			jframe.getContentPane().add(pause);
+
+			JButton step = new JButton("1 step");
+			step.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tickPlayAmount = 1;
+					runUntilOrderEvent = false;
+				}
+			});
+
+			jframe.getContentPane().add(step);
+
+			JButton step50 = new JButton("50 steps");
+			step50.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tickPlayAmount = 50;
+					runUntilOrderEvent = false;
+				}
+			});
+			jframe.getContentPane().add(step50);
+
+			JButton runUntilExecutionButton = new JButton("Run to next execution");
+			runUntilExecutionButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tickPlayAmount = Integer.MAX_VALUE;
+					runUntilOrderEvent = true;
+				}
+			});
+			jframe.getContentPane().add(runUntilExecutionButton);
+
+			JButton stop = new JButton("Exit");
+			stop.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						stop();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			});
+
 			jframe.getContentPane().add(stop);
 			jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			jframe.setSize(600, 75);
 			jframe.setVisible(true);
 			jframe.toFront();
-			// also show the live chart. 
+			// also show the live chart.
 			pnlMonitor.showLiveChart();
 			//
 		}
-	
-	
+
 	}
 
 	public void stop() throws Exception {
@@ -272,7 +272,7 @@ public class VisualBacktester extends AbstractBacktester {
 			if (!fs.moreDataInPipe())
 				runFlag = false;
 		}
-		if(!interactive)
+		if (!interactive)
 			stop();
 	}
 
