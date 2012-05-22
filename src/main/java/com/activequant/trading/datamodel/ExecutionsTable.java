@@ -1,19 +1,24 @@
 package com.activequant.trading.datamodel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.trading.AbstractTSBase;
 
 
 @SuppressWarnings("serial")
 public class ExecutionsTable extends AQTableDataBase {
 
-	public enum Columns{
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss"); 
+	
+	public enum Columns{		
 		ORDERID(0),
-		INSTRUMENTID(1),		
-		SIDE(2), 
-		PRICE(3),
-		QUANTITY(4);
+		TIMESTAMP(1),
+		INSTRUMENTID(2),		
+		SIDE(3), 
+		PRICE(4),
+		QUANTITY(5);
 		// 
 		int colIdx;		
 		private Columns(int pos){
@@ -46,11 +51,12 @@ public class ExecutionsTable extends AQTableDataBase {
 		}
 	}
 	
-	public void addExecution(String orderId, String instrumentId, String side, double price, double quantity){		
+	public void addExecution(String orderId, TimeStamp ts, String instrumentId, String side, double price, double quantity){		
 		// convert data to list. 
 		List<Object[]> l = c(data);		
 		Object[] row = new Object[header.length];
 		row[Columns.ORDERID.colIdx] = orderId; 
+		row[Columns.TIMESTAMP.colIdx] = sdf.format(ts.getCalendar().getTime());
 		row[Columns.INSTRUMENTID.colIdx] = instrumentId;
 		row[Columns.SIDE.colIdx] = side;
 		row[Columns.PRICE.colIdx] = price;

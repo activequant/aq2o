@@ -296,7 +296,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		if (ose.getOe() instanceof OrderFillEvent) {
 			// add an execution.
 			OrderFillEvent ofe = (OrderFillEvent) ose.getOe();
-			getExecutionsTable().addExecution(ofe.getRefOrderId(), ofe.getOptionalInstId(), ofe.getSide(),
+			getExecutionsTable().addExecution(ofe.getRefOrderId(),
+					ofe.getCreationTimeStamp(), ofe.getOptionalInstId(), ofe.getSide(),
 					ofe.getFillPrice(), ofe.getFillAmount());
 			// also signal the execution to the risk calculator. 
 			riskCalculator.execution(ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe.getSide().startsWith("B")?1.0:-1.0)*ofe.getFillAmount());
