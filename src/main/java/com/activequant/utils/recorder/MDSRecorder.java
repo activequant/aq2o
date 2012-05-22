@@ -58,8 +58,10 @@ public class MDSRecorder {
 			if(counter>0){
 				try {
 					rawWriter.commit();
+					log.info("Committed.");
 				} catch (IOException e) {
 					e.printStackTrace();
+					log.warn("Error while committing. ", e);
 				}
 			}
 			t.schedule(new InternalTimerTask() , (collectionPhase - System.currentTimeMillis()%collectionPhase));				
@@ -73,6 +75,8 @@ public class MDSRecorder {
 				double bestBidQ = mds.getBidSizes()[0];
 				rawWriter.write(seriesId, mds.getTimeStamp(), "BID", bestBidPx);
 				rawWriter.write(seriesId, mds.getTimeStamp(), "BIDQUANTITY", bestBidQ);
+				if(log.isDebugEnabled())
+					log.debug("Wrote " + seriesId + ", " + mds.getTimeStamp() + ", " + bestBidPx);
 			}
 			if(mds.getAskSizes()!=null && mds.getAskSizes().length>0){
 				double bestAskPx = mds.getAskPrices()[0];

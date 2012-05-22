@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.script.ScriptException;
 
+import org.joda.time.DateTime;
+
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
@@ -59,6 +61,7 @@ public class SimpleMovingAverage extends AbstractTSBase {
 	public void process(StreamEvent se) {
 		super.process(se);
 		TimeStamp ts = se.getTimeStamp();
+		DateTime dt = new DateTime(ts.getMilliseconds());
 		if(se.getEventType().equals(ETransportType.MARKET_DATA)){
 			Double mid = ((MarketDataSnapshot)se).getBidPrices()[0] +  ((MarketDataSnapshot)se).getAskPrices()[0];
 			mid /= 2.0; 
