@@ -48,6 +48,7 @@ public class VisualBacktester extends AbstractBacktester {
 	private boolean runFlag = true;
 	private boolean runUntilOrderEvent = false;
 	private PNLMonitor pnlMonitor;
+	private boolean interactive = true; 
 
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
 			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters) throws Exception {
@@ -75,6 +76,7 @@ public class VisualBacktester extends AbstractBacktester {
 		this.streamIters = streamIters;
 		this.transportFactory = transportFactory;
 		this.tradingSystems = tradingSystems;
+		this.interactive = interactive; 
 
 		// add the order event listener
 		if (exchange instanceof VirtualExchange) {
@@ -191,13 +193,7 @@ public class VisualBacktester extends AbstractBacktester {
 			pnlMonitor.showLiveChart();
 			//
 		}
-		else{
-			// doing all in one go. 
-			tickPlayAmount = Integer.MAX_VALUE;
-			runUntilOrderEvent = false;
-			execute();
-			stop();
-		}
+	
 	
 	}
 
@@ -276,6 +272,8 @@ public class VisualBacktester extends AbstractBacktester {
 			if (!fs.moreDataInPipe())
 				runFlag = false;
 		}
+		if(!interactive)
+			stop();
 	}
 
 }
