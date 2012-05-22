@@ -31,7 +31,12 @@ public abstract class AbstractBacktester {
 	protected BacktestConfiguration btConfig;
 	protected AlgoConfig[] algoConfigs;
 	protected BacktestStatistics bs;
-
+	protected String reportFolderBase = "reports";
+	protected String runId = "";
+	protected String targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
+	
+	
+	
 	public CSVFileFillExporter getFillExporter() {
 		return fillExporter;
 	}
@@ -42,7 +47,7 @@ public abstract class AbstractBacktester {
 
 	public void generateReport() throws IOException {
 
-		String targetFolder = "reports" + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date());
+		
 		new File(targetFolder).mkdirs();
 		getFillExporter().export(targetFolder, oelistener.getFillEvents());
 		// generate PNL report
@@ -145,6 +150,34 @@ public abstract class AbstractBacktester {
 
 	public void setAlgoConfigs(AlgoConfig[] algoConfigs) {
 		this.algoConfigs = algoConfigs;
+	}
+
+	public String getReportFolderBase() {
+		return reportFolderBase;
+	}
+
+	public void setReportFolderBase(String reportFolderBase) {
+		this.reportFolderBase = reportFolderBase;
+	}
+
+	public String getRunId() {
+		return runId;
+	}
+
+	public void setRunId(String runId) {
+		this.runId = runId;
+	}
+
+	public String getTargetFolder() {
+		return targetFolder;
+	}
+
+	public void setTargetFolder(String targetFolder) {
+		this.targetFolder = targetFolder;
+	}
+	
+	public void recalcTargetFolder(){
+		targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
 	}
 
 }
