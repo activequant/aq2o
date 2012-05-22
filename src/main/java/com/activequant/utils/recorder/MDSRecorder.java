@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -11,7 +12,6 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
-import org.jruby.RubyProcess.Sys;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,6 +25,8 @@ import com.activequant.tools.streaming.MarketDataSnapshot;
 import com.activequant.transport.ETransportType;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.utils.events.IEventListener;
+import com.activequant.utils.snmp.SNMPReporter;
+import com.activequant.utils.snmp.SNMPReporter.ValueMode;
 
 /**
  * A market data snapshot recorder. 
@@ -40,6 +42,7 @@ public class MDSRecorder {
 	final Timer t = new Timer(true);
 	final long collectionPhase = 5000l;
 	private final ConcurrentLinkedQueue<MarketDataSnapshot> collectionList = new ConcurrentLinkedQueue<MarketDataSnapshot>();
+	private SNMPReporter snmpReporter;
 	
 	private final IArchiveWriter rawWriter; 
 	
@@ -59,7 +62,8 @@ public class MDSRecorder {
 				try {
 					rawWriter.commit();
 					log.info("Committed.");
-				} catch (IOException e) {
+					snmpReporter.addValue("MDSEVENTS", counter);
+				} catch (Exception e) {
 					e.printStackTrace();
 					log.warn("Error while committing. ", e);
 				}
@@ -104,6 +108,9 @@ public class MDSRecorder {
 //		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
 //		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
 //		
+		
+        snmpReporter = new SNMPReporter(InetAddress.getLocalHost().getHostAddress(), 65001);
+        snmpReporter.registerOID("MDSEVENTS", "1.3.6.1.1.0", ValueMode.VALUE);
 		
 	}
 	

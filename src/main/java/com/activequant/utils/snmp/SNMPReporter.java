@@ -101,10 +101,7 @@ public class SNMPReporter {
     }
 
     public static void main(String[] args) throws Exception {
-        /**
-         * Port 161 is used for Read and Other operations Port 162 is used for
-         * the trap generation
-         */
+      
         SNMPReporter agent = new SNMPReporter();
         agent.registerOID("A", "1.3.6.1.1.0", ValueMode.VALUE);
         agent.registerOID("B", "1.3.6.1.2.0", ValueMode.VALUE);
