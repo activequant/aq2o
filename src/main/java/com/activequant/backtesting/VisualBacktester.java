@@ -230,7 +230,7 @@ public class VisualBacktester extends AbstractBacktester {
 		while (runFlag) {
 
 			// iterate over all data and feed it into the event bus.
-			while (fs.moreDataInPipe() && tickPlayAmount > 0) {
+			while (fs.moreDataInPipe() && (tickPlayAmount > 0 || !interactive)) {
 
 				//
 				StreamEvent se = fs.getOneFromPipes();
