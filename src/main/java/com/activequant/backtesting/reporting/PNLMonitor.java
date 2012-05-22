@@ -69,29 +69,26 @@ public class PNLMonitor {
 	public void process(PNLChangeEvent delta) {
 		dataChanged = new AtomicBoolean(true);
 		tsContainer.setValue(delta.getTradInstId(), delta.getTimeStamp(), delta.getChange());
-		if (liveEnabled) {
-			double currentVal = 0.0;
-			if (!currentValues.containsKey(delta.getTradInstId())) {
-				// also add a new line chart.
-				currentVal = delta.getChange();
-				currentValues.put(delta.getTradInstId(), currentVal);
-				cumulatedTSContainer.setValue(delta.getTradInstId(), delta.getTimeStamp(), currentVal);
-			} else {
-				currentVal = currentValues.get(delta.getTradInstId());
-				currentVal += delta.getChange();
-				currentValues.put(delta.getTradInstId(), currentVal);
-				cumulatedTSContainer.setValue(delta.getTradInstId(), delta.getTimeStamp(), currentVal);
-			}
-
-			Iterator<Entry<String, Double>> it = currentValues.entrySet().iterator();
-			double total = 0.0;
-			while (it.hasNext()) {
-				total += it.next().getValue();
-			}
-
-			cumulatedTSContainer.setValue("TOTAL", delta.getTimeStamp(), total);
-
+		double currentVal = 0.0;
+		if (!currentValues.containsKey(delta.getTradInstId())) {
+			// also add a new line chart.
+			currentVal = delta.getChange();
+			currentValues.put(delta.getTradInstId(), currentVal);
+			cumulatedTSContainer.setValue(delta.getTradInstId(), delta.getTimeStamp(), currentVal);
+		} else {
+			currentVal = currentValues.get(delta.getTradInstId());
+			currentVal += delta.getChange();
+			currentValues.put(delta.getTradInstId(), currentVal);
+			cumulatedTSContainer.setValue(delta.getTradInstId(), delta.getTimeStamp(), currentVal);
 		}
+
+		Iterator<Entry<String, Double>> it = currentValues.entrySet().iterator();
+		double total = 0.0;
+		while (it.hasNext()) {
+			total += it.next().getValue();
+		}
+
+		cumulatedTSContainer.setValue("TOTAL", delta.getTimeStamp(), total);
 
 	}
 
