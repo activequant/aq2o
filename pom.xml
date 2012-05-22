@@ -38,8 +38,7 @@
 		<jdk.version>1.6</jdk.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
 		<hadoop.version>0.20-append-r1056497</hadoop.version>
-		<hbase.version>0.90.4</hbase.version>
-		<zookeeper.version>3.3.2</zookeeper.version>
+		<hbase.version>0.92.1</hbase.version>
 		<cxf.version>2.5.1</cxf.version>
 		<commons-logging-version>1.1.1</commons-logging-version>
 	</properties>
@@ -325,10 +324,10 @@
 			<name>MyBatis Snapshot Repository</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
-		<repository>
+		<!-- repository>
 			<id>hbase</id>
 			<url>https://repository.apache.org/content/repositories/releases/</url>
-		</repository>
+		</repository -->
 		<repository>
 			<id>temp-thrift</id>
 			<name>Thrift 0.2.0</name>
