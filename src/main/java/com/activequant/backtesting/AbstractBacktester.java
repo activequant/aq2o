@@ -34,7 +34,7 @@ public abstract class AbstractBacktester {
 	protected String reportFolderBase = "reports";
 	protected String runId = "";
 	protected String targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
-	
+	protected String templateFolder = "./src/main/resources/templates";
 	
 	
 	public CSVFileFillExporter getFillExporter() {
@@ -123,7 +123,7 @@ public abstract class AbstractBacktester {
 
 		// generate the html report. 
 		HTMLReportGen h = new HTMLReportGen(targetFolder);
-		h.setTemplateFolder("./src/main/resources/templates");
+		h.setTemplateFolder(templateFolder);
 		h.generate(bs);
 		
 	}
@@ -178,6 +178,14 @@ public abstract class AbstractBacktester {
 	
 	public void recalcTargetFolder(){
 		targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
+	}
+
+	public String getTemplateFolder() {
+		return templateFolder;
+	}
+
+	public void setTemplateFolder(String templateFolder) {
+		this.templateFolder = templateFolder;
 	}
 
 }
