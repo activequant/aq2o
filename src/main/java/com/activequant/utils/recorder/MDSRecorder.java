@@ -107,8 +107,7 @@ public class MDSRecorder {
 		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
 //		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
 //		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
-//		
-		
+
         snmpReporter = new SNMPReporter(InetAddress.getLocalHost().getHostAddress(), 65001);
         snmpReporter.registerOID("MDSEVENTS", "1.3.6.1.1.0", ValueMode.VALUE);
 		
