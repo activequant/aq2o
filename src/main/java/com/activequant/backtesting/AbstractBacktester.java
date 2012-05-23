@@ -111,7 +111,8 @@ public abstract class AbstractBacktester {
 		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
 		bs.calcPNLStats(pnlContainer);
 		bs.calcPosStats(oelistener.getPositionOverTime());		
-
+		bs.populateOrderStats(oelistener);
+		
 		// dump the stats
 		try {
 			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");

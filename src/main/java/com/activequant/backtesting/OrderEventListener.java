@@ -26,6 +26,7 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 	private final TSContainer2 positionOverTime = new TSContainer2("POSITIONSOVERTIME", new ArrayList<String>(), new ArrayList<TypedColumn>());
 	private final Map<String, Double> currentPos = new HashMap<String, Double>();
 	
+	private final Map<String, Integer> placed = new HashMap<String, Integer>();
 	private final Map<String, Integer> fills = new HashMap<String, Integer>();
 	private final Map<String, Integer> cancellations = new HashMap<String, Integer>();
 	private final Map<String, Integer> updates = new HashMap<String, Integer>();
@@ -42,7 +43,7 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 			countCancellation( ((OrderCancelledEvent)event).getOptionalInstId());
 		}
 		else if(event instanceof OrderAcceptedEvent){
-			countUpdate( ((OrderAcceptedEvent)event).getOptionalInstId());
+			countAccepted( ((OrderAcceptedEvent)event).getOptionalInstId());
 		}
 	}
 
@@ -55,6 +56,16 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 		positionOverTime.setValue(id, ts, val);
 		
 	}
+	
+	private void countAccepted(String id) {
+		// count it. 
+		Integer val = placed.get(id);
+		if(val==null)val= 0; 
+		val += 1;
+		placed.put(id, val);
+	}
+	
+	
 	private void countFill(String id) {
 		// count it. 
 		Integer val = fills.get(id);
@@ -99,6 +110,11 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 
 	public Map<String, Integer> getUpdates() {
 		return updates;
+	}
+
+
+	public Map<String, Integer> getPlaced() {
+		return placed;
 	}
 
 

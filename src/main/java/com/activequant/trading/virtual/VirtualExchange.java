@@ -132,7 +132,8 @@ public class VirtualExchange implements IExchange {
 			oe.setCreationTimeStamp(currentExchangeTime);
 			oe.setRefOrderId(order.getOrderId());
 			oe.setRefOrder(order);
-			getEvent().fire(oe);
+			oe.setOptionalInstId(order.getTradInstId());
+			getEvent().fire(oe);			
 			sendOrderEvent(order.getTradInstId(), oe);
 
 			// ... and the accepted event
@@ -141,6 +142,7 @@ public class VirtualExchange implements IExchange {
 			oe.setCreationTimeStamp(currentExchangeTime);
 			oe.setRefOrderId(order.getOrderId());
 			oe.setRefOrder(order);
+			oe.setOptionalInstId(order.getTradInstId());
 			getEvent().fire(oe);
 			sendOrderEvent(order.getTradInstId(), oe);
 
