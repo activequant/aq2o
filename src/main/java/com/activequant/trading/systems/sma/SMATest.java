@@ -13,6 +13,7 @@ import com.activequant.backtesting.FieldToBidAskConverterStream;
 import com.activequant.backtesting.VisualBacktester;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.tools.streaming.StreamEventIterator;
@@ -38,7 +39,7 @@ public class SMATest {
 
 		
 
-		public void backtest(ITradingSystem[] its, List<StreamEventIterator> listOfStreams) throws Exception {
+		public void backtest(BacktestConfiguration bc, ITradingSystem[] its, List<StreamEventIterator> listOfStreams) throws Exception {
 			//
 			//
 			//
@@ -54,13 +55,8 @@ public class SMATest {
 			//
 			// initialize the backtester
 			VisualBacktester bt = new VisualBacktester(archiveFactory, transport, idf, virtEx, its,
-					listOfStreams.toArray(new StreamEventIterator[] {}));
+					listOfStreams.toArray(new StreamEventIterator[] {}), bc);
 			// set the backtest config, for later reporting. 
-			BacktestConfiguration btCfg = new BacktestConfiguration();
-			btCfg.setBacktesterImplementation(bt.getClass().getCanonicalName());
-			btCfg.setDate8Time6Start(date8Time6Start);
-			btCfg.setDate8Time6End(date8Time6End);
-			bt.setBtConfig(btCfg);
 			
 			//
 			//
@@ -79,7 +75,21 @@ public class SMATest {
 		TimeStamp startTime = new TimeStamp(p.getNanoseconds(date8Time6Start));
 		TimeStamp endTime = new TimeStamp(p.getNanoseconds(date8Time6End));
 
-	
+		BacktestConfiguration btCfg = new BacktestConfiguration();
+		btCfg.setBacktesterImplementation(VisualBacktester.class.getCanonicalName());
+		btCfg.setDate8Time6Start(date8Time6Start);
+		btCfg.setDate8Time6End(date8Time6End);
+		btCfg.setResolutionTimeFrame(TimeFrame.MINUTES_1.name());
+		
+		
+		MarketDataInstrument mdi = new MarketDataInstrument("CSV", "SOY");
+		TradeableInstrument tdi = new TradeableInstrument("CSV", "SOY");
+
+		
+		btCfg.setMdis(new String[]{mdi.getId()});
+		btCfg.setTdis(new String[]{tdi.getId()});
+		
+		
 		// construct the stream list
 		@SuppressWarnings("rawtypes")
 		List<StreamEventIterator> tempList = new ArrayList<StreamEventIterator>();
@@ -87,16 +97,14 @@ public class SMATest {
 		// tempList.add(new TradingTimeStreamIterator(startTime, endTime, 60L *
 		// 1000l * 1000l * 1000l * 60l));
 
-		MarketDataInstrument mdi = new MarketDataInstrument("CSV", "SOY");
-		TradeableInstrument tdi = new TradeableInstrument("CSV", "SOY");
-
-		tempList.add(new FieldToBidAskConverterStream(mdi.getId(), tdi.getId(), "PX_SETTLE", startTime, endTime,
+		
+		tempList.add(new FieldToBidAskConverterStream(btCfg.getMdis()[0], btCfg.getTdis()[0], "PX_SETTLE", startTime, endTime,
 				new CsvArchiveReaderFormat1("./src/test/resources/sampledata/soybean_future_rolled.csv")));
 
 		SimpleMovingAverage ssts = new SimpleMovingAverage();
 		ssts.setVizLayer(true);
 		
-		new BasicBacktestEnv().backtest(new ITradingSystem[]{ssts}, tempList);
+		new BasicBacktestEnv().backtest(btCfg, new ITradingSystem[]{ssts}, tempList);
 
 	}
 

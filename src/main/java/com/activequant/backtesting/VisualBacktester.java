@@ -51,8 +51,8 @@ public class VisualBacktester extends AbstractBacktester {
 	private boolean interactive = true;
 
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
-			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters) throws Exception {
-		this(factory, transportFactory, daoFactory, exchange, tradingSystems, streamIters, true);
+			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters, BacktestConfiguration bc) throws Exception {
+		this(factory, transportFactory, daoFactory, exchange, tradingSystems, streamIters, bc, true);
 	}
 
 	/**
@@ -68,9 +68,10 @@ public class VisualBacktester extends AbstractBacktester {
 	 */
 	@SuppressWarnings("rawtypes")
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
-			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters, boolean interactive)
+			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters, BacktestConfiguration bc, boolean interactive)
 			throws Exception {
 
+		super(bc);
 		//
 		this.exchange = exchange;
 		this.streamIters = streamIters;

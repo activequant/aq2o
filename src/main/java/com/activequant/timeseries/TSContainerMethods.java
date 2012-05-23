@@ -22,9 +22,9 @@ public class TSContainerMethods {
 	}
 
 	/**
-	 * @param in
+	 * @param in 
 	 * @param newResolution
-	 * @return
+	 * @return a NEW container. 
 	 */
 	public TSContainer2 resample(TSContainer2 in, long newResolution) {
 		TSContainer2 ret = new TSContainer2(in.getSeriesId(), in.getColumnHeaders(), in.getColumns());
@@ -35,6 +35,54 @@ public class TSContainerMethods {
 			ret.setRow(ts, row);
 		}
 		return ret;
+	}
+	
+	/**
+	 * modifys the input ts container
+	 * @param in
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public TSContainer2 overwriteNull(TSContainer2 in){
+		for(int i=0;i<in.getNumColumns();i++){
+			Object val = null;
+			@SuppressWarnings("rawtypes")
+			TypedColumn tc = in.getColumns().get(i);
+			for(int j=0;j<in.getNumRows();j++){
+				Object cval = tc.get(j);
+				if(cval==null)
+					cval = val;
+				else
+					val = cval;
+				tc.set(j,val);
+			}			
+		}		
+		return in;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public TSContainer2 overwriteNull(TSContainer2 in, Object newVal){
+		for(int i=0;i<in.getNumColumns();i++){			
+			@SuppressWarnings("rawtypes")
+			TypedColumn tc = in.getColumns().get(i);
+			for(int j=0;j<in.getNumRows();j++){
+				Object cval = tc.get(j);
+				if(cval==null)
+					tc.set(j,newVal);
+			}			
+		}		
+		return in;
+	}
+	
+	public TSContainer2 injectTimeStamps(TSContainer2 in, List<TimeStamp> timeStamps){
+		Object[] nullArray = new Object[in.getNumColumns()];
+		for(TimeStamp ts : timeStamps){
+			if(!in.getTimeStamps().contains(ts)){
+				in.setRow(ts, nullArray);
+			}
+		}
+		return overwriteNull(in); 
 	}
 
 	@SuppressWarnings("unchecked")
@@ -47,7 +95,6 @@ public class TSContainerMethods {
 				ret.getColumns().set(j, ((DoubleColumn) in.getColumns().get(j)).returns());
 			}
 		}
-
 		return ret;
 	}
 

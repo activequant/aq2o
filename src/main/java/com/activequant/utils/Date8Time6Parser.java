@@ -29,6 +29,10 @@ public class Date8Time6Parser extends SimpleDateFormat {
 		dcf = new DecimalFormat("00000000000000.000000000", otherSymbols);
 		// setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
+	
+	public TimeStamp fromDouble(Double d8t6) throws InvalidDate8Time6Input {
+		return new TimeStamp(getNanoseconds(d8t6));
+	}
 
 	public long getMicroseconds(Double d8t6) throws InvalidDate8Time6Input {
 		String s1 = dcf.format(d8t6);

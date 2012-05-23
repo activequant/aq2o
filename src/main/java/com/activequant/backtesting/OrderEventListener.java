@@ -11,6 +11,7 @@ import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.timeseries.TSContainer2;
+import com.activequant.timeseries.TSContainerMethods;
 import com.activequant.timeseries.TypedColumn;
 import com.activequant.utils.events.IEventListener;
 
@@ -89,13 +90,14 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 		updates.put(id, val);
 	}
 	
-	
 	public List<OrderFillEvent> getFillEvents() {
 		return fillEvents;
 	}
 
 	public TSContainer2 getPositionOverTime() {
-		return positionOverTime;
+		// overwrite all nulls with former value.
+		TSContainerMethods tcm = new TSContainerMethods();
+		return tcm.overwriteNull(positionOverTime);
 	}
 
 	public Map<String, Integer> getFills() {

@@ -300,7 +300,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 					ofe.getCreationTimeStamp(), ofe.getOptionalInstId(), ofe.getSide(),
 					ofe.getFillPrice(), ofe.getFillAmount());
 			// also signal the execution to the risk calculator. 
-			riskCalculator.execution(ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe.getSide().startsWith("B")?1.0:-1.0)*ofe.getFillAmount());
+			riskCalculator.execution(ofe.getCreationTimeStamp(), ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe.getSide().startsWith("B")?1.0:-1.0)*ofe.getFillAmount());
 			
 			//
 			if (ofe.getLeftQuantity() == 0) {

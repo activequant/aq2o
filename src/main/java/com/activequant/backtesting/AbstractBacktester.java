@@ -16,6 +16,7 @@ import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.TSContainer2;
+import com.activequant.timeseries.TSContainerMethods;
 import com.activequant.utils.CsvMapWriter;
 
 /**
@@ -25,7 +26,6 @@ import com.activequant.utils.CsvMapWriter;
  */
 public abstract class AbstractBacktester {
 
-	protected CSVFileFillExporter fillExporter = new CSVFileFillExporter();
 	protected PNLMonitor pnlMonitor;
 	protected OrderEventListener oelistener = new OrderEventListener();
 	protected BacktestConfiguration btConfig;
@@ -36,97 +36,14 @@ public abstract class AbstractBacktester {
 	protected String targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
 	protected String templateFolder = "./src/main/resources/templates";
 	
+	public AbstractBacktester(BacktestConfiguration btConfig){
+		this.btConfig = btConfig;
+	}
 	
-	public CSVFileFillExporter getFillExporter() {
-		return fillExporter;
-	}
-
-	public void setFillExporter(CSVFileFillExporter fillExporter) {
-		this.fillExporter = fillExporter;
-	}
+	
 
 	public void generateReport() throws IOException {
-
-		
-		new File(targetFolder).mkdirs();
-		getFillExporter().export(targetFolder, oelistener.getFillEvents());
-		// generate PNL report
-		TSContainer2 pnlContainer = pnlMonitor.getCumulatedTSContainer();
-		FileOutputStream fout;
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "pnl.csv");
-			CSVExporter c = new CSVExporter(fout, pnlContainer);
-			c.write();
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// generate a PNL chart.
-		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "pnl.png"), pnlMonitor.getStaticChart(),
-				800, 600);
-
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "positions.csv");
-			CSVExporter c = new CSVExporter(fout, oelistener.getPositionOverTime());
-			c.write();
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// generate a position chart.
-		
-		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"), ChartUtils.getStepChart("Position", oelistener.getPositionOverTime()),
-				800, 600);
-
-		// dump all used algo configs.
-		try {
-			if (algoConfigs != null) {
-				for (AlgoConfig ac : algoConfigs) {
-					fout = new FileOutputStream(targetFolder + File.separator + "algoconfig_" + ac.getId() + "_.csv");
-					new CsvMapWriter().write(ac.propertyMap(), fout);
-					fout.close();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// dump the backtest config.
-		try {
-			if (btConfig != null) {
-
-				fout = new FileOutputStream(targetFolder + File.separator + "btconfig_" + btConfig.getId() + "_.csv");
-				new CsvMapWriter().write(btConfig.propertyMap(), fout);
-				fout.close();
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// calculate some statistics.
-		bs = new BacktestStatistics();
-		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-		bs.calcPNLStats(pnlContainer);
-		bs.calcPosStats(oelistener.getPositionOverTime());		
-		bs.populateOrderStats(oelistener);
-		
-		// dump the stats
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
-			new CsvMapWriter().write(bs.getStatistics(), fout);
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// generate the html report. 
-		HTMLReportGen h = new HTMLReportGen(targetFolder);
-		h.setTemplateFolder(templateFolder);
-		h.generate(bs);
-		
+		HTMLReportGen h = new HTMLReportGen(targetFolder, templateFolder);
 	}
 
 	public PNLMonitor getPnlMonitor() {

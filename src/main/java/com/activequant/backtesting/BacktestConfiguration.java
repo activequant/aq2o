@@ -1,5 +1,7 @@
 package com.activequant.backtesting;
 
+import java.util.List;
+
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.utils.annotations.Property;
 
@@ -9,7 +11,9 @@ public class BacktestConfiguration extends PersistentEntity {
 	private double date8Time6Start;
 	private double date8Time6End;
 	private String backtesterImplementation;
-
+	private String[] mdis;
+	private String[] tdis;
+	
 	private String resolutionTimeFrame;
 
 	public BacktestConfiguration(){
@@ -64,6 +68,22 @@ public class BacktestConfiguration extends PersistentEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String[] getMdis() {
+		return mdis;
+	}
+
+	public void setMdis(String[] mdis) {
+		this.mdis = mdis;
+	}
+
+	public String[] getTdis() {
+		return tdis;
+	}
+
+	public void setTdis(String[] tdis) {
+		this.tdis = tdis;
 	}
 
 }

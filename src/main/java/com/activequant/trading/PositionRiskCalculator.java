@@ -3,6 +3,7 @@ package com.activequant.trading;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.exceptions.TransportException;
 import com.activequant.tools.streaming.PNLChangeEvent;
 import com.activequant.trading.datamodel.InstrumentTable;
@@ -36,11 +37,11 @@ public class PositionRiskCalculator implements IRiskCalculator {
 		}
 	}
 
-	public void execution(String tid, double price, double quantity) {
-		pnl(tid, price, quantity);
+	public void execution(TimeStamp ts, String tid, double price, double quantity) {
+		pnl(ts, tid, price, quantity);
 	}
 
-	private void pnl(String tid, double price, double posChange) {
+	private void pnl(TimeStamp ts, String tid, double price, double posChange) {
 		Double formerPos = positions.get(tid);
 		Double lastValuationPrice = lastValPrices.get(tid);
 		if (formerPos == null) {
@@ -50,7 +51,7 @@ public class PositionRiskCalculator implements IRiskCalculator {
 		if (formerPos != 0.0) {
 			// revalue the former position.
 			double pnlChange = (price - lastValuationPrice) * formerPos;
-			PNLChangeEvent pce = new PNLChangeEvent(tsBase.currentTime, tid, pnlChange);
+			PNLChangeEvent pce = new PNLChangeEvent(ts, tid, pnlChange);
 			try {
 				riskDataPublisher.send(pce);
 			} catch (Exception e) {
@@ -78,7 +79,7 @@ public class PositionRiskCalculator implements IRiskCalculator {
 					valPrice = (Double) tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.ASK.colIdx());
 				//
 				if (valPrice != null)
-					pnl(tid, valPrice, 0.0);
+					pnl(tsBase.currentTime, tid, valPrice, 0.0);
 			}
 			lastMinute = tsBase.getCurrentMinute();
 		}
