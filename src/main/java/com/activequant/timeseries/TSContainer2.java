@@ -3,9 +3,11 @@ package com.activequant.timeseries;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.activequant.archive.TSContainer;
 import com.activequant.domainmodel.TimeStamp;
 
 /**
@@ -36,6 +38,20 @@ public class TSContainer2 {
 	public TSContainer2(final String seriesId, List<String> columnHeaders,
 			List<TypedColumn> columns) {
 		this(seriesId, columnHeaders, columns, 0L);
+	}
+	
+	/**
+	 * Legacy constructor, compatibility while in transition. 
+	 * 
+	 * @param seriesId
+	 * @param legacy
+	 */
+	@Deprecated
+	public TSContainer2(final String seriesId, TSContainer legacy){
+		this(seriesId, Arrays.asList(new String[]{"A"}), Arrays.asList(new TypedColumn[]{new DoubleColumn()}));
+		for(int i=0;i<legacy.timeStamps.length;i++){
+			this.setRow(legacy.timeStamps[i],legacy.values[i]);
+		}
 	}
 	
 	
