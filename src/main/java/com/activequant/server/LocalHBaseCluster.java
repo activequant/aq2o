@@ -24,7 +24,7 @@ public class LocalHBaseCluster {
         
         //
         MiniZooKeeperCluster mzk = new MiniZooKeeperCluster(config);
-        mzk.setClientPort(port);
+        mzk.setDefaultClientPort(port);
         mzk.startup(new File("."+File.separator));
         
         HMaster master = new HMaster(config);
