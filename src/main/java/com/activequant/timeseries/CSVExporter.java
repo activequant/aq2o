@@ -40,7 +40,7 @@ public class CSVExporter {
 	public void write() throws IOException{
 		List<TimeStamp> timeStamps = data.getTimeStamps();
 		List<String> header = data.getColumnHeaders();
-		out.write("TimeStamp,".getBytes());
+		out.write("TimeStamp,HumanTimeStamp,".getBytes());
 		for(int i=0;i<header.size();i++){
 			out.write(header.get(i).getBytes());
 			if(i<(header.size()-1))
@@ -50,6 +50,7 @@ public class CSVExporter {
 		
 		for(int i=0;i<timeStamps.size();i++){
 			out.write( (""+timeStamps.get(i).getNanoseconds()+",").getBytes() );
+			out.write( (""+timeStamps.get(i).getCalendar().getTime()+",").getBytes() );
 			for(int j=0;j<header.size();j++){
 				Object o = data.getColumns().get(j).get(i);
 				if(o!=null){

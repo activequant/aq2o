@@ -2,6 +2,7 @@ package com.activequant.timeseries;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -429,24 +430,29 @@ public class TSContainer2 {
 
 	@Override
 	public String toString() {
-		String str = "";
+		StringBuffer str = new StringBuffer();
+		DecimalFormat dc = new DecimalFormat("#.##########");
 
 		// output header
-		str += "Date\t\t\t\tMilliseconds\t\t";
+		str.append( "Date\t\t\t\tMilliseconds\t\t");
 		for (String headerName : columnHeaders) {
-			str += headerName + "\t";
+			str.append( headerName + "\t");
 		}
-		str += "\n";
-
+		str.append( "\n");
 		// output data rows
 		for (TimeStamp ts : timeStamps) {
-			str += ts.getDate() + "\t" + ts.toString() + "\t";
+			str.append( ts.getDate() + "\t" + ts.toString() + "\t");
 			for (int i = 0; i < this.columns.size(); i++) {
-				str += columns.get(i).get(getIndex(ts)) + "\t";
+				Object obj = columns.get(i).get(getIndex(ts));
+				
+				if(obj!=null && obj.getClass().isAssignableFrom(Double.class))
+					str.append( dc.format(obj)+ "\t");
+				else
+					str.append( obj + "\t");
 			}
-			str += "\n";
+			str.append( "\n");
 		}
-		return str;
+		return str.toString();
 	}
 	
 	/**

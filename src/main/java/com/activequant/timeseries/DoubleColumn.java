@@ -12,6 +12,16 @@ public class DoubleColumn extends TypedColumn<Double> {
 	public DoubleColumn() {
 		super();
 	}
+	
+	public double[] asDouble(){
+		double[] ret = new double[size()];
+		for(int i=0;i<ret.length;i++){
+			if(get(i)!=null)
+				ret[i] = get(i);
+		}
+		return ret; 
+		
+	}
 
 	/**
 	 * Calculates the cumulated sum

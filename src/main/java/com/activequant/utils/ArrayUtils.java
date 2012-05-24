@@ -142,6 +142,14 @@ public class ArrayUtils {
 		return ret; 
 	}
 	
+	public static double[] unbox(Double[] in){
+		double[] ret = new double[in.length];
+		for(int j = 0; j<in.length;j++){
+			ret[j] = in[j];
+		}
+		return ret; 
+	}
+	
 	public List<Object[]> c(Object[][] in){
 		List<Object[]> rows = new ArrayList<Object[]>();
 		for(int i=0;i<in.length;i++){
