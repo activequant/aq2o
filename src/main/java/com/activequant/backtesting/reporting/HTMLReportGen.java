@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
 
 import com.activequant.backtesting.BacktestConfiguration;
@@ -26,6 +27,7 @@ import com.activequant.utils.FileUtils;
 public class HTMLReportGen {
 	protected CSVFileFillExporter fillExporter = new CSVFileFillExporter();
 
+	private Logger log = Logger.getLogger(HTMLReportGen.class);
 	private String templateFolder = "templates";
 	private String htmlTemplate = "perfreport.html";
 	private String cssFile = "report.css";
@@ -128,11 +130,13 @@ public class HTMLReportGen {
 	public void generate(BacktestConfiguration bc, BacktestStatistics bt) throws FileNotFoundException, IOException {
 		// take the template input and generate it.
 		// read-in the entire file.
+		log.info("Generating report.");
 
 		FileUtils.copy(templateFolder + File.separator + cssFile, targetFolder + File.separator + cssFile);
 		String templateString = FileUtils
 				.readFully(new FileInputStream(templateFolder + File.separator + htmlTemplate));
 
+		log.info("Populating generic section.");
 		// replace the place holders.
 		templateString = templateString.replace("{REPORTID}", bt.getReportId());
 		if (bc != null) {
@@ -149,6 +153,7 @@ public class HTMLReportGen {
 			templateString = templateString.replace("{REPORTRESOLUTION}", bc.getResolutionTimeFrame());
 		}
 
+		log.info("Replacing leg section");
 		int legMarkerStart = templateString.indexOf("<!-- LEG_MARKER_START -->");
 		int legMarkerEnd = templateString.indexOf("<!-- LEG_MARKER_END -->");
 
@@ -158,6 +163,7 @@ public class HTMLReportGen {
 
 		int legInsertPoint = templateString.indexOf("<!-- LEG_MARKER_PLACEMENT -->");
 		for (String instrument : bt.getInstrumentIDs()) {
+			log.info("Replacing for "+instrument);
 			String t = new String(instrumentTemplate);
 			t = t.replace("{INSTRUMENTID}", instrument);
 			t = t.replace("{MAXPNL}", "" + bt.getStatistics().get(instrument + ".MAXPNL"));
@@ -172,10 +178,12 @@ public class HTMLReportGen {
 					+ t);
 		}
 
+		
 		// replacing all null with -
 		templateString = templateString.replace("null", "-");
-
+		log.info("All replaced.");
 		new FileOutputStream(targetFolder + File.separator + "report.html").write(templateString.getBytes());
+		log.info("Written.");
 	}
 
 	public String getTemplateFolder() {
