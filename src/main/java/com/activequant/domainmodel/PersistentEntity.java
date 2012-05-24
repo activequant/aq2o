@@ -108,6 +108,7 @@ public abstract class PersistentEntity {
                 if (underlyingMap.containsKey(propertyName)) {
                     @SuppressWarnings("rawtypes")
                     Class returnType = m.getReturnType();
+                    if(returnType.isArray())continue;
                     Object value = underlyingMap.get(propertyName);
                     try {
                         Method setter = this.getClass().getMethod("set" + m.getName().substring(3), returnType);
