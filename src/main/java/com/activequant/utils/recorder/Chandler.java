@@ -135,6 +135,7 @@ public class Chandler {
 	
 	protected void process(MarketDataSnapshot mds){
 		if(mds==null)return;
+		
 		String seriesId =mds.getMdiId();
 		Double bid = null;
 		Double ask = null;
@@ -143,17 +144,20 @@ public class Chandler {
 			double bestBidPx = mds.getBidPrices()[0];
 			double bestBidQ = mds.getBidSizes()[0];
 			bid = bestBidPx;
+			System.out.print("B");
 		}
 		if(mds.getAskSizes()!=null && mds.getAskSizes().length>0){
 			double bestAskPx = mds.getAskPrices()[0];
 			double bestAskQ = mds.getAskSizes()[0];
 			ask = bestAskPx;
+			System.out.print("A");
 		}
 		// 
 		if(bid!=null && ask!=null){
 			double mid = (bid+ask)/2.0;
 			OHLCV o = getCandle(seriesId);	
 			o.update(mds.getTimeStamp(), mid);
+			System.out.print("O");
 		}		
 	}
 	
