@@ -162,6 +162,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
                     while(numbersIt.hasNext()){
                         Entry<byte[], byte[]> entry = numbersIt.next();
                         String key = Bytes.toString(entry.getKey());
+                        if(key.equals("ts"))continue; 
                         Double value = Bytes.toDouble(entry.getValue());
                         resultMap.put(key,  value);
                     }
