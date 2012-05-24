@@ -107,10 +107,12 @@ public class Chandler {
 			l = br.readLine();
 		}		
 		for(String s : instruments){
+			log.info("Subscribing to " + s);
 			transFac.getReceiver(ETransportType.MARKET_DATA, s).getMsgRecEvent().addEventListener(new IEventListener<PersistentEntity>() {
 				@Override
 				public void eventFired(PersistentEntity event) {
 					if(event instanceof MarketDataSnapshot){
+						System.out.print("*");
 						process((MarketDataSnapshot)event);
 					}
 				}
