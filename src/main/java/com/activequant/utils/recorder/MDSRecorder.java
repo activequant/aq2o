@@ -48,12 +48,14 @@ public class MDSRecorder {
 	
 	
 	class InternalTimerTask extends TimerTask{
+		int counter;
 		@Override
 		public void run() {
+			
 			Object o = collectionList.poll();
-			int counter = 0; 
+			counter = 0; 
 			while(o!=null){
-				counter ++; 
+ 
 				o = collectionList.poll();
 				store((MarketDataSnapshot)o);
 			}
@@ -73,6 +75,7 @@ public class MDSRecorder {
 		
 		public void store(MarketDataSnapshot mds){
 			if(mds==null)return;
+			counter ++;
 			String seriesId =mds.getMdiId();
 			if(mds.getBidSizes()!=null && mds.getBidSizes().length>0){
 				double bestBidPx = mds.getBidPrices()[0];
