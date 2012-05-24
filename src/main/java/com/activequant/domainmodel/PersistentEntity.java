@@ -121,8 +121,7 @@ public abstract class PersistentEntity {
                         }
                     } catch (Exception ex) {
                         // drop the value.
-                        log.warn("Could not set " + m.getName().substring(3) + " for value :" + value);
-                        ex.printStackTrace();
+                        log.warn("Could not set " + m.getName().substring(3) + " for value :" + value, ex);                        
                     }
                 }
             } else if (m.getName().startsWith("set")) {
