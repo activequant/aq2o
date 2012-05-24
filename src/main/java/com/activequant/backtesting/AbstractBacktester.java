@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jfree.chart.ChartUtilities;
+import org.jfree.util.Log;
 
 import com.activequant.backtesting.reporting.BacktestStatistics;
 import com.activequant.backtesting.reporting.CSVFileFillExporter;
@@ -42,8 +43,9 @@ public abstract class AbstractBacktester {
 	
 	
 
-	public void generateReport() throws IOException {
+	public void generateReport() throws IOException {		
 		HTMLReportGen h = new HTMLReportGen(targetFolder, templateFolder);
+		h.genReport(algoConfigs, oelistener, pnlMonitor, btConfig);
 	}
 
 	public PNLMonitor getPnlMonitor() {
