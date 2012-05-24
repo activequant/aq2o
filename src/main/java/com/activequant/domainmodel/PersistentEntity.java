@@ -108,8 +108,8 @@ public abstract class PersistentEntity {
                 if (underlyingMap.containsKey(propertyName)) {
                     @SuppressWarnings("rawtypes")
                     Class returnType = m.getReturnType();
-                    if(returnType.isArray())continue;
-                    Object value = underlyingMap.get(propertyName);
+                    // if(returnType.isArray())continue;
+                    Object value = underlyingMap.get(propertyName);                    
                     try {
                         Method setter = this.getClass().getMethod("set" + m.getName().substring(3), returnType);
                         // only use values if they are not null and are thus,
@@ -122,7 +122,7 @@ public abstract class PersistentEntity {
                         }
                     } catch (Exception ex) {
                         // drop the value.
-                        log.warn("Could not set " + m.getName().substring(3) + " for value :" + value, ex);                        
+                        log.warn("Could not set " + m.getName().substring(3) + " for value :" + value);                        
                     }
                 }
             } else if (m.getName().startsWith("set")) {
