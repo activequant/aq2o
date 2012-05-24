@@ -26,7 +26,8 @@ import com.activequant.utils.events.IEventListener;
 public class CsvArchiveReaderFormat1 implements IArchiveReader {
 
 	private String fileName;
-
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
 	public CsvArchiveReaderFormat1(String fileName) {
 		this.fileName = fileName;
 	}
@@ -35,8 +36,7 @@ public class CsvArchiveReaderFormat1 implements IArchiveReader {
 	public TSContainer getTimeSeries(final String streamId, final String key, final TimeStamp startTimeStamp)
 			throws Exception {
 		final List<TimeStamp> timeStamps = new ArrayList<TimeStamp>();
-		final List<Double> values = new ArrayList<Double>();
-		final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		final List<Double> values = new ArrayList<Double>();		
 
 		// import the soybeans example and treat it like a performance curve.
 		new CsvMapReader().read(new IEventListener<Map<String, String>>() {
@@ -63,7 +63,7 @@ public class CsvArchiveReaderFormat1 implements IArchiveReader {
 			final TimeStamp stopTimeStamp) throws Exception {
 		final List<TimeStamp> timeStamps = new ArrayList<TimeStamp>();
 		final List<Double> values = new ArrayList<Double>();
-		final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
 
 		// import the soybeans example and treat it like a performance curve.
 		new CsvMapReader().read(new IEventListener<Map<String, String>>() {
@@ -117,6 +117,14 @@ public class CsvArchiveReaderFormat1 implements IArchiveReader {
 	public MultiValueTimeSeriesIterator getMultiValueStream(String streamId, TimeStamp startTimeStamp,
 			TimeStamp stopTimeStamp) throws Exception {
 		return null;
+	}
+
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
 	}
 
 }
