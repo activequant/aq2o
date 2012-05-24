@@ -131,6 +131,7 @@ public class HTMLReportGen {
 		// take the template input and generate it.
 		// read-in the entire file.
 		log.info("Generating report.");
+		log.info("Reading template from " + templateFolder + File.separator + htmlTemplate);
 
 		FileUtils.copy(templateFolder + File.separator + cssFile, targetFolder + File.separator + cssFile);
 		String templateString = FileUtils
