@@ -46,9 +46,9 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
     public OHLCV next() {
         Tuple<TimeStamp, Map<String, Double>> valueMap = streamIterator.next();
         if(valueMap.getB().containsKey(OPEN))open = valueMap.getB().get(OPEN);
-        if(valueMap.getB().containsKey(HIGH))open = valueMap.getB().get(HIGH);
-        if(valueMap.getB().containsKey(LOW))open = valueMap.getB().get(LOW);
-        if(valueMap.getB().containsKey(CLOSE))open = valueMap.getB().get(CLOSE);
+        if(valueMap.getB().containsKey(HIGH))high = valueMap.getB().get(HIGH);
+        if(valueMap.getB().containsKey(LOW))low = valueMap.getB().get(LOW);
+        if(valueMap.getB().containsKey(CLOSE))close = valueMap.getB().get(CLOSE);
         
         OHLCV o = new OHLCV();
         o.setMdiId(mdiId);
