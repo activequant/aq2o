@@ -19,7 +19,7 @@ import com.activequant.tools.streaming.TimeStreamEvent;
 public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamEvent> {
 
     private String mdiId, tdiId; 
-    private double open, high, low, close;
+    private Double open, high, low, close, volume; 
     private int resInSeconds;
     private long offset; 
     private String OPEN="OPEN", HIGH = "HIGH", LOW="LOW", CLOSE = "CLOSE", VOL="VOLUME";
@@ -49,6 +49,7 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
         if(valueMap.getB().containsKey(HIGH))high = valueMap.getB().get(HIGH);
         if(valueMap.getB().containsKey(LOW))low = valueMap.getB().get(LOW);
         if(valueMap.getB().containsKey(CLOSE))close = valueMap.getB().get(CLOSE);
+        if(valueMap.getB().containsKey(VOL))volume = valueMap.getB().get(VOL);
         
         OHLCV o = new OHLCV();
         o.setMdiId(mdiId);
@@ -56,7 +57,7 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
         o.setHigh(high);
         o.setLow(low);
         o.setClose(close);
-        o.setVolume(0.0);
+        o.setVolume(volume);
         o.setResolutionInSeconds(resInSeconds);
         // shift it, so that it looks as if it emitted at the end of a candle. 
         o.setTimeStamp(new TimeStamp(valueMap.getA().getNanoseconds() + offset));
