@@ -39,6 +39,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
     private UniqueTimeStampGenerator timeStampGenerator = new UniqueTimeStampGenerator();
     private Logger log = Logger.getLogger(HBaseArchiveReader.class);
+    private int slotSizeInHours = 24; 
 
     HBaseArchiveReader(final String zookeeperHost, final TimeFrame tf) throws IOException {
         super(zookeeperHost, 2181, "TSDATA_" + tf.toString());
@@ -96,16 +97,39 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
     }
 
 
-    public TimeSeriesIterator getTimeSeriesStream(String instrumentId, final String key, TimeStamp startTimeStamp, TimeStamp stopTimeStamp) throws Exception {
-        final ResultScanner scanner = getScanner(instrumentId, startTimeStamp, stopTimeStamp);
+    public TimeSeriesIterator getTimeSeriesStream(final String instrumentId, final String key, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp) throws Exception {
+        
 
         return new TimeSeriesIterator() {
-            Iterator<Result> resultIterator = scanner.iterator();
-            final Result rr = null;
+        	ResultScanner scanner = null; 
+            Iterator<Result> resultIterator;
+            TimeStamp start = null, end = null; 
 
+            private void prepareNextScanner(){
+            	try {
+            		if(start==null)
+            			start = startTimeStamp; 
+            		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
+					scanner = getScanner(instrumentId, start, end);
+					resultIterator = scanner.iterator();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
+            }
+            
             @Override
             public boolean hasNext() {
-                return resultIterator.hasNext();
+            	if(scanner==null){
+            		prepareNextScanner();
+            	}
+            	
+            	boolean state = resultIterator.hasNext();
+            	while(!state && start.isBefore(stopTimeStamp)){
+            		prepareNextScanner();
+            		state = resultIterator.hasNext();
+            	}                
+                if(scanner==null)return false;
+                return state; 
             }
 
             @Override
@@ -122,6 +146,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
                     return null;
                 } else {
                     scanner.close();
+                    scanner = null;
                 }
                 return null;
             }
@@ -130,21 +155,49 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
     }
 
     @Override
-    public MultiValueTimeSeriesIterator getMultiValueStream(String streamId, TimeStamp startTimeStamp, TimeStamp stopTimeStamp) throws Exception {
+    public MultiValueTimeSeriesIterator getMultiValueStream(final String streamId, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp) throws Exception {
         final ResultScanner scanner = getScanner(streamId, startTimeStamp, stopTimeStamp);
 
+        
+        
+        
         return new MultiValueTimeSeriesIterator() {
-            Iterator<Result> resultIterator = scanner.iterator();
-            Result rr = null;
+        	
+        	
+        	ResultScanner scanner = null; 
+            Iterator<Result> resultIterator;
+            TimeStamp start = null, end = null; 
 
+            private void prepareNextScanner(){
+            	try {
+            		if(start==null)
+            			start = startTimeStamp; 
+            		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
+					scanner = getScanner(streamId, start, end);
+					resultIterator = scanner.iterator();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
+            }
+            
             @Override
             public boolean hasNext() {
-                return resultIterator.hasNext();
+            	if(scanner==null){
+            		prepareNextScanner();
+            	}
+            	
+            	boolean state = resultIterator.hasNext();
+            	while(!state && start.isBefore(stopTimeStamp)){
+            		prepareNextScanner();
+            		state = resultIterator.hasNext();
+            	}                
+                if(scanner==null)return false;
+                return state; 
             }
 
             @Override
             public Tuple<TimeStamp, Map<String, Double>> next() {
-                rr = resultIterator.next();
+            	Result rr = resultIterator.next();
                 Tuple<TimeStamp, Map<String, Double>> resultTuple = new Tuple<TimeStamp, Map<String, Double>>();
                 Map<String, Double> resultMap = new HashMap<String, Double>();
                 resultTuple.setB(resultMap);
@@ -169,6 +222,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
                     
                 } else {
                     scanner.close();
+                    scanner = null;
                 }
                 return resultTuple;
             }
