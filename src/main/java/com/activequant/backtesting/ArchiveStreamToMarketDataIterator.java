@@ -19,7 +19,8 @@ public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<Marke
 
     private String mdiId, tdiId; 
     private MultiValueTimeSeriesIterator streamIterator; 
-    private double[] bid, ask, bidQ, askQ; 
+    private double[] bid, ask, bidQ, askQ;
+    private double quantityOverride = 0.0;
      
     public ArchiveStreamToMarketDataIterator(String mdiId, TimeStamp startTime, TimeStamp endTime, IArchiveReader archiveReader) throws Exception {
         this.mdiId = mdiId;
@@ -56,6 +57,10 @@ public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<Marke
         if(valueMap.getB().containsKey("BIDQUANTITY"))bidQ[0] = valueMap.getB().get("BIDQUANTITY");
         if(valueMap.getB().containsKey("ASKQUANTITY"))askQ[0] = valueMap.getB().get("ASKQUANTITY");
         
+        // 
+        if(quantityOverride!=0.0){
+        	bidQ[0] = askQ[0] = quantityOverride;
+        }
 
         MarketDataSnapshot mds = new MarketDataSnapshot();
         mds.setMdiId(this.mdiId);
@@ -68,4 +73,12 @@ public class ArchiveStreamToMarketDataIterator extends StreamEventIterator<Marke
         return mds; 
 
     }
+
+	public double getQuantityOverride() {
+		return quantityOverride;
+	}
+
+	public void setQuantityOverride(double quantityOverride) {
+		this.quantityOverride = quantityOverride;
+	}
 }
