@@ -119,13 +119,18 @@ public class Rechandler {
 		temp.setMdiId(s);
 
 		while (mvsi.hasNext()) {
+			System.out.print(".");
 			Tuple<TimeStamp, Map<String, Double>> t = mvsi.next();
 
 			long frame = t.getA().getNanoseconds() - t.getA().getNanoseconds()
 					% (tf.getMinutes() * 60l * 1000l * 1000l * 1000l);
 			if (frame != currentFrame) {
 				if (temp.getOpen() != null) {
-					collectionList.add(temp.clone());
+					System.out.print("X");
+					// collectionList.add(temp.clone());
+					store(temp.clone());
+					writer.commit();
+
 				}
 				temp.clear();
 				currentFrame = frame;
@@ -139,11 +144,12 @@ public class Rechandler {
 			}
 		}
 
-		if (collectionList.size() > 0) {
-			for (OHLCV o : collectionList)
-				store((OHLCV) o);
-			writer.commit();
-		}
+//		System.out.println("Created " + collectionList.size() + " candles.");
+//		if (collectionList.size() > 0) {
+//			for (OHLCV o : collectionList)
+//				store((OHLCV) o);
+//			writer.commit();
+//		}
 	}
 
 	public void store(OHLCV mds) {
