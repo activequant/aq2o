@@ -161,10 +161,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
     @Override
     public MultiValueTimeSeriesIterator getMultiValueStream(final String streamId, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp) throws Exception {
-        final ResultScanner scanner = getScanner(streamId, startTimeStamp, stopTimeStamp);
 
-        
-        
         
         return new MultiValueTimeSeriesIterator() {
         	
