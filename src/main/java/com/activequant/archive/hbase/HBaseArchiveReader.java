@@ -39,7 +39,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
     private UniqueTimeStampGenerator timeStampGenerator = new UniqueTimeStampGenerator();
     private Logger log = Logger.getLogger(HBaseArchiveReader.class);
-    private int slotSizeInHours = 24; 
+    private long slotSizeInHours = 24l; 
 
     HBaseArchiveReader(final String zookeeperHost, final TimeFrame tf) throws IOException {
         super(zookeeperHost, 2181, "TSDATA_" + tf.toString());
@@ -176,8 +176,8 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
             		if(start==null)
             			start = startTimeStamp;
             		else
-            			start = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
-            		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
+            			start = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60l * 60l * 1000l * 1000l * 1000l);
+            		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60l * 60l * 1000l * 1000l * 1000l);
             		log.info("Prepared scanner from " + start.getCalendar().getTime()+ " to " + end.getCalendar().getTime());
 					scanner = getScanner(streamId, start, end);
 					resultIterator = scanner.iterator();
