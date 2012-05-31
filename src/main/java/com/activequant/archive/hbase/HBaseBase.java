@@ -48,6 +48,7 @@ class HBaseBase {
         String stopKey = instrumentId + "_" + padded(stopTimeStamp.toString());
 
         Scan s = new Scan(startKey.getBytes(), stopKey.getBytes());
+        s.setCacheBlocks(false);
         s.setMaxVersions(1);
         ResultScanner scanner = htable.getScanner(s);
         return scanner;
