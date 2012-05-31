@@ -107,9 +107,12 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
             private void prepareNextScanner(){
             	try {
+            		if(scanner!=null)scanner.close();
+
             		if(start==null)
             			start = startTimeStamp; 
             		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
+            		log.info("Prepared scanner from " + start.getCalendar().getTime()+ " to " + end.getCalendar().getTime());
 					scanner = getScanner(instrumentId, start, end);
 					resultIterator = scanner.iterator();
 				} catch (IOException e) {
@@ -170,9 +173,11 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
             private void prepareNextScanner(){
             	try {
+            		if(scanner!=null)scanner.close();
             		if(start==null)
             			start = startTimeStamp; 
             		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
+            		log.info("Prepared scanner from " + start.getCalendar().getTime()+ " to " + end.getCalendar().getTime());
 					scanner = getScanner(streamId, start, end);
 					resultIterator = scanner.iterator();
 				} catch (IOException e) {
@@ -184,8 +189,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
             public boolean hasNext() {
             	if(scanner==null){
             		prepareNextScanner();
-            	}
-            	
+            	}            	
             	boolean state = resultIterator.hasNext();
             	while(!state && start.isBefore(stopTimeStamp)){
             		prepareNextScanner();
@@ -208,7 +212,6 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
                     Long ts = Bytes.toLong(tsB);
                     TimeStamp timeStamp = new TimeStamp(ts);
                     resultTuple.setA(timeStamp);
-                    
                     
                     NavigableMap<byte[], byte[]> numbersMap = valueMap.get("numbers".getBytes());
                     Iterator<Entry<byte[], byte[]>> numbersIt = numbersMap.entrySet().iterator();
