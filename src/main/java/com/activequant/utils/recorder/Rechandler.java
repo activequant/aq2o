@@ -81,7 +81,6 @@ public class Rechandler {
 	}
 
 	private void process(String mdiFile) throws Exception {
-
 		List<String> instruments = new ArrayList<String>();
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(mdiFile)));
@@ -107,6 +106,8 @@ public class Rechandler {
 	}
 
 	private void processMDIID(String s) throws Exception {
+		System.out.println("Processing " + s);
+
 		// delete what we have for these timestamps.
 		writer.delete(s, startTimeStamp, endTimeStamp);
 
