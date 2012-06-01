@@ -75,6 +75,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
     public TSContainer getTimeSeries(final String instrumentId, final String value, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp)
             throws Exception {
         ResultScanner scanner = getScanner(instrumentId, startTimeStamp, stopTimeStamp);
+        
 
         List<TimeStamp> timeStamps = new ArrayList<TimeStamp>();
         List<Double> values = new ArrayList<Double>();

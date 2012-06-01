@@ -49,7 +49,7 @@ class HBaseBase {
 
         Scan s = new Scan(startKey.getBytes(), stopKey.getBytes());
         s.setCacheBlocks(false);
-        s.setMaxVersions(1);
+        s.setMaxVersions(1);        
         ResultScanner scanner = htable.getScanner(s);
         return scanner;
     }
