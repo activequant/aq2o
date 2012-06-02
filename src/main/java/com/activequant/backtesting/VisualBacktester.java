@@ -49,6 +49,7 @@ public class VisualBacktester extends AbstractBacktester {
 	private boolean runUntilOrderEvent = false;
 	private PNLMonitor pnlMonitor;
 	private boolean interactive = true;
+	private boolean sysExit = true; 
 
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
 			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters, BacktestConfiguration bc) throws Exception {
@@ -221,8 +222,8 @@ public class VisualBacktester extends AbstractBacktester {
 		//
 		GlobalVizEvents.getInstance().getEvent().fire("EXIT");
 
-		System.exit(0);
-		;
+		if(sysExit)System.exit(0);
+		
 
 	}
 
@@ -275,6 +276,14 @@ public class VisualBacktester extends AbstractBacktester {
 		}
 		if (!interactive)
 			stop();
+	}
+
+	public boolean isSysExit() {
+		return sysExit;
+	}
+
+	public void setSysExit(boolean sysExit) {
+		this.sysExit = sysExit;
 	}
 
 }
