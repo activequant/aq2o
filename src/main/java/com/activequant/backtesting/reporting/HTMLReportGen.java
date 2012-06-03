@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -38,15 +40,16 @@ public class HTMLReportGen {
 		this.templateFolder = templateFolder;
 	}
 
-	public void genReport(AlgoConfig[] algoConfigs, OrderEventListener oelistener, PNLMonitor pnlMonitor, BacktestConfiguration btConfig) throws IOException{
-		TSContainerMethods tcm =new TSContainerMethods();
+	public void genReport(AlgoConfig[] algoConfigs, OrderEventListener oelistener, PNLMonitor pnlMonitor,
+			BacktestConfiguration btConfig) throws IOException {
+		TSContainerMethods tcm = new TSContainerMethods();
 		new File(targetFolder).mkdirs();
 		fillExporter.export(targetFolder, oelistener.getFillEvents());
 		// generate PNL report
 		TSContainer2 pnlContainer = pnlMonitor.getCumulatedTSContainer();
 		tcm.overwriteNull(pnlContainer);
 		tcm.overwriteNull(pnlContainer, 0.0);
-		
+
 		FileOutputStream fout;
 		try {
 			fout = new FileOutputStream(targetFolder + File.separator + "pnl.csv");
@@ -73,11 +76,11 @@ public class HTMLReportGen {
 		}
 
 		// generate a position chart, make sure we align it to the pnlContainer
-		
+
 		tcm.injectTimeStamps(posSeries, pnlContainer.getTimeStamps());
-		
-		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"), ChartUtils.getStepChart("Position", posSeries),
-				800, 600);
+
+		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"),
+				ChartUtils.getStepChart("Position", posSeries), 800, 600);
 
 		// dump all used algo configs.
 		try {
@@ -109,9 +112,9 @@ public class HTMLReportGen {
 		BacktestStatistics bs = new BacktestStatistics();
 		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
 		bs.calcPNLStats(pnlContainer);
-		bs.calcPosStats(oelistener.getPositionOverTime());		
+		bs.calcPosStats(oelistener.getPositionOverTime());
 		bs.populateOrderStats(oelistener);
-		
+
 		// dump the stats
 		try {
 			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
@@ -121,13 +124,12 @@ public class HTMLReportGen {
 			e.printStackTrace();
 		}
 
-		
-		generate(btConfig, bs);
-		
+		generate(algoConfigs, btConfig, bs);
+
 	}
-	
-	
-	public void generate(BacktestConfiguration bc, BacktestStatistics bt) throws FileNotFoundException, IOException {
+
+	public void generate(AlgoConfig[] algoConfigs, BacktestConfiguration bc, BacktestStatistics bt)
+			throws FileNotFoundException, IOException {
 		// take the template input and generate it.
 		// read-in the entire file.
 		log.info("Generating report.");
@@ -154,6 +156,44 @@ public class HTMLReportGen {
 			templateString = templateString.replace("{REPORTRESOLUTION}", bc.getResolutionTimeFrame());
 		}
 
+		int acMarkerStart = templateString.indexOf("<!-- AC_MARKER_START -->");
+		int acMarkerEnd = templateString.indexOf("<!-- AC_MARKER_END -->");
+		String acTemplate = templateString.substring(acMarkerStart + "<!-- AC_MARKER_START -->".length(), acMarkerEnd);
+		if (algoConfigs != null) {
+			StringBuffer acSection = new StringBuffer();
+			for (AlgoConfig ac : algoConfigs) {
+				String acTemplateLocal = new String(acTemplate);
+				log.info("Replacing algo config section. ");
+
+				int acEntryMarkerStart = acTemplateLocal.indexOf("<!-- AC_ENTRY_START -->");
+				int acEntryMarkerEnd = acTemplateLocal.indexOf("<!-- AC_ENTRY_END -->");
+
+				String acEntryTemplate = acTemplateLocal.substring(
+						acEntryMarkerStart + "<!-- AC_ENTRY_START -->".length(), acEntryMarkerEnd);
+
+				StringBuffer entryRep = new StringBuffer();
+				// build the entry rows.
+				Iterator<Entry<String, Object>> entryIter = ac.propertyMap().entrySet().iterator();
+				while (entryIter.hasNext()) {
+					Entry<String, Object> e = entryIter.next();
+					String entry = acEntryTemplate.replace("{KEY}", e.getKey());
+					if(e.getValue()!=null)
+						entry = entry.replace("{VALUE}", e.getValue().toString());
+					else
+						entry = entry.replace("{VALUE}", "-");
+					entryRep.append(entry).append("\n");
+				}
+				acTemplateLocal = acTemplateLocal.substring(0, acEntryMarkerStart) + entryRep.toString()+ acTemplateLocal.substring(acEntryMarkerEnd);
+				
+				//
+				acSection.append(acTemplateLocal).append("\n");
+
+			}
+
+		} else {
+			templateString = templateString.substring(0, acMarkerStart) + templateString.substring(acMarkerEnd);
+		}
+
 		log.info("Replacing leg section");
 		int legMarkerStart = templateString.indexOf("<!-- LEG_MARKER_START -->");
 		int legMarkerEnd = templateString.indexOf("<!-- LEG_MARKER_END -->");
@@ -164,7 +204,7 @@ public class HTMLReportGen {
 
 		int legInsertPoint = templateString.indexOf("<!-- LEG_MARKER_PLACEMENT -->");
 		for (String instrument : bt.getInstrumentIDs()) {
-			log.info("Replacing for "+instrument);
+			log.info("Replacing for " + instrument);
 			String t = new String(instrumentTemplate);
 			t = t.replace("{INSTRUMENTID}", instrument);
 			t = t.replace("{MAXPNL}", "" + bt.getStatistics().get(instrument + ".MAXPNL"));
@@ -179,7 +219,6 @@ public class HTMLReportGen {
 					+ t);
 		}
 
-		
 		// replacing all null with -
 		templateString = templateString.replace("null", "-");
 		log.info("All replaced.");
