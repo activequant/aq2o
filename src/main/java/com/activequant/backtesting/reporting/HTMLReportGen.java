@@ -189,7 +189,9 @@ public class HTMLReportGen {
 				acSection.append(acTemplateLocal).append("\n");
 
 			}
-
+			// replace the section in the report. 
+			templateString = templateString.substring(0, acMarkerStart) + acSection.toString()  + templateString.substring(acMarkerEnd);
+			
 		} else {
 			templateString = templateString.substring(0, acMarkerStart) + templateString.substring(acMarkerEnd);
 		}
