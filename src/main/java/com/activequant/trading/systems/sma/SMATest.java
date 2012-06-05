@@ -67,8 +67,8 @@ public class SMATest {
 		
 	}
 
-	private double date8Time6Start = 20000101000000.0;
-	private double date8Time6End = 20130101000000.0; 
+	private long date8Time6Start = 20000101000000l;
+	private long date8Time6End = 20130101000000l; 
 	
 	public SMATest() throws Exception {
 		Date8Time6Parser p = new Date8Time6Parser();

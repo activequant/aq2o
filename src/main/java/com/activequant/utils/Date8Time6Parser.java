@@ -56,7 +56,15 @@ public class Date8Time6Parser extends SimpleDateFormat {
 		return getMicroseconds(d8t6) * 1000L;
 	}
 
+	public long getNanoseconds(Long d8t6) throws InvalidDate8Time6Input {
+		return getMicroseconds(d8t6.doubleValue()) * 1000L;
+	}
+	
 	public TimeStamp getTimeStamp(Double d8t6) throws InvalidDate8Time6Input {
+		return new TimeStamp(getNanoseconds(d8t6));
+	}
+	
+	public TimeStamp getTimeStamp(Long d8t6) throws InvalidDate8Time6Input {
 		return new TimeStamp(getNanoseconds(d8t6));
 	}
 

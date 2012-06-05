@@ -8,8 +8,8 @@ import com.activequant.utils.annotations.Property;
 public class BacktestConfiguration extends PersistentEntity {
 
 	private String id;
-	private double date8Time6Start;
-	private double date8Time6End;
+	private long date8Time6Start;
+	private long date8Time6End;
 	private String backtesterImplementation;
 	private String[] mdis;
 	private String[] tdis;
@@ -35,7 +35,7 @@ public class BacktestConfiguration extends PersistentEntity {
 		return date8Time6Start;
 	}
 
-	public void setDate8Time6Start(double date8Time6start) {
+	public void setDate8Time6Start(long date8Time6start) {
 		this.date8Time6Start = date8Time6start;
 	}
 
@@ -44,7 +44,7 @@ public class BacktestConfiguration extends PersistentEntity {
 		return date8Time6End;
 	}
 
-	public void setDate8Time6End(double date8Time6End) {
+	public void setDate8Time6End(long date8Time6End) {
 		this.date8Time6End = date8Time6End;
 	}
 
@@ -70,6 +70,7 @@ public class BacktestConfiguration extends PersistentEntity {
 		this.id = id;
 	}
 
+	@Property
 	public String[] getMdis() {
 		return mdis;
 	}
@@ -78,6 +79,7 @@ public class BacktestConfiguration extends PersistentEntity {
 		this.mdis = mdis;
 	}
 
+	@Property
 	public String[] getTdis() {
 		return tdis;
 	}
