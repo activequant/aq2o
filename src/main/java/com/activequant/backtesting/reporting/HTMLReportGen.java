@@ -147,9 +147,9 @@ public class HTMLReportGen {
 			templateString = templateString.replace("{TDIS}", ArrayUtils.toString(bc.getTdis()));
 			try {
 				templateString = templateString.replace("{BACKTESTSTART}",
-						"" + new Date8Time6Parser().fromDouble(bc.getDate8Time6Start()).getCalendar().getTime());
+						"" + new Date8Time6Parser().fromDouble((double)bc.getDate8Time6Start()).getCalendar().getTime());
 				templateString = templateString.replace("{BACKTESTEND}",
-						"" + new Date8Time6Parser().fromDouble(bc.getDate8Time6End()).getCalendar().getTime());
+						"" + new Date8Time6Parser().fromDouble((double)bc.getDate8Time6End()).getCalendar().getTime());
 			} catch (InvalidDate8Time6Input e) {
 				e.printStackTrace();
 			}

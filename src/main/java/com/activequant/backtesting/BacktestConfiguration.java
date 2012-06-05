@@ -31,7 +31,7 @@ public class BacktestConfiguration extends PersistentEntity {
 	}
 
 	@Property
-	public double getDate8Time6Start() {
+	public long getDate8Time6Start() {
 		return date8Time6Start;
 	}
 
@@ -40,7 +40,7 @@ public class BacktestConfiguration extends PersistentEntity {
 	}
 
 	@Property
-	public double getDate8Time6End() {
+	public long getDate8Time6End() {
 		return date8Time6End;
 	}
 
