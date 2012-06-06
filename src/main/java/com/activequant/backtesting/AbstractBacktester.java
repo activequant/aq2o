@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.util.Log;
 
@@ -36,6 +37,7 @@ public abstract class AbstractBacktester {
 	protected String runId = "";
 	protected String targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
 	protected String templateFolder = "./src/main/resources/templates";
+	protected Logger log = Logger.getLogger(AbstractBacktester.class);
 	
 	public AbstractBacktester(BacktestConfiguration btConfig){
 		this.btConfig = btConfig;
@@ -45,7 +47,13 @@ public abstract class AbstractBacktester {
 
 	public void generateReport() throws IOException {		
 		HTMLReportGen h = new HTMLReportGen(targetFolder, templateFolder);
-		h.genReport(algoConfigs, oelistener, pnlMonitor, btConfig);
+		if(oelistener.getFillEvents().size()>0){
+			h.genReport(algoConfigs, oelistener, pnlMonitor, btConfig);
+		}
+		else{
+			log.warn("No trades were generated!");
+			System.out.println("No trades were generated.");
+		}
 	}
 
 	public PNLMonitor getPnlMonitor() {
