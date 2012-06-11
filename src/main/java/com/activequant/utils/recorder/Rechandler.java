@@ -54,7 +54,6 @@ public class Rechandler {
 	private final IArchiveWriter writer;
 	private final IArchiveReader reader;
 
-
 	public Rechandler(String springFile, String mdiFile, TimeFrame tf, int dayOffset, int days) throws Exception {
 
 		this.tf = tf;
@@ -139,18 +138,19 @@ public class Rechandler {
 
 			Double bid = t.getB().get("BID");
 			Double ask = t.getB().get("ASK");
-			if (bid != null && ask != null) {
-				double mp = (bid.doubleValue() + ask.doubleValue()) / 2.0;
-				temp.update(t.getA(), mp);
-			}
+			if (bid != null)
+				temp.update(t.getA(), bid);
+			if (ask != null)
+				temp.update(t.getA(), ask);
+
 		}
 
-//		System.out.println("Created " + collectionList.size() + " candles.");
-//		if (collectionList.size() > 0) {
-//			for (OHLCV o : collectionList)
-//				store((OHLCV) o);
-//			writer.commit();
-//		}
+		// System.out.println("Created " + collectionList.size() + " candles.");
+		// if (collectionList.size() > 0) {
+		// for (OHLCV o : collectionList)
+		// store((OHLCV) o);
+		// writer.commit();
+		// }
 	}
 
 	public void store(OHLCV mds) {
