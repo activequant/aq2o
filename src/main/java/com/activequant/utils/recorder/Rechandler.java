@@ -138,10 +138,16 @@ public class Rechandler {
 
 			Double bid = t.getB().get("BID");
 			Double ask = t.getB().get("ASK");
+			if(bid!=null && ask!=null){
+				temp.update(t.getA(), (bid+ask)/2.0);
+			}
 			if (bid != null)
 				temp.update(t.getA(), bid);
 			if (ask != null)
 				temp.update(t.getA(), ask);
+			if(bid!=null && ask!=null){
+				temp.update(t.getA(), (bid+ask)/2.0);
+			}
 
 		}
 
