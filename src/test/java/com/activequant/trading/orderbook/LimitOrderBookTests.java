@@ -1,9 +1,15 @@
 package com.activequant.trading.orderbook;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.trading.virtual.LimitOrderBook;
 import com.activequant.trading.virtual.VirtualExchange;
 import com.activequant.transport.memory.InMemoryTransportFactory;
@@ -66,7 +72,22 @@ public class LimitOrderBookTests extends TestCase {
 	}
 	
 	public void testDataRelaying(){
-		
+		List<LimitOrder> list = new ArrayList<LimitOrder>();
+		LimitOrder l1 = new LimitOrder();
+		l1.setLimitPrice(100.0);
+		LimitOrder l2 = new LimitOrder();
+		l2.setLimitPrice(200.0);
+		list.add(l1);
+		list.add(l2);
+		Collections.sort(list, new Comparator<LimitOrder>() {
+			@Override
+			public int compare(LimitOrder o1, LimitOrder o2) {
+				return (int) (o1.getLimitPrice() - o2.getLimitPrice());
+			}
+		});	
+		for (LimitOrder l : list) {
+			System.out.println(l.getLimitPrice());
+		}
 	}
 	
 }
