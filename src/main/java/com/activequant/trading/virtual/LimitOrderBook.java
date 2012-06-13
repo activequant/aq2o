@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
@@ -31,6 +33,7 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 	
 	private final LimitOrderBookMatcher matcher; 
 	private final VirtualExchange vex; 
+	private Logger log = Logger.getLogger(LimitOrderBook.class);
 
 	public LimitOrderBook(VirtualExchange vex, String tradeableInstrumentId){
 		super(tradeableInstrumentId);
@@ -109,6 +112,13 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 				return (int) (o2.getLimitPrice() - o1.getLimitPrice());
 			}
 		});
+		 
+		// dump the buy side orders
+		if(log.isDebugEnabled()){
+			for(LimitOrder l : buySide){
+				System.out.println(l.getOrderId()+" - " + l.getLimitPrice());
+			}
+		}
 	}
 
 	private void resortSellSide() {
@@ -118,6 +128,13 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 				return (int) (o1.getLimitPrice() - o2.getLimitPrice());
 			}
 		});
+		
+		// dump the sell side orders. 
+		if(log.isDebugEnabled()){
+			for(LimitOrder l : sellSide){
+				System.out.println(l.getOrderId()+" - " + l.getLimitPrice());
+			}
+		}
 	}
 
 	public void updateOrder(LimitOrder newOrder) {
