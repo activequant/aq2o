@@ -118,14 +118,15 @@ public class VirtualExchange implements IExchange {
 
 		@Override
 		public void submit() {
-			getOrderBook(order.getTradInstId()).addOrder(order);
+			
 			order.setOpenQuantity(order.getQuantity());
 			order.setWorkingTimeStamp(currentExchangeTime());
 			if (order.getOrderId() == null)
 				order.setOrderId("OID" + virtexOrderId++);
 			// add it to the list of local order trackers.
 			orderTrackers.put(order.getOrderId(), this);
-
+			getOrderBook(order.getTradInstId()).addOrder(order);
+			
 			// send out the submit event
 
 			OrderEvent oe = new OrderSubmittedEvent();

@@ -106,35 +106,40 @@ public class LimitOrderBook extends AbstractOrderBook<LimitOrder> {
 	}
 
 	private void resortBuySide() {
+		 
+		
 		Collections.sort(buySide, new Comparator<LimitOrder>() {
 			@Override
 			public int compare(LimitOrder o1, LimitOrder o2) {
-				return (int) (o2.getLimitPrice() - o1.getLimitPrice());
+				int diff = (int) Math.signum(o2.getLimitPrice() - o1.getLimitPrice());
+				return diff; 
 			}
 		});
 		 
-		// dump the buy side orders
-		if(log.isDebugEnabled()){
-			for(LimitOrder l : buySide){
-				System.out.println(l.getOrderId()+" - " + l.getLimitPrice());
-			}
-		}
+//		// dump the buy side orders
+//		if(log.isDebugEnabled()){
+//			for(LimitOrder l : buySide){
+//				System.out.println(l.getOrderId()+" - " + l.getLimitPrice());
+//			}
+//		}
 	}
 
 	private void resortSellSide() {
+	
 		Collections.sort(sellSide, new Comparator<LimitOrder>() {
 			@Override
 			public int compare(LimitOrder o1, LimitOrder o2) {
-				return (int) (o1.getLimitPrice() - o2.getLimitPrice());
+				int diff = (int) Math.signum(o1.getLimitPrice() - o2.getLimitPrice());
+				return diff; 
 			}
 		});
 		
-		// dump the sell side orders. 
-		if(log.isDebugEnabled()){
-			for(LimitOrder l : sellSide){
-				System.out.println(l.getOrderId()+" - " + l.getLimitPrice());
-			}
-		}
+//		// dump the sell side orders. 
+//		if(log.isDebugEnabled()){
+//			for(LimitOrder l : sellSide){
+//				System.out.println(l.getOrderId()+" - " + l.getLimitPrice());
+//			}
+//		}
 	}
 
 	public void updateOrder(LimitOrder newOrder) {
