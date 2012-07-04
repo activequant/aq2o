@@ -9,6 +9,7 @@ import com.activequant.dao.IPerformanceReportDao;
 import com.activequant.dao.IPortfolioDao;
 import com.activequant.dao.IPositionDao;
 import com.activequant.dao.IRegionDao;
+import com.activequant.dao.IReportDao;
 import com.activequant.dao.ISecurityChainDao;
 import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.dao.IVenueDao;
@@ -74,6 +75,12 @@ public class InMemoryDaoFactory implements IDaoFactory {
 
 	@Override
 	public IPerformanceReportDao perfDao() {
+		return null;
+	}
+
+	@Override
+	public IReportDao reportDao() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

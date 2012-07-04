@@ -22,4 +22,6 @@ public interface IDaoFactory {
     IAdjustedSeriesDateEntryDao adjSerDtEntryDao();
     
     IPerformanceReportDao perfDao();
+    
+    IReportDao reportDao();
 }

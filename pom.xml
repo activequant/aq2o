@@ -324,10 +324,8 @@
 			<name>MyBatis Snapshot Repository</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
-		<!-- repository>
-			<id>hbase</id>
-			<url>https://repository.apache.org/content/repositories/releases/</url>
-		</repository -->
+		<!-- repository> <id>hbase</id> <url>https://repository.apache.org/content/repositories/releases/</url> 
+			</repository -->
 		<repository>
 			<id>temp-thrift</id>
 			<name>Thrift 0.2.0</name>
@@ -563,6 +561,12 @@
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<!-- Latest 2.3.x (not 2.4.x), at least 2.3.19 -->
+			<version>[2.3.19,2.4)</version>
 		</dependency>
 
 	</dependencies>

@@ -31,11 +31,19 @@ public interface IMainService {
     @WebMethod
     public double[][] getTimeSeries(String seriesId, String column, TimeFrame timeFrame, long date8Start, long date8End) throws Exception ;
 
+    @Deprecated
     @WebMethod
 	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException;
     
     
     @WebMethod 
 	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, long nanoSeconds, String key, Object value) throws IOException;
+        
+    @WebMethod 
+	public void announceBTOutputFolder(String reportId, String backtestOutputFolder) throws Exception;
+    
+    @WebMethod 
+	public String pollReportStatus(String reportId) throws Exception;
+    
     
 }

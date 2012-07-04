@@ -1,0 +1,152 @@
+# R script. 
+# has one main function 
+
+require(xts)
+require(quantmod)
+require(fBasics)
+
+
+
+targetResolution="1M"
+chartWidth = 800
+chartHeight = 600 
+pnlValuesCsvFile="/home/ustaudinger/work/activequant/trunk/pnl.csv"
+
+p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
+	png(paste(folder, prefix, fileName, ".png", sep=""), width=cw, height=ch)
+}
+
+# target resolution must be any of: 
+# RAW, 1m, 1h, 1d, 1w, 1M 
+#main <- function(pnlValuesCsvFile="/home/ustaudinger/work/activequant/trunk/pnl.csv", targetResolution="1M", chartWidth=800, chartHeight=600){
+	pnlData = read.csv(pnlValuesCsvFile)
+	# convert pnl data to xts 
+	
+	if(length(pnlData)==0){
+		cat("No PNL data \n");
+		return;	
+	}
+	
+	
+	
+	
+	nCols = length(pnlData[1,])
+	pnlData = xts(pnlData[,2:nCols],as.POSIXct(pnlData[,1] / 1000000000, origin="1970-01-01"))
+	
+	# as we have made an XTS object out of it, we have now one column less. 
+	nCols = length(pnlData[1,])
+	# create a colour palette	
+	colors = rainbow(nCols)
+	
+	characteristics = data.frame();
+	
+	# rs closes .. 
+	rsCloses = xts()
+	
+	# resample pnlData to the specified resolution
+	for(i in 1:nCols){
+		columnName = colnames(pnlData)[i]
+		cat("Processing ", columnName, "\n")
+		
+		# raw requires no action		
+		rsPnl = pnlData[,i]
+		formerPeriod = -1;
+		formerValue = pnlData[1,i]; 
+		# 
+		if(targetResolution=="1M"){
+			rsPnl = to.monthly(pnlData[,i], dropTime=TRUE)
+			formerPeriod = as.POSIXlt(index(rsPnl)[1])
+			formerPeriod$yday = formerPeriod$yday - 31 
+		} else if(targetResolution=="1m"){
+			rsPnl = to.minutes(pnlData[,i], 1)
+			formerPeriod = as.POSIXlt(index(rsPnl)[1])
+			formerPeriod$min = formerPeriod$min - 1
+		} else if(targetResolution=="1h"){
+			rsPnl = to.hourly(pnlData[,i])
+			formerPeriod = as.POSIXlt(index(rsPnl)[1])
+			formerPeriod$hour = formerPeriod$hour - 1			
+		} else if(targetResolution=="1d"){
+			rsPnl = to.daily(pnlData[,i], drop.time=TRUE)
+			formerPeriod = as.POSIXlt(index(rsPnl)[1])
+			formerPeriod$yday = formerPeriod$yday - 1
+		} else if(targetResolution=="1w"){
+			rsPnl = to.weekly(pnlData[,i], drop.time=TRUE)
+			formerPeriod = as.POSIXlt(index(rsPnl)[1])
+			formerPeriod$yday = formerPeriod$yday - 7		
+		}
+		colnames(rsPnl) <- c("O","H","L", "C")
+		if(formerPeriod!=-1){
+			## append it. 
+			newRow = xts(cbind(formerValue,formerValue,formerValue,formerValue), formerPeriod)
+			colnames(newRow) <- c("O","H","L", "C")
+			rsPnl = rbind(newRow, rsPnl)
+		}
+				
+		# merge the rs close value into the outer rs values object. 
+		rsCloses = merge(rsCloses, rsPnl[,4])
+		colnames(rsCloses)[length(rsCloses[1,])] = columnName
+		 			
+		# generate candle chart
+		p(columnName, prefix="CANDLE_", cw=chartWidth, ch=chartHeight)
+		candleChart(rsPnl, main=columnName, theme="white")
+		dev.off()
+		# generate a plain line chart. 
+		p(columnName, prefix="LINE_", cw=chartWidth, ch=chartHeight)
+		plot(rsPnl[,4], main=columnName)
+		dev.off()
+		
+		# generate return statistics
+			
+		absReturns = diff(rsPnl[,4])
+		# replace NAs. 
+		absReturns[is.na(absReturns)] = 0
+		
+		p(columnName, prefix="HIST_", cw=chartWidth, ch=chartHeight)		
+		hist(absReturns, col="gray", main=paste("Histogram of absolute returns (", columnName, ")", sep=""))
+		dev.off();
+		
+		p(columnName, prefix="QQ_", cw=chartWidth, ch=chartHeight)
+		z.norm <- (absReturns - mean(absReturns))/sd(absReturns)
+		qqnorm(z.norm, main=paste("Normal QQ Plot (", columnName, ")", sep=""))
+		abline(0,1)
+		dev.off()
+		
+		
+		# calculate some curve specific parameters
+		characteristics["skewness", columnName] = skewness(absReturns)
+		characteristics["kurtosis", columnName] = kurtosis(absReturns)
+		
+		characteristics["startCash", columnName] = as.double(first(rsPnl)[,1])
+		characteristics["finalProfit", columnName] = as.double(last(rsPnl)[,4])
+		characteristics["maxProfit", columnName] = max(rsPnl)
+		characteristics["minProfit", columnName] = min(rsPnl)
+		characteristics["meanAbsRetPerPeriod", columnName] = mean(absReturns)
+		
+		
+		#browser()
+	}
+	
+	# generate an aggregated chart with all rs closes on it. 
+	
+	p("PNL_AGGREGATION", cw=chartWidth, ch = chartHeight) 
+	for(i in 1:nCols){
+		columnName = colnames(rsCloses)[i]
+		cat("Processing rs close for ", columnName, "\n")		
+		if(i==1){
+			plot(rsCloses[,i], type="l", main="Comparison of PNLs")
+			par(xpd=TRUE)
+			legend("topleft", legend=colnames(rsCloses), fill = colors)
+			
+		}
+		else{
+			lines(rsCloses[,i],col=colors[i])
+		}
+	}
+	dev.off()
+	
+	# write the characteristics
+	write.csv(characteristics, "characteristics.csv")
+	
+	
+	
+#}

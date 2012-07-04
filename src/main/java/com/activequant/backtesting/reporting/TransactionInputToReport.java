@@ -34,8 +34,10 @@ public class TransactionInputToReport {
 		ITransportFactory transFac = new InMemoryTransportFactory(); 
 		
 		BufferedReader br = new BufferedReader(new FileReader(f));
+		// pos risk calc listens to executions and price events. 
 		PositionRiskCalculator prc = new PositionRiskCalculator(null);
 		prc.setTransportFactory(transFac);
+		// pnl monitor listens to risk events .. these come from the position risk calculator
 		PNLMonitor pnlMonitor = new PNLMonitor(transFac);
 		
 		OrderEventListener oel = new OrderEventListener();

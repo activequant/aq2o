@@ -8,15 +8,17 @@ import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
 import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.IArchiveWriter;
 import com.activequant.archive.TSContainer;
+import com.activequant.backtesting.reporting.ExtTrsctFileReporting;
 import com.activequant.dao.DaoException;
 import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.IPerformanceReportDao;
+import com.activequant.dao.IReportDao;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.PerformanceReport;
+import com.activequant.domainmodel.Report;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.utils.Date8Time6Parser;
@@ -29,11 +31,14 @@ public class MainService implements IMainService {
 	private IInstrumentDao idao;
 	private IArchiveFactory archFac;
 	private IPerformanceReportDao perfDao;
+	private IReportDao reportDao;
+	
 
 	public MainService(IDaoFactory daoFactory, IArchiveFactory factory) {
 		this.idao = daoFactory.instrumentDao();
 		this.archFac = factory;
 		this.perfDao = daoFactory.perfDao();
+		this.reportDao = daoFactory.reportDao();
 	}
 
 	public String[] instrumentKeys() {
@@ -99,5 +104,27 @@ public class MainService implements IMainService {
 		w.write(seriesKey, new TimeStamp(nanoSeconds), key, (Double)value);
 		w.commit();
 	}
+
+	@Override
+	public void announceBTOutputFolder(String reportId, String backtestOutputFolder) throws Exception {
+		Report r = reportDao.load(reportId);
+		if(r!=null)
+			throw new Exception("Report ID exists already. Not overwriting. Please submit new one");
+		r = new Report();
+		r.setId(reportId);
+		r.setSourceFolder(backtestOutputFolder);
+		reportDao.create(r);
+		new ExtTrsctFileReporting(reportDao).run(reportId, backtestOutputFolder);
+	}
+
+	@Override
+	public String pollReportStatus(String reportId) throws Exception {		
+		Report r = reportDao.load(reportId);
+		if(r==null)
+			throw new Exception("Report ID doesn't exist.");
+		return r.getStatus();
+	}
+	
+	
 
 }
