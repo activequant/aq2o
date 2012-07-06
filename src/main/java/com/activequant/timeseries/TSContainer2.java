@@ -171,7 +171,7 @@ public class TSContainer2 {
 	}
 
 	/**
-	 * Set a value in a column for a specific timestamp. Will insert column if
+	 * Set a value in a column for a specific timestamp. Will insert a double column if
 	 * not found. Will insert timestamp if not found. Rows at newly inserted
 	 * Timestamp will be initialized with null.
 	 * 

@@ -34,12 +34,6 @@ public class ArchiveTestCall {
         else{
             System.out.println("Received: " + container.timeStamps.length + " values. ");
         }
-        
-//        container = fac.getReader(TimeFrame.MINUTES_5).getTimeSeries("TICKDATA_AUH12", "CLOSE", new TimeStamp(0L));
-//        System.out.println(container.timeStamps[0].getDate());
-//        System.out.println(container.timeStamps[1].getDate());
-//        System.out.println(container.timeStamps.length);
-//        
 	}
 	
 }

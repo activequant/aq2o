@@ -34,12 +34,6 @@ public class ExtTrsctFileReporting {
 		p.load(new FileInputStream(r.getSourceFolder()+File.separator+"config.properties"));
 		
 		
-		// 2) look for transactions file
-		
-		
-		
-		
-		
 		// 
 		
 		try {
