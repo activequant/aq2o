@@ -53,6 +53,7 @@ public class ImportPiTradingData {
         // will recurse into directory.
         this.mdProvider = mdprovider;
         new FileTraversal() {
+        	@Override
             public void onFile(final File f) {
                 System.out.println(f);
                 if (f.getName().toLowerCase().endsWith(".csv")) {
@@ -160,6 +161,7 @@ public class ImportPiTradingData {
                     if (lineCounter++ > 100) {
                         lineCounter = 0;
                         try {
+                        	System.out.print(".");
                             iaw.commit();
                         } catch (IOException e) {
                             e.printStackTrace();
