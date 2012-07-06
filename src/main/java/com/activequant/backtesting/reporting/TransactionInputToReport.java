@@ -12,10 +12,14 @@ import java.util.Properties;
 
 import org.jfree.chart.ChartUtilities;
 
+import com.activequant.archive.IArchiveFactory;
+import com.activequant.archive.IArchiveReader;
+import com.activequant.archive.hbase.HBaseArchiveFactory;
+import com.activequant.backtesting.ArchiveStreamToOHLCIterator;
 import com.activequant.backtesting.FastStreamer;
 import com.activequant.backtesting.OrderEventListener;
-import com.activequant.backtesting.RandomMarketDataIterator;
 import com.activequant.domainmodel.AlgoConfig;
+import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
@@ -37,7 +41,7 @@ public class TransactionInputToReport {
 	private String targetFolder = "./reports2";
 	private String reportCurrency;
 
-	public TransactionInputToReport(String transactionsFile, String configFile, String tgt) throws Exception {
+	public TransactionInputToReport(String transactionsFile, String configFile, String tgt, String archiveServer) throws Exception {
 		if (tgt != null)
 			targetFolder = tgt;
 		this.fileName = transactionsFile;
@@ -45,10 +49,8 @@ public class TransactionInputToReport {
 		if(configFile!=null)
 			properties.load(new FileInputStream(configFile));
 		
-		
-
-		
-		
+		IArchiveFactory archFac = new HBaseArchiveFactory(archiveServer);
+		IArchiveReader archReader = archFac.getReader(TimeFrame.MINUTES_1);
 		
 		
 		String instrumentsInSim = properties.getProperty("instrumentsInSim", "EURUSD");
@@ -62,11 +64,8 @@ public class TransactionInputToReport {
 		// initialize the market data replay streams. 
 		String[] tids = instrumentsInSim.split(",");
 		for(String tid : tids){
-						
-			RandomMarketDataIterator rmdi = new RandomMarketDataIterator(tid, tid, new TimeStamp(0L), new TimeStamp(1000000L), 1000L);
-			
-			
-			streamIters.add(rmdi);
+			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, new TimeStamp(0L), new TimeStamp(new Date()), archReader);			
+			streamIters.add(a);
 		}
 		
 		// initialize the transaction file streamer. 
@@ -105,8 +104,12 @@ public class TransactionInputToReport {
 				prc.execution(ofe.getCreationTimeStamp(), ofe.getOptionalInstId(), 
 						ofe.getFillPrice(), (ofe.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
 			}
-			else {
-				
+			else if(se instanceof OHLCV){
+				OHLCV o = (OHLCV) se; 
+				// 
+				prc.execution(o.getTimeStamp(), o.getMdiId(), 
+						o.getClose(), 0.0);
+				// 
 			}
 		}
 		
@@ -253,7 +256,8 @@ public class TransactionInputToReport {
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
-		new TransactionInputToReport("/home/ustaudinger/Downloads/transactions.csv", null, null);
+		// new TransactionInputToReport("/home/ustaudinger/Downloads/transactions.csv", null, null);
+		new TransactionInputToReport(args[0], null, args[1], args[2]);
 
 	}
 
