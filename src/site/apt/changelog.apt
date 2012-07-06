@@ -51,6 +51,8 @@ ChangeLog
 	
 	* Many other changes in the pipeline.
 	
+	* Added support for PiTrading data (importer written)
+	
   
 
 * 2.0 (15 February 2012)
