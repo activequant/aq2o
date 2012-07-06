@@ -45,6 +45,8 @@ public class CsvMapReader {
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             if (headerNames == null) {
                 String header = br.readLine();
+                header.replaceAll("\"", "");
+                header.replaceAll("'", "");
                 headerNames = header.split(",");
             }
             String line = br.readLine();
