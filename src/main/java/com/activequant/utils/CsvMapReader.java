@@ -45,16 +45,16 @@ public class CsvMapReader {
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             if (headerNames == null) {
                 String header = br.readLine();
-                header.replaceAll("\"", "");
-                header.replaceAll("'", "");
+                header = header.replaceAll("\"", "");
+                header = header.replaceAll("'", "");
                 headerNames = header.split(",");
             }
             String line = br.readLine();
             while (line != null) {
                 errorLine = line;
                 rowCount++;
-                line.replaceAll("\"", "");
-                line.replaceAll("'", "");
+                line = line.replaceAll("\"", "");
+                line = line.replaceAll("'", "");
                 line = line.trim();
                 String[] content = line.split(",");
                 Map<String, String> map = new HashMap<String, String>();
