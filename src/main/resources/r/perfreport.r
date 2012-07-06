@@ -5,33 +5,22 @@ require(xts)
 require(quantmod)
 require(fBasics)
 
-
-
-targetResolution="1M"
-chartWidth = 800
-chartHeight = 600 
-pnlValuesCsvFile="/home/ustaudinger/work/activequant/trunk/pnl.csv"
-
 p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 	png(paste(folder, prefix, fileName, ".png", sep=""), width=cw, height=ch)
 }
 
+
 # target resolution must be any of: 
 # RAW, 1m, 1h, 1d, 1w, 1M 
-#main <- function(pnlValuesCsvFile="/home/ustaudinger/work/activequant/trunk/pnl.csv", targetResolution="1M", chartWidth=800, chartHeight=600){
-	pnlData = read.csv(pnlValuesCsvFile)
-	# convert pnl data to xts 
-	
+analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/pnl.csv", fileType="PNL", targetResolution="1w", chartWidth=800, chartHeight=600){
+	pnlData = read.csv(seriesCsvFile)
+	# convert pnl data to xts 	
 	if(length(pnlData)==0){
 		cat("No PNL data \n");
 		return;	
-	}
-	
-	
-	
-	
+	}	
 	nCols = length(pnlData[1,])
-	pnlData = xts(pnlData[,2:nCols],as.POSIXct(pnlData[,1] / 1000000000, origin="1970-01-01"))
+	pnlData = xts(pnlData[,3:nCols],as.POSIXct(pnlData[,1] / 1000000000, origin="1970-01-01"))
 	
 	# as we have made an XTS object out of it, we have now one column less. 
 	nCols = length(pnlData[1,])
@@ -74,11 +63,11 @@ p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 			formerPeriod = as.POSIXlt(index(rsPnl)[1])
 			formerPeriod$yday = formerPeriod$yday - 7		
 		}
-		colnames(rsPnl) <- c("O","H","L", "C")
+		colnames(rsPnl) <- c("Open","High","Low", "Close")
 		if(formerPeriod!=-1){
 			## append it. 
-			newRow = xts(cbind(formerValue,formerValue,formerValue,formerValue), formerPeriod)
-			colnames(newRow) <- c("O","H","L", "C")
+			newRow = xts(cbind(formerValue,formerValue,formerValue,formerValue), formerPeriod, tzone="")
+			colnames(newRow) <- c("Open","High","Low", "Close")
 			rsPnl = rbind(newRow, rsPnl)
 		}
 				
@@ -87,12 +76,13 @@ p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 		colnames(rsCloses)[length(rsCloses[1,])] = columnName
 		 			
 		# generate candle chart
-		p(columnName, prefix="CANDLE_", cw=chartWidth, ch=chartHeight)
-		candleChart(rsPnl, main=columnName, theme="white")
+		p(columnName, prefix=paste(fileType,"_CANDLE_", sep=""), cw=chartWidth, ch=chartHeight)
+		#browser()
+		candleChart(rsPnl, main=columnName, theme="white", TA="addEMA()")
 		dev.off()
 		# generate a plain line chart. 
-		p(columnName, prefix="LINE_", cw=chartWidth, ch=chartHeight)
-		plot(rsPnl[,4], main=columnName)
+		p(columnName, prefix=paste(fileType, "_LINE_", sep=""), cw=chartWidth, ch=chartHeight)
+		lineChart(rsPnl[,4], main=columnName, theme="white", TA="addEMA()")
 		dev.off()
 		
 		# generate return statistics
@@ -101,39 +91,35 @@ p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 		# replace NAs. 
 		absReturns[is.na(absReturns)] = 0
 		
-		p(columnName, prefix="HIST_", cw=chartWidth, ch=chartHeight)		
-		hist(absReturns, col="gray", main=paste("Histogram of absolute returns (", columnName, ")", sep=""))
+		p(columnName, prefix=paste(fileType, "_HIST_", sep=""), cw=chartWidth, ch=chartHeight)		
+		hist(absReturns, col="gray", main=paste("Histogram of ",fileType," (", columnName, ")", sep=""))
 		dev.off();
 		
-		p(columnName, prefix="QQ_", cw=chartWidth, ch=chartHeight)
+		p(columnName, prefix=paste(fileType, "_QQ_", sep=""), cw=chartWidth, ch=chartHeight)
 		z.norm <- (absReturns - mean(absReturns))/sd(absReturns)
-		qqnorm(z.norm, main=paste("Normal QQ Plot (", columnName, ")", sep=""))
+		qqnorm(z.norm, main=paste("Normal QQ Plot of ", fileType, " (", columnName, ")", sep=""))
 		abline(0,1)
 		dev.off()
-		
 		
 		# calculate some curve specific parameters
 		characteristics["skewness", columnName] = skewness(absReturns)
 		characteristics["kurtosis", columnName] = kurtosis(absReturns)
 		
 		characteristics["startCash", columnName] = as.double(first(rsPnl)[,1])
-		characteristics["finalProfit", columnName] = as.double(last(rsPnl)[,4])
-		characteristics["maxProfit", columnName] = max(rsPnl)
-		characteristics["minProfit", columnName] = min(rsPnl)
+		characteristics["finalValue", columnName] = as.double(last(rsPnl)[,4])
+		characteristics["maxValue", columnName] = max(rsPnl)
+		characteristics["minValue", columnName] = min(rsPnl)
 		characteristics["meanAbsRetPerPeriod", columnName] = mean(absReturns)
 		
-		
 		#browser()
-	}
-	
-	# generate an aggregated chart with all rs closes on it. 
-	
-	p("PNL_AGGREGATION", cw=chartWidth, ch = chartHeight) 
+	}	
+	# generate an aggregated chart with all rs closes on it. 	
+	p("AGGREGATION", prefix=paste(fileType, "_", sep=""), cw=chartWidth, ch = chartHeight) 
 	for(i in 1:nCols){
 		columnName = colnames(rsCloses)[i]
 		cat("Processing rs close for ", columnName, "\n")		
 		if(i==1){
-			plot(rsCloses[,i], type="l", main="Comparison of PNLs")
+			plot(rsCloses[,i], type="l", main="Comparison of value series")
 			par(xpd=TRUE)
 			legend("topleft", legend=colnames(rsCloses), fill = colors)
 			
@@ -142,11 +128,11 @@ p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 			lines(rsCloses[,i],col=colors[i])
 		}
 	}
-	dev.off()
-	
+	dev.off()	
 	# write the characteristics
-	write.csv(characteristics, "characteristics.csv")
-	
-	
-	
-#}
+	write.csv(characteristics, paste(fileType, "_characteristics.csv", sep=""))	
+}
+
+
+analysis();
+analysis(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/cash_positions.csv", fileType="CASH"); 
