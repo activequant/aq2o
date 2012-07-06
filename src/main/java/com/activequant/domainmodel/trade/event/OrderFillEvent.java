@@ -7,6 +7,10 @@ public class OrderFillEvent extends OrderEvent {
 	private String side; 
 	private double leftQuantity; 
 
+	public OrderFillEvent(){
+		super(OrderFillEvent.class.getCanonicalName());
+	}
+	
 	public double getFillPrice() {
 		return fillPrice;
 	}

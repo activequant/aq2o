@@ -35,6 +35,7 @@ public class CSVInputStreamToOHLCIterator extends StreamEventIterator<TimeStream
 	private BufferedReader br;
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private String line;
+	private boolean shiftTime = true; 
 
 	public CSVInputStreamToOHLCIterator(String mdiId, TimeFrame timeFrame, InputStream in) throws Exception {
 		this.mdiId = mdiId;
@@ -69,7 +70,10 @@ public class CSVInputStreamToOHLCIterator extends StreamEventIterator<TimeStream
 		o.setResolutionInSeconds(resInSeconds);
 		// shift it, so that it looks as if it emitted at the end of a candle.
 		try {
-			o.setTimeStamp(new TimeStamp(sdf.parse(parts[0]).getTime() * 1000 * 1000 + offset));
+			if(isShiftTime())
+				o.setTimeStamp(new TimeStamp(sdf.parse(parts[0]).getTime() * 1000 * 1000 + offset));
+			else
+				o.setTimeStamp(new TimeStamp(sdf.parse(parts[0]).getTime() * 1000 * 1000 ));
 			line = br.readLine();
 		} catch (Exception e) {	
 			throw new RuntimeException(e);
@@ -84,5 +88,13 @@ public class CSVInputStreamToOHLCIterator extends StreamEventIterator<TimeStream
 
 	public void setSdf(SimpleDateFormat sdf) {
 		this.sdf = sdf;
+	}
+
+	public boolean isShiftTime() {
+		return shiftTime;
+	}
+
+	public void setShiftTime(boolean shiftTime) {
+		this.shiftTime = shiftTime;
 	}
 }

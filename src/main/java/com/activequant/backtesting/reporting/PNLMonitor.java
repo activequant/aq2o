@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JFrame;
 
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -22,6 +23,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
 import com.activequant.domainmodel.PersistentEntity;
+import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.exceptions.TransportException;
 import com.activequant.timeseries.ChartUtils;
@@ -43,8 +45,14 @@ public class PNLMonitor {
 	private TimeSeriesCollection dataset;
 	private List<TimeSeries> timeSeries = new ArrayList<TimeSeries>();
 	private AtomicBoolean dataChanged = new AtomicBoolean(false);
+	private Logger log = Logger.getLogger(PNLMonitor.class);
 
 	public PNLMonitor(ITransportFactory transportFactory) throws TransportException {
+		this(transportFactory, TimeFrame.RAW);
+	}
+
+	public PNLMonitor(ITransportFactory transportFactory, TimeFrame resolution) throws TransportException {
+		log.info("Instantiating PNL monitor with " + resolution.toString() + " resolution.");
 		// add the pnl data listener.
 		if (transportFactory != null) {
 			IReceiver pnlChannel = transportFactory.getReceiver(ETransportType.RISK_DATA.toString());
@@ -64,6 +72,10 @@ public class PNLMonitor {
 		cumulatedTSContainer = new TSContainer2("PNL", Arrays.asList(new String[] { "TOTAL" }),
 				Arrays.asList(new TypedColumn[] { new DoubleColumn() }));
 		//
+		if (!resolution.equals(TimeFrame.RAW)) {
+			tsContainer.setResolutionInNanoseconds(resolution.getMinutes()*60l*1000l*1000l*1000l);
+			cumulatedTSContainer.setResolutionInNanoseconds(resolution.getMinutes()*60l*1000l*1000l*1000l);
+		}
 	}
 
 	public void process(PNLChangeEvent delta) {

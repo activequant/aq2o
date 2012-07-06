@@ -4,6 +4,10 @@ package com.activequant.domainmodel.trade.event;
 public class OrderCancellationRejectedEvent extends OrderEvent {
 	private String reason = "";
 
+	public OrderCancellationRejectedEvent(){
+		super(OrderCancellationRejectedEvent.class.getCanonicalName());
+	}
+	
 	public String getReason() {
 		return reason;
 	}

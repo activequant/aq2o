@@ -1,19 +1,22 @@
 package com.activequant.backtesting.reporting;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import org.jfree.chart.ChartUtilities;
 
+import com.activequant.backtesting.FastStreamer;
 import com.activequant.backtesting.OrderEventListener;
+import com.activequant.backtesting.RandomMarketDataIterator;
 import com.activequant.domainmodel.AlgoConfig;
+import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.timeseries.CSVExporter;
@@ -21,6 +24,8 @@ import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.DoubleColumn;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TypedColumn;
+import com.activequant.tools.streaming.StreamEvent;
+import com.activequant.tools.streaming.StreamEventIterator;
 import com.activequant.trading.PositionRiskCalculator;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.transport.memory.InMemoryTransportFactory;
@@ -32,47 +37,86 @@ public class TransactionInputToReport {
 	private String targetFolder = "./reports2";
 	private String reportCurrency;
 
-	public TransactionInputToReport(String transactionsFile, String tgt) throws Exception {
+	public TransactionInputToReport(String transactionsFile, String configFile, String tgt) throws Exception {
 		if (tgt != null)
 			targetFolder = tgt;
 		this.fileName = transactionsFile;
+		Properties properties = new Properties();
+		if(configFile!=null)
+			properties.load(new FileInputStream(configFile));
+		
+		
+
+		
+		
+		
+		
+		String instrumentsInSim = properties.getProperty("instrumentsInSim", "EURUSD");
+		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "MINUTES_1"));
+		// 
+		
+		
+		@SuppressWarnings("rawtypes")
+		List<StreamEventIterator> streamIters = new ArrayList<StreamEventIterator>();
+		
+		// initialize the market data replay streams. 
+		String[] tids = instrumentsInSim.split(",");
+		for(String tid : tids){
+						
+			RandomMarketDataIterator rmdi = new RandomMarketDataIterator(tid, tid, new TimeStamp(0L), new TimeStamp(1000000L), 1000L);
+			
+			
+			streamIters.add(rmdi);
+		}
+		
+		// initialize the transaction file streamer. 
+		TransactionFileStreamIterator tfsi = new TransactionFileStreamIterator(transactionsFile);
+		streamIters.add(tfsi);
+		
+		
+		// 
+		// initialize the fast streamer  
+		@SuppressWarnings("unchecked")
+		FastStreamer fs = new FastStreamer(streamIters.toArray(new StreamEventIterator[]{}));
+		
+		
+		// 		
 		CSVFileFillExporter fillExporter = new CSVFileFillExporter();
 		//
-		File f = new File(transactionsFile);
 		ITransportFactory transFac = new InMemoryTransportFactory();
 		//
-		BufferedReader br = new BufferedReader(new FileReader(f));
 		// pos risk calc listens to executions and price events.
 		PositionRiskCalculator prc = new PositionRiskCalculator(null);
 		prc.setTransportFactory(transFac);
 		// pnl monitor listens to risk events .. these come from the position
 		// risk calculator
-		PNLMonitor pnlMonitor = new PNLMonitor(transFac);
+		PNLMonitor pnlMonitor = new PNLMonitor(transFac, timeFrame);
 
 		OrderEventListener oel = new OrderEventListener();
-		String l = br.readLine();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
-
-		while (l != null) {
-			String[] p = l.split(",");
-			String inst = p[0];
-			TimeStamp ts = new TimeStamp(sdf.parse(p[1]));
-			String dir = p[2];
-			Double price = Double.parseDouble(p[4]);
-			Double quantity = Double.parseDouble(p[3]);
-			prc.execution(ts, inst, price, (dir.startsWith("B") ? 1 : -1) * quantity);
-			OrderFillEvent ofe = new OrderFillEvent();
-			ofe.setOptionalInstId(inst);
-			ofe.setFillPrice(price);
-			ofe.setFillAmount(quantity);
-			ofe.setSide(dir);
-			ofe.setRefOrderId("-");
-			ofe.setCreationTimeStamp(ts);
-			oel.eventFired(ofe);
-			l = br.readLine();
+		
+		//////////////////// 
+		
+		while(fs.moreDataInPipe()){
+			StreamEvent se = fs.getOneFromPipes();
+			if(se instanceof OrderFillEvent){
+				OrderFillEvent ofe = (OrderFillEvent)se;
+				oel.eventFired((OrderFillEvent)se);
+				prc.execution(ofe.getCreationTimeStamp(), ofe.getOptionalInstId(), 
+						ofe.getFillPrice(), (ofe.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
+			}
+			else {
+				
+			}
 		}
-
+		
+		
+		
+		
+		
+		
+		/////////////////////
+		
 		TSContainer2 tsc = pnlMonitor.getCumulatedTSContainer();
 		// //////////////
 		new File(targetFolder).mkdirs();
@@ -209,7 +253,7 @@ public class TransactionInputToReport {
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
-		new TransactionInputToReport("/home/ustaudinger/MOSTRA_ALL_Trades.csv", null);
+		new TransactionInputToReport("/home/ustaudinger/Downloads/transactions.csv", null, null);
 
 	}
 

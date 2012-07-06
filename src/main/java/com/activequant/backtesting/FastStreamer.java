@@ -11,12 +11,16 @@ import com.activequant.tools.streaming.StreamEventIterator;
 
 /**
  * 
+ * Fast Streamer takes a set of stream iterators and replays events 
+ * from these iterators in their chronological order. 
+ * 
  * @author GhostRider
  *
  */
 public class FastStreamer {
 
 	private final Logger log = Logger.getLogger(FastStreamer.class);
+	
 	class FastStreamEventContainer implements Comparable<FastStreamEventContainer> {
 		private final int internalStreamId;
 		private StreamEvent streamEvent; 
@@ -50,6 +54,10 @@ public class FastStreamer {
 		}
 	}
 
+	/**
+	 * Fetches the next stream event from the pipe. 
+	 * @return
+	 */
 	public StreamEvent getOneFromPipes()
 	{
 		StreamEvent ret = null;

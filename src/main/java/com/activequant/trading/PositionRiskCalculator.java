@@ -37,6 +37,9 @@ public class PositionRiskCalculator implements IRiskCalculator {
 		}
 	}
 
+	/**
+	 * This one can be used to make the pos risk calculator recompue pnl. 
+	 */
 	public void execution(TimeStamp ts, String tid, double price, double quantity) {
 		pnl(ts, tid, price, quantity);
 	}
@@ -84,5 +87,7 @@ public class PositionRiskCalculator implements IRiskCalculator {
 			lastMinute = tsBase.getCurrentMinute();
 		}
 	}
+	
+	
 
 }
