@@ -7,16 +7,16 @@ R-Bridging
 require(quantmod)
 convertTimeSeries <- function(d, startCol = 3){
 
- parsedTime <- lapply(d[1], function(x) as.POSIXct(x/1000000000, origin="1970-01-01"))
+ parsedTime <- lapply(d[1], function(x) as.POSIXct(x/1000000000, tz="GMT", origin="1970-01-01"))
  ts <- as.data.frame(do.call(rbind, lapply(parsedTime, as.double)))
- data <- xts(d[,startCol:length(d[1,])], as.POSIXct(t(ts), origin="1970-01-01"))
+ data <- xts(d[,startCol:length(d[1,])], as.POSIXct(t(ts), tz="GMT", origin="1970-01-01"))
 
 }
 
-o <- read.csv("http://localhost:44444/?SERIESID=CNX.MDI.GBP/AUD&FREQ=HOURS_1&FIELD=OPEN&STARTDATE=20120524&ENDDATE=20130301");
+o <- read.csv("http://reporting.pecoracapital.com:44444/?SERIESID=PI_EURUSD&FREQ=HOURS_1&FIELD=OPEN&STARTDATE=20120524&ENDDATE=20130301");
 h <- read.csv("http://localhost:44444/?SERIESID=CNX.MDI.GBP/AUD&FREQ=HOURS_1&FIELD=HIGH&STARTDATE=20120524&ENDDATE=20130301");
 l <- read.csv("http://localhost:44444/?SERIESID=CNX.MDI.GBP/AUD&FREQ=HOURS_1&FIELD=LOW&STARTDATE=20120524&ENDDATE=20130301");
-c <- read.csv("http://localhost:44444/?SERIESID=CNX.MDI.GBP/AUD&FREQ=HOURS_1&FIELD=CLOSE&STARTDATE=20120524&ENDDATE=20130301");
+c <- read.csv("http://reporting.pecoracapital.com:44444/?SERIESID=PI_EURUSD&FREQ=MINUTES_1&FIELD=CLOSE&STARTDATE=20120101&ENDDATE=20120201");
 
 # converting to timeseries. 
 o <- convertTimeSeries(o)
