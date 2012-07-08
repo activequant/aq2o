@@ -12,7 +12,7 @@ p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 
 # target resolution must be any of: 
 # RAW, 1m, 1h, 1d, 1w, 1M 
-analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/pnl.csv", fileType="PNL", targetResolution="1w", chartWidth=800, chartHeight=600){
+analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/pnl.csv", fileType="PNL", targetResolution="1w", targetFolder="./", chartWidth=800, chartHeight=600){
 	pnlData = read.csv(seriesCsvFile)
 	# convert pnl data to xts 	
 	if(length(pnlData)==0){
@@ -76,12 +76,12 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		colnames(rsCloses)[length(rsCloses[1,])] = columnName
 		 			
 		# generate candle chart
-		p(columnName, prefix=paste(fileType,"_CANDLE_", sep=""), cw=chartWidth, ch=chartHeight)
+		p(columnName, folder=targetFolder, prefix=paste(fileType,"_CANDLE_", sep=""), cw=chartWidth, ch=chartHeight)
 		#browser()
 		candleChart(rsPnl, main=columnName, theme="white", TA="addEMA()")
 		dev.off()
 		# generate a plain line chart. 
-		p(columnName, prefix=paste(fileType, "_LINE_", sep=""), cw=chartWidth, ch=chartHeight)
+		p(columnName, folder=targetFolder, prefix=paste(fileType, "_LINE_", sep=""), cw=chartWidth, ch=chartHeight)
 		lineChart(rsPnl[,4], main=columnName, theme="white", TA="addEMA()")
 		dev.off()
 		
@@ -91,11 +91,11 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		# replace NAs. 
 		absReturns[is.na(absReturns)] = 0
 		
-		p(columnName, prefix=paste(fileType, "_HIST_", sep=""), cw=chartWidth, ch=chartHeight)		
+		p(columnName, folder=targetFolder, prefix=paste(fileType, "_HIST_", sep=""), cw=chartWidth, ch=chartHeight)		
 		hist(absReturns, col="gray", main=paste("Histogram of ",fileType," (", columnName, ")", sep=""))
 		dev.off();
 		
-		p(columnName, prefix=paste(fileType, "_QQ_", sep=""), cw=chartWidth, ch=chartHeight)
+		p(columnName, folder=targetFolder, prefix=paste(fileType, "_QQ_", sep=""), cw=chartWidth, ch=chartHeight)
 		z.norm <- (absReturns - mean(absReturns))/sd(absReturns)
 		qqnorm(z.norm, main=paste("Normal QQ Plot of ", fileType, " (", columnName, ")", sep=""))
 		abline(0,1)
@@ -114,7 +114,7 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		#browser()
 	}	
 	# generate an aggregated chart with all rs closes on it. 	
-	p("AGGREGATION", prefix=paste(fileType, "_", sep=""), cw=chartWidth, ch = chartHeight) 
+	p("AGGREGATION", folder=targetFolder, prefix=paste(fileType, "_", sep=""), cw=chartWidth, ch = chartHeight) 
 	for(i in 1:nCols){
 		columnName = colnames(rsCloses)[i]
 		cat("Processing rs close for ", columnName, "\n")		
@@ -130,9 +130,12 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 	}
 	dev.off()	
 	# write the characteristics
-	write.csv(characteristics, paste(fileType, "_characteristics.csv", sep=""))	
+	write.csv(characteristics, paste(targetFolder, "/", fileType, "_characteristics.csv", sep=""))	
 }
 
+# see http://stackoverflow.com/questions/2151212/how-can-i-read-command-line-parameters-from-an-r-script
+args <- commandArgs(trailingOnly = TRUE)
+print(args)
 
-analysis();
-analysis(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/cash_positions.csv", fileType="CASH"); 
+analysis(seriesCsvFile=args[1], targetFolder=args[3], fileType="PNL")
+analysis(seriesCsvFile=args[2], targetFolder=args[3], fileType="CASH"); 
