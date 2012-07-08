@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.exceptions.InvalidDate8Time6Input;
@@ -27,7 +28,7 @@ public class Date8Time6Parser extends SimpleDateFormat {
 		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
 		otherSymbols.setDecimalSeparator('.');
 		dcf = new DecimalFormat("00000000000000.000000000", otherSymbols);
-		// setTimeZone(TimeZone.getTimeZone("UTC"));
+		setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 	
 	public TimeStamp fromDouble(Double d8t6) throws InvalidDate8Time6Input {
