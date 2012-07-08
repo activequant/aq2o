@@ -1,6 +1,8 @@
 # R script. 
 # has one main function 
 
+cat("SOURCING PERFREPORT SCRIPT\n")
+
 require(xts)
 require(quantmod)
 require(fBasics)
@@ -12,7 +14,8 @@ p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 
 # target resolution must be any of: 
 # RAW, 1m, 1h, 1d, 1w, 1M 
-analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/pnl.csv", fileType="PNL", targetResolution="1w", targetFolder="./", chartWidth=800, chartHeight=600){
+analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/pnl.csv", fileType="PNL", targetResolution="1d", targetFolder="./", chartWidth=800, chartHeight=600){
+	
 	pnlData = read.csv(seriesCsvFile)
 	# convert pnl data to xts 	
 	if(length(pnlData)==0){
