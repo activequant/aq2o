@@ -36,7 +36,7 @@ public class DoubleColumn extends TypedColumn<Double> {
 			if(currentVal!=null && val!=null){
 				currentVal += val; 
 			}
-			else
+			else if(val!=null)
 				currentVal = val; 
 			
 			ret.add(currentVal);
