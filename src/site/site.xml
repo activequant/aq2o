@@ -81,6 +81,7 @@
 				<item name="Messaging" href="messaging.html" />
 				<item name="SNMP support" href="snmp.html" />
 				<item name="Worker Threads" href="workerpattern.html" />
+				<item name="Fee calculator" href="details/feecalculation.html"/>
 			</menu>
 		
 		

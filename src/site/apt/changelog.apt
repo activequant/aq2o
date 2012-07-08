@@ -34,7 +34,9 @@ ChangeLog
 	
 	* GUI base tables and interfaces. Really cool but too much to explain.	
 	
-	* Added AbstractTSBase	
+	* Added AbstractTSBase
+	
+	* Addded IFeeCalculator interface and IB specific implementation	
 	
 ** Bugfixes 
 
@@ -52,6 +54,8 @@ ChangeLog
 	* Many other changes in the pipeline.
 	
 	* Added support for PiTrading data (importer written)
+	
+
 	
   
 
