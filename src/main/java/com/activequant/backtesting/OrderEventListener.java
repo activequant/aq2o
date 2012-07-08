@@ -41,9 +41,7 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 	private IFeeCalculator feeCalculator = null; 
 	
 	public OrderEventListener(){
-		feeCalculator = new IBFeeCalculator();
-	}
-	
+	}	
 	
 	@Override
 	public void eventFired(OrderEvent event) {

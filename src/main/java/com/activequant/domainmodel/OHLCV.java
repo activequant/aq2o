@@ -132,4 +132,8 @@ public class OHLCV extends TimeStreamEvent {
 		ret.setDeletionTime(super.getDeletionTime());
 		return ret; 
 	}
+	
+	public String toString(){
+		return getTimeStamp().getDate() + "/" + mdiId+"/"+open+"/"+high+"/"+low+"/"+close+"/"+volume;
+	}
 }

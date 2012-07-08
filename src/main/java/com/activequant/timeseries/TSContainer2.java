@@ -280,8 +280,6 @@ public class TSContainer2 {
 		return targetIndex + 1;
 	}
 
-	// not sure if this needed
-	// could be implemented as Collections.max(timeSeries.getColumn("Ask"));
 	// the Object should implement Comparable interface
 	// or class can maintain two lists of max/min values
 	public Object getMax(String headerName) {

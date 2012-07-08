@@ -17,6 +17,8 @@ import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.backtesting.ArchiveStreamToOHLCIterator;
 import com.activequant.backtesting.FastStreamer;
+import com.activequant.backtesting.IBFXFeeCalculator;
+import com.activequant.backtesting.IFeeCalculator;
 import com.activequant.backtesting.OrderEventListener;
 import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.OHLCV;
@@ -27,6 +29,7 @@ import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.DoubleColumn;
 import com.activequant.timeseries.TSContainer2;
+import com.activequant.timeseries.TSContainerMethods;
 import com.activequant.timeseries.TypedColumn;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.StreamEventIterator;
@@ -40,6 +43,7 @@ public class TransactionInputToReport {
 	private String fileName;
 	private String targetFolder = "./reports2";
 	private String reportCurrency;
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 	public TransactionInputToReport(String transactionsFile, String configFile, String tgt, String archiveServer) throws Exception {
 		if (tgt != null)
@@ -52,9 +56,11 @@ public class TransactionInputToReport {
 		IArchiveFactory archFac = new HBaseArchiveFactory(archiveServer);
 		IArchiveReader archReader = archFac.getReader(TimeFrame.MINUTES_1);
 		
-		
-		String instrumentsInSim = properties.getProperty("instrumentsInSim", "EURUSD");
+		System.out.println("ArchiveReader fetched.");
+		String instrumentsInSim = properties.getProperty("instrumentsInSim", "PI_EURUSD,PI_EURGBP");
 		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "MINUTES_1"));
+		String simStart = properties.getProperty("simStart", "20120101");
+		String simEnd = properties.getProperty("simStart", "20120201");
 		// 
 		
 		
@@ -64,7 +70,9 @@ public class TransactionInputToReport {
 		// initialize the market data replay streams. 
 		String[] tids = instrumentsInSim.split(",");
 		for(String tid : tids){
-			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, new TimeStamp(0L), new TimeStamp(new Date()), archReader);			
+			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, new TimeStamp(sdf.parse(simStart)),new TimeStamp(sdf.parse(simEnd)), archReader);
+			// no shifting, as PiTrading's candles are timestamped with end of minute instead of beginning of minute like proper 
+			a.setOffset(0L);
 			streamIters.add(a);
 		}
 		
@@ -92,21 +100,28 @@ public class TransactionInputToReport {
 		PNLMonitor pnlMonitor = new PNLMonitor(transFac, timeFrame);
 
 		OrderEventListener oel = new OrderEventListener();
+		IBFXFeeCalculator feeCalculator = new IBFXFeeCalculator();
+		oel.setFeeCalculator(feeCalculator);
 
 		
 		//////////////////// 
 		
 		while(fs.moreDataInPipe()){
-			StreamEvent se = fs.getOneFromPipes();
+			StreamEvent se = fs.getOneFromPipes();			
+			System.out.println(se.getTimeStamp().getDate());
 			if(se instanceof OrderFillEvent){
 				OrderFillEvent ofe = (OrderFillEvent)se;
+				feeCalculator.updateRefRate(ofe.getOptionalInstId(), ofe.getFillPrice());
+				// order event listener also holds the fee calculator
 				oel.eventFired((OrderFillEvent)se);
-				prc.execution(ofe.getCreationTimeStamp(), ofe.getOptionalInstId(), 
+				prc.execution(ofe.getCreationTimeStamp(), "PI_"+ofe.getOptionalInstId(), 
 						ofe.getFillPrice(), (ofe.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
 			}
 			else if(se instanceof OHLCV){
 				OHLCV o = (OHLCV) se; 
-				// 
+				System.out.println(o.toString());
+				
+				// use a zero-change execution to push in the price. 
 				prc.execution(o.getTimeStamp(), o.getMdiId(), 
 						o.getClose(), 0.0);
 				// 
@@ -114,10 +129,7 @@ public class TransactionInputToReport {
 		}
 		
 		
-		
-		
-		
-		
+		System.out.println("*************** REPLAY DONE ");
 		/////////////////////
 		
 		TSContainer2 tsc = pnlMonitor.getCumulatedTSContainer();
@@ -221,8 +233,17 @@ public class TransactionInputToReport {
 		// calculate some statistics.
 		BacktestStatistics bs = new BacktestStatistics();
 		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+
+		
+		TSContainerMethods tcm = new TSContainerMethods();
+		pnlContainer = tcm.overwriteNull(pnlContainer);
+		pnlContainer = tcm.overwriteNull(pnlContainer, 0.0);
 		bs.calcPNLStats(pnlContainer);
-		bs.calcPosStats(oel.getPositionOverTime());
+		
+		TSContainer2 posOverTime = oel.getPositionOverTime();
+		posOverTime = tcm.overwriteNull(posOverTime);
+		posOverTime = tcm.overwriteNull(posOverTime, 0.0);
+		bs.calcPosStats(posOverTime);
 		bs.populateOrderStats(oel);
 
 		// dump the stats
@@ -238,6 +259,11 @@ public class TransactionInputToReport {
 		HTMLReportGen h = new HTMLReportGen(targetFolder, "./src/main/resources/templates");
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
+		// run R. 
+		new RExec("/home/ustaudinger/work/activequant/trunk/src/main/resources/r/perfreport.r", 
+				new String[]{targetFolder+"pnl.csv", targetFolder+"cash_positions.csv", targetFolder});
+		
+		
 	}
 
 	private void addColAndInit(TSContainer2 container, String colName, List<TimeStamp> timeStamps) {
@@ -256,8 +282,8 @@ public class TransactionInputToReport {
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
-		// new TransactionInputToReport("/home/ustaudinger/Downloads/transactions.csv", null, null);
-		new TransactionInputToReport(args[0], null, args[1], args[2]);
+		new TransactionInputToReport("/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv", null, "/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/", "reporting.pecoracapital.com");
+		//new TransactionInputToReport(args[0], null, args[1], args[2]);
 
 	}
 

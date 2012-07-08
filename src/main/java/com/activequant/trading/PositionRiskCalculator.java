@@ -61,7 +61,8 @@ public class PositionRiskCalculator implements IRiskCalculator {
 				e.printStackTrace();
 			}
 		}
-		positions.put(tid, formerPos + posChange);
+		if(posChange!=0.0)
+			positions.put(tid, formerPos + posChange);
 		lastValPrices.put(tid, price);
 	}
 

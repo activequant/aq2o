@@ -31,8 +31,7 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
         this.tdiId = mdiId; 
         resInSeconds = timeFrame.getMinutes()*60;
         offset = resInSeconds * 1000l * 1000l * 1000l; 
-        this.streamIterator = archiveReader.getMultiValueStream(mdiId, startTime, endTime);
-     
+        this.streamIterator = archiveReader.getMultiValueStream(mdiId, startTime, endTime);     
     }
     
     
@@ -59,9 +58,22 @@ public class ArchiveStreamToOHLCIterator extends StreamEventIterator<TimeStreamE
         o.setClose(close);
         o.setVolume(volume);
         o.setResolutionInSeconds(resInSeconds);
-        // shift it, so that it looks as if it emitted at the end of a candle. 
+        // shift it, so that it looks as if it emitted at the end of a candle for replaying only
+        // NOTE: In live streaming mode and for charting, it is proper to stamp a candle with the beginning timestamp!! 
         o.setTimeStamp(new TimeStamp(valueMap.getA().getNanoseconds() + offset));
         return o; 
 
     }
+
+
+
+	public long getOffset() {
+		return offset;
+	}
+
+
+
+	public void setOffset(long offset) {
+		this.offset = offset;
+	}
 }

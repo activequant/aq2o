@@ -7,14 +7,17 @@ import com.activequant.tools.streaming.MarketDataSnapshot;
 public class QuoteSheet {
 	
 	private Map<String, MarketDataSnapshot> map = new HashMap<String, MarketDataSnapshot>();
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	// 
 	
-	MarketDataSnapshot getMDS(String instId){
+	public MarketDataSnapshot getMDS(String instId){
 		return map.get(instId);
 	}
+	
+	
 	
 }
