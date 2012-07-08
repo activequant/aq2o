@@ -28,6 +28,7 @@
 		<menu name="Example code">
 			<item name="Getting a taste ..." href="examples/atasteofactivequant.html"/>
 			<item name="Tagging?!!" href="examples/tagging.html"/>
+			<item name="R and ActiveQuant" href="examples/r_bridge.html"/>
 		</menu>
 		
 		<menu name="Documentation">
