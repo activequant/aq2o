@@ -133,14 +133,14 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 	public TSContainer2 getExecutionOverTime() {
 		// overwrite all nulls with former value.
 		TSContainerMethods tcm = new TSContainerMethods();
-		return tcm.overwriteNull(executionOverTime);
+		return tcm.overwriteNull(executionOverTime, 0.0);
 	}
 
 	
 	public TSContainer2 getChangeOverTime() {
 		// overwrite all nulls with former value.
 		TSContainerMethods tcm = new TSContainerMethods();
-		return tcm.overwriteNull(changeOverTime);
+		return tcm.overwriteNull(changeOverTime, 0.0);
 	}
 
 	

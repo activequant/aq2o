@@ -1,5 +1,6 @@
 package com.activequant.servicelayer.soap;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.jws.WebService;
@@ -106,7 +107,7 @@ public class MainService implements IMainService {
 	}
 
 	@Override
-	public void announceBTOutputFolder(String reportId, String backtestOutputFolder) throws Exception {
+	public void announceBTOutputFolder(final String reportId, final String backtestOutputFolder) throws Exception {
 		Report r = reportDao.load(reportId);
 		if(r!=null)
 			throw new Exception("Report ID exists already. Not overwriting. Please submit new one");
@@ -114,7 +115,21 @@ public class MainService implements IMainService {
 		r.setId(reportId);
 		r.setSourceFolder(backtestOutputFolder);
 		reportDao.create(r);
-		new ExtTrsctFileReporting(reportDao).run(reportId, backtestOutputFolder);
+		Runnable runnable = new Runnable(){
+			public void run(){
+				try {
+					new ExtTrsctFileReporting(reportDao).run(reportId, backtestOutputFolder);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (DaoException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}		
+			}			
+		};
+		Thread t = new Thread(runnable);
+		t.start();
 	}
 
 	@Override

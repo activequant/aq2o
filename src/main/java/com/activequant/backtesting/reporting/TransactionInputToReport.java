@@ -1,13 +1,18 @@
 package com.activequant.backtesting.reporting;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.jfree.chart.ChartUtilities;
@@ -18,7 +23,6 @@ import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.backtesting.ArchiveStreamToOHLCIterator;
 import com.activequant.backtesting.FastStreamer;
 import com.activequant.backtesting.IBFXFeeCalculator;
-import com.activequant.backtesting.IFeeCalculator;
 import com.activequant.backtesting.OrderEventListener;
 import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.OHLCV;
@@ -38,6 +42,13 @@ import com.activequant.transport.ITransportFactory;
 import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.CsvMapWriter;
 
+/**
+ * This is a very narrow implementation at the moment. As it is written in a
+ * client project, this might or might not work for your use case.
+ * 
+ * @author GhostRider
+ * 
+ */
 public class TransactionInputToReport {
 
 	private String fileName;
@@ -45,49 +56,54 @@ public class TransactionInputToReport {
 	private String reportCurrency;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-	public TransactionInputToReport(String transactionsFile, String configFile, String tgt, String archiveServer) throws Exception {
+	public TransactionInputToReport(String transactionsFile, String configFile, String tgt, String archiveServer)
+			throws Exception {
 		if (tgt != null)
 			targetFolder = tgt;
 		this.fileName = transactionsFile;
 		Properties properties = new Properties();
-		if(configFile!=null)
+		if (configFile != null)
 			properties.load(new FileInputStream(configFile));
-		
+
 		IArchiveFactory archFac = new HBaseArchiveFactory(archiveServer);
 		IArchiveReader archReader = archFac.getReader(TimeFrame.MINUTES_1);
-		
+
 		System.out.println("ArchiveReader fetched.");
 		String instrumentsInSim = properties.getProperty("instrumentsInSim", "PI_EURUSD,PI_EURGBP");
 		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "MINUTES_1"));
 		String simStart = properties.getProperty("simStart", "20120101");
 		String simEnd = properties.getProperty("simStart", "20120201");
-		// 
-		
-		
+
+		//
+		TimeStamp startTimeStamp = new TimeStamp(sdf.parse(simStart));
+		TimeStamp endTimeStamp = new TimeStamp(sdf.parse(simEnd));
+
+		//
+
 		@SuppressWarnings("rawtypes")
 		List<StreamEventIterator> streamIters = new ArrayList<StreamEventIterator>();
-		
-		// initialize the market data replay streams. 
+
+		// initialize the market data replay streams.
 		String[] tids = instrumentsInSim.split(",");
-		for(String tid : tids){
-			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, new TimeStamp(sdf.parse(simStart)),new TimeStamp(sdf.parse(simEnd)), archReader);
-			// no shifting, as PiTrading's candles are timestamped with end of minute instead of beginning of minute like proper 
+		for (String tid : tids) {
+			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
+					endTimeStamp, archReader);
+			// no shifting, as PiTrading's candles are timestamped with end of
+			// minute instead of beginning of minute like proper
 			a.setOffset(0L);
 			streamIters.add(a);
 		}
-		
-		// initialize the transaction file streamer. 
+
+		// initialize the transaction file streamer.
 		TransactionFileStreamIterator tfsi = new TransactionFileStreamIterator(transactionsFile);
 		streamIters.add(tfsi);
-		
-		
-		// 
-		// initialize the fast streamer  
+
+		//
+		// initialize the fast streamer
 		@SuppressWarnings("unchecked")
-		FastStreamer fs = new FastStreamer(streamIters.toArray(new StreamEventIterator[]{}));
-		
-		
-		// 		
+		FastStreamer fs = new FastStreamer(streamIters.toArray(new StreamEventIterator[] {}));
+
+		//
 		CSVFileFillExporter fillExporter = new CSVFileFillExporter();
 		//
 		ITransportFactory transFac = new InMemoryTransportFactory();
@@ -103,35 +119,31 @@ public class TransactionInputToReport {
 		IBFXFeeCalculator feeCalculator = new IBFXFeeCalculator();
 		oel.setFeeCalculator(feeCalculator);
 
-		
-		//////////////////// 
-		
-		while(fs.moreDataInPipe()){
-			StreamEvent se = fs.getOneFromPipes();			
+		// //////////////////
+
+		while (fs.moreDataInPipe()) {
+			StreamEvent se = fs.getOneFromPipes();
 			System.out.println(se.getTimeStamp().getDate());
-			if(se instanceof OrderFillEvent){
-				OrderFillEvent ofe = (OrderFillEvent)se;
+			if (se instanceof OrderFillEvent) {
+				OrderFillEvent ofe = (OrderFillEvent) se;
 				feeCalculator.updateRefRate(ofe.getOptionalInstId(), ofe.getFillPrice());
 				// order event listener also holds the fee calculator
-				oel.eventFired((OrderFillEvent)se);
-				prc.execution(ofe.getCreationTimeStamp(), "PI_"+ofe.getOptionalInstId(), 
-						ofe.getFillPrice(), (ofe.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
-			}
-			else if(se instanceof OHLCV){
-				OHLCV o = (OHLCV) se; 
+				oel.eventFired((OrderFillEvent) se);
+				prc.execution(ofe.getCreationTimeStamp(), "PI_" + ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe
+						.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
+			} else if (se instanceof OHLCV) {
+				OHLCV o = (OHLCV) se;
 				System.out.println(o.toString());
-				
-				// use a zero-change execution to push in the price. 
-				prc.execution(o.getTimeStamp(), o.getMdiId(), 
-						o.getClose(), 0.0);
-				// 
+
+				// use a zero-change execution to push in the price.
+				prc.execution(o.getTimeStamp(), o.getMdiId(), o.getClose(), 0.0);
+				//
 			}
 		}
-		
-		
+
 		System.out.println("*************** REPLAY DONE ");
-		/////////////////////
-		
+		// ///////////////////
+
 		TSContainer2 tsc = pnlMonitor.getCumulatedTSContainer();
 		// //////////////
 		new File(targetFolder).mkdirs();
@@ -164,10 +176,69 @@ public class TransactionInputToReport {
 		// two cash positions!
 		TSContainer2 posDeltaOverTime = oel.getChangeOverTime();
 		TSContainer2 executionPricesOverTime = oel.getExecutionOverTime();
-		TSContainer2 cashPositionsOverTime = new TSContainer2("CASH", new ArrayList<String>(),
-				new ArrayList<TypedColumn>());
+		TSContainer2 cashPositionsOverTime = calcCashPositions(posDeltaOverTime, executionPricesOverTime);
+
+		fout = new FileOutputStream(targetFolder + File.separator + "cash_positions.csv");
+		CSVExporter c = new CSVExporter(fout, cashPositionsOverTime);
+		c.write();
+		fout.close();
+
+		// create borrowing and lending payments.
+		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, cashPositionsOverTime);
+
+		// dump out the fees.
+		if (oel.getFeeCalculator() != null) {
+			//
+			fout = new FileOutputStream(targetFolder + File.separator + "fees.csv");
+			c = new CSVExporter(fout, oel.getFeeCalculator().feesSeries());
+			c.write();
+			fout.close();
+		}
+
+		// generate a position chart.
+		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"),
+				ChartUtils.getStepChart("Position", oel.getPositionOverTime()), 800, 600);
 
 		//
+
+		// calculate some statistics.
+		BacktestStatistics bs = new BacktestStatistics();
+		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+
+		TSContainerMethods tcm = new TSContainerMethods();
+		pnlContainer = tcm.overwriteNull(pnlContainer);
+		pnlContainer = tcm.overwriteNull(pnlContainer, 0.0);
+		bs.calcPNLStats(pnlContainer);
+
+		TSContainer2 posOverTime = oel.getPositionOverTime();
+		posOverTime = tcm.overwriteNull(posOverTime);
+		posOverTime = tcm.overwriteNull(posOverTime, 0.0);
+		bs.calcPosStats(posOverTime);
+		bs.populateOrderStats(oel);
+
+		// dump the stats
+		try {
+			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
+			new CsvMapWriter().write(bs.getStatistics(), fout);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// generate the html report.
+		HTMLReportGen h = new HTMLReportGen(targetFolder, "./src/main/resources/templates");
+		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
+
+		// run R.
+		new RExec("/home/ustaudinger/work/activequant/trunk/src/main/resources/r/perfreport.r", new String[] {
+				targetFolder + "pnl.csv", targetFolder + "cash_positions.csv", targetFolder });
+
+	}
+
+	private TSContainer2 calcCashPositions(TSContainer2 posDeltaOverTime, TSContainer2 executionPricesOverTime) {
+		TSContainer2 cashPositionsOverTime = new TSContainer2("CASH", new ArrayList<String>(),
+				new ArrayList<TypedColumn>());
+		// calculating cash positions.
 		List<String> instruments = posDeltaOverTime.getColumnHeaders();
 		for (String tdiId : instruments) {
 			// skip the instrument lookup for now - as this is mostly a custom
@@ -210,60 +281,7 @@ public class TransactionInputToReport {
 				}
 			}
 		}
-
-		fout = new FileOutputStream(targetFolder + File.separator + "cash_positions.csv");
-		CSVExporter c = new CSVExporter(fout, cashPositionsOverTime);
-		c.write();
-		fout.close();
-		
-		// dump out the fees.
-		if (oel.getFeeCalculator() != null) {
-			//
-			fout = new FileOutputStream(targetFolder + File.separator + "fees.csv");
-			c = new CSVExporter(fout, oel.getFeeCalculator().feesSeries());
-			c.write();
-			fout.close();
-		}
-
-		// generate a position chart.
-
-		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"),
-				ChartUtils.getStepChart("Position", oel.getPositionOverTime()), 800, 600);
-
-		// calculate some statistics.
-		BacktestStatistics bs = new BacktestStatistics();
-		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-
-		
-		TSContainerMethods tcm = new TSContainerMethods();
-		pnlContainer = tcm.overwriteNull(pnlContainer);
-		pnlContainer = tcm.overwriteNull(pnlContainer, 0.0);
-		bs.calcPNLStats(pnlContainer);
-		
-		TSContainer2 posOverTime = oel.getPositionOverTime();
-		posOverTime = tcm.overwriteNull(posOverTime);
-		posOverTime = tcm.overwriteNull(posOverTime, 0.0);
-		bs.calcPosStats(posOverTime);
-		bs.populateOrderStats(oel);
-
-		// dump the stats
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
-			new CsvMapWriter().write(bs.getStatistics(), fout);
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// generate the html report.
-		HTMLReportGen h = new HTMLReportGen(targetFolder, "./src/main/resources/templates");
-		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
-
-		// run R. 
-		new RExec("/home/ustaudinger/work/activequant/trunk/src/main/resources/r/perfreport.r", 
-				new String[]{targetFolder+"pnl.csv", targetFolder+"cash_positions.csv", targetFolder});
-		
-		
+		return cashPositionsOverTime;
 	}
 
 	private void addColAndInit(TSContainer2 container, String colName, List<TimeStamp> timeStamps) {
@@ -277,13 +295,120 @@ public class TransactionInputToReport {
 		}
 	}
 
+	private class ChargedInterestRates {
+		private Map<String, Double[]> rates = new HashMap<String, Double[]>();
+
+		ChargedInterestRates() throws IOException {
+			File f1 = new File(
+					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_earned_interest_rates_9_july_2012.csv");
+			BufferedReader br = new BufferedReader(new FileReader(f1));
+			String l = br.readLine();
+			// skipping header.
+			l = br.readLine();
+			while (l != null) {
+				String[] parts = l.split(",");
+				String cncy = parts[0];
+				Double[] data = new Double[8];
+				for (int i = 1; i < parts.length; i++) {
+					if (parts[i].length() > 0) {
+						data[i - 1] = Double.parseDouble(parts[i]);
+					}
+				}
+				rates.put(cncy, data);
+				l = br.readLine();
+			}
+		}
+
+		Double getOvernightChange(String currency, Double balance) {
+			if (rates.containsKey(currency)) {
+				Double[] d = rates.get(currency);
+				double days = d[0];
+				double refRate = 0.0;
+				if (balance < d[1])
+					refRate = d[2];
+				if (balance >= d[1])
+					refRate = d[3];
+				if (balance >= d[4])
+					refRate = d[5];
+				if (d[6] != null && balance >= d[6])
+					refRate = d[7];
+
+				return balance * refRate / days;
+			} else
+				return 0.0;
+		}
+
+	}
+
+	private class EarnedInterestRates {
+		private Map<String, Double[]> rates = new HashMap<String, Double[]>();
+
+		EarnedInterestRates() throws IOException {
+			File f1 = new File(
+					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_interest_expense_rates_9_july_2012.csv");
+			BufferedReader br = new BufferedReader(new FileReader(f1));
+			String l = br.readLine();
+			// skipping header.
+			l = br.readLine();
+			while (l != null) {
+				String[] parts = l.split(",");
+				String cncy = parts[0];
+				Double[] data = new Double[7];
+				for (int i = 1; i < parts.length; i++) {
+					if (parts[i].length() > 0) {
+						data[i - 1] = Double.parseDouble(parts[i]);
+					}
+				}
+				rates.put(cncy, data);
+				l = br.readLine();
+			}
+		}
+
+		Double getOvernightChange(String currency, Double balance) {
+			if (rates.containsKey(currency)) {
+				Double[] d = rates.get(currency);
+				double days = d[0];
+				double refRate = 0.0;
+				if (balance >= d[1])
+					refRate = d[2];
+				if (balance >= d[3])
+					refRate = d[4];
+				if (d[5] != null && balance >= d[5])
+					refRate = d[6];
+
+				return balance * refRate / days;
+			} else
+				return 0.0;
+		}
+
+	}
+
+	private TSContainer2 calcInterestChanges(TimeStamp startTimeStamp, TimeStamp endTimeStamp, TSContainer2 cashPositionsOverTime) throws IOException {
+		// load the borrowing and lending reference rates.
+		ChargedInterestRates earnedIr = new ChargedInterestRates();
+		EarnedInterestRates expenseIr = new EarnedInterestRates();
+		// iterate over the days.
+		List<TypedColumn> columns = new ArrayList<TypedColumn>();
+		for (int i = 0; i < cashPositionsOverTime.getColumns().size(); i++)
+			columns.add(new DoubleColumn());
+		TSContainer2 tsc = new TSContainer2("INTEREST", cashPositionsOverTime.getColumnHeaders(), columns);
+		// get first day and last day in cash pos over time.
+
+		//
+		return null;
+
+	}
+
 	/**
 	 * @param args
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
-		new TransactionInputToReport("/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv", null, "/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/", "reporting.pecoracapital.com");
-		//new TransactionInputToReport(args[0], null, args[1], args[2]);
+		new TransactionInputToReport(
+				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv", null,
+				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/",
+				"reporting.pecoracapital.com");
+		// new TransactionInputToReport(args[0], null, args[1], args[2]);
 
 	}
 
