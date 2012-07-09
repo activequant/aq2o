@@ -16,7 +16,8 @@ import com.activequant.tools.streaming.StreamEventIterator;
 import com.activequant.tools.streaming.TimeStreamEvent;
 
 /**
- * Execting header and then date, open, high, low, close
+ * Creates a stream event iterator from a transaction file list. 
+ * Can be used to replay order fills in sync with market events, for example to generate reports. 
  * 
  * @author GhostRider
  * 
@@ -24,7 +25,6 @@ import com.activequant.tools.streaming.TimeStreamEvent;
 public class TransactionFileStreamIterator extends StreamEventIterator<TimeStreamEvent> {
 
 	private BufferedReader br;
-	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
 	private String line;
 
 	public TransactionFileStreamIterator(String fileName) throws Exception {
@@ -33,7 +33,6 @@ public class TransactionFileStreamIterator extends StreamEventIterator<TimeStrea
 		// skip header 
 		line = br.readLine();
 		line = br.readLine();
-		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 	}
 
 	@Override
@@ -45,6 +44,7 @@ public class TransactionFileStreamIterator extends StreamEventIterator<TimeStrea
 
 	/**
 	 * format documentation see
+	 * 
 	 * http://developers.activequant.org/projects/pecora/wiki
 	 */
 	@Override
@@ -76,14 +76,6 @@ public class TransactionFileStreamIterator extends StreamEventIterator<TimeStrea
 			throw new RuntimeException(e);
 		}
 
-	}
-
-	public SimpleDateFormat getSdf() {
-		return sdf;
-	}
-
-	public void setSdf(SimpleDateFormat sdf) {
-		this.sdf = sdf;
 	}
 
 }
