@@ -18,6 +18,7 @@ public class Report extends PersistentEntity {
         super(Report.class.getCanonicalName());
     }
 
+	@Property
     public String getId() {
         return id;
     }
