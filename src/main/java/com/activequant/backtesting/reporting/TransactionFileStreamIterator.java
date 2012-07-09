@@ -63,8 +63,7 @@ public class TransactionFileStreamIterator extends StreamEventIterator<TimeStrea
 			ofe.setOptionalInstId(inst);
 			ofe.setFillPrice(price);
 			ofe.setFillAmount(quantity);
-			ofe.setSide(dir);
-			ofe.setRefOrderId("-");
+			ofe.setSide(dir);			
 			ofe.setCreationTimeStamp(tsUnixGmt);
 
 			// shift it, so that it looks as if it emitted at the end of a
