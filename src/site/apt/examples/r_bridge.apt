@@ -56,5 +56,17 @@ candleChart(ohlc)
 +-----------------+
 
 
+* Calling R as an external program
+
+	Yet another approach is calling R from inside AQ through the RExec command. Note, contrary to the comfortable approach of Renjin, you cannot interact with R in a direct way in your Java program. Interaction happens through files or through your R-script. Let's make this a bit more plastic. 
 	
++---------+
+	new RExec("/home/ustaudinger/work/activequant/trunk/src/main/resources/r/perfreport.r", 
+				new String[]{targetFolder+"pnl.csv", targetFolder+"cash_positions.csv", targetFolder});
++---------+	
+	
+	This example calls a script called "perfreport.r" and passes as command line args to this script three local variables.
+	
+	 
+		
 	
