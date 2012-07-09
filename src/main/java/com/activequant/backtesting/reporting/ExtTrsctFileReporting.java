@@ -25,18 +25,18 @@ public class ExtTrsctFileReporting {
 	}
 	
 	
-	public void run(String reportId, String file) throws DaoException, FileNotFoundException, IOException{
+	public void run(String reportId, String folder) throws DaoException, FileNotFoundException, IOException{
 		Report r = reportDao.load(reportId);
 		r.setStatus("PROCESSING");
 		reportDao.update(r);
 		
 		try{
 		
-		
-
-			Thread.sleep(15000);
-
-			
+			new TransactionInputToReport(
+					folder + "/transactions.csv", null,
+					folder,
+					"localhost");
+						
 			// 
 			r.setStatus("DONE");
 			reportDao.update(r);	

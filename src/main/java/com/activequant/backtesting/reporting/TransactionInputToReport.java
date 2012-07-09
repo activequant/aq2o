@@ -152,14 +152,11 @@ public class TransactionInputToReport {
 		// generate PNL report
 		TSContainer2 pnlContainer = pnlMonitor.getCumulatedTSContainer();
 		FileOutputStream fout;
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "pnl.csv");
-			CSVExporter c = new CSVExporter(fout, pnlContainer);
-			c.write();
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		fout = new FileOutputStream(targetFolder + File.separator + "pnl.csv");
+		CSVExporter c = new CSVExporter(fout, pnlContainer);
+		c.write();
+		fout.close();
 
 		// generate a PNL chart.
 		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "pnl.png"), pnlMonitor.getStaticChart(),
@@ -172,27 +169,26 @@ public class TransactionInputToReport {
 		TSContainer2 deltaCashPositionsOverTime = calcCashPositions(posDeltaOverTime, executionPricesOverTime);
 
 		fout = new FileOutputStream(targetFolder + File.separator + "cash_positions_delta.csv");
-		CSVExporter c = new CSVExporter(fout, deltaCashPositionsOverTime);
+		c = new CSVExporter(fout, deltaCashPositionsOverTime);
 		c.write();
 		fout.close();
 
 		TSContainer2 inflatedCashPositionSeries = resampleSeries(deltaCashPositionsOverTime, timeFrame, startTimeStamp,
 				endTimeStamp);
 		// have to cumsum
-		for(int i=0;i<inflatedCashPositionSeries.getNumColumns();i++){
-			DoubleColumn dc = (DoubleColumn)inflatedCashPositionSeries.getColumns().get(i);
+		for (int i = 0; i < inflatedCashPositionSeries.getNumColumns(); i++) {
+			DoubleColumn dc = (DoubleColumn) inflatedCashPositionSeries.getColumns().get(i);
 			dc = dc.cumsum();
 			inflatedCashPositionSeries.getColumns().set(i, dc);
 		}
-		
+
 		inflatedCashPositionSeries = tcm.overwriteNull(inflatedCashPositionSeries);
 		inflatedCashPositionSeries = tcm.overwriteNull(inflatedCashPositionSeries, 0.0);
 		fout = new FileOutputStream(targetFolder + File.separator + "inflated_cash_positions.csv");
-		c = new CSVExporter(fout,inflatedCashPositionSeries);
+		c = new CSVExporter(fout, inflatedCashPositionSeries);
 		c.write();
 		fout.close();
-		
-		
+
 		// create borrowing and lending payments.
 		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, timeFrame,
 				inflatedCashPositionSeries);
@@ -224,14 +220,10 @@ public class TransactionInputToReport {
 		inflatedPositionSeries = tcm.overwriteNull(inflatedPositionSeries);
 		inflatedPositionSeries = tcm.overwriteNull(inflatedPositionSeries, 0.0);
 		fout = new FileOutputStream(targetFolder + File.separator + "inflated_positions.csv");
-		c = new CSVExporter(fout,inflatedPositionSeries);
+		c = new CSVExporter(fout, inflatedPositionSeries);
 		c.write();
 		fout.close();
-		
-		
-		
-		
-		
+
 		// calculate some statistics.
 		BacktestStatistics bs = new BacktestStatistics();
 		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
@@ -247,21 +239,19 @@ public class TransactionInputToReport {
 		bs.populateOrderStats(oel);
 
 		// dump the stats
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
-			new CsvMapWriter().write(bs.getStatistics(), fout);
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
+		new CsvMapWriter().write(bs.getStatistics(), fout);
+		fout.close();
 
 		// generate the html report.
-		HTMLReportGen h = new HTMLReportGen(targetFolder, "./src/main/resources/templates");
+		File directory = new File(".");
+		HTMLReportGen h = new HTMLReportGen(targetFolder, directory.getAbsolutePath() + "templates");
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
 		// run R.
-		new RExec("/home/ustaudinger/work/activequant/trunk/src/main/resources/r/perfreport.r", new String[] {
-				targetFolder + "pnl.csv", targetFolder + "cash_positions.csv", targetFolder });
+
+		new RExec(directory.getAbsolutePath() + "r/perfreport.r", new String[] { targetFolder + "pnl.csv",
+				targetFolder + "cash_positions.csv", targetFolder });
 
 	}
 
@@ -347,8 +337,8 @@ public class TransactionInputToReport {
 		private Map<String, Double[]> rates = new HashMap<String, Double[]>();
 
 		ChargedInterestRates() throws IOException {
-			File f1 = new File(
-					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_charged_9_july_2012.csv");
+			File directory = new File(".");
+			File f1 = new File(directory.getAbsolutePath() + "ib/ib_charged_9_july_2012.csv");
 			BufferedReader br = new BufferedReader(new FileReader(f1));
 			String l = br.readLine();
 			// skipping header.
@@ -392,8 +382,8 @@ public class TransactionInputToReport {
 		private Map<String, Double[]> rates = new HashMap<String, Double[]>();
 
 		EarnedInterestRates() throws IOException {
-			File f1 = new File(
-					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_earned_9_july_2012.csv");
+			File directory = new File(".");
+			File f1 = new File(directory.getAbsolutePath() + "ib/ib_earned_9_july_2012.csv");
 			BufferedReader br = new BufferedReader(new FileReader(f1));
 			String l = br.readLine();
 			// skipping header.
@@ -509,7 +499,7 @@ public class TransactionInputToReport {
 		new TransactionInputToReport(
 				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv", null,
 				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/",
-				"reporting.pecoracapital.com");
+				"localhost");
 		// new TransactionInputToReport(args[0], null, args[1], args[2]);
 
 	}
