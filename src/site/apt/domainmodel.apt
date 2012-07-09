@@ -4,6 +4,8 @@ Domain model
 
 	The domain model is split into an instrument section and a trading and simulation section. The latter makes only sense with the former. 
 
+	Have a look at the {{{http://activequant.org/apidocs/com/activequant/domainmodel/package-summary.html}Javadocs}}.
+
 Implementation details
 
 	The implementation evolves around a so called persistent entities (see {{{./apidocs/com/activequant/domainmodel/PersistentEntity.html}JavaDocs}}). All domain model entities should contain only Double, String and Long values and arrays thereof. The persistent entity is a smart object that can convert an object and its properties to and from a map object. The code itself is pretty lean and uses reflection a lot. In the near future, this might change, but has served very well so far. 
@@ -105,3 +107,6 @@ Domain model overview
 ** MarketDataSnapshot
 
 	Deliver market data snapshots. 		
+	
+	
+	etc. etc. etc. 
