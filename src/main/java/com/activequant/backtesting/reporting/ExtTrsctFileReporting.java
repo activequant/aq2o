@@ -29,21 +29,22 @@ public class ExtTrsctFileReporting {
 		Report r = reportDao.load(reportId);
 		r.setStatus("PROCESSING");
 		reportDao.update(r);
-		// 1) look for report configuration
-		Properties p = new Properties();
-		p.load(new FileInputStream(r.getSourceFolder()+File.separator+"config.properties"));
+		
+		try{
 		
 		
-		// 
-		
-		try {
+
 			Thread.sleep(15000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+
+			
+			// 
+			r.setStatus("DONE");
+			reportDao.update(r);	
 		}
-		// 
-		r.setStatus("DONE");
-		reportDao.update(r);
+		catch(Exception ex){
+			r.setStatus("ERROR: " + ex);
+			reportDao.update(r);
+		}
 	}
 	
 	/**
