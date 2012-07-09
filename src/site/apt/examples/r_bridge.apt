@@ -1,8 +1,31 @@
 R-Bridging
 
+	ActiveQuant knows about two approaches to bridge Java to R. First, the superb Renjin library, courtesy of {{{http://bedatadriven.com}BeDataDriven}}, is referenced in our pom and available in the source code. Second, you can use R directly to access data from AQ's archive server and its SQL database.   
+	  
+
+* Using Renjin in AQ
+
+	Accessing Renjin from an AQ project is trivial. Use the following as an inspiration. 
+	
++-------------+
+import com.activequant.utils.RenjinCore;
+
+...
+	private RenjinCore R = new RenjinCore();
+...
+	R.put("x", closes.toArray(new Double[]{}));
+	R.execute("sma = sum(x)");
+	Double sma = R.getDoubleVector("sma").getElementAsObject(0)/closes.size();
++-------------+
+	
+	This source code is taken from {{{http://developers.activequant.org:3000/projects/aq2o/repository/entry/trunk/src/main/java/com/activequant/trading/systems/sma/SimpleMovingAverage.java}AQ's simple moving average trade system example}}.
+
+	 
+* Loading data from within R
+
 	You can easily access data stored in AQ from R. Use the following as an inspirational example. You need to have the LocalJettyServer application running. 
 	
-	
+
 +-----------------+
 require(quantmod)
 convertTimeSeries <- function(d, startCol = 3){
