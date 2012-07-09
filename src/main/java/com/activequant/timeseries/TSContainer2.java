@@ -34,22 +34,20 @@ public class TSContainer2 {
 
 	private int windowSize = 0;
 
-	public TSContainer2(final String seriesId, List<String> columnHeaders,
-			List<TypedColumn> columns) {
+	public TSContainer2(final String seriesId, List<String> columnHeaders, List<TypedColumn> columns) {
 		this(seriesId, columnHeaders, columns, 0L);
 	}
-	
-	
-	public TSContainer2(final String seriesId, List<String> columnHeaders,
-			List<TypedColumn> columns, long resolutionInNanos) {
+
+	public TSContainer2(final String seriesId, List<String> columnHeaders, List<TypedColumn> columns,
+			long resolutionInNanos) {
 		// initialize the column headers. Copying into an array list to get rid
 		// of possible immutable classes.
 		this.columnHeaders = new ArrayList<String>(columnHeaders);
 		// initialize the data lists.
 		this.columns = new ArrayList<TypedColumn>();
-		for(TypedColumn tc : columns){
-			this.columns.add((TypedColumn)tc.clone());
-		}		
+		for (TypedColumn tc : columns) {
+			this.columns.add((TypedColumn) tc.clone());
+		}
 		//
 		this.seriesId = seriesId;
 		this.resolutionInNanoseconds = resolutionInNanos;
@@ -127,20 +125,20 @@ public class TSContainer2 {
 	 * @param values
 	 */
 	public void setRow(TimeStamp tsIn, Object... values) {
-		TimeStamp ts = tsIn; 
-		// check if a resolution has been set. 
-		if(resolutionInNanoseconds!=0){
-			// ok, we must snap it to the next resolution. 
-			long ns = (long) (Math.ceil((double)(tsIn.getNanoseconds()/resolutionInNanoseconds)) * resolutionInNanoseconds);
+		TimeStamp ts = tsIn;
+		// check if a resolution has been set.
+		if (resolutionInNanoseconds != 0) {
+			// ok, we must snap it to the next resolution.
+			long ns = (long) (Math.ceil((double) (tsIn.getNanoseconds() / resolutionInNanoseconds)) * resolutionInNanoseconds);
 			ts = new TimeStamp(ns);
 		}
-		
+
 		if (ts == null) {
 			throw new IllegalArgumentException("Timestamp is null");
 		}
 		if (values.length != getNumColumns()) {
-			throw new IllegalArgumentException("Values has length "
-					+ values.length + " but expected " + this.columns.size());
+			throw new IllegalArgumentException("Values has length " + values.length + " but expected "
+					+ this.columns.size());
 		}
 		int targetIndex = Collections.binarySearch(timeStamps, ts);
 
@@ -171,9 +169,9 @@ public class TSContainer2 {
 	}
 
 	/**
-	 * Set a value in a column for a specific timestamp. Will insert a double column if
-	 * not found. Will insert timestamp if not found. Rows at newly inserted
-	 * Timestamp will be initialized with null.
+	 * Set a value in a column for a specific timestamp. Will insert a double
+	 * column if not found. Will insert timestamp if not found. Rows at newly
+	 * inserted Timestamp will be initialized with null.
 	 * 
 	 * @param headerName
 	 * @param ts
@@ -181,14 +179,14 @@ public class TSContainer2 {
 	 */
 
 	public void setValue(String headerName, TimeStamp tsIn, Double value) {
-		TimeStamp ts = tsIn; 
-		// check if a resolution has been set. 
-		if(resolutionInNanoseconds!=0){
-			// ok, we must snap it to the next resolution. 
-			long ns = (long) (Math.ceil((double)(tsIn.getNanoseconds()/resolutionInNanoseconds)) * resolutionInNanoseconds);
+		TimeStamp ts = tsIn;
+		// check if a resolution has been set.
+		if (resolutionInNanoseconds != 0) {
+			// ok, we must snap it to the next resolution.
+			long ns = (long) (Math.ceil((double) (tsIn.getNanoseconds() / resolutionInNanoseconds)) * resolutionInNanoseconds);
 			ts = new TimeStamp(ns);
 		}
-		
+
 		int colIdx = getColumnIndex(headerName);
 		if (colIdx == -1) {
 			// add a column.
@@ -232,7 +230,6 @@ public class TSContainer2 {
 			delete(indexFrom);
 		}
 	}
-	
 
 	public Object[] getRow(TimeStamp ts) {
 		int index = getIndex(ts);
@@ -260,14 +257,27 @@ public class TSContainer2 {
 		return index;
 	}
 
-	// if there is a match - return index, else - return index of the
-	// closest timestamp before given one
+	/**
+	 * if there is a match - return index, else - return index of the closest
+	 * timestamp before given one
+	 * 
+	 * @param ts
+	 * @return
+	 */
 	public int getIndexBeforeOrEqual(TimeStamp ts) {
 		int targetIndex = Collections.binarySearch(timeStamps, ts);
 		if (targetIndex < 0) {
 			return Math.abs(targetIndex + 2);
 		}
 		return targetIndex;
+	}
+
+	public int getIndexBefore(TimeStamp ts) {
+		int targetIndex = Collections.binarySearch(timeStamps, ts);
+		if (targetIndex < 0) {
+			return Math.abs(targetIndex + 2);
+		}
+		return targetIndex - 1;
 	}
 
 	// if there is a match, then index + 1 is returned
@@ -370,8 +380,7 @@ public class TSContainer2 {
 	private void addValuesToColumns(TimeStamp ts, Object... values) {
 		int rowIndex = getIndex(ts);
 		for (int i = 0; i < columns.size(); i++) {
-			columns.get(i).set(rowIndex,
-					(Double) columns.get(i).get(rowIndex) + (Double) values[i]);
+			columns.get(i).set(rowIndex, (Double) columns.get(i).get(rowIndex) + (Double) values[i]);
 		}
 	}
 
@@ -397,10 +406,11 @@ public class TSContainer2 {
 		this.columnHeaders = columnHeaders;
 	}
 
-	public TSContainer2 getTimeFrame(TimeStamp tsFrom, TimeStamp tsTo) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+	public TSContainer2 getTimeFrame(TimeStamp tsFrom, TimeStamp tsTo) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException, SecurityException, NoSuchMethodException,
+			IllegalArgumentException, InvocationTargetException {
 		if (tsFrom.getMilliseconds() > tsTo.getMilliseconds()) {
-			throw new IllegalArgumentException(
-					"From time stamp should be less than To time stamp");
+			throw new IllegalArgumentException("From time stamp should be less than To time stamp");
 		}
 		List<TypedColumn> l = getColumns();
 		List<TypedColumn> l_ret = new ArrayList<TypedColumn>();
@@ -408,20 +418,20 @@ public class TSContainer2 {
 		int indexFrom = getIndexBeforeOrEqual(tsFrom);
 		int indexTo = getIndexBeforeOrEqual(tsTo);
 
-		if(indexFrom == -1 || indexTo == -1) {
+		if (indexFrom == -1 || indexTo == -1) {
 			return null;
 		}
-			
-		for(int i=0; i<l.size(); i++) {
+
+		for (int i = 0; i < l.size(); i++) {
 			Class ctClass = l.get(i).getClass();
 			Constructor constructor = ctClass.getConstructor(new Class[] { List.class });
-			Object ll = constructor.newInstance(new Object[] {l.get(i).subList(indexFrom, indexTo)});
+			Object ll = constructor.newInstance(new Object[] { l.get(i).subList(indexFrom, indexTo) });
 			l_ret.add(i, (TypedColumn) ll);
 		}
 
-		TSContainer2 tsc_ret = new TSContainer2(getSeriesId() + ":" + tsFrom.getMilliseconds() +":" + tsTo.getMilliseconds(),
-				getColumnHeaders(), l_ret);
-		tsc_ret.setTimeStamps(getTimeStamps().subList(indexFrom,  indexTo));
+		TSContainer2 tsc_ret = new TSContainer2(getSeriesId() + ":" + tsFrom.getMilliseconds() + ":"
+				+ tsTo.getMilliseconds(), getColumnHeaders(), l_ret);
+		tsc_ret.setTimeStamps(getTimeStamps().subList(indexFrom, indexTo));
 
 		return tsc_ret;
 	}
@@ -432,32 +442,32 @@ public class TSContainer2 {
 		DecimalFormat dc = new DecimalFormat("#.##########");
 
 		// output header
-		str.append( "Date\t\t\t\tMilliseconds\t\t");
+		str.append("Date\t\t\t\tMilliseconds\t\t");
 		for (String headerName : columnHeaders) {
-			str.append( headerName + "\t");
+			str.append(headerName + "\t");
 		}
-		str.append( "\n");
+		str.append("\n");
 		// output data rows
 		for (TimeStamp ts : timeStamps) {
-			str.append( ts.getDate() + "\t" + ts.toString() + "\t");
+			str.append(ts.getDate() + "\t" + ts.toString() + "\t");
 			for (int i = 0; i < this.columns.size(); i++) {
 				Object obj = columns.get(i).get(getIndex(ts));
-				
-				if(obj!=null && obj.getClass().isAssignableFrom(Double.class))
-					str.append( dc.format(obj)+ "\t");
+
+				if (obj != null && obj.getClass().isAssignableFrom(Double.class))
+					str.append(dc.format(obj) + "\t");
 				else
-					str.append( obj + "\t");
+					str.append(obj + "\t");
 			}
-			str.append( "\n");
+			str.append("\n");
 		}
 		return str.toString();
 	}
-	
+
 	/**
-	 * empties everything. 
+	 * empties everything.
 	 */
-	public void emptyColumns(){
-		for(TypedColumn tc : this.columns)
+	public void emptyColumns() {
+		for (TypedColumn tc : this.columns)
 			tc.clear();
 		this.timeStamps.clear();
 	}

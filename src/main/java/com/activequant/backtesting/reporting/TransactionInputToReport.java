@@ -184,7 +184,12 @@ public class TransactionInputToReport {
 		fout.close();
 
 		// create borrowing and lending payments.
-		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, cashPositionsOverTime);
+		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, timeFrame,
+				cashPositionsOverTime);
+		fout = new FileOutputStream(targetFolder + File.separator + "interest.csv");
+		c = new CSVExporter(fout, borrowingAndLendingContainer);
+		c.write();
+		fout.close();
 
 		// dump out the fees.
 		if (oel.getFeeCalculator() != null) {
@@ -300,7 +305,7 @@ public class TransactionInputToReport {
 
 		ChargedInterestRates() throws IOException {
 			File f1 = new File(
-					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_earned_interest_rates_9_july_2012.csv");
+					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_charged_9_july_2012.csv");
 			BufferedReader br = new BufferedReader(new FileReader(f1));
 			String l = br.readLine();
 			// skipping header.
@@ -345,7 +350,7 @@ public class TransactionInputToReport {
 
 		EarnedInterestRates() throws IOException {
 			File f1 = new File(
-					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_interest_expense_rates_9_july_2012.csv");
+					"/home/ustaudinger/work/activequant/trunk/src/main/resources/ib/ib_earned_9_july_2012.csv");
 			BufferedReader br = new BufferedReader(new FileReader(f1));
 			String l = br.readLine();
 			// skipping header.
@@ -376,26 +381,62 @@ public class TransactionInputToReport {
 				if (d[5] != null && balance >= d[5])
 					refRate = d[6];
 
-				return balance * refRate / days;
+				return balance * (refRate / 100.0) / days;
 			} else
 				return 0.0;
 		}
 
 	}
 
-	private TSContainer2 calcInterestChanges(TimeStamp startTimeStamp, TimeStamp endTimeStamp, TSContainer2 cashPositionsOverTime) throws IOException {
+	private TSContainer2 calcInterestChanges(TimeStamp startTimeStamp, TimeStamp endTimeStamp,
+			TimeFrame reportResolution, TSContainer2 cashPositionsOverTime) throws IOException {
 		// load the borrowing and lending reference rates.
-		ChargedInterestRates earnedIr = new ChargedInterestRates();
-		EarnedInterestRates expenseIr = new EarnedInterestRates();
+		ChargedInterestRates chargedIr = new ChargedInterestRates();
+		EarnedInterestRates earnedIr = new EarnedInterestRates();
 		// iterate over the days.
 		List<TypedColumn> columns = new ArrayList<TypedColumn>();
 		for (int i = 0; i < cashPositionsOverTime.getColumns().size(); i++)
 			columns.add(new DoubleColumn());
 		TSContainer2 tsc = new TSContainer2("INTEREST", cashPositionsOverTime.getColumnHeaders(), columns);
-		// get first day and last day in cash pos over time.
+		// create a sequence of days between start and end timestamp in the
+		// report resolution
 
+		List<TimeStamp> markStamps = new TSContainerMethods().getListOfTimeStamps(startTimeStamp, endTimeStamp,
+				reportResolution);
+		// ib specific: daily accruals.
+		int currentDay = Integer.parseInt(sdf.format(markStamps.get(0).getCalendar().getTime()));
+		Double[] zeroRow = new Double[columns.size()];
+		for (int i = 0; i < zeroRow.length; i++)
+			zeroRow[i] = 0.0;
+		for (TimeStamp ts : markStamps) {
+			tsc.setRow(ts, zeroRow);
+
+			int day = Integer.parseInt(sdf.format(ts.getCalendar().getTime()));
+			if (day != currentDay) {
+				int indexBefore = cashPositionsOverTime.getIndexBefore(ts);
+				if (indexBefore > -1) {
+					// ok, new day, let's book the accruals, based on
+					// yesterday's cash positions.
+					for (int i = 0; i < cashPositionsOverTime.getColumns().size(); i++) {
+						DoubleColumn dc = (DoubleColumn) cashPositionsOverTime.getColumns().get(i);
+						Double val = dc.get(indexBefore);
+						String cncy = cashPositionsOverTime.getColumnHeaders().get(i);
+						if (val != null) {
+							if (val < 0.0) {
+								Double charge = chargedIr.getOvernightChange(cncy, val);
+								tsc.setValue(cncy, ts, -charge);
+							} else if (val > 0.0) {
+								Double earnings = earnedIr.getOvernightChange(cncy, val);
+								tsc.setValue(cncy, ts, earnings);
+							}
+						}
+					}
+				}
+				currentDay = day;
+			}
+		}
 		//
-		return null;
+		return tsc;
 
 	}
 

@@ -22,9 +22,9 @@ public class TSContainerMethods {
 	}
 
 	/**
-	 * @param in 
+	 * @param in
 	 * @param newResolution
-	 * @return a NEW container. 
+	 * @return a NEW container.
 	 */
 	public TSContainer2 resample(TSContainer2 in, long newResolution) {
 		TSContainer2 ret = new TSContainer2(in.getSeriesId(), in.getColumnHeaders(), in.getColumns());
@@ -36,53 +36,53 @@ public class TSContainerMethods {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * modifys the input ts container
+	 * 
 	 * @param in
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public TSContainer2 overwriteNull(TSContainer2 in){
-		for(int i=0;i<in.getNumColumns();i++){
+	public TSContainer2 overwriteNull(TSContainer2 in) {
+		for (int i = 0; i < in.getNumColumns(); i++) {
 			Object val = null;
 			@SuppressWarnings("rawtypes")
 			TypedColumn tc = in.getColumns().get(i);
-			for(int j=0;j<in.getNumRows();j++){
+			for (int j = 0; j < in.getNumRows(); j++) {
 				Object cval = tc.get(j);
-				if(cval==null)
+				if (cval == null)
 					cval = val;
 				else
 					val = cval;
-				tc.set(j,val);
-			}			
-		}		
+				tc.set(j, val);
+			}
+		}
 		return in;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
-	public TSContainer2 overwriteNull(TSContainer2 in, Object newVal){
-		for(int i=0;i<in.getNumColumns();i++){			
+	public TSContainer2 overwriteNull(TSContainer2 in, Object newVal) {
+		for (int i = 0; i < in.getNumColumns(); i++) {
 			@SuppressWarnings("rawtypes")
 			TypedColumn tc = in.getColumns().get(i);
-			for(int j=0;j<in.getNumRows();j++){
+			for (int j = 0; j < in.getNumRows(); j++) {
 				Object cval = tc.get(j);
-				if(cval==null)
-					tc.set(j,newVal);
-			}			
-		}		
+				if (cval == null)
+					tc.set(j, newVal);
+			}
+		}
 		return in;
 	}
-	
-	public TSContainer2 injectTimeStamps(TSContainer2 in, List<TimeStamp> timeStamps){
+
+	public TSContainer2 injectTimeStamps(TSContainer2 in, List<TimeStamp> timeStamps) {
 		Object[] nullArray = new Object[in.getNumColumns()];
-		for(TimeStamp ts : timeStamps){
-			if(!in.getTimeStamps().contains(ts)){
+		for (TimeStamp ts : timeStamps) {
+			if (!in.getTimeStamps().contains(ts)) {
 				in.setRow(ts, nullArray);
 			}
 		}
-		return overwriteNull(in); 
+		return overwriteNull(in);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -169,6 +169,19 @@ public class TSContainerMethods {
 		}
 
 		return pnlsPerSlot;
+	}
+
+	public List<TimeStamp> getListOfTimeStamps(TimeStamp start, TimeStamp end, TimeFrame resolution) {
+		List<TimeStamp> ret = new ArrayList<TimeStamp>();
+
+		TimeStamp currentTimeStamp = start;
+		ret.add(currentTimeStamp);
+		while (currentTimeStamp.isBefore(end)) {
+			currentTimeStamp = new TimeStamp(currentTimeStamp.getNanoseconds() + resolution.getMinutes() * 60l * 1000l
+					* 1000l * 1000l);
+			ret.add(currentTimeStamp);
+		}
+		return ret; 
 	}
 
 }
