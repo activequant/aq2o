@@ -72,13 +72,14 @@ public class TransactionInputToReport {
 		String instrumentsInSim = properties.getProperty("instrumentsInSim", "PI_EURUSD,PI_EURGBP");
 		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "MINUTES_1"));
 		String simStart = properties.getProperty("simStart", "20120101");
-		String simEnd = properties.getProperty("simStart", "20120201");
+		String simEnd = properties.getProperty("simStart", "20120205");
 
 		//
 		TimeStamp startTimeStamp = new TimeStamp(sdf.parse(simStart));
 		TimeStamp endTimeStamp = new TimeStamp(sdf.parse(simEnd));
 
 		//
+		TSContainerMethods tcm = new TSContainerMethods();
 
 		@SuppressWarnings("rawtypes")
 		List<StreamEventIterator> streamIters = new ArrayList<StreamEventIterator>();
@@ -163,29 +164,38 @@ public class TransactionInputToReport {
 		// generate a PNL chart.
 		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "pnl.png"), pnlMonitor.getStaticChart(),
 				800, 600);
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "positions.csv");
-			CSVExporter c = new CSVExporter(fout, oel.getPositionOverTime());
-			c.write();
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		// calculate the cash positions ... beware: for currency pairs, we have
 		// two cash positions!
 		TSContainer2 posDeltaOverTime = oel.getChangeOverTime();
 		TSContainer2 executionPricesOverTime = oel.getExecutionOverTime();
-		TSContainer2 cashPositionsOverTime = calcCashPositions(posDeltaOverTime, executionPricesOverTime);
+		TSContainer2 deltaCashPositionsOverTime = calcCashPositions(posDeltaOverTime, executionPricesOverTime);
 
-		fout = new FileOutputStream(targetFolder + File.separator + "cash_positions.csv");
-		CSVExporter c = new CSVExporter(fout, cashPositionsOverTime);
+		fout = new FileOutputStream(targetFolder + File.separator + "cash_positions_delta.csv");
+		CSVExporter c = new CSVExporter(fout, deltaCashPositionsOverTime);
 		c.write();
 		fout.close();
 
+		TSContainer2 inflatedCashPositionSeries = resampleSeries(deltaCashPositionsOverTime, timeFrame, startTimeStamp,
+				endTimeStamp);
+		// have to cumsum
+		for(int i=0;i<inflatedCashPositionSeries.getNumColumns();i++){
+			DoubleColumn dc = (DoubleColumn)inflatedCashPositionSeries.getColumns().get(i);
+			dc = dc.cumsum();
+			inflatedCashPositionSeries.getColumns().set(i, dc);
+		}
+		
+		inflatedCashPositionSeries = tcm.overwriteNull(inflatedCashPositionSeries);
+		inflatedCashPositionSeries = tcm.overwriteNull(inflatedCashPositionSeries, 0.0);
+		fout = new FileOutputStream(targetFolder + File.separator + "inflated_cash_positions.csv");
+		c = new CSVExporter(fout,inflatedCashPositionSeries);
+		c.write();
+		fout.close();
+		
+		
 		// create borrowing and lending payments.
 		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, timeFrame,
-				cashPositionsOverTime);
+				inflatedCashPositionSeries);
 		fout = new FileOutputStream(targetFolder + File.separator + "interest.csv");
 		c = new CSVExporter(fout, borrowingAndLendingContainer);
 		c.write();
@@ -204,13 +214,28 @@ public class TransactionInputToReport {
 		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"),
 				ChartUtils.getStepChart("Position", oel.getPositionOverTime()), 800, 600);
 
-		//
+		fout = new FileOutputStream(targetFolder + File.separator + "positions.csv");
+		c = new CSVExporter(fout, oel.getPositionOverTime());
+		c.write();
+		fout.close();
 
+		TSContainer2 inflatedPositionSeries = resampleSeries(oel.getPositionOverTime(), timeFrame, startTimeStamp,
+				endTimeStamp);
+		inflatedPositionSeries = tcm.overwriteNull(inflatedPositionSeries);
+		inflatedPositionSeries = tcm.overwriteNull(inflatedPositionSeries, 0.0);
+		fout = new FileOutputStream(targetFolder + File.separator + "inflated_positions.csv");
+		c = new CSVExporter(fout,inflatedPositionSeries);
+		c.write();
+		fout.close();
+		
+		
+		
+		
+		
 		// calculate some statistics.
 		BacktestStatistics bs = new BacktestStatistics();
 		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
 
-		TSContainerMethods tcm = new TSContainerMethods();
 		pnlContainer = tcm.overwriteNull(pnlContainer);
 		pnlContainer = tcm.overwriteNull(pnlContainer, 0.0);
 		bs.calcPNLStats(pnlContainer);
@@ -238,6 +263,24 @@ public class TransactionInputToReport {
 		new RExec("/home/ustaudinger/work/activequant/trunk/src/main/resources/r/perfreport.r", new String[] {
 				targetFolder + "pnl.csv", targetFolder + "cash_positions.csv", targetFolder });
 
+	}
+
+	private TSContainer2 resampleSeries(TSContainer2 container, TimeFrame timeFrame, TimeStamp startTimeStamp,
+			TimeStamp endTimeStamp) {
+		// resample the position series.
+		TSContainer2 resampled = getEmptyContainer(container.getColumnHeaders(), startTimeStamp, endTimeStamp,
+				timeFrame);
+		List<String> headers = container.getColumnHeaders();
+		for (int i = 0; i < container.getTimeStamps().size(); i++) {
+			TimeStamp ts = container.getTimeStamps().get(i);
+			Object[] o = container.getRow(ts);
+			for (int j = 0; j < o.length; j++) {
+				if (o[j] != null) {
+					resampled.setValue(headers.get(j), ts, (Double) o[j]);
+				}
+			}
+		}
+		return resampled;
 	}
 
 	private TSContainer2 calcCashPositions(TSContainer2 posDeltaOverTime, TSContainer2 executionPricesOverTime) {
@@ -338,7 +381,7 @@ public class TransactionInputToReport {
 				if (d[6] != null && balance >= d[6])
 					refRate = d[7];
 
-				return balance * refRate / days;
+				return balance * (refRate / 100.0) / days;
 			} else
 				return 0.0;
 		}
@@ -388,6 +431,24 @@ public class TransactionInputToReport {
 
 	}
 
+	private TSContainer2 getEmptyContainer(List<String> headers, TimeStamp startTimeStamp, TimeStamp endTimeStamp,
+			TimeFrame reportResolution) {
+		List<TypedColumn> columns = new ArrayList<TypedColumn>();
+		for (int i = 0; i < headers.size(); i++)
+			columns.add(new DoubleColumn());
+
+		TSContainer2 tsc = new TSContainer2("-", headers, columns);
+		tsc.setResolutionInNanoseconds(reportResolution.getNanoseconds());
+
+		List<TimeStamp> markStamps = new TSContainerMethods().getListOfTimeStamps(startTimeStamp, endTimeStamp,
+				reportResolution);
+		Double[] naRow = new Double[columns.size()];
+		for (TimeStamp ts : markStamps) {
+			tsc.setRow(ts, naRow);
+		}
+		return tsc;
+	}
+
 	private TSContainer2 calcInterestChanges(TimeStamp startTimeStamp, TimeStamp endTimeStamp,
 			TimeFrame reportResolution, TSContainer2 cashPositionsOverTime) throws IOException {
 		// load the borrowing and lending reference rates.
@@ -424,7 +485,7 @@ public class TransactionInputToReport {
 						if (val != null) {
 							if (val < 0.0) {
 								Double charge = chargedIr.getOvernightChange(cncy, val);
-								tsc.setValue(cncy, ts, -charge);
+								tsc.setValue(cncy, ts, charge);
 							} else if (val > 0.0) {
 								Double earnings = earnedIr.getOvernightChange(cncy, val);
 								tsc.setValue(cncy, ts, earnings);

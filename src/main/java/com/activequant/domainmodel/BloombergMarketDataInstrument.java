@@ -2,6 +2,12 @@ package com.activequant.domainmodel;
 
 import com.activequant.utils.annotations.Property;
 
+/**
+ * Will go soon to another module. 
+ * 
+ * @author GhostRider
+ *
+ */
 public class BloombergMarketDataInstrument extends MarketDataInstrument {
 
 	private String globalBBId; 

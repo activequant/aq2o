@@ -19,4 +19,8 @@ public enum TimeFrame {
     public int getMinutes() {
         return minutes;
     }
+    
+    public long getNanoseconds(){
+    	return minutes * 60l * 1000l * 1000l * 1000l; 
+    }
 }
