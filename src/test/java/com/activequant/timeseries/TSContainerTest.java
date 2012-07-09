@@ -107,12 +107,23 @@ public class TSContainerTest extends TestCase {
 
 	@Test
 	public void testGetIndexBeforeOrEqual() {
+		System.out.println(timeSeries);
 		assertEquals(2, timeSeries.getIndexBeforeOrEqual(new TimeStamp(
 				new Date(1336305521200L))));
 		assertEquals(2, timeSeries.getIndexBeforeOrEqual(new TimeStamp(
 				new Date(1336305521250L))));
 	}
 
+
+	@Test
+	public void testGetIndexBefore() {
+		System.out.println(timeSeries);
+		assertEquals(1, timeSeries.getIndexBefore(new TimeStamp(
+				new Date(1336305521200L))));
+		assertEquals(2, timeSeries.getIndexBefore(new TimeStamp(
+				new Date(1336305521250L))));
+	}
+	
 	@Test
 	public void testGetIndexAfter() {
 		assertEquals(3, timeSeries.getIndexAfter(new TimeStamp(new Date(
