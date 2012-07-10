@@ -267,7 +267,7 @@ public class TransactionInputToReport {
 		
 		// run the freemarker wrapper. 
 		Configuration cfg = new Configuration();
-		Template tpl = cfg.getTemplate( dirPath+ "templates/perfreport.tpl");
+		Template tpl = cfg.getTemplate( "templates/perfreport.tpl");
 		OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(targetFolder+"report.html"));
 		
 		// Add the values in the datamodel
