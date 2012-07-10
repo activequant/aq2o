@@ -42,6 +42,7 @@ import com.activequant.trading.PositionRiskCalculator;
 import com.activequant.transport.ITransportFactory;
 import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.CsvMapWriter;
+import com.activequant.utils.FileUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -283,6 +284,17 @@ public class TransactionInputToReport {
 		for(String s : tids)
 			instruments.add("PI_"+s);
 		datamodel.put("instruments", instruments);		
+		
+		
+		// should also put the different calculated measures into that report ... 
+		String[] rows = FileUtils.readLines(targetFolder+"PNL_characteristics.csv");
+		String[][] cells = new String[rows.length][];
+		for(int i=0;i<rows.length;i++){
+			rows[i] = rows[i].replaceAll("\"", "");
+			cells[i]  = rows[i].split(",");
+		}
+		datamodel.put("PNL_CHARACTERISTICS", cells);
+		
 		tpl.process(datamodel, output);
 	}
 
