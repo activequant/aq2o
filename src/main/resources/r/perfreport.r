@@ -127,7 +127,7 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		characteristics["meanAbsRetPerPeriod", columnName] = mean(absReturns)
 	
 		if(!is.na(config[paste(columnName, ".START", sep=""),2])){
-			startCap = config[paste(columnName, ".START", sep=""),2] 
+			startCap = config[paste(columnName, ".STARTCAP", sep=""),2] 
 			characteristics["startCap", columnName] = startCap
 			# calculate the performance
 			absGainOverStartCap = diff(pnlData[,columnName])/startCap
