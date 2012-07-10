@@ -264,7 +264,7 @@ public class TransactionInputToReport {
 		
 		// run R.
 		new RExec(dirPath + "r/perfreport.r", new String[] { targetFolder + "pnl.csv",
-				targetFolder + "inflated_cash_positions.csv", targetFolder });
+				targetFolder + "inflated_cash_positions.csv", targetFolder, timeFrame.toString() });
 		
 		// run the freemarker wrapper. 
 		Configuration cfg = new Configuration();
