@@ -81,24 +81,23 @@
 <#list instruments as instrument>
 	<img src="PNL_QQ_${instrument}.png"/><br/>	
 </#list> 
-<!-- 
+
 <h2>Cash positions</h2>
 
 <img src="CASH_AGGREGATION.png"/><br/>
 
-<#list instruments as instrument>
+<#list CASH_INSTS as instrument>
 	<img src="CASH_CANDLE_${instrument}.png"/><br/>	
 </#list>  
 
-<#list instruments as instrument>
+<#list CASH_INSTS as instrument>
 	<img src="CASH_HIST_${instrument}.png"/><br/>	
 </#list>  
 
-<#list instruments as instrument>
+<#list CASH_INSTS as instrument>
 	<img src="CASH_QQ_${instrument}.png"/><br/>	
 </#list> 
 
--->
 
  
 </td>
