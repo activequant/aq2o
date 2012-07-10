@@ -45,23 +45,23 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		formerPeriod = -1;
 		formerValue = pnlData[1,i]; 
 		# 
-		if(targetResolution=="1M"){
+		if(targetResolution=="EOM"){
 			rsPnl = to.monthly(pnlData[,i], dropTime=TRUE)
 			formerPeriod = as.POSIXlt(index(rsPnl)[1])
 			formerPeriod$yday = formerPeriod$yday - 31 
-		} else if(targetResolution=="1m"){
+		} else if(targetResolution=="MINUTES_1"){
 			rsPnl = to.minutes(pnlData[,i], 1)
 			formerPeriod = as.POSIXlt(index(rsPnl)[1])
 			formerPeriod$min = formerPeriod$min - 1
-		} else if(targetResolution=="1h"){
+		} else if(targetResolution=="HOURS_1"){
 			rsPnl = to.hourly(pnlData[,i])
 			formerPeriod = as.POSIXlt(index(rsPnl)[1])
 			formerPeriod$hour = formerPeriod$hour - 1			
-		} else if(targetResolution=="1d"){
+		} else if(targetResolution=="EOD"){
 			rsPnl = to.daily(pnlData[,i], drop.time=TRUE)
 			formerPeriod = as.POSIXlt(index(rsPnl)[1])
 			formerPeriod$yday = formerPeriod$yday - 1
-		} else if(targetResolution=="1w"){
+		} else if(targetResolution=="EOW"){
 			rsPnl = to.weekly(pnlData[,i], drop.time=TRUE)
 			formerPeriod = as.POSIXlt(index(rsPnl)[1])
 			formerPeriod$yday = formerPeriod$yday - 7		
@@ -140,5 +140,5 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 args <- commandArgs(trailingOnly = TRUE)
 print(args)
 
-analysis(seriesCsvFile=args[1], targetFolder=args[3], fileType="PNL")
-analysis(seriesCsvFile=args[2], targetFolder=args[3], fileType="CASH"); 
+analysis(seriesCsvFile=args[1], targetFolder=args[3],targetResolution=args[4], fileType="PNL")
+analysis(seriesCsvFile=args[2], targetFolder=args[3],targetResolution=args[4], fileType="CASH"); 
