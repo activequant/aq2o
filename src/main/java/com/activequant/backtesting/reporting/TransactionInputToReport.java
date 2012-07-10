@@ -250,8 +250,8 @@ public class TransactionInputToReport {
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
 		// run R.
-		new RExec(directory.getAbsolutePath() + "/r/perfreport.r", new String[] { targetFolder + "pnl.csv",
-				targetFolder + "inflated_cash_positions.csv", targetFolder });
+		new RExec(directory.getAbsolutePath() + "/r/perfreport.r", new String[] { targetFolder + "/pnl.csv",
+				targetFolder + "/inflated_cash_positions.csv", targetFolder });
 
 	}
 
