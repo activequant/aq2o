@@ -76,7 +76,7 @@ public class TransactionInputToReport {
 		String instrumentsInSim = properties.getProperty("instrumentsInSim", "PI_EURUSD,PI_EURGBP");
 		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "HOURS_1"));
 		String simStart = properties.getProperty("simStart", "20120101");
-		String simEnd = properties.getProperty("simStart", "20120205");
+		String simEnd = properties.getProperty("simEnd", "20120205");
 		String reportId = properties.getProperty("reportId", "NOT-SET-IN-CONFIG-FILE");
 
 		//
