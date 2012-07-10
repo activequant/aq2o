@@ -256,7 +256,7 @@ public class TransactionInputToReport {
 
 		// generate the html report.
 		File dir = new File(".");		
-		String dirPath = dir.getAbsolutePath().substring(0, directory.getAbsolutePath().length()-1);
+		String dirPath = dir.getAbsolutePath().substring(0, dir.getAbsolutePath().length()-1);
 		HTMLReportGen h = new HTMLReportGen(targetFolder, dirPath + "/templates");
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
