@@ -68,8 +68,8 @@ public class TransactionInputToReport {
 	{
 		int value = 0; 
 		if(transactionCount.containsKey(tid))
-			value = (Integer)transactionCount.get(tid);
-		transactionCount.put(tid, new Integer(value+1));
+			value = Integer.parseInt(transactionCount.getProperty(tid));
+		transactionCount.put(tid, ""+(value+1));
 	}
 
 	public TransactionInputToReport(String transactionsFile, String configFile, String tgt, String archiveServer)
