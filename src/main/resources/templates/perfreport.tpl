@@ -48,7 +48,7 @@
 <h2>Monthly returns</h2>
 <#list MONTHLY_RETS as retTable>
 <hr/>
-<table>
+<table border="1">
 <#list retTable as cRow>
 	<tr>
 		<#list cRow as cCell>
@@ -81,7 +81,7 @@
 <#list instruments as instrument>
 	<img src="PNL_QQ_${instrument}.png"/><br/>	
 </#list> 
-
+<!-- 
 <h2>Cash positions</h2>
 
 <img src="CASH_AGGREGATION.png"/><br/>
@@ -98,7 +98,7 @@
 	<img src="CASH_QQ_${instrument}.png"/><br/>	
 </#list> 
 
-
+-->
 
  
 </td>
