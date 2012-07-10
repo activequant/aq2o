@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hsqldb.util.CSVWriter;
 import org.jfree.chart.ChartUtilities;
 
 import com.activequant.archive.IArchiveFactory;
@@ -60,6 +61,16 @@ public class TransactionInputToReport {
 	private String targetFolder = "./reports2";
 	private String reportCurrency;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+	private Properties transactionCount = new Properties();
+
+	private void increaseTransactionCount(String tid)
+	{
+		int value = 0; 
+		if(transactionCount.containsKey(tid))
+			value = (Integer)transactionCount.get(tid);
+		transactionCount.put(tid, new Integer(value+1));
+	}
 
 	public TransactionInputToReport(String transactionsFile, String configFile, String tgt, String archiveServer)
 			throws Exception {
@@ -128,9 +139,11 @@ public class TransactionInputToReport {
 		OrderEventListener oel = new OrderEventListener();
 		IBFXFeeCalculator feeCalculator = new IBFXFeeCalculator();
 		oel.setFeeCalculator(feeCalculator);
-
+		//
+		
+		
+		
 		// //////////////////
-
 		while (fs.moreDataInPipe()) {
 			StreamEvent se = fs.getOneFromPipes();
 			System.out.println(se.getTimeStamp().getDate());
@@ -141,10 +154,10 @@ public class TransactionInputToReport {
 				oel.eventFired((OrderFillEvent) se);
 				prc.execution(ofe.getCreationTimeStamp(), "PI_" + ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe
 						.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
+				increaseTransactionCount("PI_"+ofe.getOptionalInstId());
 			} else if (se instanceof OHLCV) {
 				OHLCV o = (OHLCV) se;
 				System.out.println(o.toString());
-
 				// use a zero-change execution to push in the price.
 				prc.execution(o.getTimeStamp(), o.getMdiId(), o.getClose(), 0.0);
 				//
@@ -251,8 +264,11 @@ public class TransactionInputToReport {
 		fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
 		new CsvMapWriter().write(bs.getStatistics(), fout);
 		fout.close();
-
+		// dump out transaction count. 
+		transactionCount.store(new FileOutputStream(targetFolder+File.separator+"transactionCount.properties"), null);
 		
+		
+		// 
 		if(!targetFolder.endsWith("/"))targetFolder = targetFolder+"/";
 
 		// generate the html report.
@@ -261,7 +277,6 @@ public class TransactionInputToReport {
 		HTMLReportGen h = new HTMLReportGen(targetFolder, dirPath + "/templates");
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
-		
 		// run R.
 		new RExec(dirPath + "r/perfreport.r", new String[] { targetFolder + "pnl.csv",
 				targetFolder + "inflated_cash_positions.csv", targetFolder, timeFrame.toString() });
@@ -284,8 +299,7 @@ public class TransactionInputToReport {
 		for(String s : tids)
 			instruments.add("PI_"+s);
 		datamodel.put("instruments", instruments);		
-		
-		
+				
 		// should also put the different calculated measures into that report ... 
 		String[] rows = FileUtils.readLines(targetFolder+"PNL_characteristics.csv");
 		String[][] cells = new String[rows.length][];
@@ -293,8 +307,8 @@ public class TransactionInputToReport {
 			rows[i] = rows[i].replaceAll("\"", "");
 			cells[i]  = rows[i].split(",");
 		}
-		datamodel.put("PNL_CHARACTERISTICS", cells);
-		
+		// 
+		datamodel.put("PNL_CHARACTERISTICS", cells);		
 		tpl.process(datamodel, output);
 	}
 
