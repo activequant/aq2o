@@ -323,6 +323,7 @@ public class TransactionInputToReport {
 					l = l.replaceAll("\"", "");
 					monthlyRets[i] = l.split(",");
 				}
+				monthlyReturnTables.add(monthlyRets);
 			}
 			catch(IOException ex){}			
 		}
