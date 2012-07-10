@@ -251,7 +251,7 @@ public class TransactionInputToReport {
 
 		// run R.
 		new RExec(directory.getAbsolutePath() + "/r/perfreport.r", new String[] { targetFolder + "pnl.csv",
-				targetFolder + "cash_positions.csv", targetFolder });
+				targetFolder + "inflated_cash_positions.csv", targetFolder });
 
 	}
 
