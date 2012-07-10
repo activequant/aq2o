@@ -90,6 +90,7 @@
 	<img src="CASH_CANDLE_${instrument}.png"/><br/>	
 </#list>  
 
+<!--
 <#list CASH_INSTS as instrument>
 	<img src="CASH_HIST_${instrument}.png"/><br/>	
 </#list>  
@@ -97,7 +98,7 @@
 <#list CASH_INSTS as instrument>
 	<img src="CASH_QQ_${instrument}.png"/><br/>	
 </#list> 
-
+-->
 
  
 </td>
