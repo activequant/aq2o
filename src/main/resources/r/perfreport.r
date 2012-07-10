@@ -6,6 +6,7 @@ cat("SOURCING PERFREPORT SCRIPT\n")
 require(xts)
 require(quantmod)
 require(fBasics)
+require(PerformanceAnalytics) 
 
 p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 	png(paste(folder, prefix, fileName, ".png", sep=""), width=cw, height=ch)
@@ -33,7 +34,11 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 	# read transaction numbers
 	transactionCount = read.csv(paste(targetFolder, "transactionCount.properties", sep=""), sep="=")
 	
+	#
+	config = read.csv(paste(targetFolder, "report.config", sep=""), sep="=")
+	rownames(config) = config[,1]
 	
+	#
 	characteristics = data.frame();
 	
 	# rs closes .. 
@@ -119,9 +124,18 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		characteristics["pnl per transaction", columnName] = transactionCount[columnName,1]/finPnl
 		characteristics["maxValue", columnName] = max(rsPnl)
 		characteristics["minValue", columnName] = min(rsPnl)
-		
-		
 		characteristics["meanAbsRetPerPeriod", columnName] = mean(absReturns)
+	
+		if(!is.na(config[paste(columnName, ".START", sep=""),2])){
+			startCap = config[paste(columnName, ".START", sep=""),2] 
+			characteristics["startCap", columnName] = startCap
+			# calculate the performance
+			absGainOverStartCap = diff(pnlData[,columnName])/startCap
+			monthlyGains = table.CalendarReturns(absGainOverStartCap)
+			write.csv(monthlyGains, paste(targetFolder, "/", fileType, "_", columnName, "_TABULARRETS.csv", sep=""))
+												
+		}
+		
 		
 		#browser()
 	}	
