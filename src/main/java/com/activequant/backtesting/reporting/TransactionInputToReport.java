@@ -308,7 +308,27 @@ public class TransactionInputToReport {
 			cells[i]  = rows[i].split(",");
 		}
 		// 
-		datamodel.put("PNL_CHARACTERISTICS", cells);		
+		datamodel.put("PNL_CHARACTERISTICS", cells);
+		//
+		
+		List<String[][]> monthlyReturnTables = new ArrayList<String[][]>();
+		
+		for(String s : tids){
+			s = "PI_"+s;
+			try{
+				String[] lines = FileUtils.readLines(targetFolder+"PNL_"+s+"_TABULARRETS.csv");
+				String[][] monthlyRets = new String[lines.length][];
+				for(int i=0;i<lines.length;i++){
+					String l = lines[i];
+					l = l.replaceAll("\"", "");
+					monthlyRets[i] = l.split(",");
+				}
+			}
+			catch(IOException ex){}			
+		}
+		datamodel.put("MONTHLY_RETS", monthlyReturnTables);
+		
+		// 
 		tpl.process(datamodel, output);
 	}
 
