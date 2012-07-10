@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +43,9 @@ import com.activequant.transport.ITransportFactory;
 import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.CsvMapWriter;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+
 /**
  * This is a very narrow implementation at the moment. As it is written in a
  * client project, this might or might not work for your use case.
@@ -73,6 +77,7 @@ public class TransactionInputToReport {
 		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "HOURS_1"));
 		String simStart = properties.getProperty("simStart", "20120101");
 		String simEnd = properties.getProperty("simStart", "20120205");
+		String reportId = properties.getProperty("reportId", "NOT-SET-IN-CONFIG-FILE");
 
 		//
 		TimeStamp startTimeStamp = new TimeStamp(sdf.parse(simStart));
@@ -87,7 +92,9 @@ public class TransactionInputToReport {
 		// initialize the market data replay streams.
 		String[] tids = instrumentsInSim.split(",");
 		for (String tid : tids) {
-			if(!tid.startsWith("PI_"))tid = "PI_"+tid;
+			if(!tid.startsWith("PI_")){
+				tid = "PI_"+tid;
+			}
 			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
 					endTimeStamp, archReader);
 			// no shifting, as PiTrading's candles are timestamped with end of
@@ -252,7 +259,26 @@ public class TransactionInputToReport {
 		// run R.
 		new RExec(directory.getAbsolutePath() + "/r/perfreport.r", new String[] { targetFolder + "/pnl.csv",
 				targetFolder + "/inflated_cash_positions.csv", targetFolder });
-
+		
+		// run the freemarker wrapper. 
+		Configuration cfg = new Configuration();
+		Template tpl = cfg.getTemplate( directory.getAbsolutePath() + "/templates/perfreport.tpl");
+		OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(targetFolder+"/report.html"));
+		
+		// Add the values in the datamodel
+		Map datamodel = new HashMap();
+		datamodel.put("REPORTID", reportId);
+		datamodel.put("RESOLUTION", timeFrame.toString());
+		datamodel.put("TIMESTAMPSTART", simStart);		
+		datamodel.put("TIMESTAMPEND", simEnd);
+		datamodel.put("MDIS", instrumentsInSim);
+		datamodel.put("TDIS", "-");
+		List<String> instruments = new ArrayList<String>();
+		instruments.add("TOTAL");
+		for(String s : tids)
+			instruments.add("PI_"+s);
+		datamodel.put("instruments", instruments);		
+		tpl.process(datamodel, output);
 	}
 
 	private TSContainer2 resampleSeries(TSContainer2 container, TimeFrame timeFrame, TimeStamp startTimeStamp,

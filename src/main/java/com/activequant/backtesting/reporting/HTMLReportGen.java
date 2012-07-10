@@ -224,7 +224,7 @@ public class HTMLReportGen {
 		// replacing all null with -
 		templateString = templateString.replace("null", "-");
 		log.info("All replaced.");
-		new FileOutputStream(targetFolder + File.separator + "report.html").write(templateString.getBytes());
+		new FileOutputStream(targetFolder + File.separator + "small_report.html").write(templateString.getBytes());
 		log.info("Written.");
 	}
 
