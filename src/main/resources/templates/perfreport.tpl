@@ -28,28 +28,23 @@
 <tr><td>Report resolution</td><td>${RESOLUTION}</td></tr>
 </table>
 
-<!-- AC_MARKER_START -->
 <table>
 <caption>Algo config</caption>
 <!-- AC_ENTRY_START --><tr><td>{KEY}</td><td>{VALUE}</td></tr><!-- AC_ENTRY_END -->
 </table>
-<!-- AC_MARKER_END -->
 
-<!-- LEG_MARKER_START -->
 <table>
-<caption>Statistics for {INSTRUMENTID}</caption>
-<tr><td>Final PNL</td><td>{FINALPNL}</td></tr>
-<tr><td>Max P&L</td><td>{MAXPNL}</td></tr>
-<!--  tr><td>Avg. P&L</td><td>{AVGSLOTPNL}</td></tr>
-<tr><td>Std.Dev of P&L</td><td>{AVGSLOTPNL}</td></tr -->
-<tr><td>P&L per trade</td><td>{PNLPERTRADE}</td></tr>
-<tr><td># orders placed</td><td>{TOTALPLACED}</td></tr>
-<tr><td># order fills</td><td>{TOTALFILLS}</td></tr>
-<tr><td># order cancellations</td><td>{TOTALORDERCNCL}</td></tr>
-</table>
-<!-- LEG_MARKER_END -->
+<caption>PNL statistics</caption>
+<#list PNL_CHARACTERISTICS as cRow>
+	<tr>
+		<#list cRow as cCell>
+			<td>${cCell}</td>		
+		</#list>
+	</tr>
+</#list>
 
-<!-- LEG_MARKER_PLACEMENT -->
+</table>
+
 
 
 </td>
@@ -68,7 +63,11 @@
 
 <#list instruments as instrument>
 	<img src="PNL_QQ_${instrument}.png"/><br/>	
-</#list>  
+</#list> 
+
+
+
+ 
 </td>
 </tr>
 </table>
