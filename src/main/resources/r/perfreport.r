@@ -32,10 +32,10 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 	colors = rainbow(nCols)
 	
 	# read transaction numbers
-	transactionCount = read.csv(paste(targetFolder, "transactionCount.properties", sep=""), sep="=")
+	transactionCount = read.csv(paste(targetFolder, "/transactionCount.properties", sep=""), sep="=")
 	
 	#
-	config = read.csv(paste(targetFolder, "report.config", sep=""), sep="=")
+	config = read.csv(paste(targetFolder, "/report.config", sep=""), sep="=")
 	rownames(config) = config[,1]
 	
 	#
