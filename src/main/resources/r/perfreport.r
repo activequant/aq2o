@@ -15,7 +15,7 @@ p <- function(fileName, folder="./", prefix="", cw = 800, ch = 600){
 
 # target resolution must be any of: 
 # RAW, 1m, 1h, 1d, 1w, 1M 
-analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/pnl.csv", fileType="PNL", targetResolution="1d", targetFolder="./", chartWidth=800, chartHeight=600){
+analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/reports2/pnl.csv", fileType="PNL", targetResolution="EOD", targetFolder="./", chartWidth=800, chartHeight=600){
 	
 	pnlData = read.csv(seriesCsvFile)
 	# convert pnl data to xts 	
@@ -32,12 +32,12 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 	colors = rainbow(nCols)
 	
 	# read transaction numbers
-	transactionCount = read.csv(paste(targetFolder, "/transactionCount.properties", sep=""), sep="=")
-	
+	transactionCount = read.csv(paste(targetFolder, "transactionCount.properties", sep=""), sep="=")
+	cat("Loaded transaction count\n")
 	#
 	config = read.csv(paste(targetFolder, "/report.config", sep=""), sep="=")
 	rownames(config) = config[,1]
-	
+	cat("Loaded config\n")
 	#
 	characteristics = data.frame();
 	
@@ -127,7 +127,8 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		characteristics["meanAbsRetPerPeriod", columnName] = mean(absReturns)
 	
 		if(!is.na(config[paste(columnName, ".START", sep=""),2])){
-			startCap = config[paste(columnName, ".STARTCAP", sep=""),2] 
+			startCap = config[paste(columnName, ".STARTCAP", sep=""),2]
+			startCap = as.double(as.matrix(startCap))			
 			characteristics["startCap", columnName] = startCap
 			# calculate the performance
 			absGainOverStartCap = diff(pnlData[,columnName])/startCap
@@ -145,7 +146,7 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		columnName = colnames(rsCloses)[i]
 		cat("Processing rs close for ", columnName, "\n")		
 		if(i==1){
-			plot(rsCloses[,i], type="l", main="Comparison of value series")
+			plot(rsCloses[,i], type="l", main="Comparison of value series", ylim=c(min(rsCloses),max(rsCloses)))
 			par(xpd=TRUE)
 			legend("topleft", legend=colnames(rsCloses), fill = colors)
 			
