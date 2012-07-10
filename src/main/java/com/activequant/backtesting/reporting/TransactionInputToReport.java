@@ -267,7 +267,6 @@ public class TransactionInputToReport {
 		// dump out transaction count. 
 		transactionCount.store(new FileOutputStream(targetFolder+File.separator+"transactionCount.properties"), "");
 		
-		
 		// 
 		if(!targetFolder.endsWith("/"))targetFolder = targetFolder+"/";
 
@@ -310,6 +309,9 @@ public class TransactionInputToReport {
 		// 
 		datamodel.put("PNL_CHARACTERISTICS", cells);
 		//
+		
+		datamodel.put("CASH_INSTS", inflatedCashPositionSeries.getColumnHeaders());
+		
 		
 		List<String[][]> monthlyReturnTables = new ArrayList<String[][]>();
 		
