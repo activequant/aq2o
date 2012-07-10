@@ -81,7 +81,7 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		# generate candle chart
 		p(columnName, folder=targetFolder, prefix=paste(fileType,"_CANDLE_", sep=""), cw=chartWidth, ch=chartHeight)
 		#browser()
-		candleChart(rsPnl, main=columnName, theme="white", TA="addEMA()")
+		candleChart(rsPnl, title=columnName, theme="white", TA="addEMA()")
 		dev.off()
 		# generate a plain line chart. 
 		p(columnName, folder=targetFolder, prefix=paste(fileType, "_LINE_", sep=""), cw=chartWidth, ch=chartHeight)
