@@ -265,7 +265,7 @@ public class TransactionInputToReport {
 		new CsvMapWriter().write(bs.getStatistics(), fout);
 		fout.close();
 		// dump out transaction count. 
-		transactionCount.store(new FileOutputStream(targetFolder+File.separator+"transactionCount.properties"), null);
+		transactionCount.store(new FileOutputStream(targetFolder+File.separator+"transactionCount.properties"), "");
 		
 		
 		// 
