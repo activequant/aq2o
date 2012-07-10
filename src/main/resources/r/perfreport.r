@@ -30,6 +30,10 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 	# create a colour palette	
 	colors = rainbow(nCols)
 	
+	# read transaction numbers
+	transactionCount = read.csv(paste(targetFolder, "transactionCount.properties", sep=""), sep="=")
+	
+	
 	characteristics = data.frame();
 	
 	# rs closes .. 
@@ -109,9 +113,14 @@ analysis <- function(seriesCsvFile="/home/ustaudinger/work/activequant/trunk/rep
 		characteristics["kurtosis", columnName] = kurtosis(absReturns)
 		
 		characteristics["startCash", columnName] = as.double(first(rsPnl)[,1])
-		characteristics["finalValue", columnName] = as.double(last(rsPnl)[,4])
+		finPnl = as.double(last(rsPnl)[,4]) 
+		characteristics["finalValue", columnName] = finPnl 
+		characteristics["transactions", columnName] = transactionCount[columnName,1]
+		characteristics["pnl per transaction", columnName] = transactionCount[columnName,1]/finPnl
 		characteristics["maxValue", columnName] = max(rsPnl)
 		characteristics["minValue", columnName] = min(rsPnl)
+		
+		
 		characteristics["meanAbsRetPerPeriod", columnName] = mean(absReturns)
 		
 		#browser()
