@@ -251,19 +251,24 @@ public class TransactionInputToReport {
 		new CsvMapWriter().write(bs.getStatistics(), fout);
 		fout.close();
 
+		
+		if(!targetFolder.endsWith("/"))targetFolder = targetFolder+"/";
+
 		// generate the html report.
-		File directory = new File(".");
-		HTMLReportGen h = new HTMLReportGen(targetFolder, directory.getAbsolutePath() + "/templates");
+		File dir = new File(".");		
+		String dirPath = dir.getAbsolutePath().substring(0, directory.getAbsolutePath().length()-1);
+		HTMLReportGen h = new HTMLReportGen(targetFolder, dirPath + "/templates");
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
+		
 		// run R.
-		new RExec(directory.getAbsolutePath() + "/r/perfreport.r", new String[] { targetFolder + "/pnl.csv",
-				targetFolder + "/inflated_cash_positions.csv", targetFolder });
+		new RExec(dirPath + "r/perfreport.r", new String[] { targetFolder + "pnl.csv",
+				targetFolder + "inflated_cash_positions.csv", targetFolder });
 		
 		// run the freemarker wrapper. 
 		Configuration cfg = new Configuration();
-		Template tpl = cfg.getTemplate( directory.getAbsolutePath() + "/templates/perfreport.tpl");
-		OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(targetFolder+"/report.html"));
+		Template tpl = cfg.getTemplate( dirPath+ "templates/perfreport.tpl");
+		OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(targetFolder+"report.html"));
 		
 		// Add the values in the datamodel
 		Map datamodel = new HashMap();
