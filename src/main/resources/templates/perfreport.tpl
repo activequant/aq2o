@@ -45,10 +45,27 @@
 
 </table>
 
+<h2>Monthly returns</h2>
+<#list MONTHLY_RETS as retTable>
+<hr/>
+<table>
+<#list retTable as cRow>
+	<tr>
+		<#list cRow as cCell>
+			<td>${cCell}</td>		
+		</#list>
+	</tr>
+</#list>
+
+</table>
+</#list>
+
 
 
 </td>
 <td class="pnlTD">
+<h2>Pnl</h2>
+
 <img src="pnl.png"/><br/>
 <img src="position.png"/><br/>
 <img src="PNL_AGGREGATION.png"/><br/>
@@ -63,6 +80,22 @@
 
 <#list instruments as instrument>
 	<img src="PNL_QQ_${instrument}.png"/><br/>	
+</#list> 
+
+<h2>Cash positions</h2>
+
+<img src="CASH_AGGREGATION.png"/><br/>
+
+<#list instruments as instrument>
+	<img src="CASH_CANDLE_${instrument}.png"/><br/>	
+</#list>  
+
+<#list instruments as instrument>
+	<img src="CASH_HIST_${instrument}.png"/><br/>	
+</#list>  
+
+<#list instruments as instrument>
+	<img src="CASH_QQ_${instrument}.png"/><br/>	
 </#list> 
 
 
