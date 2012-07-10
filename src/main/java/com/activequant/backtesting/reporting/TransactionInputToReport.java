@@ -70,7 +70,7 @@ public class TransactionInputToReport {
 
 		System.out.println("ArchiveReader fetched.");
 		String instrumentsInSim = properties.getProperty("instrumentsInSim", "PI_EURUSD,PI_EURGBP");
-		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "MINUTES_1"));
+		TimeFrame timeFrame = TimeFrame.valueOf(properties.getProperty("resolution", "HOURS_1"));
 		String simStart = properties.getProperty("simStart", "20120101");
 		String simEnd = properties.getProperty("simStart", "20120205");
 
@@ -87,6 +87,7 @@ public class TransactionInputToReport {
 		// initialize the market data replay streams.
 		String[] tids = instrumentsInSim.split(",");
 		for (String tid : tids) {
+			if(!tid.startsWith("PI_"))tid = "PI_"+tid;
 			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
 					endTimeStamp, archReader);
 			// no shifting, as PiTrading's candles are timestamped with end of
@@ -245,12 +246,11 @@ public class TransactionInputToReport {
 
 		// generate the html report.
 		File directory = new File(".");
-		HTMLReportGen h = new HTMLReportGen(targetFolder, directory.getAbsolutePath() + "templates");
+		HTMLReportGen h = new HTMLReportGen(targetFolder, directory.getAbsolutePath() + "/templates");
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
 		// run R.
-
-		new RExec(directory.getAbsolutePath() + "r/perfreport.r", new String[] { targetFolder + "pnl.csv",
+		new RExec(directory.getAbsolutePath() + "/r/perfreport.r", new String[] { targetFolder + "pnl.csv",
 				targetFolder + "cash_positions.csv", targetFolder });
 
 	}
@@ -338,7 +338,7 @@ public class TransactionInputToReport {
 
 		ChargedInterestRates() throws IOException {
 			File directory = new File(".");
-			File f1 = new File(directory.getAbsolutePath() + "ib/ib_charged_9_july_2012.csv");
+			File f1 = new File(directory.getAbsolutePath() + "/ib/ib_charged_9_july_2012.csv");
 			BufferedReader br = new BufferedReader(new FileReader(f1));
 			String l = br.readLine();
 			// skipping header.
@@ -383,7 +383,7 @@ public class TransactionInputToReport {
 
 		EarnedInterestRates() throws IOException {
 			File directory = new File(".");
-			File f1 = new File(directory.getAbsolutePath() + "ib/ib_earned_9_july_2012.csv");
+			File f1 = new File(directory.getAbsolutePath() + "/ib/ib_earned_9_july_2012.csv");
 			BufferedReader br = new BufferedReader(new FileReader(f1));
 			String l = br.readLine();
 			// skipping header.
@@ -496,11 +496,11 @@ public class TransactionInputToReport {
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
-		new TransactionInputToReport(
+		/*new TransactionInputToReport(
 				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv", null,
 				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/",
-				"localhost");
-		// new TransactionInputToReport(args[0], null, args[1], args[2]);
+				"reporting.pecoracapital.com");*/
+		new TransactionInputToReport(args[0], args[1], args[2], args[3]);
 
 	}
 

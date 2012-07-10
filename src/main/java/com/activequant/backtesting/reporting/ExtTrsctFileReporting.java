@@ -33,7 +33,7 @@ public class ExtTrsctFileReporting {
 		try{
 		
 			new TransactionInputToReport(
-					folder + "/transactions.csv", null,
+					folder + "/transactions.csv", folder + "/report.config",
 					folder,
 					"localhost");
 						
