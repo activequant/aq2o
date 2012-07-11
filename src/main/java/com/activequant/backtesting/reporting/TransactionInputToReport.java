@@ -682,16 +682,16 @@ public class TransactionInputToReport {
 		 * "/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/"
 		 * , "reporting.pecoracapital.com");
 		 */
-		// new TransactionInputToReport(args[0], args[1], args[2], args[3]);
+		new TransactionInputToReport(args[0], args[1], args[2], args[3]);
 
-		//
-		SimpleDateFormat newYorkTimeFormatter = new SimpleDateFormat("HH");
-		newYorkTimeFormatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-
-		//
-		SimpleDateFormat localTimeFormatter = new SimpleDateFormat("HH");
-
-		System.out.println(newYorkTimeFormatter.format(new Date()) + " -- " + localTimeFormatter.format(new Date()));
+//		//
+//		SimpleDateFormat newYorkTimeFormatter = new SimpleDateFormat("HH");
+//		newYorkTimeFormatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+//
+//		//
+//		SimpleDateFormat localTimeFormatter = new SimpleDateFormat("HH");
+//
+//		System.out.println(newYorkTimeFormatter.format(new Date()) + " -- " + localTimeFormatter.format(new Date()));
 
 	}
 
