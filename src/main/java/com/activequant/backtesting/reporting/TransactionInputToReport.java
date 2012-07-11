@@ -175,8 +175,7 @@ public class TransactionInputToReport {
 
 		List<String> enrichedTransactions = feeCalculator.getRows();
 		FileUtils.writeLines(enrichedTransactions, new FileOutputStream(targetFolder + File.separator + "enriched_transactions.csv"));
-		
-		
+				
 		System.out.println("*************** REPLAY DONE ");
 		// ///////////////////
 
