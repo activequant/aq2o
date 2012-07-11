@@ -24,9 +24,9 @@ public class DoubleColumn extends TypedColumn<Double> {
 	}
 
 	/**
-	 * Calculates the cumulated sum
+	 * Calculates the cumulated sum. if a value is null, it is ignored and treated like 0.0. 
 	 * 
-	 * @return
+	 * @return a new column with cumsums
 	 */
 	public DoubleColumn cumsum() {
 		DoubleColumn ret = new DoubleColumn();

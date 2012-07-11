@@ -38,13 +38,14 @@ public class PositionRiskCalculator implements IRiskCalculator {
 	}
 
 	/**
-	 * This one can be used to make the pos risk calculator recompue pnl. 
+	 * This one can be used to make the pos risk calculator recompute pnl by setting a price with zero quantity
 	 */
-	public void execution(TimeStamp ts, String tid, double price, double quantity) {
-		pnl(ts, tid, price, quantity);
+	public PNLChangeEvent execution(TimeStamp ts, String tid, double price, double quantity) {
+		return pnl(ts, tid, price, quantity);
 	}
 
-	private void pnl(TimeStamp ts, String tid, double price, double posChange) {
+	private PNLChangeEvent pnl(TimeStamp ts, String tid, double price, double posChange) {
+		PNLChangeEvent pce = null; 
 		Double formerPos = positions.get(tid);
 		Double lastValuationPrice = lastValPrices.get(tid);
 		if (formerPos == null) {
@@ -54,7 +55,7 @@ public class PositionRiskCalculator implements IRiskCalculator {
 		if (formerPos != 0.0) {
 			// revalue the former position.
 			double pnlChange = (price - lastValuationPrice) * formerPos;
-			PNLChangeEvent pce = new PNLChangeEvent(ts, tid, pnlChange);
+			pce = new PNLChangeEvent(ts, tid, pnlChange);
 			try {
 				riskDataPublisher.send(pce);
 			} catch (Exception e) {
@@ -64,10 +65,12 @@ public class PositionRiskCalculator implements IRiskCalculator {
 		if(posChange!=0.0)
 			positions.put(tid, formerPos + posChange);
 		lastValPrices.put(tid, price);
+		return pce; 
 	}
 
 	@Override
-	public void pricesUpdated(int rowIndex) {
+	public PNLChangeEvent pricesUpdated(int rowIndex) {
+		PNLChangeEvent pce = null; 
 		if (tsBase.getCurrentMinute() != lastMinute) {
 			String mdiId = (String) tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.INSTRUMENTID.colIdx());
 			// get the tradeable ID.
@@ -83,10 +86,11 @@ public class PositionRiskCalculator implements IRiskCalculator {
 					valPrice = (Double) tsBase.getQuoteTable().getCell(rowIndex, QuoteTable.Columns.ASK.colIdx());
 				//
 				if (valPrice != null)
-					pnl(tsBase.currentTime, tid, valPrice, 0.0);
+					pce = pnl(tsBase.currentTime, tid, valPrice, 0.0);
 			}
 			lastMinute = tsBase.getCurrentMinute();
 		}
+		return null; 
 	}
 	
 	

@@ -1,8 +1,10 @@
 package com.activequant.backtesting;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,6 +31,11 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 	private double commissionBps = 0.2; //
 	private double tickSizeAcctCurrency = 0.0001;
 	private TSContainer2 feeSeries = new TSContainer2("FEES", new ArrayList<String>(), new ArrayList<TypedColumn>());
+	
+	// very dirty and against engineering ethics: nonreusable code below. 
+	private final List<String> rows = new ArrayList<String>();
+	private DecimalFormat dcf = new DecimalFormat("#.######");
+	
 	
 	public void updateRefRate(String id, Double ref){
 		conversionSheet.put(id, ref);
@@ -64,13 +71,21 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			double tradedValueInUsd = conversionRate * tradedValueInQuotee; 
 			double commission = Math.max((0.2 * tickSizeAcctCurrency * tradedValueInUsd), 2.50);
 			// track it. 
-			feeSeries.setValue(tid, ofe.getCreationTimeStamp(), commission);			
+			feeSeries.setValue(tid, ofe.getCreationTimeStamp(), commission);		
+			
+			// dump a row. 
+			String row = ofe.getId()+";"+ofe.getCreationTimeStamp().getNanoseconds() +";"+ofe.getOptionalInstId()+";";
+			row+=dcf.format(ofe.getFillAmount())+";"+dcf.format(ofe.getFillPrice())+";";
+			row+=dcf.format(conversionRate) + ";"+ dcf.format(tradedValueInQuotee)+";"+dcf.format(tradedValueInUsd)+";"+dcf.format(commission)+"\n";
+			rows.add(row);
+			
+			
 		}
 	}
 
 	
 	/**
-	 * iterates over the quote sheets to find the first matching pair to convert baed on base or quotee to USD. 
+	 * iterates over the quote sheets to find the first matching pair to convert based on base or quotee to USD. 
 	 * 
 	 * @param base
 	 * @param quotee
@@ -114,5 +129,10 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 	public TSContainer2 feesSeries() {
 		return feeSeries;
 	}
+
+	public List<String> getRows() {
+		return rows;
+	}
+
 
 }

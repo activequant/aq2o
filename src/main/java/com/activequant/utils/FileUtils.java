@@ -24,12 +24,15 @@
 package com.activequant.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -97,6 +100,17 @@ public class FileUtils {
         }
         return r.toArray(new String[] {});
     }
+    
+    public static void writeLines(List<String> lines, OutputStream in) throws IOException {
+        
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(in));
+        for(String s : lines){
+        	bw.write(s);
+        	bw.newLine();
+        }
+        bw.close();
+    }
+    
     
     public static String readFully(InputStream in ) throws IOException {
     	StringBuffer sb = new StringBuffer() ;

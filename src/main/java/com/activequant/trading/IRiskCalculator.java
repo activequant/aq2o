@@ -1,6 +1,7 @@
 package com.activequant.trading;
 
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.tools.streaming.PNLChangeEvent;
 import com.activequant.transport.ITransportFactory;
 
 public interface IRiskCalculator {
@@ -14,11 +15,11 @@ public interface IRiskCalculator {
 	 * to indicate which position row changed. 
 	 * @param rowIndex
 	 */
-	void execution(TimeStamp ts, String tradInstId, double price, double quantity);
+	PNLChangeEvent execution(TimeStamp ts, String tradInstId, double price, double quantity);
 	
 	/**
 	 * to indicate with price row changed. 
 	 * @param rowIndex
 	 */
-	void pricesUpdated(int rowIndex);
+	PNLChangeEvent pricesUpdated(int rowIndex);
 }
