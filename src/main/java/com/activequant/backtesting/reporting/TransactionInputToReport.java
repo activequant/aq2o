@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 
-import org.hsqldb.util.CSVWriter;
 import org.jfree.chart.ChartUtilities;
 
 import com.activequant.archive.IArchiveFactory;
@@ -37,6 +37,7 @@ import com.activequant.timeseries.DoubleColumn;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TSContainerMethods;
 import com.activequant.timeseries.TypedColumn;
+import com.activequant.tools.streaming.PNLChangeEvent;
 import com.activequant.tools.streaming.StreamEvent;
 import com.activequant.tools.streaming.StreamEventIterator;
 import com.activequant.trading.PositionRiskCalculator;
@@ -64,12 +65,11 @@ public class TransactionInputToReport {
 
 	private Properties transactionCount = new Properties();
 
-	private void increaseTransactionCount(String tid)
-	{
-		int value = 0; 
-		if(transactionCount.containsKey(tid))
+	private void increaseTransactionCount(String tid) {
+		int value = 0;
+		if (transactionCount.containsKey(tid))
 			value = Integer.parseInt(transactionCount.getProperty(tid));
-		transactionCount.put(tid, ""+(value+1));
+		transactionCount.put(tid, "" + (value + 1));
 	}
 
 	public TransactionInputToReport(String transactionsFile, String configFile, String tgt, String archiveServer)
@@ -104,8 +104,8 @@ public class TransactionInputToReport {
 		// initialize the market data replay streams.
 		String[] tids = instrumentsInSim.split(",");
 		for (String tid : tids) {
-			if(!tid.startsWith("PI_")){
-				tid = "PI_"+tid;
+			if (!tid.startsWith("PI_")) {
+				tid = "PI_" + tid;
 			}
 			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
 					endTimeStamp, archReader);
@@ -140,9 +140,7 @@ public class TransactionInputToReport {
 		IBFXFeeCalculator feeCalculator = new IBFXFeeCalculator();
 		oel.setFeeCalculator(feeCalculator);
 		//
-		
-		
-		
+
 		// //////////////////
 		while (fs.moreDataInPipe()) {
 			StreamEvent se = fs.getOneFromPipes();
@@ -152,18 +150,33 @@ public class TransactionInputToReport {
 				feeCalculator.updateRefRate(ofe.getOptionalInstId(), ofe.getFillPrice());
 				// order event listener also holds the fee calculator
 				oel.eventFired((OrderFillEvent) se);
-				prc.execution(ofe.getCreationTimeStamp(), "PI_" + ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe
+				PNLChangeEvent pce = prc.execution(ofe.getCreationTimeStamp(), "PI_" + ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe
 						.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
-				increaseTransactionCount("PI_"+ofe.getOptionalInstId());
+				increaseTransactionCount("PI_" + ofe.getOptionalInstId());
 			} else if (se instanceof OHLCV) {
 				OHLCV o = (OHLCV) se;
 				System.out.println(o.toString());
 				// use a zero-change execution to push in the price.
-				prc.execution(o.getTimeStamp(), o.getMdiId(), o.getClose(), 0.0);
+				PNLChangeEvent pce =  prc.execution(o.getTimeStamp(), o.getMdiId(), o.getClose(), 0.0);
+				// create a fake order fill event, so that we have a valuation
+				// price ...
+				OrderFillEvent ofe = new OrderFillEvent();
+				ofe.setOptionalInstId(o.getMdiId());
+				ofe.setFillAmount(0.0);
+				ofe.setSide("BUY");
+				ofe.setFillPrice(o.getClose());
+				ofe.setCreationTimeStamp(o.getTimeStamp());
+				oel.eventFired(ofe);
 				//
-			}
+			}			
+			// track the pnl change in USD. 
+			// 
 		}
 
+		List<String> enrichedTransactions = feeCalculator.getRows();
+		FileUtils.writeLines(enrichedTransactions, new FileOutputStream(targetFolder + File.separator + "enriched_transactions.csv"));
+		
+		
 		System.out.println("*************** REPLAY DONE ");
 		// ///////////////////
 
@@ -195,25 +208,34 @@ public class TransactionInputToReport {
 		c.write();
 		fout.close();
 
-		TSContainer2 inflatedCashPositionSeries = resampleSeries(deltaCashPositionsOverTime, timeFrame, startTimeStamp,
-				endTimeStamp);
+		//
+		TSContainer2 inflatedCashPositionSeries = resampleSeries(deltaCashPositionsOverTime, TimeFrame.HOURS_1,
+				startTimeStamp, endTimeStamp);
 		// have to cumsum
 		for (int i = 0; i < inflatedCashPositionSeries.getNumColumns(); i++) {
 			DoubleColumn dc = (DoubleColumn) inflatedCashPositionSeries.getColumns().get(i);
 			dc = dc.cumsum();
 			inflatedCashPositionSeries.getColumns().set(i, dc);
 		}
-
 		inflatedCashPositionSeries = tcm.overwriteNull(inflatedCashPositionSeries);
 		inflatedCashPositionSeries = tcm.overwriteNull(inflatedCashPositionSeries, 0.0);
+
+		// create borrowing and lending payments.
+		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp,
+				TimeFrame.HOURS_1, inflatedCashPositionSeries);
+
+		// resample from high resolution to report resolution
+		inflatedCashPositionSeries = resampleSeries(inflatedCashPositionSeries, timeFrame, startTimeStamp, endTimeStamp);
+		borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, timeFrame,
+				borrowingAndLendingContainer);
+
+		// dump the inflated cash positions
 		fout = new FileOutputStream(targetFolder + File.separator + "inflated_cash_positions.csv");
 		c = new CSVExporter(fout, inflatedCashPositionSeries);
 		c.write();
 		fout.close();
 
-		// create borrowing and lending payments.
-		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, timeFrame,
-				inflatedCashPositionSeries);
+		// dump the interest charges/earnings
 		fout = new FileOutputStream(targetFolder + File.separator + "interest.csv");
 		c = new CSVExporter(fout, borrowingAndLendingContainer);
 		c.write();
@@ -264,75 +286,146 @@ public class TransactionInputToReport {
 		fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
 		new CsvMapWriter().write(bs.getStatistics(), fout);
 		fout.close();
-		// dump out transaction count. 
-		transactionCount.store(new FileOutputStream(targetFolder+File.separator+"transactionCount.properties"), "");
-		
-		// 
-		if(!targetFolder.endsWith("/"))targetFolder = targetFolder+"/";
+		// dump out transaction count.
+		transactionCount.store(new FileOutputStream(targetFolder + File.separator + "transactionCount.properties"), "");
+
+		//
+		if (!targetFolder.endsWith("/"))
+			targetFolder = targetFolder + "/";
 
 		// generate the html report.
-		File dir = new File(".");		
-		String dirPath = dir.getAbsolutePath().substring(0, dir.getAbsolutePath().length()-1);
+		File dir = new File(".");
+		String dirPath = dir.getAbsolutePath().substring(0, dir.getAbsolutePath().length() - 1);
 		HTMLReportGen h = new HTMLReportGen(targetFolder, dirPath + "/templates");
 		h.genReport(new AlgoConfig[] {}, oel, pnlMonitor, null);
 
 		// run R.
 		new RExec(dirPath + "r/perfreport.r", new String[] { targetFolder + "pnl.csv",
 				targetFolder + "inflated_cash_positions.csv", targetFolder, timeFrame.toString() });
-		
-		// run the freemarker wrapper. 
+
+		// run the freemarker wrapper.
 		Configuration cfg = new Configuration();
-		Template tpl = cfg.getTemplate( "templates/perfreport.tpl");
-		OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(targetFolder+"report.html"));
-		
+		Template tpl = cfg.getTemplate("templates/perfreport.tpl");
+		OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(targetFolder + "report.html"));
+
 		// Add the values in the datamodel
 		Map datamodel = new HashMap();
 		datamodel.put("REPORTID", reportId);
 		datamodel.put("RESOLUTION", timeFrame.toString());
-		datamodel.put("TIMESTAMPSTART", simStart);		
+		datamodel.put("TIMESTAMPSTART", simStart);
 		datamodel.put("TIMESTAMPEND", simEnd);
 		datamodel.put("MDIS", instrumentsInSim);
 		datamodel.put("TDIS", "-");
 		List<String> instruments = new ArrayList<String>();
 		instruments.add("TOTAL");
-		for(String s : tids)
-			instruments.add("PI_"+s);
-		datamodel.put("instruments", instruments);		
-				
-		// should also put the different calculated measures into that report ... 
-		String[] rows = FileUtils.readLines(targetFolder+"PNL_characteristics.csv");
+		for (String s : tids)
+			instruments.add("PI_" + s);
+		datamodel.put("instruments", instruments);
+
+		// should also put the different calculated measures into that report
+		// ...
+		String[] rows = FileUtils.readLines(targetFolder + "PNL_characteristics.csv");
 		String[][] cells = new String[rows.length][];
-		for(int i=0;i<rows.length;i++){
+		for (int i = 0; i < rows.length; i++) {
 			rows[i] = rows[i].replaceAll("\"", "");
-			cells[i]  = rows[i].split(",");
+			cells[i] = rows[i].split(",");
 		}
-		// 
+		//
 		datamodel.put("PNL_CHARACTERISTICS", cells);
 		//
-		
+
 		datamodel.put("CASH_INSTS", inflatedCashPositionSeries.getColumnHeaders());
-		
-		
+
 		List<String[][]> monthlyReturnTables = new ArrayList<String[][]>();
-		
-		for(String s : tids){
-			s = "PI_"+s;
-			try{
-				String[] lines = FileUtils.readLines(targetFolder+"PNL_"+s+"_TABULARRETS.csv");
+
+		for (String s : tids) {
+			s = "PI_" + s;
+			try {
+				String[] lines = FileUtils.readLines(targetFolder + "PNL_" + s + "_TABULARRETS.csv");
 				String[][] monthlyRets = new String[lines.length][];
-				for(int i=0;i<lines.length;i++){
+				for (int i = 0; i < lines.length; i++) {
 					String l = lines[i];
 					l = l.replaceAll("\"", "");
 					monthlyRets[i] = l.split(",");
 				}
 				monthlyReturnTables.add(monthlyRets);
+			} catch (IOException ex) {
 			}
-			catch(IOException ex){}			
 		}
 		datamodel.put("MONTHLY_RETS", monthlyReturnTables);
-		
-		// 
+
+		//
 		tpl.process(datamodel, output);
+	}
+	
+	/**
+	 * this one can do only one-hop conversions. The columnnames in the series container must be the currency pair. 
+	 * 
+	 * @param seriesContainer
+	 * @param seriesCurrency
+	 * @param timeFrame
+	 * @param startTimeStamp
+	 * @param endTimeStamp
+	 * @return
+	 */
+	private TSContainer2 convertSeriesToUSD(TSContainer2 seriesContainer, TimeFrame timeFrame, TimeStamp startTimeStamp,
+			TimeStamp endTimeStamp) {
+		
+		List<String> colHeaders = seriesContainer.getColumnHeaders();
+		List<TypedColumn> columns = new ArrayList<TypedColumn>();
+		for(String s: colHeaders)
+		{
+			columns.add(new DoubleColumn());
+		}
+		
+		TSContainer2 converted = new TSContainer2("CONVERTEDTOUSD", colHeaders, columns, timeFrame.getNanoseconds());
+		
+		for(String tid : colHeaders){
+			// 			
+			
+			
+			
+			//
+		}
+		
+//		
+//		
+//		//
+//		ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
+//				endTimeStamp, archReader);				
+//		while(a.hasNext()){
+//			OHLCV o = a.next();
+//		}	
+//		
+//		
+//		// 
+//					String tid = ofe.getOptionalInstId();
+//					
+//					
+//					double volume = ofe.getFillAmount();
+//					double execPrice = ofe.getFillPrice();
+//					// 
+//					double tradedValueInQuotee = volume * execPrice; 
+//					String base = tid.substring(0,3);
+//					String quotee = tid.substring(3);
+//					
+//					double conversionRate = 1.0;
+//					if(base.equals("USD")){
+//						conversionRate = 1.0/execPrice; 
+//					}
+//					else if(quotee.equals("USD")){
+//						conversionRate = 1.0; 
+//					}
+//					else{
+//						conversionRate = getConversionRate(base, quotee, execPrice);
+//					}
+//					 
+//					double tradedValueInUsd = conversionRate * tradedValueInQuotee; 
+//					double commission = Math.max((0.2 * tickSizeAcctCurrency * tradedValueInUsd), 2.50);
+//		
+//		
+		// 
+		return null; 
 	}
 
 	private TSContainer2 resampleSeries(TSContainer2 container, TimeFrame timeFrame, TimeStamp startTimeStamp,
@@ -528,23 +621,30 @@ public class TransactionInputToReport {
 		List<TypedColumn> columns = new ArrayList<TypedColumn>();
 		for (int i = 0; i < cashPositionsOverTime.getColumns().size(); i++)
 			columns.add(new DoubleColumn());
+		//
 		TSContainer2 tsc = new TSContainer2("INTEREST", cashPositionsOverTime.getColumnHeaders(), columns);
-		// create a sequence of days between start and end timestamp in the
-		// report resolution
 
 		List<TimeStamp> markStamps = new TSContainerMethods().getListOfTimeStamps(startTimeStamp, endTimeStamp,
 				reportResolution);
-		// ib specific: daily accruals.
-		int currentDay = Integer.parseInt(sdf.format(markStamps.get(0).getCalendar().getTime()));
+
+		//
+		SimpleDateFormat newYorkTimeFormatter = new SimpleDateFormat("HH");
+		newYorkTimeFormatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+
+		// ib specific: daily accruals at 5 PM EST.
+		//
+
+		//
+		int currentHour = Integer.parseInt(newYorkTimeFormatter.format(markStamps.get(0).getCalendar().getTime()));
 		Double[] zeroRow = new Double[columns.size()];
 		for (int i = 0; i < zeroRow.length; i++)
 			zeroRow[i] = 0.0;
 		for (TimeStamp ts : markStamps) {
 			tsc.setRow(ts, zeroRow);
 
-			int day = Integer.parseInt(sdf.format(ts.getCalendar().getTime()));
-			if (day != currentDay) {
-				int indexBefore = cashPositionsOverTime.getIndexBefore(ts);
+			int hour = Integer.parseInt(newYorkTimeFormatter.format(ts.getCalendar().getTime()));
+			if (hour != currentHour && hour == 17) {
+				int indexBefore = cashPositionsOverTime.getIndexBeforeOrEqual(ts);
 				if (indexBefore > -1) {
 					// ok, new day, let's book the accruals, based on
 					// yesterday's cash positions.
@@ -563,7 +663,7 @@ public class TransactionInputToReport {
 						}
 					}
 				}
-				currentDay = day;
+				currentHour = hour;
 			}
 		}
 		//
@@ -576,11 +676,23 @@ public class TransactionInputToReport {
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
-		/*new TransactionInputToReport(
-				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv", null,
-				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/",
-				"reporting.pecoracapital.com");*/
-		new TransactionInputToReport(args[0], args[1], args[2], args[3]);
+		/*
+		 * new TransactionInputToReport(
+		 * "/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv"
+		 * , null,
+		 * "/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/"
+		 * , "reporting.pecoracapital.com");
+		 */
+		// new TransactionInputToReport(args[0], args[1], args[2], args[3]);
+
+		//
+		SimpleDateFormat newYorkTimeFormatter = new SimpleDateFormat("HH");
+		newYorkTimeFormatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+
+		//
+		SimpleDateFormat localTimeFormatter = new SimpleDateFormat("HH");
+
+		System.out.println(newYorkTimeFormatter.format(new Date()) + " -- " + localTimeFormatter.format(new Date()));
 
 	}
 
