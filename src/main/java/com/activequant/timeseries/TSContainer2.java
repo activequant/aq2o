@@ -203,6 +203,24 @@ public class TSContainer2 {
 
 	}
 
+	public Object getValue(String headerName, TimeStamp tsIn) {
+		if (resolutionInNanoseconds != 0) {
+			// ok, we must snap it to the next resolution.
+			long ns = (long) (Math.ceil((double) (tsIn.getNanoseconds() / resolutionInNanoseconds)) * resolutionInNanoseconds);
+			tsIn = new TimeStamp(ns);
+		}
+		int colIdx = getColumnIndex(headerName);
+		if (colIdx == -1)
+			return null;
+		// check if we find that timestamp.
+		int rowIdx = getIndex(tsIn);
+		if (rowIdx < 0) {
+			// add a row.
+			return null; 
+		}		
+		return getColumn(headerName).get(rowIdx);
+	}
+
 	public void delete(TimeStamp ts) {
 		if (ts == null) {
 			throw new IllegalArgumentException("Timestamp is null");

@@ -73,8 +73,8 @@ public class PNLMonitor {
 				Arrays.asList(new TypedColumn[] { new DoubleColumn() }));
 		//
 		if (!resolution.equals(TimeFrame.RAW)) {
-			tsContainer.setResolutionInNanoseconds(resolution.getMinutes()*60l*1000l*1000l*1000l);
-			cumulatedTSContainer.setResolutionInNanoseconds(resolution.getMinutes()*60l*1000l*1000l*1000l);
+			tsContainer.setResolutionInNanoseconds(resolution.getNanoseconds());
+			cumulatedTSContainer.setResolutionInNanoseconds(resolution.getNanoseconds());
 		}
 	}
 

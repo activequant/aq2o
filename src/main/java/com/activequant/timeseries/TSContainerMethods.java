@@ -36,6 +36,40 @@ public class TSContainerMethods {
 		}
 		return ret;
 	}
+	
+	
+
+	/**
+	 * @param in
+	 * @param newResolution
+	 * @return a NEW container.
+	 */
+	public TSContainer2 resampleWithSum(TSContainer2 in, long newResolution) {
+		TSContainer2 ret = new TSContainer2(in.getSeriesId(), in.getColumnHeaders(), in.getColumns());
+		ret.emptyColumns();
+		ret.setResolutionInNanoseconds(newResolution);
+		long currentSlot = 0L; 
+		Double[] val = new Double[in.getNumColumns()];
+		for(int i=0;i<val.length;i++)
+			val[i] = 0.0; 
+		for (TimeStamp ts : in.getTimeStamps()) {
+			long slot = ts.getNanoseconds() / newResolution;
+			if(slot!=currentSlot){
+				currentSlot = slot;
+				for(int i=0;i<val.length;i++)
+					val[i] = 0.0;  
+			}
+			Object[] row = in.getRow(ts);
+			for(int i=0;i<val.length;i++)
+				if(row[i]!=null)
+					val[i] += (Double)row[i];
+			// 
+			ret.setRow(ts, val);
+		}
+		return ret;
+	}
+
+	
 
 	/**
 	 * modifys the input ts container

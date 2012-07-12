@@ -47,7 +47,7 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 	public void eventFired(OrderEvent event) {
 		if (event instanceof OrderFillEvent) {
 			OrderFillEvent ofe = (OrderFillEvent) event;
-			fillEvents.add(ofe);
+			if(ofe.getFillAmount()!=0.0)fillEvents.add(ofe);
 			trackFill(ofe.getOptionalInstId(), ofe.getCreationTimeStamp(), ofe.getFillAmount()
 					* (ofe.getSide().startsWith("B") ? 1.0 : -1.0), ofe.getFillPrice());
 			countFill(ofe.getOptionalInstId());
@@ -81,7 +81,7 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 			refTimeStamp.put(tdiId, ts);
 		cc+=change; 
 		currentChange.put(tdiId, cc);
-		changeOverTime.setValue(tdiId, ts, cc);
+		if(cc!=0.0)changeOverTime.setValue(tdiId, ts, cc);
 	}
 
 	private void countAccepted(String id) {

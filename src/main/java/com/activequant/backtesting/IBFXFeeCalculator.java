@@ -14,117 +14,124 @@ import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TypedColumn;
 
 /**
- * http://www.interactivebrokers.com/de/accounts/fees/commission.php?ib_entity=de
+ * http://www.interactivebrokers.com/de/accounts/fees/commission.php?ib_entity=
+ * de
  * 
- * Makes a flat commission structure - (no three tier structure). 
+ * Makes a flat commission structure - (no three tier structure).
  * 
- * Highly FX specific at the moment. 
+ * Highly FX specific at the moment.
  * 
  * @author GhostRider
- *
+ * 
  */
 public class IBFXFeeCalculator implements IFeeCalculator {
 
-	private Map<String, Double> conversionSheet = new HashMap<String, Double>(); 
+	private Map<String, Double> conversionSheet = new HashMap<String, Double>();
 	private String accountBaseCurrency = "USD";
-	private double minimumPerOrder = 2.5; 
+	private double minimumPerOrder = 2.5;
 	private double commissionBps = 0.2; //
 	private double tickSizeAcctCurrency = 0.0001;
 	private TSContainer2 feeSeries = new TSContainer2("FEES", new ArrayList<String>(), new ArrayList<TypedColumn>());
-	
-	// very dirty and against engineering ethics: nonreusable code below. 
+
+	// very dirty and against engineering ethics: nonreusable code below.
 	private final List<String> rows = new ArrayList<String>();
 	private DecimalFormat dcf = new DecimalFormat("#.######");
-	
-	
-	public void updateRefRate(String id, Double ref){
+
+	public IBFXFeeCalculator() {
+		// dump a row.
+		String row = "REFORDERID;TS_IN_NANOSECONDS;INSTID;";
+		row += "SIDE;Q;PX;CONVERSION_RATE_TO_USD;TRADED_VAL_IN_QUOTEE;TRADED_VAL_IN_USD;COMMISSION";
+		rows.add(row);
+	}
+
+	public void updateRefRate(String id, Double ref) {
 		conversionSheet.put(id, ref);
 	}
-	
+
 	@Override
 	public void track(OrderEvent orderEvent) {
 		if (orderEvent instanceof OrderFillEvent) {
-			// 
+			//
 			OrderFillEvent ofe = (OrderFillEvent) orderEvent;
-			// 
+			//
 			String tid = ofe.getOptionalInstId();
-			
-			
+
 			double volume = ofe.getFillAmount();
+			if (volume == 0.0)
+				return;
 			double execPrice = ofe.getFillPrice();
-			// 
-			double tradedValueInQuotee = volume * execPrice; 
-			String base = tid.substring(0,3);
+			//
+			double tradedValueInQuotee = volume * execPrice;
+			String base = tid.substring(0, 3);
 			String quotee = tid.substring(3);
-			
+
 			double conversionRate = 1.0;
-			if(base.equals("USD")){
-				conversionRate = 1.0/execPrice; 
-			}
-			else if(quotee.equals("USD")){
-				conversionRate = 1.0; 
-			}
-			else{
+			if (base.equals("USD")) {
+				conversionRate = 1.0 / execPrice;
+			} else if (quotee.equals("USD")) {
+				conversionRate = 1.0;
+			} else {
 				conversionRate = getConversionRate(base, quotee, execPrice);
 			}
-			 
-			double tradedValueInUsd = conversionRate * tradedValueInQuotee; 
+
+			double tradedValueInUsd = conversionRate * tradedValueInQuotee;
+
 			double commission = Math.max((0.2 * tickSizeAcctCurrency * tradedValueInUsd), 2.50);
-			// track it. 
-			feeSeries.setValue(tid, ofe.getCreationTimeStamp(), commission);		
+			// track it.
 			
-			// dump a row. 
-			String row = ofe.getId()+";"+ofe.getCreationTimeStamp().getNanoseconds() +";"+ofe.getOptionalInstId()+";";
-			row+=dcf.format(ofe.getFillAmount())+";"+dcf.format(ofe.getFillPrice())+";";
-			row+=dcf.format(conversionRate) + ";"+ dcf.format(tradedValueInQuotee)+";"+dcf.format(tradedValueInUsd)+";"+dcf.format(commission)+"\n";
+			Double existingFees = (Double) feeSeries.getValue(tid, ofe.getCreationTimeStamp());
+			if(existingFees==null)existingFees = 0.0; 
+			feeSeries.setValue(tid, ofe.getCreationTimeStamp(), commission+existingFees);
+
+			// dump a row.
+			String row = ofe.getRefOrderId() + ";" + ofe.getCreationTimeStamp().getNanoseconds() + ";"
+					+ ofe.getOptionalInstId() + ";";
+			row += ofe.getSide() + ";" + dcf.format(ofe.getFillAmount()) + ";" + dcf.format(ofe.getFillPrice()) + ";";
+			row += dcf.format(conversionRate) + ";" + dcf.format(tradedValueInQuotee) + ";"
+					+ dcf.format(tradedValueInUsd) + ";" + dcf.format(commission);
 			rows.add(row);
-			
-			
+
 		}
 	}
 
-	
 	/**
-	 * iterates over the quote sheets to find the first matching pair to convert based on base or quotee to USD. 
+	 * iterates over the quote sheets to find the first matching pair to convert
+	 * based on base or quotee to USD.
 	 * 
 	 * @param base
 	 * @param quotee
 	 */
-	private double getConversionRate(String base, String quotee, Double refQuote){
+	private double getConversionRate(String base, String quotee, Double refQuote) {
 		//
-		double ret = 1.0; 
+		double ret = 1.0;
 		Iterator<Entry<String, Double>> it = conversionSheet.entrySet().iterator();
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			Entry<String, Double> entry = it.next();
 			String pair = entry.getKey();
 			Double rate = entry.getValue();
-					
-			String _base = pair.substring(0,3);
+
+			String _base = pair.substring(0, 3);
 			String _quotee = pair.substring(3);
-			
-			if(_base.equals("USD")){
-				// ok, possible target ... 				
-				if(_quotee.equals(base)){
-					return (1.0/rate)/ refQuote; 
+
+			if (_base.equals("USD")) {
+				// ok, possible target ...
+				if (_quotee.equals(base)) {
+					return (1.0 / rate) / refQuote;
+				} else if (_quotee.equals(quotee)) {
+					return 1.0 / rate;
 				}
-				else if(_quotee.equals(quotee)){
-					return 1.0/rate; 
-				}
-			}		
-			else if(_quotee.equals("USD")){
-				// ok, possible target ... 				
-				if(_base.equals(base)){
-					return rate / refQuote; 
-				}
-				else if(_base.equals(quotee)){
+			} else if (_quotee.equals("USD")) {
+				// ok, possible target ...
+				if (_base.equals(base)) {
+					return rate / refQuote;
+				} else if (_base.equals(quotee)) {
 					return rate;
 				}
 			}
 		}
-		return ret; 
+		return ret;
 	}
-	
-	
+
 	@Override
 	public TSContainer2 feesSeries() {
 		return feeSeries;
@@ -133,6 +140,5 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 	public List<String> getRows() {
 		return rows;
 	}
-
 
 }

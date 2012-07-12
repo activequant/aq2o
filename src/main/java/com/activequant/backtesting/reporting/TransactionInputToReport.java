@@ -12,8 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TimeZone;
 
@@ -99,14 +101,18 @@ public class TransactionInputToReport {
 		TSContainerMethods tcm = new TSContainerMethods();
 
 		@SuppressWarnings("rawtypes")
-		List<StreamEventIterator> streamIters = new ArrayList<StreamEventIterator>();
-
+		List<StreamEventIterator> streamIters = new ArrayList<StreamEventIterator>();		
+		
 		// initialize the market data replay streams.
+		List<String> tidList = new ArrayList<String>();
+		List<TypedColumn> colList = new ArrayList<TypedColumn>();
 		String[] tids = instrumentsInSim.split(",");
 		for (String tid : tids) {
 			if (!tid.startsWith("PI_")) {
-				tid = "PI_" + tid;
+				tid = "PI_" + tid;			
 			}
+			tidList.add(tid);
+			colList.add(new DoubleColumn());
 			ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
 					endTimeStamp, archReader);
 			// no shifting, as PiTrading's candles are timestamped with end of
@@ -114,7 +120,8 @@ public class TransactionInputToReport {
 			a.setOffset(0L);
 			streamIters.add(a);
 		}
-
+		TSContainer2 refRates = new TSContainer2("REFRATES", tidList, colList, timeFrame.getNanoseconds());		
+		
 		// initialize the transaction file streamer.
 		TransactionFileStreamIterator tfsi = new TransactionFileStreamIterator(transactionsFile);
 		streamIters.add(tfsi);
@@ -140,24 +147,25 @@ public class TransactionInputToReport {
 		IBFXFeeCalculator feeCalculator = new IBFXFeeCalculator();
 		oel.setFeeCalculator(feeCalculator);
 		//
-
+		
 		// //////////////////
 		while (fs.moreDataInPipe()) {
 			StreamEvent se = fs.getOneFromPipes();
 			System.out.println(se.getTimeStamp().getDate());
 			if (se instanceof OrderFillEvent) {
 				OrderFillEvent ofe = (OrderFillEvent) se;
-				feeCalculator.updateRefRate(ofe.getOptionalInstId(), ofe.getFillPrice());
+				ofe.setOptionalInstId("PI_"+ofe.getOptionalInstId());
+				feeCalculator.updateRefRate(ofe.getOptionalInstId().substring(3), ofe.getFillPrice());
 				// order event listener also holds the fee calculator
-				oel.eventFired((OrderFillEvent) se);
-				PNLChangeEvent pce = prc.execution(ofe.getCreationTimeStamp(), "PI_" + ofe.getOptionalInstId(), ofe.getFillPrice(), (ofe
-						.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
-				increaseTransactionCount("PI_" + ofe.getOptionalInstId());
+				oel.eventFired(ofe);
+				PNLChangeEvent pce = prc.execution(ofe.getCreationTimeStamp(), ofe.getOptionalInstId(),
+						ofe.getFillPrice(), (ofe.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
+				increaseTransactionCount(ofe.getOptionalInstId());
 			} else if (se instanceof OHLCV) {
 				OHLCV o = (OHLCV) se;
 				System.out.println(o.toString());
 				// use a zero-change execution to push in the price.
-				PNLChangeEvent pce =  prc.execution(o.getTimeStamp(), o.getMdiId(), o.getClose(), 0.0);
+				PNLChangeEvent pce = prc.execution(o.getTimeStamp(), o.getMdiId(), o.getClose(), 0.0);
 				// create a fake order fill event, so that we have a valuation
 				// price ...
 				OrderFillEvent ofe = new OrderFillEvent();
@@ -167,14 +175,17 @@ public class TransactionInputToReport {
 				ofe.setFillPrice(o.getClose());
 				ofe.setCreationTimeStamp(o.getTimeStamp());
 				oel.eventFired(ofe);
+				
+				refRates.setValue(o.getMdiId(), o.getTimeStamp(), o.getClose());
 				//
-			}			
-			// track the pnl change in USD. 
-			// 
+			}
+			// track the pnl change in USD.
+			//
 		}
 
 		List<String> enrichedTransactions = feeCalculator.getRows();
-		FileUtils.writeLines(enrichedTransactions, new FileOutputStream(targetFolder + File.separator + "enriched_transactions.csv"));
+		FileUtils.writeLines(enrichedTransactions, new FileOutputStream(targetFolder + File.separator
+				+ "enriched_transactions.csv"));
 				
 		System.out.println("*************** REPLAY DONE ");
 		// ///////////////////
@@ -187,8 +198,15 @@ public class TransactionInputToReport {
 		TSContainer2 pnlContainer = pnlMonitor.getCumulatedTSContainer();
 		FileOutputStream fout;
 
+		
+		
+		fout = new FileOutputStream(targetFolder + File.separator + "refrates.csv");
+		CSVExporter c = new CSVExporter(fout, refRates);
+		c.write();
+		fout.close();
+		
 		fout = new FileOutputStream(targetFolder + File.separator + "pnl.csv");
-		CSVExporter c = new CSVExporter(fout, pnlContainer);
+		c = new CSVExporter(fout, pnlContainer);
 		c.write();
 		fout.close();
 
@@ -223,10 +241,19 @@ public class TransactionInputToReport {
 		TSContainer2 borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp,
 				TimeFrame.HOURS_1, inflatedCashPositionSeries);
 
+		fout = new FileOutputStream(targetFolder + File.separator + "cash_positions_bef_resampling.csv");
+		c = new CSVExporter(fout, inflatedCashPositionSeries);
+		c.write();
+		fout.close();
+
+		fout = new FileOutputStream(targetFolder + File.separator + "interest_before_resampling.csv");
+		c = new CSVExporter(fout, borrowingAndLendingContainer);
+		c.write();
+		fout.close();
+
 		// resample from high resolution to report resolution
 		inflatedCashPositionSeries = resampleSeries(inflatedCashPositionSeries, timeFrame, startTimeStamp, endTimeStamp);
-		borrowingAndLendingContainer = calcInterestChanges(startTimeStamp, endTimeStamp, timeFrame,
-				borrowingAndLendingContainer);
+		borrowingAndLendingContainer = tcm.resampleWithSum(borrowingAndLendingContainer, timeFrame.getNanoseconds());
 
 		// dump the inflated cash positions
 		fout = new FileOutputStream(targetFolder + File.separator + "inflated_cash_positions.csv");
@@ -247,6 +274,16 @@ public class TransactionInputToReport {
 			c = new CSVExporter(fout, oel.getFeeCalculator().feesSeries());
 			c.write();
 			fout.close();
+
+			TSContainer2 feesPerRepUnit = tcm.resampleWithSum(oel.getFeeCalculator().feesSeries(),
+					timeFrame.getNanoseconds());
+
+			// dump the inflated cash positions
+			fout = new FileOutputStream(targetFolder + File.separator + "fees_resampled_to_timeframe.csv");
+			c = new CSVExporter(fout, feesPerRepUnit);
+			c.write();
+			fout.close();
+
 		}
 
 		// generate a position chart.
@@ -320,6 +357,16 @@ public class TransactionInputToReport {
 		for (String s : tids)
 			instruments.add("PI_" + s);
 		datamodel.put("instruments", instruments);
+		
+		Iterator<Entry<Object, Object>> it = properties.entrySet().iterator();
+		List<String> configDump = new ArrayList<String>();
+		while(it.hasNext()){
+			Entry<Object, Object> e = it.next();
+			configDump.add(e.getKey()+" = " + e.getValue());
+		}
+		
+		datamodel.put("configdump", configDump);
+		
 
 		// should also put the different calculated measures into that report
 		// ...
@@ -356,9 +403,10 @@ public class TransactionInputToReport {
 		//
 		tpl.process(datamodel, output);
 	}
-	
+
 	/**
-	 * this one can do only one-hop conversions. The columnnames in the series container must be the currency pair. 
+	 * this one can do only one-hop conversions. The columnnames in the series
+	 * container must be the currency pair.
 	 * 
 	 * @param seriesContainer
 	 * @param seriesCurrency
@@ -367,64 +415,58 @@ public class TransactionInputToReport {
 	 * @param endTimeStamp
 	 * @return
 	 */
-	private TSContainer2 convertSeriesToUSD(TSContainer2 seriesContainer, TimeFrame timeFrame, TimeStamp startTimeStamp,
-			TimeStamp endTimeStamp) {
-		
+	private TSContainer2 convertSeriesToUSD(String[] inputSeries, TSContainer2 seriesContainer, TimeFrame timeFrame,
+			TimeStamp startTimeStamp, TimeStamp endTimeStamp) {
+
 		List<String> colHeaders = seriesContainer.getColumnHeaders();
 		List<TypedColumn> columns = new ArrayList<TypedColumn>();
-		for(String s: colHeaders)
-		{
+		for (String s : colHeaders) {
 			columns.add(new DoubleColumn());
 		}
-		
+
 		TSContainer2 converted = new TSContainer2("CONVERTEDTOUSD", colHeaders, columns, timeFrame.getNanoseconds());
-		
-		for(String tid : colHeaders){
-			// 			
-			
-			
-			
-			//
-		}
-		
-//		
-//		
-//		//
-//		ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
-//				endTimeStamp, archReader);				
-//		while(a.hasNext()){
-//			OHLCV o = a.next();
-//		}	
-//		
-//		
-//		// 
-//					String tid = ofe.getOptionalInstId();
-//					
-//					
-//					double volume = ofe.getFillAmount();
-//					double execPrice = ofe.getFillPrice();
-//					// 
-//					double tradedValueInQuotee = volume * execPrice; 
-//					String base = tid.substring(0,3);
-//					String quotee = tid.substring(3);
-//					
-//					double conversionRate = 1.0;
-//					if(base.equals("USD")){
-//						conversionRate = 1.0/execPrice; 
-//					}
-//					else if(quotee.equals("USD")){
-//						conversionRate = 1.0; 
-//					}
-//					else{
-//						conversionRate = getConversionRate(base, quotee, execPrice);
-//					}
-//					 
-//					double tradedValueInUsd = conversionRate * tradedValueInQuotee; 
-//					double commission = Math.max((0.2 * tickSizeAcctCurrency * tradedValueInUsd), 2.50);
-//		
-//		
-		// 
-		return null; 
+
+
+		//
+		//
+		// //
+		// ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid,
+		// TimeFrame.MINUTES_1, startTimeStamp,
+		// endTimeStamp, archReader);
+		// while(a.hasNext()){
+		// OHLCV o = a.next();
+		// }
+		//
+		//
+		// //
+		// String tid = ofe.getOptionalInstId();
+		//
+		//
+		// double volume = ofe.getFillAmount();
+		// double execPrice = ofe.getFillPrice();
+		// //
+		// double tradedValueInQuotee = volume * execPrice;
+		// String base = tid.substring(0,3);
+		// String quotee = tid.substring(3);
+		//
+		// double conversionRate = 1.0;
+		// if(base.equals("USD")){
+		// conversionRate = 1.0/execPrice;
+		// }
+		// else if(quotee.equals("USD")){
+		// conversionRate = 1.0;
+		// }
+		// else{
+		// conversionRate = getConversionRate(base, quotee, execPrice);
+		// }
+		//
+		// double tradedValueInUsd = conversionRate * tradedValueInQuotee;
+		// double commission = Math.max((0.2 * tickSizeAcctCurrency *
+		// tradedValueInUsd), 2.50);
+		//
+		//
+		//
+		return null;
 	}
 
 	private TSContainer2 resampleSeries(TSContainer2 container, TimeFrame timeFrame, TimeStamp startTimeStamp,
@@ -454,9 +496,9 @@ public class TransactionInputToReport {
 			// skip the instrument lookup for now - as this is mostly a custom
 			// development at the moment, I just assume we have only FX.
 			String base, quotee;
-			if (tdiId.length() == 6) {
-				base = tdiId.substring(0, 3);
-				quotee = tdiId.substring(3);
+			if (tdiId.startsWith("PI_")) {
+				base = tdiId.substring(3, 6);
+				quotee = tdiId.substring(6);
 				System.out.println("Calculating cash position for " + base + "/" + quotee);
 				DoubleColumn posDeltaColumn = (DoubleColumn) posDeltaOverTime.getColumn(tdiId);
 				DoubleColumn execPriceColumn = (DoubleColumn) executionPricesOverTime.getColumn(tdiId);
@@ -488,8 +530,9 @@ public class TransactionInputToReport {
 						quoteeCol.set(i, presentQuoteePos);
 					}
 					//
-				}
+				}			
 			}
+			
 		}
 		return cashPositionsOverTime;
 	}
@@ -642,22 +685,24 @@ public class TransactionInputToReport {
 			tsc.setRow(ts, zeroRow);
 
 			int hour = Integer.parseInt(newYorkTimeFormatter.format(ts.getCalendar().getTime()));
-			if (hour != currentHour && hour == 17) {
-				int indexBefore = cashPositionsOverTime.getIndexBeforeOrEqual(ts);
-				if (indexBefore > -1) {
-					// ok, new day, let's book the accruals, based on
-					// yesterday's cash positions.
-					for (int i = 0; i < cashPositionsOverTime.getColumns().size(); i++) {
-						DoubleColumn dc = (DoubleColumn) cashPositionsOverTime.getColumns().get(i);
-						Double val = dc.get(indexBefore);
-						String cncy = cashPositionsOverTime.getColumnHeaders().get(i);
-						if (val != null) {
-							if (val < 0.0) {
-								Double charge = chargedIr.getOvernightChange(cncy, val);
-								tsc.setValue(cncy, ts, charge);
-							} else if (val > 0.0) {
-								Double earnings = earnedIr.getOvernightChange(cncy, val);
-								tsc.setValue(cncy, ts, earnings);
+			if (hour != currentHour) {
+				if (hour == 17) {
+					int indexBefore = cashPositionsOverTime.getIndexBeforeOrEqual(ts);
+					if (indexBefore > -1) {
+						// ok, new day, let's book the accruals, based on
+						// yesterday's cash positions.
+						for (int i = 0; i < cashPositionsOverTime.getColumns().size(); i++) {
+							DoubleColumn dc = (DoubleColumn) cashPositionsOverTime.getColumns().get(i);
+							Double val = dc.get(indexBefore);
+							String cncy = cashPositionsOverTime.getColumnHeaders().get(i);
+							if (val != null) {
+								if (val < 0.0) {
+									Double charge = chargedIr.getOvernightChange(cncy, val);
+									tsc.setValue(cncy, ts, charge);
+								} else if (val > 0.0) {
+									Double earnings = earnedIr.getOvernightChange(cncy, val);
+									tsc.setValue(cncy, ts, earnings);
+								}
 							}
 						}
 					}
@@ -675,23 +720,24 @@ public class TransactionInputToReport {
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
-		/*
-		 * new TransactionInputToReport(
-		 * "/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv"
-		 * , null,
-		 * "/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/"
-		 * , "reporting.pecoracapital.com");
-		 */
-		new TransactionInputToReport(args[0], args[1], args[2], args[3]);
 
-//		//
-//		SimpleDateFormat newYorkTimeFormatter = new SimpleDateFormat("HH");
-//		newYorkTimeFormatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-//
-//		//
-//		SimpleDateFormat localTimeFormatter = new SimpleDateFormat("HH");
-//
-//		System.out.println(newYorkTimeFormatter.format(new Date()) + " -- " + localTimeFormatter.format(new Date()));
+		new TransactionInputToReport(
+				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv",
+				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/report.config",
+				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/",
+				"reporting.pecoracapital.com");
+
+		// new TransactionInputToReport(args[0], args[1], args[2], args[3]);
+
+		// //
+		// SimpleDateFormat newYorkTimeFormatter = new SimpleDateFormat("HH");
+		// newYorkTimeFormatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		//
+		// //
+		// SimpleDateFormat localTimeFormatter = new SimpleDateFormat("HH");
+		//
+		// System.out.println(newYorkTimeFormatter.format(new Date()) + " -- " +
+		// localTimeFormatter.format(new Date()));
 
 	}
 

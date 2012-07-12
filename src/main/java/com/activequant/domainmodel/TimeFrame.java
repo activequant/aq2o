@@ -9,7 +9,7 @@ package com.activequant.domainmodel;
  *
  */
 public enum TimeFrame {
-    EOD(1440), EOW(1440*7), MINUTES_1(1), MINUTES_5(5), MINUTES_10(10), MINUTES_30(30), HOURS_1(60),  HOURS_2(120),HOURS_4(240), RAW(0), EOM(43200);
+	EOD(1440), MINUTES_1(1), MINUTES_5(5), MINUTES_10(10), MINUTES_30(30), HOURS_1(60),  HOURS_2(120),HOURS_4(240), RAW(0);
     private int minutes;
 
     private TimeFrame(int minutes) {
