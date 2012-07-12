@@ -28,10 +28,12 @@
 <tr><td>Report resolution</td><td>${RESOLUTION}</td></tr>
 </table>
 
-<table>
-<caption>Algo config</caption>
-<!-- AC_ENTRY_START --><tr><td>{KEY}</td><td>{VALUE}</td></tr><!-- AC_ENTRY_END -->
-</table>
+<h2>Config dump</h2>
+
+<#list configdump as cRow>
+${cRow}<br/>		
+</#list>
+
 
 <table>
 <caption>PNL statistics</caption>
@@ -66,6 +68,7 @@
 <td class="pnlTD">
 <h2>Pnl</h2>
 
+<img src="pnl_in_usd.png"/><br/>
 <img src="pnl.png"/><br/>
 <img src="position.png"/><br/>
 <img src="PNL_AGGREGATION.png"/><br/>
