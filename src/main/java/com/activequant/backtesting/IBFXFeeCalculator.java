@@ -86,7 +86,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			String base = tid.substring(0, 3);
 			String quotee = tid.substring(3);
 			// 
-			tid+="PI_";
+			tid="PI_" + tid; 
 			
 			// doing equally weighted average pricing. 
 			Double currentPos = getCurrentPos(tid);
