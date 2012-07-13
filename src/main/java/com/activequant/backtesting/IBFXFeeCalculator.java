@@ -45,7 +45,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 	public IBFXFeeCalculator() {
 		// dump a row.
 		String row = "REFORDERID;TS_IN_NANOSECONDS;INSTID;";
-		row += "SIDE;Q;PX;CONVERSION_RATE_TO_USD;TRADED_VAL_IN_QUOTEE;TRADED_VAL_IN_USD;COMMISSION";
+		row += "SIDE;Q;PX;CONVERSION_RATE_TO_USD;TRADED_VAL_IN_QUOTEE;TRADED_VAL_IN_USD;COMMISSION;AVGPX;CURRENTPOS;CLOSEDPNL;";
 		rows.add(row);
 	}
 
