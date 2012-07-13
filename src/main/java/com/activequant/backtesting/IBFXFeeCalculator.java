@@ -114,7 +114,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 				this.avgEntryPrice.put(tid,  newAvgPx);
 				this.runningPositions.put(tid,  currentPos);
 				//
-				log.info("New avg entry price and running position for " + tid+": " + newAvgPx+"/"+currentPos);
+				log.info("Increase of position. New avg entry price and running position for " + tid+": " + newAvgPx+"/"+currentPos);
 				
 				
 			}
@@ -134,9 +134,11 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 						// means we were in a long position and are reducing it. 
 						closingTradePnl = (execPrice - avgPx) * volume;
 					}
+					log.info("Decrease of position. new avg entry price and running position for " + tid+": " + avgPx+"/"+currentPos);
 				}
 				else{
 					currentPos = signedVolume; 
+					avgPx = execPrice; 
 					this.avgEntryPrice.put(tid, avgPx);
 					this.runningPositions.put(tid,  currentPos);
 					log.info("New avg entry price and running position for " + tid+": " + avgPx+"/"+currentPos);
