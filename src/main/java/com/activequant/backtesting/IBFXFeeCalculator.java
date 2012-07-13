@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.timeseries.TSContainer2;
@@ -34,6 +36,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 	private TSContainer2 feeSeries = new TSContainer2("FEES", new ArrayList<String>(), new ArrayList<TypedColumn>());
 	private Map<String, Double> runningPositions = new HashMap<String, Double>();
 	private Map<String, Double> avgEntryPrice = new HashMap<String, Double>();
+	private Logger log = Logger.getLogger(IBFXFeeCalculator.class);
 
 	// very dirty and against engineering ethics: nonreusable code below.
 	private final List<String> rows = new ArrayList<String>();
@@ -93,24 +96,32 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			double signedVolume = volume; 
 			if(ofe.getSide().startsWith("S")){
 				signedVolume = - signedVolume; 
-			}			
+			}		
+			
+			// 
 			Double closingTradePnl = 0.0; 
 			if(Math.signum(signedVolume) == Math.signum(currentPos)){
-				// 
+				
+				// increase of position  
 				Double newPos = currentPos + signedVolume; 
 				Double newAvgPx = Math.abs(((currentPos * avgPx) + (signedVolume*execPrice))/newPos);
 				avgPx = newAvgPx; 
 				currentPos = newPos; 
 				// 
 				this.avgEntryPrice.put(tid,  newAvgPx);
-				this.runningPositions.put(tid,  newAvgPx);
-				// 
+				this.runningPositions.put(tid,  currentPos);
+				//
+				log.info("New avg entry price and running position for " + tid+": " + newAvgPx+"/"+currentPos);
+				
+				
 			}
 			else
 			{
 				if(currentPos!=0.0){
 					// decrease of position. 
 					// By using equally weighted inventory (contrary to FIFO and LIFO), we can keep the average price constant.
+					Double newPos = currentPos + signedVolume;
+					this.runningPositions.put(tid,  currentPos);
 					if(Math.signum(signedVolume)==1.0){
 						// means we were in a short position and are reducing it. 
 						closingTradePnl = (avgPx - execPrice) * volume; 
@@ -119,6 +130,11 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 						// means we were in a long position and are reducing it. 
 						closingTradePnl = (execPrice - avgPx) * volume;
 					}
+				}
+				else{
+					this.avgEntryPrice.put(tid, avgPx);
+					this.runningPositions.put(tid,  currentPos);
+					log.info("New avg entry price and running position for " + tid+": " + avgPx+"/"+currentPos);
 				}
 			}			
 			
