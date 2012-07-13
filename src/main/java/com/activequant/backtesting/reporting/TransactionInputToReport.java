@@ -721,13 +721,13 @@ public class TransactionInputToReport {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		new TransactionInputToReport(
+/*		new TransactionInputToReport(
 				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/transactions.csv",
 				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/report.config",
 				"/home/ustaudinger/work/activequant/trunk/src/test/resources/transactions/",
 				"reporting.pecoracapital.com");
-
-		// new TransactionInputToReport(args[0], args[1], args[2], args[3]);
+*/
+		new TransactionInputToReport(args[0], args[1], args[2], args[3]);
 
 		// //
 		// SimpleDateFormat newYorkTimeFormatter = new SimpleDateFormat("HH");
