@@ -124,6 +124,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 					// decrease of position. 
 					// By using equally weighted inventory (contrary to FIFO and LIFO), we can keep the average price constant.
 					Double newPos = currentPos + signedVolume;
+					currentPos = newPos; 
 					this.runningPositions.put(tid,  currentPos);
 					if(Math.signum(signedVolume)==1.0){
 						// means we were in a short position and are reducing it. 
@@ -135,6 +136,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 					}
 				}
 				else{
+					currentPos = signedVolume; 
 					this.avgEntryPrice.put(tid, avgPx);
 					this.runningPositions.put(tid,  currentPos);
 					log.info("New avg entry price and running position for " + tid+": " + avgPx+"/"+currentPos);
