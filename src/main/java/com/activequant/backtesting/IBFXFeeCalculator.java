@@ -93,10 +93,13 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			Double avgPx = getAvgPx(tid);
 			
 			// 
-			double signedVolume = volume; 
+			double signedVolume = volume;
+			
 			if(ofe.getSide().startsWith("S")){
 				signedVolume = - signedVolume; 
 			}		
+			log.info(tid+": signed volume: " + signedVolume);
+			
 			
 			// 
 			Double closingTradePnl = 0.0; 
