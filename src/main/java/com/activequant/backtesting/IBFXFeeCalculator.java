@@ -32,6 +32,8 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 	private double commissionBps = 0.2; //
 	private double tickSizeAcctCurrency = 0.0001;
 	private TSContainer2 feeSeries = new TSContainer2("FEES", new ArrayList<String>(), new ArrayList<TypedColumn>());
+	private Map<String, Double> runningPositions = new HashMap<String, Double>();
+	private Map<String, Double> avgEntryPrice = new HashMap<String, Double>();
 
 	// very dirty and against engineering ethics: nonreusable code below.
 	private final List<String> rows = new ArrayList<String>();
@@ -48,6 +50,18 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 		conversionSheet.put(id, ref);
 	}
 
+	public Double getCurrentPos(String tid){
+		if(runningPositions.containsKey(tid))
+			return runningPositions.get(tid);
+		return 0.0; 
+	}
+	
+	public Double getAvgPx(String tid){
+		if(avgEntryPrice.containsKey(tid))
+			return avgEntryPrice.get(tid);
+		return 0.0; 
+	}
+	
 	@Override
 	public void track(OrderEvent orderEvent) {
 		if (orderEvent instanceof OrderFillEvent) {
@@ -59,12 +73,56 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			double volume = ofe.getFillAmount();
 			if (volume == 0.0)
 				return;
+			// 
 			double execPrice = ofe.getFillPrice();
 			//
 			double tradedValueInQuotee = volume * execPrice;
+			// 
+			if(tid.startsWith("PI_"))
+				tid = tid.substring(3);
 			String base = tid.substring(0, 3);
 			String quotee = tid.substring(3);
-
+			// 
+			tid+="PI_";
+			
+			// doing equally weighted average pricing. 
+			Double currentPos = getCurrentPos(tid);
+			Double avgPx = getAvgPx(tid);
+			
+			// 
+			double signedVolume = volume; 
+			if(ofe.getSide().startsWith("S")){
+				signedVolume = - signedVolume; 
+			}			
+			Double closingTradePnl = 0.0; 
+			if(Math.signum(signedVolume) == Math.signum(currentPos)){
+				// 
+				Double newPos = currentPos + signedVolume; 
+				Double newAvgPx = Math.abs(((currentPos * avgPx) + (signedVolume*execPrice))/newPos);
+				avgPx = newAvgPx; 
+				currentPos = newPos; 
+				// 
+				this.avgEntryPrice.put(tid,  newAvgPx);
+				this.runningPositions.put(tid,  newAvgPx);
+				// 
+			}
+			else
+			{
+				if(currentPos!=0.0){
+					// decrease of position. 
+					// By using equally weighted inventory (contrary to FIFO and LIFO), we can keep the average price constant.
+					if(Math.signum(signedVolume)==1.0){
+						// means we were in a short position and are reducing it. 
+						closingTradePnl = (avgPx - execPrice) * volume; 
+					}
+					else{
+						// means we were in a long position and are reducing it. 
+						closingTradePnl = (execPrice - avgPx) * volume;
+					}
+				}
+			}			
+			
+			// 
 			double conversionRate = 1.0;
 			if (base.equals("USD")) {
 				conversionRate = 1.0 / execPrice;
@@ -73,12 +131,14 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			} else {
 				conversionRate = getConversionRate(base, quotee, execPrice);
 			}
-
+			
+			//
 			double tradedValueInUsd = conversionRate * tradedValueInQuotee;
 
+			//
 			double commission = Math.max((0.2 * tickSizeAcctCurrency * tradedValueInUsd), 2.50);
-			// track it.
-			
+						
+			// track it.			
 			Double existingFees = (Double) feeSeries.getValue(tid, ofe.getCreationTimeStamp());
 			if(existingFees==null)existingFees = 0.0; 
 			feeSeries.setValue(tid, ofe.getCreationTimeStamp(), commission+existingFees);
@@ -88,7 +148,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 					+ ofe.getOptionalInstId() + ";";
 			row += ofe.getSide() + ";" + dcf.format(ofe.getFillAmount()) + ";" + dcf.format(ofe.getFillPrice()) + ";";
 			row += dcf.format(conversionRate) + ";" + dcf.format(tradedValueInQuotee) + ";"
-					+ dcf.format(tradedValueInUsd) + ";" + dcf.format(commission);
+					+ dcf.format(tradedValueInUsd) + ";" + dcf.format(commission)+";"+dcf.format(avgPx)+";"+dcf.format(currentPos)+";"+dcf.format(closingTradePnl);
 			rows.add(row);
 
 		}
