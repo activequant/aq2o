@@ -1,9 +1,9 @@
 package com.activequant.dao.inmemory;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IEntityDao;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IEntityDao;
 
 public class InMemoryDao<T extends PersistentEntity> implements IEntityDao<T> {
 

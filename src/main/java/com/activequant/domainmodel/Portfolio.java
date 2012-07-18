@@ -2,8 +2,8 @@ package com.activequant.domainmodel;
 
 import java.util.List;
 
+import com.activequant.domainmodel.annotations.Property;
 import com.activequant.utils.ArrayUtils;
-import com.activequant.utils.annotations.Property;
 
 public class Portfolio extends PersistentEntity {
 

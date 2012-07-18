@@ -1,10 +1,11 @@
 package com.activequant.trading.virtual;
 
+import com.activequant.domainmodel.exceptions.IncompleteOrderInstructions;
+import com.activequant.domainmodel.exceptions.UnsupportedOrderType;
+import com.activequant.domainmodel.streaming.StreamEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
-import com.activequant.exceptions.IncompleteOrderInstructions;
-import com.activequant.exceptions.UnsupportedOrderType;
-import com.activequant.tools.streaming.StreamEvent;
-import com.activequant.trading.IOrderTracker;
+import com.activequant.interfaces.trading.IExchange;
+import com.activequant.interfaces.trading.IOrderTracker;
 
 public class TradingSystemSample {
 

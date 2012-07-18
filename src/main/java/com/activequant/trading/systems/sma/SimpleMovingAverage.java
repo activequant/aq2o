@@ -8,24 +8,25 @@ import javax.script.ScriptException;
 
 import org.joda.time.DateTime;
 
+import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
+import com.activequant.domainmodel.exceptions.IncompleteOrderInstructions;
+import com.activequant.domainmodel.exceptions.UnsupportedOrderType;
+import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.domainmodel.streaming.StreamEvent;
 import com.activequant.domainmodel.trade.order.MarketOrder;
 import com.activequant.domainmodel.trade.order.OrderSide;
-import com.activequant.exceptions.IncompleteOrderInstructions;
-import com.activequant.exceptions.UnsupportedOrderType;
-import com.activequant.tools.streaming.MarketDataSnapshot;
-import com.activequant.tools.streaming.StreamEvent;
+import com.activequant.interfaces.trading.IOrderTracker;
 import com.activequant.trading.AbstractTSBase;
-import com.activequant.trading.IOrderTracker;
 import com.activequant.trading.datamodel.InstrumentTable;
-import com.activequant.transport.ETransportType;
 import com.activequant.utils.RenjinCore;
 
 /**
+ * Simple Moving Average class that processes a stream event. 
  * 
- * @author ustaudinger
+ * @author GhostRider
  *
  */
 public class SimpleMovingAverage extends AbstractTSBase {

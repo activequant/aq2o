@@ -6,12 +6,12 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 
-import com.activequant.aqviz.interfaces.IInstrumentTableViz;
-import com.activequant.aqviz.interfaces.IOrderTableViz;
-import com.activequant.aqviz.interfaces.IQuoteTableViz;
-import com.activequant.aqviz.interfaces.IVisualTable;
+import com.activequant.interfaces.aqviz.IInstrumentTableViz;
+import com.activequant.interfaces.aqviz.IOrderTableViz;
+import com.activequant.interfaces.aqviz.IQuoteTableViz;
+import com.activequant.interfaces.aqviz.IVisualTable;
+import com.activequant.interfaces.trading.IExchange;
 import com.activequant.trading.datamodel.AQTableDataBase;
-import com.activequant.trading.virtual.IExchange;
 
 public class HardcoreReflectionsFactory {
 

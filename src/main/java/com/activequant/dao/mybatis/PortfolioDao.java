@@ -2,9 +2,9 @@ package com.activequant.dao.mybatis;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.activequant.dao.IPortfolioDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Portfolio;
+import com.activequant.interfaces.dao.IPortfolioDao;
 
 public class PortfolioDao extends GenericMapperDao<Portfolio> implements IPortfolioDao {
 

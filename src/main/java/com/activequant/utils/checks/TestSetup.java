@@ -6,9 +6,9 @@ import java.util.Properties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.utils.Date8Time6Parser;
 
 /**

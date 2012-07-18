@@ -3,11 +3,12 @@ package com.activequant.trading;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.activequant.domainmodel.orderbook.MarketState;
+import com.activequant.domainmodel.orderbook.OrderBookChange;
+import com.activequant.domainmodel.orderbook.TransactionEvent;
 import com.activequant.domainmodel.trade.order.Order;
-import com.activequant.trading.orderbook.IOrderBookListener;
-import com.activequant.trading.orderbook.MarketState;
-import com.activequant.trading.orderbook.OrderBookChange;
-import com.activequant.trading.orderbook.TransactionEvent;
+import com.activequant.interfaces.trading.IOrderBook;
+import com.activequant.interfaces.trading.IOrderBookListener;
 /**
  * 
  * @author ustaudinger

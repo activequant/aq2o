@@ -1,12 +1,12 @@
 package com.activequant.backtesting;
 
-import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.tools.streaming.MarketDataEvent;
-import com.activequant.tools.streaming.MarketDataSnapshot;
-import com.activequant.tools.streaming.StreamEventIterator;
+import com.activequant.domainmodel.streaming.MarketDataEvent;
+import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
+import com.activequant.interfaces.archive.IArchiveReader;
 
 /**
  * 

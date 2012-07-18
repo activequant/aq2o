@@ -7,11 +7,11 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.domainmodel.TradeableInstrument;
-import com.activequant.utils.events.IEventListener;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.ITradeableInstrumentDao;
+import com.activequant.interfaces.utils.IEventListener;
 
 /**
  * Imports one CSV file that contains instrument reference data, one instrument per row,

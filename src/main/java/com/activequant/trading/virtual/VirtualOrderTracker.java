@@ -3,10 +3,11 @@ package com.activequant.trading.virtual;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.order.Order;
-import com.activequant.trading.IOrderTracker;
+import com.activequant.interfaces.trading.IExchange;
+import com.activequant.interfaces.trading.IOrderTracker;
+import com.activequant.interfaces.utils.IEventListener;
+import com.activequant.interfaces.utils.IEventSource;
 import com.activequant.utils.events.Event;
-import com.activequant.utils.events.IEventListener;
-import com.activequant.utils.events.IEventSource;
 
 class VirtualOrderTracker implements IOrderTracker {
 

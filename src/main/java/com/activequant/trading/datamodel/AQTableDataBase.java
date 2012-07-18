@@ -72,11 +72,12 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 	}
 
 	public void setValueAt(Object value, int row, int col) {
-		if (row >= getData().length)
+		Object[][] x = getData();
+		if (row >= x.length)
 			return;
 		if (col >= getHeader().length)
 			return;
-		getData()[row][col] = value;
+		x[row][col] = value;
 	}
 
 	public abstract Object[][] getData();
@@ -92,7 +93,7 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 	}
 
 	public void signalUpdate() {
-		tableUpdateEvent.fire(marker);
+		if(!tableUpdateEvent.isEmpty())tableUpdateEvent.fire(marker);
 		fireTableDataChanged();
 	}
 

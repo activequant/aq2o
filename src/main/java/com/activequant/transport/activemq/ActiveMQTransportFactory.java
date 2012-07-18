@@ -11,14 +11,14 @@ import javax.jms.Session;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 
+import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TradeableInstrument;
-import com.activequant.exceptions.TransportException;
-import com.activequant.transport.ETransportType;
-import com.activequant.transport.IPublisher;
-import com.activequant.transport.IReceiver;
-import com.activequant.transport.ITransportFactory;
+import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.interfaces.transport.IPublisher;
+import com.activequant.interfaces.transport.IReceiver;
+import com.activequant.interfaces.transport.ITransportFactory;
 
 /**
  * 

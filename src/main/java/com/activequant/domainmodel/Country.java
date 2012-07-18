@@ -1,6 +1,6 @@
 package com.activequant.domainmodel;
 
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
 
 /**
  * Just mark all properties as @Property.

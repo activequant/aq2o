@@ -2,7 +2,7 @@ package com.activequant.trading.virtual;
 
 import java.util.PriorityQueue;
 
-import com.activequant.tools.streaming.StreamEvent;
+import com.activequant.domainmodel.streaming.StreamEvent;
 
 public class Simulator {
 

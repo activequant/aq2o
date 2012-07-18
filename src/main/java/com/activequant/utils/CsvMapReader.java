@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.events.Event;
-import com.activequant.utils.events.IEventListener;
 
 /**
  * Event based, stream reader, will read CSV lines from a stream and will then

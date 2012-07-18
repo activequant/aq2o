@@ -1,9 +1,9 @@
 package com.activequant.dao.inmemory;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 
 public class InMemMDIDao extends InMemoryDao<MarketDataInstrument> implements IMarketDataInstrumentDao {
 

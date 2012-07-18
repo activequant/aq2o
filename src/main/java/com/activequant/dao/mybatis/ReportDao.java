@@ -2,9 +2,9 @@ package com.activequant.dao.mybatis;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.activequant.dao.IReportDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Report;
+import com.activequant.interfaces.dao.IReportDao;
 
 public class ReportDao extends GenericMapperDao<Report> implements IReportDao {
 

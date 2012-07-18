@@ -7,8 +7,8 @@ import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.dao.IDaoFactory;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.servicelayer.soap.MainService;
 
 public class LocalSoapServer {

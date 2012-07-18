@@ -1,8 +1,8 @@
 package com.activequant.backtesting;
 
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.tools.streaming.StreamEventIterator;
-import com.activequant.tools.streaming.TimeStreamEvent;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
+import com.activequant.domainmodel.streaming.TimeStreamEvent;
 
 /**
  * 

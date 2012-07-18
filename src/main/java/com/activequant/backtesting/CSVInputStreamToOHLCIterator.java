@@ -12,10 +12,10 @@ import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.tools.streaming.StreamEventIterator;
-import com.activequant.tools.streaming.TimeStreamEvent;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
+import com.activequant.domainmodel.streaming.TimeStreamEvent;
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.CsvMapReader;
-import com.activequant.utils.events.IEventListener;
 
 /**
  * Execting header and then date, open, high, low, close

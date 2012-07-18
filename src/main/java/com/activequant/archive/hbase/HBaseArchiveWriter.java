@@ -10,10 +10,10 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import com.activequant.archive.IArchiveWriter;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
+import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
  * 

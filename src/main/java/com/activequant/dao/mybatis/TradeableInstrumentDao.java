@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TradeableInstrument;
+import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 
 public class TradeableInstrumentDao extends GenericMapperDao<TradeableInstrument> implements ITradeableInstrumentDao {
 

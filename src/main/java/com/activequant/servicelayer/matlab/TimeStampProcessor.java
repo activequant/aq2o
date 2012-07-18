@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.exceptions.InvalidDate8Time6Input;
+import com.activequant.domainmodel.exceptions.InvalidDate8Time6Input;
 import com.activequant.utils.TimeTools;
 
 public class TimeStampProcessor {

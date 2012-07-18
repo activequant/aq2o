@@ -1,7 +1,7 @@
 package com.activequant.dao.mybatis;
 
-import com.activequant.dao.IEntityDao;
 import com.activequant.domainmodel.PersistentEntity;
+import com.activequant.interfaces.dao.IEntityDao;
 
 public abstract class EntityDao<T extends PersistentEntity> implements IEntityDao<T> {
 

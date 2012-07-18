@@ -1,9 +1,9 @@
 package com.activequant.trading;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.trading.virtual.IExchange;
-import com.activequant.transport.ITransportFactory;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.trading.IExchange;
+import com.activequant.interfaces.transport.ITransportFactory;
 
 public class TradingSystemEnvironment {
 

@@ -8,10 +8,10 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
-import com.activequant.dao.DaoException;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.PerformanceReport;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.domainmodel.exceptions.DaoException;
 
 @WebService
 @MTOM(enabled=false)

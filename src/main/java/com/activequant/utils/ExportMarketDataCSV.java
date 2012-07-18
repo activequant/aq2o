@@ -6,13 +6,13 @@ import java.util.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveReader;
 
 /**
  * Exports market data from the archive.

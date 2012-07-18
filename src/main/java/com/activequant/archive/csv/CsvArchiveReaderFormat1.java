@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
+import com.activequant.interfaces.archive.IArchiveReader;
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.CsvMapReader;
-import com.activequant.utils.events.IEventListener;
 
 /**
  * Can handle only single-stream CSV files. Not multiple instruments in one

@@ -3,15 +3,15 @@ package com.activequant.transport.memory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TradeableInstrument;
-import com.activequant.exceptions.TransportException;
-import com.activequant.transport.ETransportType;
-import com.activequant.transport.IPublisher;
-import com.activequant.transport.IReceiver;
-import com.activequant.transport.ITransportFactory;
+import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.interfaces.transport.IPublisher;
+import com.activequant.interfaces.transport.IReceiver;
+import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.utils.events.Event;
 
 public class InMemoryTransportFactory implements ITransportFactory {

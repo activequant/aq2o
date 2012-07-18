@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IReportDao;
 import com.activequant.domainmodel.Report;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IReportDao;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

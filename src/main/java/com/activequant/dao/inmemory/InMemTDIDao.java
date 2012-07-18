@@ -1,10 +1,10 @@
 package com.activequant.dao.inmemory;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TradeableInstrument;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 
 public class InMemTDIDao extends InMemoryDao<TradeableInstrument> implements ITradeableInstrumentDao{
 

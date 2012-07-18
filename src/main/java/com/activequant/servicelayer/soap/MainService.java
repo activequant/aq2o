@@ -8,20 +8,20 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveWriter;
 import com.activequant.archive.TSContainer;
 import com.activequant.backtesting.reporting.ExtTrsctFileReporting;
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IInstrumentDao;
-import com.activequant.dao.IPerformanceReportDao;
-import com.activequant.dao.IReportDao;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.PerformanceReport;
 import com.activequant.domainmodel.Report;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveWriter;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IInstrumentDao;
+import com.activequant.interfaces.dao.IPerformanceReportDao;
+import com.activequant.interfaces.dao.IReportDao;
 import com.activequant.utils.Date8Time6Parser;
 
 @WebService(endpointInterface = "com.activequant.servicelayer.soap.IMainService", serviceName = "MainService")

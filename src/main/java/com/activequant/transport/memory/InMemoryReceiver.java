@@ -3,9 +3,9 @@ package com.activequant.transport.memory;
 import java.util.Map;
 
 import com.activequant.domainmodel.PersistentEntity;
-import com.activequant.transport.IReceiver;
+import com.activequant.interfaces.transport.IReceiver;
+import com.activequant.interfaces.utils.IEventSource;
 import com.activequant.utils.events.Event;
-import com.activequant.utils.events.IEventSource;
 
 public class InMemoryReceiver implements IReceiver {
 

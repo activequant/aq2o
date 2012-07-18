@@ -19,19 +19,19 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveReader;
-import com.activequant.archive.IArchiveWriter;
 import com.activequant.archive.MultiValueTimeSeriesIterator;
-import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.exceptions.TransportException;
-import com.activequant.transport.ITransportFactory;
-import com.activequant.utils.events.IEventListener;
+import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveReader;
+import com.activequant.interfaces.archive.IArchiveWriter;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.interfaces.utils.IEventListener;
 
 /**
  * Rechandler recreates the OHLCV bars for a specific day, for a specific time

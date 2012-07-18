@@ -1,8 +1,8 @@
 package com.activequant.aqviz.noviz;
 
-import com.activequant.aqviz.interfaces.IVisualTable;
+import com.activequant.interfaces.aqviz.IVisualTable;
+import com.activequant.interfaces.trading.IExchange;
 import com.activequant.trading.datamodel.AQTableDataBase;
-import com.activequant.trading.virtual.IExchange;
 
 /**
  * intentionally left blank. 

@@ -2,10 +2,10 @@ package com.activequant.tools.mapping;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 
 /**
  * 

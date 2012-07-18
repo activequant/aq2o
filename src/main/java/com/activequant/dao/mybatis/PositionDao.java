@@ -2,9 +2,9 @@ package com.activequant.dao.mybatis;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.activequant.dao.IPositionDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Position;
+import com.activequant.interfaces.dao.IPositionDao;
 
 public class PositionDao extends GenericMapperDao<Position> implements IPositionDao {
 

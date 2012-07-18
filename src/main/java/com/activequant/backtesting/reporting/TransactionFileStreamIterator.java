@@ -11,9 +11,9 @@ import java.util.TimeZone;
 import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
+import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
-import com.activequant.tools.streaming.StreamEventIterator;
-import com.activequant.tools.streaming.TimeStreamEvent;
 
 /**
  * Creates a stream event iterator from a transaction file list. 

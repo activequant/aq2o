@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
 
 public abstract class PersistentEntity {
 

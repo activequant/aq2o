@@ -9,11 +9,11 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IDaoFactory;
 import com.activequant.dao.hbase.TagDao;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IDaoFactory;
 
 /**
  * Can handle only Instruments and MarketDataInstruments.  

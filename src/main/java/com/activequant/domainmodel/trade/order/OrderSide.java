@@ -1,5 +1,11 @@
 package com.activequant.domainmodel.trade.order;
 
+/**
+ * Enumeration to describe order side to take. 
+ * 
+ * @author GhostRider
+ *
+ */
 public enum OrderSide {
     BUY(1), SELL(-1);
     private int side;
@@ -14,10 +20,6 @@ public enum OrderSide {
      */
     public int getSide() {
         return this.side;
-    }
-    
-    public boolean equals(OrderSide other){
-        return(this.getSide() == other.getSide());
     }
     
     /**

@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
 
 public class Future extends Derivative {
 

@@ -21,8 +21,6 @@ import java.util.TimeZone;
 
 import org.jfree.chart.ChartUtilities;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.backtesting.ArchiveStreamToOHLCIterator;
 import com.activequant.backtesting.FastStreamer;
@@ -32,18 +30,20 @@ import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.streaming.PNLChangeEvent;
+import com.activequant.domainmodel.streaming.StreamEvent;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveReader;
+import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.DoubleColumn;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TSContainerMethods;
 import com.activequant.timeseries.TypedColumn;
-import com.activequant.tools.streaming.PNLChangeEvent;
-import com.activequant.tools.streaming.StreamEvent;
-import com.activequant.tools.streaming.StreamEventIterator;
 import com.activequant.trading.PositionRiskCalculator;
-import com.activequant.transport.ITransportFactory;
 import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.CsvMapWriter;
 import com.activequant.utils.FileUtils;
@@ -171,6 +171,7 @@ public class TransactionInputToReport {
 				OrderFillEvent ofe = new OrderFillEvent();
 				ofe.setOptionalInstId(o.getMdiId());
 				ofe.setFillAmount(0.0);
+				// just set something. 
 				ofe.setSide("BUY");
 				ofe.setFillPrice(o.getClose());
 				ofe.setCreationTimeStamp(o.getTimeStamp());

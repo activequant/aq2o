@@ -6,10 +6,10 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
 
-import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 
 public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrument> implements IMarketDataInstrumentDao {
 

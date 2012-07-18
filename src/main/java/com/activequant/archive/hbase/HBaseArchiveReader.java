@@ -14,13 +14,13 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
 
-import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
+import com.activequant.interfaces.archive.IArchiveReader;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.utils.UniqueTimeStampGenerator;
 

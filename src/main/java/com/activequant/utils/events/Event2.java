@@ -26,6 +26,8 @@ package com.activequant.utils.events;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.activequant.interfaces.utils.IEventListener2;
+
 /**
  * Generic event<br>
  * <br>

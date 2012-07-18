@@ -1,6 +1,6 @@
 package com.activequant.domainmodel;
 
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
 
 /**
  * Holds all parameters for an exchange.

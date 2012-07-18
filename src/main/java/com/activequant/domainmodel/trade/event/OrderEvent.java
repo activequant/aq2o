@@ -1,9 +1,9 @@
 package com.activequant.domainmodel.trade.event;
 
+import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.streaming.StreamEvent;
 import com.activequant.domainmodel.trade.order.Order;
-import com.activequant.tools.streaming.StreamEvent;
-import com.activequant.transport.ETransportType;
 
 public abstract class OrderEvent extends StreamEvent{
 	

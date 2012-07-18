@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveWriter;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IInstrumentDao;
-import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.utils.events.IEventListener;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveWriter;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IInstrumentDao;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.worker.Worker;
 import com.activequant.utils.worker.WorkerThread;
 

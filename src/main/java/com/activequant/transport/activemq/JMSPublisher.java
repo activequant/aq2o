@@ -17,7 +17,7 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
 import com.activequant.domainmodel.PersistentEntity;
-import com.activequant.transport.IPublisher;
+import com.activequant.interfaces.transport.IPublisher;
 import com.activequant.utils.MapToString;
 
 class JMSPublisher implements IPublisher {

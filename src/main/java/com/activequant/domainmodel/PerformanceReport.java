@@ -1,6 +1,6 @@
 package com.activequant.domainmodel;
 
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
 
 /**
  * Holds a variety of performance related figures, so that 

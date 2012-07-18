@@ -5,8 +5,18 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.Portfolio;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.exceptions.IncompleteOrderInstructions;
+import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.domainmodel.exceptions.UnsupportedOrderType;
+import com.activequant.domainmodel.streaming.BBOEvent;
+import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.domainmodel.streaming.OrderStreamEvent;
+import com.activequant.domainmodel.streaming.PositionEvent;
+import com.activequant.domainmodel.streaming.StreamEvent;
+import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
@@ -19,21 +29,12 @@ import com.activequant.domainmodel.trade.event.OrderUpdateSubmittedEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.domainmodel.trade.order.OrderSide;
-import com.activequant.exceptions.IncompleteOrderInstructions;
-import com.activequant.exceptions.TransportException;
-import com.activequant.exceptions.UnsupportedOrderType;
-import com.activequant.tools.streaming.BBOEvent;
-import com.activequant.tools.streaming.MarketDataSnapshot;
-import com.activequant.tools.streaming.OrderStreamEvent;
-import com.activequant.tools.streaming.PositionEvent;
-import com.activequant.tools.streaming.StreamEvent;
-import com.activequant.tools.streaming.TimeStreamEvent;
-import com.activequant.trading.IOrderTracker;
-import com.activequant.transport.ETransportType;
-import com.activequant.transport.ITransportFactory;
+import com.activequant.interfaces.trading.IExchange;
+import com.activequant.interfaces.trading.IOrderTracker;
+import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.interfaces.utils.IEventListener;
+import com.activequant.interfaces.utils.IEventSource;
 import com.activequant.utils.events.Event;
-import com.activequant.utils.events.IEventListener;
-import com.activequant.utils.events.IEventSource;
 
 public class VirtualExchange implements IExchange {
 

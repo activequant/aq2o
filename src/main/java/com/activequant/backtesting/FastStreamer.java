@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.activequant.tools.streaming.StreamEvent;
-import com.activequant.tools.streaming.StreamEventIterator;
+import com.activequant.domainmodel.streaming.StreamEvent;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
 
 /**
  * 

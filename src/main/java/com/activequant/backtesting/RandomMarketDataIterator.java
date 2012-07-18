@@ -1,9 +1,9 @@
 package com.activequant.backtesting;
 
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.tools.streaming.BBOEvent;
-import com.activequant.tools.streaming.MarketDataEvent;
-import com.activequant.tools.streaming.StreamEventIterator;
+import com.activequant.domainmodel.streaming.BBOEvent;
+import com.activequant.domainmodel.streaming.MarketDataEvent;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
 
 /**
  * 

@@ -25,12 +25,12 @@ import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveWriter;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveWriter;
 
 public class LocalJettyServer {
 

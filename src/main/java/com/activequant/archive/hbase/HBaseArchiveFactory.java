@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveReader;
-import com.activequant.archive.IArchiveWriter;
 import com.activequant.domainmodel.TimeFrame;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveReader;
+import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
  * Instantiates readers and writers for different time frames. 

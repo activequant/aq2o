@@ -2,12 +2,12 @@ package com.activequant.utils;
 
 import java.util.Date;
 
-import com.activequant.archive.IArchiveReader;
-import com.activequant.archive.IArchiveWriter;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.interfaces.archive.IArchiveReader;
+import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
  * Helper app to do a simple test call to the archive. Useful for setting up monitoring tests. 

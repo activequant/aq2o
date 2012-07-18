@@ -18,10 +18,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.activequant.domainmodel.PersistentEntity;
-import com.activequant.transport.IReceiver;
+import com.activequant.interfaces.transport.IReceiver;
+import com.activequant.interfaces.utils.IEventSource;
 import com.activequant.utils.MapToString;
 import com.activequant.utils.events.Event;
-import com.activequant.utils.events.IEventSource;
 
 class JMSReceiver implements IReceiver, MessageListener {
 	JSONParser parser = new JSONParser();

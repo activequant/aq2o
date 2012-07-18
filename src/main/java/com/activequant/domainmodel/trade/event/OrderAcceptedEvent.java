@@ -1,7 +1,7 @@
 package com.activequant.domainmodel.trade.event;
 
+import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.transport.ETransportType;
 
 
 

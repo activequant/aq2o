@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.activequant.domainmodel.orderbook.OrderBookUpdated;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
 import com.activequant.trading.AbstractOrderBook;
-import com.activequant.trading.orderbook.OrderBookUpdated;
 
 /**
  * See

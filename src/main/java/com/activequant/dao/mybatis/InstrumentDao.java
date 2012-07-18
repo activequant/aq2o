@@ -2,9 +2,9 @@ package com.activequant.dao.mybatis;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.activequant.dao.IInstrumentDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.Instrument;
+import com.activequant.interfaces.dao.IInstrumentDao;
 
 public class InstrumentDao extends GenericMapperDao<Instrument> implements IInstrumentDao {
 

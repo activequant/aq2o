@@ -6,20 +6,20 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.archive.IArchiveFactory;
 import com.activequant.archive.csv.CsvArchiveReaderFormat1;
 import com.activequant.backtesting.BacktestConfiguration;
 import com.activequant.backtesting.FieldToBidAskConverterStream;
 import com.activequant.backtesting.VisualBacktester;
-import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
-import com.activequant.tools.streaming.StreamEventIterator;
-import com.activequant.trading.ITradingSystem;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.trading.ITradingSystem;
+import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.trading.virtual.VirtualExchange;
-import com.activequant.transport.ITransportFactory;
 import com.activequant.transport.memory.InMemoryTransportFactory;
 import com.activequant.utils.Date8Time6Parser;
 

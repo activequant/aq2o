@@ -3,7 +3,7 @@ package com.activequant.backtesting;
 import java.util.List;
 
 import com.activequant.domainmodel.PersistentEntity;
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
 
 public class BacktestConfiguration extends PersistentEntity {
 

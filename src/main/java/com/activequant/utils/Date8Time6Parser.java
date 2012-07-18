@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.exceptions.InvalidDate8Time6Input;
+import com.activequant.domainmodel.exceptions.InvalidDate8Time6Input;
 
 /**
  * Convenience class.

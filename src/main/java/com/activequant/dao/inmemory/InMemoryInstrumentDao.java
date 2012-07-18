@@ -1,8 +1,8 @@
 package com.activequant.dao.inmemory;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IInstrumentDao;
 import com.activequant.domainmodel.Instrument;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IInstrumentDao;
 
 public class InMemoryInstrumentDao extends InMemoryDao<Instrument> implements IInstrumentDao {
 

@@ -1,9 +1,9 @@
 package com.activequant.servicelayer.matlab.reqhandlers;
 
-import com.activequant.archive.IArchiveFactory;
 import com.activequant.archive.TSContainer;
-import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.servicelayer.matlab.IRequestHandler;
 
 public class SynthUsedExpiry implements IRequestHandler {

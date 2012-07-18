@@ -3,9 +3,9 @@ package com.activequant.utils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.SecurityChain;
 import com.activequant.domainmodel.SecurityChainByDate;
+import com.activequant.interfaces.dao.IDaoFactory;
 
 /**
  * Imports recursively all ".csv" file (case sensitive) from a start folder.

@@ -23,7 +23,7 @@ import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
 
-import com.activequant.dao.DaoException;
+import com.activequant.domainmodel.exceptions.DaoException;
 
 public class TagDao {
 	

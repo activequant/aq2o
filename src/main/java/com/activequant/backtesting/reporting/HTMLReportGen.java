@@ -17,7 +17,7 @@ import org.jfree.chart.ChartUtilities;
 import com.activequant.backtesting.BacktestConfiguration;
 import com.activequant.backtesting.OrderEventListener;
 import com.activequant.domainmodel.AlgoConfig;
-import com.activequant.exceptions.InvalidDate8Time6Input;
+import com.activequant.domainmodel.exceptions.InvalidDate8Time6Input;
 import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.TSContainer2;

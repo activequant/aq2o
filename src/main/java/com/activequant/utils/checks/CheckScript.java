@@ -6,10 +6,10 @@ import java.util.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IInstrumentDao;
-import com.activequant.dao.IMarketDataInstrumentDao;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IInstrumentDao;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.utils.ArrayUtils;
 import com.activequant.utils.mail.SendMail;
 

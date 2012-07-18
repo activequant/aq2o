@@ -1,7 +1,7 @@
 package com.activequant.domainmodel;
 
+import com.activequant.domainmodel.annotations.Property;
 import com.activequant.domainmodel.exceptions.NoEntryForDate;
-import com.activequant.utils.annotations.Property;
 
 /**
  * 

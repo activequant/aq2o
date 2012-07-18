@@ -10,10 +10,10 @@ import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TSContainerMethods;
 import com.activequant.timeseries.TypedColumn;
-import com.activequant.utils.events.IEventListener;
 
 /**
  * 

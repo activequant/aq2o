@@ -1,7 +1,7 @@
 package com.activequant.domainmodel;
 
-import com.activequant.tools.streaming.TimeStreamEvent;
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
+import com.activequant.domainmodel.streaming.TimeStreamEvent;
 
 /**
  * Chandlers make candles. 

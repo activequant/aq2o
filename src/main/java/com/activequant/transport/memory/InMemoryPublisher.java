@@ -3,7 +3,7 @@ package com.activequant.transport.memory;
 import java.util.Map;
 
 import com.activequant.domainmodel.PersistentEntity;
-import com.activequant.transport.IPublisher;
+import com.activequant.interfaces.transport.IPublisher;
 import com.activequant.utils.events.Event;
 
 public class InMemoryPublisher implements IPublisher {

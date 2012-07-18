@@ -2,14 +2,14 @@ package com.activequant.backtesting;
 
 import java.util.Map;
 
-import com.activequant.archive.IArchiveReader;
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.tools.streaming.StreamEventIterator;
-import com.activequant.tools.streaming.TimeStreamEvent;
+import com.activequant.domainmodel.streaming.StreamEventIterator;
+import com.activequant.domainmodel.streaming.TimeStreamEvent;
+import com.activequant.interfaces.archive.IArchiveReader;
 
 /**
  * 

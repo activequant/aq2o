@@ -1,6 +1,6 @@
 package com.activequant.domainmodel;
 
-import com.activequant.utils.annotations.Property;
+import com.activequant.domainmodel.annotations.Property;
 
 /**
  * key for this is an aim hedge instrument ID. This table is populated from

@@ -15,16 +15,16 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveWriter;
-import com.activequant.dao.IDaoFactory;
+import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeFrame;
-import com.activequant.exceptions.TransportException;
-import com.activequant.tools.streaming.MarketDataSnapshot;
-import com.activequant.transport.ETransportType;
-import com.activequant.transport.ITransportFactory;
-import com.activequant.utils.events.IEventListener;
+import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveWriter;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.snmp.SNMPReporter;
 import com.activequant.utils.snmp.SNMPReporter.ValueMode;
 

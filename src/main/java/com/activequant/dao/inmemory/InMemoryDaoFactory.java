@@ -1,19 +1,19 @@
 package com.activequant.dao.inmemory;
 
-import com.activequant.dao.IAdjustedSeriesDateEntryDao;
-import com.activequant.dao.ICountryDao;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IInstrumentDao;
-import com.activequant.dao.IMarketDataInstrumentDao;
-import com.activequant.dao.IPerformanceReportDao;
-import com.activequant.dao.IPortfolioDao;
-import com.activequant.dao.IPositionDao;
-import com.activequant.dao.IRegionDao;
-import com.activequant.dao.IReportDao;
-import com.activequant.dao.ISecurityChainDao;
-import com.activequant.dao.ITradeableInstrumentDao;
-import com.activequant.dao.IVenueDao;
 import com.activequant.domainmodel.Instrument;
+import com.activequant.interfaces.dao.IAdjustedSeriesDateEntryDao;
+import com.activequant.interfaces.dao.ICountryDao;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IInstrumentDao;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
+import com.activequant.interfaces.dao.IPerformanceReportDao;
+import com.activequant.interfaces.dao.IPortfolioDao;
+import com.activequant.interfaces.dao.IPositionDao;
+import com.activequant.interfaces.dao.IRegionDao;
+import com.activequant.interfaces.dao.IReportDao;
+import com.activequant.interfaces.dao.ISecurityChainDao;
+import com.activequant.interfaces.dao.ITradeableInstrumentDao;
+import com.activequant.interfaces.dao.IVenueDao;
 /**
  * Can be used for in memory daos. 
  * Hugely underdeveloped. 
