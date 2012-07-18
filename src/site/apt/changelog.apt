@@ -2,7 +2,10 @@ ChangeLog
 
 * 2.2-SNAPSHOT
 
-	Work just started. 
+** Organizational
+
+	* Major package reshuffling to straighten out the package structure. 
+	 
 
 * 2.1
 
