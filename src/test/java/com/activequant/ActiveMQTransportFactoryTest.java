@@ -7,11 +7,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.activequant.transport.IPublisher;
-import com.activequant.transport.IReceiver;
-import com.activequant.transport.ITransportFactory;
+import com.activequant.interfaces.transport.IPublisher;
+import com.activequant.interfaces.transport.IReceiver;
+import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.transport.activemq.ActiveMQTransportFactory;
-import com.activequant.utils.events.IEventListener;
 
 /**
  * Unit test for simple App.

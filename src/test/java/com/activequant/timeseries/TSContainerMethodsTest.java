@@ -22,8 +22,8 @@ import junit.framework.TestSuite;
 
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.CsvMapReader;
-import com.activequant.utils.events.IEventListener;
 
 public class TSContainerMethodsTest extends TestCase {
 	TSContainer2 timeSeries;

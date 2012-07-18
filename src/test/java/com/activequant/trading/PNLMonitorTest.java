@@ -8,8 +8,8 @@ import junit.framework.TestSuite;
 
 import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.streaming.PNLChangeEvent;
 import com.activequant.timeseries.DoubleColumn;
-import com.activequant.tools.streaming.PNLChangeEvent;
 
 public class PNLMonitorTest extends TestCase {
 	/**

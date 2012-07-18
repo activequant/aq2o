@@ -7,12 +7,12 @@ import junit.framework.TestSuite;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IMarketDataInstrumentDao;
-import com.activequant.dao.ITradeableInstrumentDao;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TradeableInstrument;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
+import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 
 /**
  * Unit test for simple App.

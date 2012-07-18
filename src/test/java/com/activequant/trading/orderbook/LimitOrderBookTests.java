@@ -9,7 +9,15 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.activequant.domainmodel.orderbook.ExecutionCanceledEvent;
+import com.activequant.domainmodel.orderbook.ExecutionEvent;
+import com.activequant.domainmodel.orderbook.MarketClosed;
+import com.activequant.domainmodel.orderbook.MarketOpen;
+import com.activequant.domainmodel.orderbook.MarketState;
+import com.activequant.domainmodel.orderbook.OrderBookChange;
+import com.activequant.domainmodel.orderbook.TransactionEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
+import com.activequant.interfaces.trading.IOrderBookListener;
 import com.activequant.trading.virtual.LimitOrderBook;
 import com.activequant.trading.virtual.VirtualExchange;
 import com.activequant.transport.memory.InMemoryTransportFactory;

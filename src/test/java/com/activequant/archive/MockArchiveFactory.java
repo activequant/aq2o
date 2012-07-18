@@ -2,12 +2,12 @@ package com.activequant.archive;
 
 import java.io.IOException;
 
-import com.activequant.archive.IArchiveFactory;
-import com.activequant.archive.IArchiveReader;
-import com.activequant.archive.IArchiveWriter;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveReader;
+import com.activequant.interfaces.archive.IArchiveWriter;
 
 public class MockArchiveFactory implements IArchiveFactory {
 

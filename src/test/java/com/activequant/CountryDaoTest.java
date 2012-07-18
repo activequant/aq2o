@@ -7,9 +7,9 @@ import junit.framework.TestSuite;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.ICountryDao;
-import com.activequant.dao.IDaoFactory;
 import com.activequant.domainmodel.Country;
+import com.activequant.interfaces.dao.ICountryDao;
+import com.activequant.interfaces.dao.IDaoFactory;
 
 /**
  * Unit test for simple App.

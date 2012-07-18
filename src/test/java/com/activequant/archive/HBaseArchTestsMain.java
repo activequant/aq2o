@@ -7,6 +7,8 @@ import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
+import com.activequant.interfaces.archive.IArchiveReader;
+import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
  * not to be run without an underlying hbase, therefore not including in junit testing. 

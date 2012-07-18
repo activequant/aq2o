@@ -7,11 +7,11 @@ import junit.framework.TestSuite;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.DaoException;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.IInstrumentDao;
 import com.activequant.domainmodel.FX;
 import com.activequant.domainmodel.Future;
+import com.activequant.domainmodel.exceptions.DaoException;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IInstrumentDao;
 
 /**
  * Unit test for simple App.

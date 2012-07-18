@@ -7,11 +7,11 @@ import junit.framework.TestSuite;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.dao.ICountryDao;
-import com.activequant.dao.IDaoFactory;
-import com.activequant.dao.ISecurityChainDao;
 import com.activequant.domainmodel.Country;
 import com.activequant.domainmodel.SecurityChainByDate;
+import com.activequant.interfaces.dao.ICountryDao;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.ISecurityChainDao;
 
 /**
  * Unit test for simple App.

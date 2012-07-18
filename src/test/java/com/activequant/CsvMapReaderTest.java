@@ -7,8 +7,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.CsvMapReader;
-import com.activequant.utils.events.IEventListener;
 
 /**
  * Unit test for simple App.
