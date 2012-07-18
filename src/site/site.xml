@@ -23,7 +23,8 @@
 		<menu name="Framework">
 			<item name="Welcome" href="index.html" />
 			<item name="High level overview" href="highlevel.html" />
-			<item name="Installation/Use/POM" href="referencingaq.html" />		
+			<item name="Installation/Use/POM" href="referencingaq.html" />
+			<item name="Live trading" href="livetrading.html" />		
 		</menu>
 
 		<menu name="Example code">

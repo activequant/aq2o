@@ -1,3 +1,11 @@
 Live trading 
 
-	....
+	Documentation will follow at one point. 
+	
+	Have a look at the example code for a simple moving average trade system: 
+	
+	{{{developers.activequant.org/projects/aq2o/repository/changes/trunk/src/main/java/com/activequant/trading/systems/sma/SMATest.java}Simple System Test}}
+	
+	{{{http://developers.activequant.org/projects/aq2o/repository/entry/trunk/src/main/java/com/activequant/trading/systems/sma/SimpleMovingAverage.java}Simple moving average implementation}}
+	
+[./images/scan1.jpg]	
