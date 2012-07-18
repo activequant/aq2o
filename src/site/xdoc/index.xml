@@ -13,6 +13,8 @@
 
     <!-- The body of the document contains a number of sections -->
     <section name="Welcome">
+    <p><strong>SVN TRUNK CURRENTLY UNSTABLE (18 JULY 2012) - USE TAG 2.1 UNTIL FURTHER NOTICE!</strong></p>
+    
     <p><i>Others write "thought leadership" on their flag. We just lead.</i></p>
    	<p>You have reached the landing site of the ActiveQuant securities trading framework. <i><strong>University?</strong> We would be happy to support you and your students on your voyage into quantitative finance! What about a guest lecture?</i> </p>
    	<p>This project is an open source project, but not free software, but it is provided free of charge to academics and hobbyists. You could also say it is an open core software. We provide various commercial services around this open core.</p>
