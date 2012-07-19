@@ -5,6 +5,8 @@ import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.annotations.Property;
 
 /**
+ * Violates the old PersistentEntity approach. 
+ * Use it anyway. 
  * 
  * @author GhostRider
  *
@@ -111,6 +113,7 @@ public class BacktestConfiguration extends PersistentEntity {
 		b.setResolutionTimeFrame(getResolutionTimeFrame());
 		b.setBacktesterImplementation(getBacktesterImplementation());
 		b.setTimeSetup(getTimeSetup());
+		b.setAlgoConfig(algoConfig.clone());
 		return b;
 	}
 

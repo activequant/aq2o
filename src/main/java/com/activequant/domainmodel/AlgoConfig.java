@@ -8,7 +8,7 @@ import com.activequant.domainmodel.annotations.Property;
  * @author GhostRider
  *
  */
-public class AlgoConfig extends PersistentEntity {
+public class AlgoConfig extends PersistentEntity implements Cloneable {
 
 	private String id;
 	
@@ -30,4 +30,10 @@ public class AlgoConfig extends PersistentEntity {
 		this.id = id;
 	}
 	
+	
+	public AlgoConfig clone(){
+		AlgoConfig clone = new AlgoConfig();
+		clone.setId(id);
+		return clone; 
+	}
 }
