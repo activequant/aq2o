@@ -45,6 +45,10 @@ import com.activequant.trading.datamodel.QuoteTable;
 
 public abstract class AbstractTSBase implements ITradingSystem {
 
+	private static final int BID_SIZE_COL_IDX = QuoteTable.Columns.BIDSIZE.colIdx();
+	private static final int BID_COL_IDX = QuoteTable.Columns.BID.colIdx();
+	private static final int ASK_SIZE_COL_INDX = QuoteTable.Columns.ASKSIZE.colIdx();
+	private static final int ASK_COL_IDX = QuoteTable.Columns.ASK.colIdx();
 	private final InstrumentTable instrumentTable = new InstrumentTable(this);
 	private final QuoteTable quoteTable = new QuoteTable(this);
 	private final PositionTable positionTable = new PositionTable(this);
@@ -369,23 +373,37 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		if (getInstrumentTable().containsInstrumentId(mdiId)) {
 			int rowIndx = getInstrumentTable().getRowIndexOf(mdiId);
 
+			// call by reference
+			Object[][] row = getQuoteTable().getData();
 			// update the quote table.
-			Double bid = null, ask = null;
 			if (mds.getAskPrices() != null && mds.getAskPrices()[0] != 0.0) {
-				ask = mds.getAskPrices()[0];
-				getQuoteTable().setValueAt(mds.getAskPrices()[0], rowIndx, QuoteTable.Columns.ASK.colIdx());
-				getQuoteTable().setValueAt(mds.getAskSizes()[0], rowIndx, QuoteTable.Columns.ASKSIZE.colIdx());
+				row[rowIndx][ASK_COL_IDX] = mds.getAskPrices()[0];
+				row[rowIndx][ASK_SIZE_COL_INDX] = mds.getAskSizes()[0];
+				// getQuoteTable().setValueAt(mds.getAskPrices()[0], rowIndx, ASK_COL_IDX);
+				// getQuoteTable().setValueAt(mds.getAskSizes()[0], rowIndx, ASK_SIZE_COL_INDX);
 			} else {
-				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.ASK.colIdx());
-				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.ASKSIZE.colIdx());
+				row[rowIndx][ASK_COL_IDX] = null;
+				row[rowIndx][ASK_SIZE_COL_INDX] = null;
+				
+//				getQuoteTable().setValueAt(null, rowIndx, ASK_COL_IDX);
+//				getQuoteTable().setValueAt(null, rowIndx, ASK_SIZE_COL_INDX);
 			}
 			if (mds.getBidPrices() != null && mds.getBidPrices()[0] != 0.0) {
-				bid = mds.getBidPrices()[0];
-				getQuoteTable().setValueAt(mds.getBidPrices()[0], rowIndx, QuoteTable.Columns.BID.colIdx());
-				getQuoteTable().setValueAt(mds.getBidSizes()[0], rowIndx, QuoteTable.Columns.BIDSIZE.colIdx());
+				
+				
+				row[rowIndx][BID_COL_IDX] = mds.getBidPrices()[0];
+				row[rowIndx][BID_SIZE_COL_IDX] = mds.getBidSizes()[0];
+				
+//				getQuoteTable().setValueAt(mds.getBidPrices()[0], rowIndx, BID_COL_IDX);
+//				getQuoteTable().setValueAt(mds.getBidSizes()[0], rowIndx, BID_SIZE_COL_IDX);
 			} else {
-				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.BID.colIdx());
-				getQuoteTable().setValueAt(null, rowIndx, QuoteTable.Columns.BIDSIZE.colIdx());
+				
+				row[rowIndx][BID_COL_IDX] = null;
+				row[rowIndx][BID_SIZE_COL_IDX] = null;
+				
+				
+//				getQuoteTable().setValueAt(null, rowIndx, BID_COL_IDX);
+//				getQuoteTable().setValueAt(null, rowIndx, BID_SIZE_COL_IDX);
 			}
 			// signaling that this row has changed.
 			getQuoteTable().getRowUpdateEvent().fire(rowIndx);
