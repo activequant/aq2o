@@ -9,10 +9,13 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import org.apache.log4j.Logger;
+
 import com.activequant.aqviz.GlobalVizEvents;
 import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.ETransportType;
+import com.activequant.domainmodel.backtesting.BacktestConfiguration;
 import com.activequant.domainmodel.streaming.MarketDataEvent;
 import com.activequant.domainmodel.streaming.ReferenceDataEvent;
 import com.activequant.domainmodel.streaming.StreamEvent;
@@ -30,6 +33,11 @@ import com.activequant.trading.virtual.VirtualExchange;
 import com.activequant.utils.TimeMeasurement;
 
 /**
+ * 
+ * The visual backtester is a non-parallel backtester. If you want to speed up backtesting, for example by testing day-by-day or week-by-week in 
+ * parallel, use the ParallelizedBacktester. 
+ * 
+ * Setting the interactive flag to false will result in no backtest interface. 
  * 
  * @author GhostRider
  * 
@@ -50,14 +58,15 @@ public class VisualBacktester extends AbstractBacktester {
 	private PNLMonitor pnlMonitor;
 	private boolean interactive = true;
 	private boolean sysExit = true; 
+	private Logger log = Logger.getLogger(VisualBacktester.class);
 
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
 			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters, BacktestConfiguration bc) throws Exception {
 		this(factory, transportFactory, daoFactory, exchange, tradingSystems, streamIters, bc, true);
 	}
 
+
 	/**
-	 * Dependency injection constructor.
 	 * 
 	 * @param factory
 	 * @param transportFactory
@@ -65,6 +74,8 @@ public class VisualBacktester extends AbstractBacktester {
 	 * @param exchange
 	 * @param tradingSystems
 	 * @param streamIters
+	 * @param bc
+	 * @param interactive set it to false to have no user interface. Use start to trigger the backtest. 
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
@@ -113,11 +124,12 @@ public class VisualBacktester extends AbstractBacktester {
 		fs = new FastStreamer(streamIters);
 
 		TimeMeasurement.start("BACKTEST");
-
+		log.info("Starting replay.");
 		for (ITradingSystem s : tradingSystems) {
 			s.start();
 		}
 
+		
 		if (interactive) {
 
 			jframe = new JFrame();
@@ -212,7 +224,7 @@ public class VisualBacktester extends AbstractBacktester {
 		TimeMeasurement.stop("BACKTEST");
 
 		long difference = TimeMeasurement.getRuntime("BACKTEST");
-		System.out.println("Replayed " + eventCount + " events in " + difference + "ms. That's "
+		log.info("Replayed " + eventCount + " events in " + difference + "ms. That's "
 				+ (eventCount / (double) difference) + " events/ms");
 		runFlag = false;
 
@@ -244,7 +256,7 @@ public class VisualBacktester extends AbstractBacktester {
 				}
 
 				// everything's a time event, so i also have to catch the
-				// fucking rest.
+				// fine rest.
 				if (transportType.equals(ETransportType.MARKET_DATA)) {
 					exchange.processStreamEvent(se);
 					MarketDataEvent mde = (MarketDataEvent) se;

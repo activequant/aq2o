@@ -11,13 +11,16 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
 
-import com.activequant.backtesting.BacktestConfiguration;
 import com.activequant.backtesting.OrderEventListener;
 import com.activequant.domainmodel.AlgoConfig;
+import com.activequant.domainmodel.backtesting.BacktestConfiguration;
+import com.activequant.domainmodel.backtesting.SimulationReport;
 import com.activequant.domainmodel.exceptions.InvalidDate8Time6Input;
+import com.activequant.interfaces.backtesting.IReportRenderer;
 import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.TSContainer2;
@@ -26,7 +29,7 @@ import com.activequant.utils.CsvMapWriter;
 import com.activequant.utils.Date8Time6Parser;
 import com.activequant.utils.FileUtils;
 
-public class HTMLReportGen {
+public class HTMLReportGen implements IReportRenderer {
 	protected CSVFileFillExporter fillExporter = new CSVFileFillExporter();
 
 	private Logger log = Logger.getLogger(HTMLReportGen.class);
@@ -41,91 +44,104 @@ public class HTMLReportGen {
 	}
 
 	public void genReport(AlgoConfig[] algoConfigs, OrderEventListener oelistener, PNLMonitor pnlMonitor,
-			BacktestConfiguration btConfig) throws IOException {
-		TSContainerMethods tcm = new TSContainerMethods();
-		new File(targetFolder).mkdirs();
-		fillExporter.export(targetFolder, oelistener.getFillEvents());
-		// generate PNL report
-		TSContainer2 pnlContainer = pnlMonitor.getCumulatedTSContainer();
-		tcm.overwriteNull(pnlContainer);
-		tcm.overwriteNull(pnlContainer, 0.0);
-
-		FileOutputStream fout;
+			BacktestConfiguration btConfig) {
 		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "pnl.csv");
-			CSVExporter c = new CSVExporter(fout, pnlContainer);
-			c.write();
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			TSContainerMethods tcm = new TSContainerMethods();
+			new File(targetFolder).mkdirs();
+			fillExporter.export(targetFolder, oelistener.getFillEvents());
+			// generate PNL report
+			TSContainer2 pnlContainer = pnlMonitor.getCumulatedTSContainer();
+			tcm.overwriteNull(pnlContainer);
+			tcm.overwriteNull(pnlContainer, 0.0);
 
-		// generate a PNL chart.
-		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "pnl.png"), pnlMonitor.getStaticChart(),
-				800, 600);
-
-		TSContainer2 posSeries = oelistener.getPositionOverTime();
-		tcm.overwriteNull(posSeries, 0.0);
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "positions.csv");
-			CSVExporter c = new CSVExporter(fout, posSeries);
-			c.write();
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// generate a position chart, make sure we align it to the pnlContainer
-
-		tcm.injectTimeStamps(posSeries, pnlContainer.getTimeStamps());
-
-		ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"),
-				ChartUtils.getStepChart("Position", posSeries), 800, 600);
-
-		// dump all used algo configs.
-		try {
-			if (algoConfigs != null) {
-				for (AlgoConfig ac : algoConfigs) {
-					fout = new FileOutputStream(targetFolder + File.separator + "algoconfig_" + ac.getId() + "_.csv");
-					new CsvMapWriter().write(ac.propertyMap(), fout);
-					fout.close();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// dump the backtest config.
-		try {
-			if (btConfig != null) {
-
-				fout = new FileOutputStream(targetFolder + File.separator + "btconfig_" + btConfig.getId() + "_.csv");
-				new CsvMapWriter().write(btConfig.propertyMap(), fout);
+			FileOutputStream fout;
+			try {
+				fout = new FileOutputStream(targetFolder + File.separator + "pnl.csv");
+				CSVExporter c = new CSVExporter(fout, pnlContainer);
+				c.write();
 				fout.close();
-
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			// generate a PNL chart.
+			ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "pnl.png"),
+					pnlMonitor.getStaticChart(), 800, 600);
+
+			TSContainer2 posSeries = oelistener.getPositionOverTime();
+			tcm.overwriteNull(posSeries, 0.0);
+			try {
+				fout = new FileOutputStream(targetFolder + File.separator + "positions.csv");
+				CSVExporter c = new CSVExporter(fout, posSeries);
+				c.write();
+				fout.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// generate a position chart, make sure we align it to the
+			// pnlContainer
+
+			tcm.injectTimeStamps(posSeries, pnlContainer.getTimeStamps());
+
+			ChartUtilities.saveChartAsPNG(new File(targetFolder + File.separator + "position.png"),
+					ChartUtils.getStepChart("Position", posSeries), 800, 600);
+
+			// dump all used algo configs.
+			try {
+				if (algoConfigs != null) {
+					for (AlgoConfig ac : algoConfigs) {
+						fout = new FileOutputStream(targetFolder + File.separator + "algoconfig_" + ac.getId()
+								+ "_.csv");
+						new CsvMapWriter().write(ac.propertyMap(), fout);
+						fout.close();
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// dump the backtest config.
+			try {
+				if (btConfig != null) {
+
+					fout = new FileOutputStream(targetFolder + File.separator + "btconfig_" + btConfig.getId()
+							+ "_.csv");
+					new CsvMapWriter().write(btConfig.propertyMap(), fout);
+					fout.close();
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// calculate some statistics.
+			BacktestStatistics bs = new BacktestStatistics();
+			bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+			bs.calcPNLStats(pnlContainer);
+			bs.calcPosStats(oelistener.getPositionOverTime());
+			bs.populateOrderStats(oelistener);
+
+			// dump the stats
+			try {
+				fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
+				new CsvMapWriter().write(bs.getStatistics(), fout);
+				fout.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			generate(algoConfigs, btConfig, bs);
+		} catch (IOException ex) {
+			log.warn("Error", ex);
 		}
 
-		// calculate some statistics.
-		BacktestStatistics bs = new BacktestStatistics();
-		bs.setReportId(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-		bs.calcPNLStats(pnlContainer);
-		bs.calcPosStats(oelistener.getPositionOverTime());
-		bs.populateOrderStats(oelistener);
-
-		// dump the stats
-		try {
-			fout = new FileOutputStream(targetFolder + File.separator + "statistics.csv");
-			new CsvMapWriter().write(bs.getStatistics(), fout);
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		generate(algoConfigs, btConfig, bs);
-
+	}
+	
+	
+	public void genReport(BacktestConfiguration btConfig, AlgoConfig[] algoConfigs, SimulationReport simReport)
+	{
+		throw new NotImplementedException();
 	}
 
 	public void generate(AlgoConfig[] algoConfigs, BacktestConfiguration bc, BacktestStatistics bt)
@@ -147,9 +163,11 @@ public class HTMLReportGen {
 			templateString = templateString.replace("{TDIS}", ArrayUtils.toString(bc.getTdis()));
 			try {
 				templateString = templateString.replace("{BACKTESTSTART}",
-						"" + new Date8Time6Parser().fromDouble((double)bc.getDate8Time6Start()).getCalendar().getTime());
+						""
+								+ new Date8Time6Parser().fromDouble((double) bc.getDate8Time6Start()).getCalendar()
+										.getTime());
 				templateString = templateString.replace("{BACKTESTEND}",
-						"" + new Date8Time6Parser().fromDouble((double)bc.getDate8Time6End()).getCalendar().getTime());
+						"" + new Date8Time6Parser().fromDouble((double) bc.getDate8Time6End()).getCalendar().getTime());
 			} catch (InvalidDate8Time6Input e) {
 				e.printStackTrace();
 			}
@@ -177,21 +195,23 @@ public class HTMLReportGen {
 				while (entryIter.hasNext()) {
 					Entry<String, Object> e = entryIter.next();
 					String entry = acEntryTemplate.replace("{KEY}", e.getKey());
-					if(e.getValue()!=null)
+					if (e.getValue() != null)
 						entry = entry.replace("{VALUE}", e.getValue().toString());
 					else
 						entry = entry.replace("{VALUE}", "-");
 					entryRep.append(entry).append("\n");
 				}
-				acTemplateLocal = acTemplateLocal.substring(0, acEntryMarkerStart) + entryRep.toString()+ acTemplateLocal.substring(acEntryMarkerEnd);
-				
+				acTemplateLocal = acTemplateLocal.substring(0, acEntryMarkerStart) + entryRep.toString()
+						+ acTemplateLocal.substring(acEntryMarkerEnd);
+
 				//
 				acSection.append(acTemplateLocal).append("\n");
 
 			}
-			// replace the section in the report. 
-			templateString = templateString.substring(0, acMarkerStart) + acSection.toString()  + templateString.substring(acMarkerEnd);
-			
+			// replace the section in the report.
+			templateString = templateString.substring(0, acMarkerStart) + acSection.toString()
+					+ templateString.substring(acMarkerEnd);
+
 		} else {
 			templateString = templateString.substring(0, acMarkerStart) + templateString.substring(acMarkerEnd);
 		}

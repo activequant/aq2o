@@ -19,7 +19,7 @@ public class LocalHBaseCluster {
         // have to set a data directory. 
         config.set(HConstants.ZOOKEEPER_QUORUM, hostName);
         config.set(HConstants.HBASE_DIR, dataDir);    
-        config.set(HConstants.CLUSTER_IS_LOCAL, "TRUE");
+        // config.set(HConstants.CLUSTER_IS_LOCAL, "TRUE");
         
         
         //

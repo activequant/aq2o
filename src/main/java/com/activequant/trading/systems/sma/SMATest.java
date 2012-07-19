@@ -7,13 +7,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.activequant.archive.csv.CsvArchiveReaderFormat1;
-import com.activequant.backtesting.BacktestConfiguration;
 import com.activequant.backtesting.FieldToBidAskConverterStream;
 import com.activequant.backtesting.VisualBacktester;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
+import com.activequant.domainmodel.backtesting.BacktestConfiguration;
 import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.dao.IDaoFactory;

@@ -254,6 +254,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	/**
 	 * Called if there is a new market stream data event.
+	 * This method delegates on to specific process methods. 
+	 * 
+	 * @param se arriving stream event. 
 	 */
 	@Override
 	public void process(StreamEvent se) {
@@ -272,6 +275,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		} else if (se instanceof InformationalEvent) {
 			auditLog(se.getTimeStamp(), ((InformationalEvent) se).getText());
 		}
+		// TimeStreamEvents should be handled always. 
 		if (se instanceof TimeStreamEvent) {
 			process((TimeStreamEvent) se);
 		}
@@ -293,6 +297,10 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		//
 	}
 
+	/**
+	 * 
+	 * @param ose
+	 */
 	public void process(OrderStreamEvent ose) {
 		Order refOrder = ose.getOe().getRefOrder();
 		if (ose.getOe() instanceof OrderFillEvent) {
@@ -350,6 +358,11 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		getOrderTable().signalUpdate();
 	}
 
+	/**
+	 * Market Data Snapshots arrive here. 
+	 * 
+	 * @param mds
+	 */
 	public void process(MarketDataSnapshot mds) {
 		// update the current mkt quotes table.
 		String mdiId = mds.getMdiId();

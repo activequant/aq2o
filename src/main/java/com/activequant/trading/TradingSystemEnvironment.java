@@ -5,6 +5,12 @@ import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.trading.IExchange;
 import com.activequant.interfaces.transport.ITransportFactory;
 
+/**
+ * contains relevant pointers to key services. 
+ *  * 
+ * @author GhostRider
+ *
+ */
 public class TradingSystemEnvironment {
 
 	private IExchange exchange;

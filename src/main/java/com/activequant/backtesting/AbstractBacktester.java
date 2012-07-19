@@ -15,6 +15,7 @@ import com.activequant.backtesting.reporting.CSVFileFillExporter;
 import com.activequant.backtesting.reporting.HTMLReportGen;
 import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.domainmodel.AlgoConfig;
+import com.activequant.domainmodel.backtesting.BacktestConfiguration;
 import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.TSContainer2;
@@ -43,6 +44,17 @@ public abstract class AbstractBacktester {
 		this.btConfig = btConfig;
 	}
 	
+	public void generateReport(String localTargetFolder, String localTemplateFolder) throws IOException {
+		HTMLReportGen h = new HTMLReportGen(localTargetFolder, localTemplateFolder);
+		if(oelistener.getFillEvents().size()>0){
+			h.genReport(algoConfigs, oelistener, pnlMonitor, btConfig);
+		}
+		else{
+			log.warn("No trades were generated!");
+			System.out.println("No trades were generated.");
+		}
+		
+	}
 	
 
 	public void generateReport() throws IOException {		

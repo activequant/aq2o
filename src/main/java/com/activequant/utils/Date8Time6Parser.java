@@ -35,6 +35,10 @@ public class Date8Time6Parser extends SimpleDateFormat {
 		return new TimeStamp(getNanoseconds(d8t6));
 	}
 
+	public TimeStamp fromLong(Long d8t6) throws InvalidDate8Time6Input {
+		return new TimeStamp(getNanoseconds(d8t6.doubleValue()));
+	}
+	
 	public long getMicroseconds(Double d8t6) throws InvalidDate8Time6Input {
 		String s1 = dcf.format(d8t6);
 		Date d1;

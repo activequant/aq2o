@@ -1,10 +1,14 @@
-package com.activequant.backtesting;
+package com.activequant.domainmodel.backtesting;
 
-import java.util.List;
-
+import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.annotations.Property;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class BacktestConfiguration extends PersistentEntity {
 
 	private String id;
@@ -12,9 +16,10 @@ public class BacktestConfiguration extends PersistentEntity {
 	private long date8Time6End;
 	private String backtesterImplementation;
 	private String[] mdis;
-	private String[] tdis;
-	
+	private String[] tdis; 	
 	private String resolutionTimeFrame;
+	private TimeSetup timeSetup;
+	private AlgoConfig algoConfig;
 
 	public BacktestConfiguration(){
 		super(BacktestConfiguration.class.getCanonicalName());
@@ -30,6 +35,11 @@ public class BacktestConfiguration extends PersistentEntity {
 		return id;
 	}
 
+	/**
+	 * Use a time setup instead. 
+	 * @return
+	 */
+	@Deprecated
 	@Property
 	public long getDate8Time6Start() {
 		return date8Time6Start;
@@ -39,6 +49,11 @@ public class BacktestConfiguration extends PersistentEntity {
 		this.date8Time6Start = date8Time6start;
 	}
 
+	/**
+	 * Use a time setup instead. 
+	 * @return
+	 */
+	@Deprecated
 	@Property
 	public long getDate8Time6End() {
 		return date8Time6End;
@@ -88,4 +103,31 @@ public class BacktestConfiguration extends PersistentEntity {
 		this.tdis = tdis;
 	}
 
+	public BacktestConfiguration clone(){
+		BacktestConfiguration b = new BacktestConfiguration();
+		b.setId(getId());
+		b.setTdis(getTdis());
+		b.setMdis(getMdis());
+		b.setResolutionTimeFrame(getResolutionTimeFrame());
+		b.setBacktesterImplementation(getBacktesterImplementation());
+		b.setTimeSetup(getTimeSetup());
+		return b;
+	}
+
+	public TimeSetup getTimeSetup() {
+		return timeSetup;
+	}
+
+	public void setTimeSetup(TimeSetup timeSetup) {
+		this.timeSetup = timeSetup;
+	}
+
+	public AlgoConfig getAlgoConfig() {
+		return algoConfig;
+	}
+
+	public void setAlgoConfig(AlgoConfig algoConfig) {
+		this.algoConfig = algoConfig;
+	}
+	
 }

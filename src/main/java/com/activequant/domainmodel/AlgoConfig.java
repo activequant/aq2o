@@ -30,6 +30,4 @@ public class AlgoConfig extends PersistentEntity {
 		this.id = id;
 	}
 	
-	
-
 }
