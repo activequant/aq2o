@@ -30,7 +30,10 @@ public class AlgoConfig extends PersistentEntity implements Cloneable {
 		this.id = id;
 	}
 	
-	
+	/**
+	 * Reimplement in your own class. 
+	 *  
+	 */
 	public AlgoConfig clone(){
 		AlgoConfig clone = new AlgoConfig();
 		clone.setId(id);

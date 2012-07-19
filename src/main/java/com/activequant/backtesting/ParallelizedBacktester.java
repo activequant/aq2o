@@ -75,7 +75,7 @@ public class ParallelizedBacktester extends AbstractBacktester {
 		super(outerBacktestConfig);
 
 		// create a thread pool with nCores-1 threads.
-		int usedCores = Runtime.getRuntime().availableProcessors() - 1;
+		int usedCores = 1; // Runtime.getRuntime().availableProcessors() - 1;
 		log.info("Instantiating a parallelized backtester with " + usedCores + " threads. ");
 		threadPool = Executors.newFixedThreadPool(usedCores);
 
@@ -83,8 +83,6 @@ public class ParallelizedBacktester extends AbstractBacktester {
 		List<TimeSetup> chunks = timeRangeSplitter.split(dtp.fromLong(outerBacktestConfig.getDate8Time6Start()),
 				dtp.fromLong(outerBacktestConfig.getDate8Time6End()));
 
-		//
-		String baseReportTgtFldr = "" + System.currentTimeMillis();
 
 		//
 		Set<Future<SimulationReport>> futures = new HashSet<Future<SimulationReport>>();
@@ -157,11 +155,12 @@ public class ParallelizedBacktester extends AbstractBacktester {
 				VisualBacktester bt = new VisualBacktester(archiveFactory, transport, idf, virtEx, new ITradingSystem[]{tradSys}, streamIters,
 						btConfig, false);
 				// set the backtest config, for later reporting.
-
+				
 				//
 				//
 				// ok, now that we have all initialized ... execute the
 				// backtest.
+				bt.setSysExit(false);
 				bt.execute();
 				sr = bt.stop();
 

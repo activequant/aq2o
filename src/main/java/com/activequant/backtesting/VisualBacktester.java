@@ -60,6 +60,17 @@ public class VisualBacktester extends AbstractBacktester {
 	private boolean interactive = true;
 	private boolean sysExit = true; 
 	private Logger log = Logger.getLogger(VisualBacktester.class);
+	private TradingSystemEnvironment env;  
+
+	public TradingSystemEnvironment getEnv() {
+		return env;
+	}
+
+
+	public void setEnv(TradingSystemEnvironment env) {
+		this.env = env;
+	}
+
 
 	public VisualBacktester(IArchiveFactory factory, ITransportFactory transportFactory, IDaoFactory daoFactory,
 			IExchange exchange, ITradingSystem[] tradingSystems, StreamEventIterator[] streamIters, BacktestConfiguration bc) throws Exception {
@@ -109,7 +120,7 @@ public class VisualBacktester extends AbstractBacktester {
 		super.setPnlMonitor(pnlMonitor);
 
 		// construct the trading system environment.
-		TradingSystemEnvironment env = new TradingSystemEnvironment();
+		env = new TradingSystemEnvironment();
 		env.setArchiveFactory(factory);
 		env.setDaoFactory(daoFactory);
 		env.setExchange(exchange);
@@ -230,7 +241,8 @@ public class VisualBacktester extends AbstractBacktester {
 		runFlag = false;
 
 		// generate the report.
-		SimulationReport sr = super.generateReport();
+		
+		SimulationReport sr = super.generateReport(env.getWorkingDirectory());
 
 		//
 		GlobalVizEvents.getInstance().getEvent().fire("EXIT");

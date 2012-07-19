@@ -17,6 +17,16 @@ public class TradingSystemEnvironment {
 	private ITransportFactory transportFactory;
 	private IArchiveFactory archiveFactory;
 	private IDaoFactory daoFactory;
+	private String workingDirectory = "./";
+	
+
+	public String getWorkingDirectory() {
+		return workingDirectory;
+	}
+
+	public void setWorkingDirectory(String workingDirectory) {
+		this.workingDirectory = workingDirectory;
+	}
 
 	public IExchange getExchange() {
 		return exchange;

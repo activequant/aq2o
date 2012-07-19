@@ -27,10 +27,8 @@ public abstract class AbstractBacktester {
 	protected OrderEventListener oelistener = new OrderEventListener();
 	protected BacktestConfiguration btConfig;
 	protected AlgoConfig[] algoConfigs;
-	protected BacktestStatistics bs;
-	protected String reportFolderBase = "reports";
-	protected String runId = "";
-	protected String targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
+	protected BacktestStatistics bs;	
+	protected String runId = "";	
 	protected String templateFolder = "./src/main/resources/templates";
 	protected Logger log = Logger.getLogger(AbstractBacktester.class);
 	
@@ -51,7 +49,7 @@ public abstract class AbstractBacktester {
 	}
 	
 
-	public SimulationReport generateReport() throws IOException {
+	public SimulationReport generateReport(String targetFolder) throws IOException {
 		SimulationReport sr = new SimulationReport();
 		
 		TSContainerMethods tcm = new TSContainerMethods();
@@ -100,13 +98,6 @@ public abstract class AbstractBacktester {
 		this.algoConfigs = algoConfigs;
 	}
 
-	public String getReportFolderBase() {
-		return reportFolderBase;
-	}
-
-	public void setReportFolderBase(String reportFolderBase) {
-		this.reportFolderBase = reportFolderBase;
-	}
 
 	public String getRunId() {
 		return runId;
@@ -115,25 +106,5 @@ public abstract class AbstractBacktester {
 	public void setRunId(String runId) {
 		this.runId = runId;
 	}
-
-	public String getTargetFolder() {
-		return targetFolder;
-	}
-
-	public void setTargetFolder(String targetFolder) {
-		this.targetFolder = targetFolder;
-	}
-	
-	public void recalcTargetFolder(){
-		targetFolder = reportFolderBase + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator+ runId;
-	}
-
-	public String getTemplateFolder() {
-		return templateFolder;
-	}
-
-	public void setTemplateFolder(String templateFolder) {
-		this.templateFolder = templateFolder;
-	}
-
+		
 }
