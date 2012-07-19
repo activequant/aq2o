@@ -178,28 +178,48 @@ public class TSContainer2 {
 	 * @param value
 	 */
 
-	public void setValue(String headerName, TimeStamp tsIn, Double value) {
-		TimeStamp ts = tsIn;
-		// check if a resolution has been set.
-		if (resolutionInNanoseconds != 0) {
-			// ok, we must snap it to the next resolution.
-			long ns = (long) (Math.ceil((double) (tsIn.getNanoseconds() / resolutionInNanoseconds)) * resolutionInNanoseconds);
-			ts = new TimeStamp(ns);
-		}
-
+	
+	public void setValue(String headerName, int rowIdx, Double value) {
+		
 		int colIdx = getColumnIndex(headerName);
 		if (colIdx == -1) {
 			// add a column.
 			addColumn(headerName, new DoubleColumn());
 		}
 		// check if we find that timestamp.
+		
+		
+		getColumn(headerName).set(rowIdx, value);
+
+	}
+	
+
+	public void setValue(int colIdx, int rowIdx, Double value) {
+		
+		
+		getColumns().get(colIdx).set(rowIdx, value);
+
+	}
+	
+	
+	public void setValue(int colIdx, TimeStamp tsIn, Double value) {
+		TimeStamp ts = tsIn; 
+		// check if a resolution has been set. 
+		if(resolutionInNanoseconds!=0){
+			// ok, we must snap it to the next resolution. 
+			long ns = (long) (Math.ceil((double)(tsIn.getNanoseconds()/resolutionInNanoseconds)) * resolutionInNanoseconds);
+			ts = new TimeStamp(ns);
+		}
+		
+		
+		// check if we find that timestamp.
 		int rowIdx = getIndex(ts);
 		if (rowIdx < 0) {
 			// add a row.
 			setRow(ts, new Object[getNumColumns()]);
-		}
-		rowIdx = getIndex(ts);
-		getColumn(headerName).set(rowIdx, value);
+			rowIdx = getIndex(ts);
+		}		
+		columns.get(colIdx).set(rowIdx, value);
 
 	}
 
