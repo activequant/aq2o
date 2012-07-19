@@ -15,7 +15,7 @@ public class CSVFileFillExporter {
 	public void export(String targetFolder, List<OrderFillEvent> fills) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(targetFolder + File.separator + "report.csv"));
-			bw.write("'InstId';'RefOrderID';'Side';'creationTimeInMilliseconds';'FillAmount';'FillPrice';'LeftQuantity';");
+			bw.write("'InstId';'RefOrderID';'Side';'creationTimeInMilliseconds';'HUMAN readable';'FillAmount';'FillPrice';'LeftQuantity';");
 			bw.newLine();			
 			for (OrderFillEvent ofe : fills) {
 				bw.write(ofe.getOptionalInstId());
@@ -25,6 +25,8 @@ public class CSVFileFillExporter {
 				bw.write(ofe.getSide());
 				bw.write(";");
 				bw.write(dcf.format(ofe.getCreationTimeStamp().getMilliseconds()));
+				bw.write(";");
+				bw.write(""+ofe.getCreationTimeStamp().getCalendar().getTime());
 				bw.write(";");
 				bw.write(dcf.format(ofe.getFillAmount()));
 				bw.write(";");
