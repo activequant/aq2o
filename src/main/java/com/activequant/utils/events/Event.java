@@ -44,6 +44,7 @@ public class Event<T> implements IEventSink<T>, IEventSource<T> {
     private final Queue<IEventListener<T>> listeners = new ConcurrentLinkedQueue<IEventListener<T>>();
 
     public void fire(T e) {
+    	if(listeners.isEmpty())return;
         for (IEventListener<T> listener : listeners) {
             listener.eventFired(e);
         }
