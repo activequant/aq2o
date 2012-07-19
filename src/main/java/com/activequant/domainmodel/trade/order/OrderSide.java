@@ -22,6 +22,15 @@ public enum OrderSide {
         return this.side;
     }
     
+<<<<<<< .mine
+    // TODO: OBSERVE. 
+    /*public boolean equals(OrderSide other){
+        return(this.getSide() == other.getSide());
+    }*/
+    
+=======
+>>>>>>> .r666
+    
     /**
      * @return BUY for the buy, SELL for the sell value of this enum. 
      */
