@@ -90,7 +90,7 @@ public class LimitOrderBookTests extends TestCase {
 		Collections.sort(list, new Comparator<LimitOrder>() {
 			@Override
 			public int compare(LimitOrder o1, LimitOrder o2) {
-				return (int) (o1.getLimitPrice() - o2.getLimitPrice());
+				return (int) (o2.getLimitPrice() - o1.getLimitPrice());
 			}
 		});	
 		for (LimitOrder l : list) {
