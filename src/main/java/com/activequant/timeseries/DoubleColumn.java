@@ -3,7 +3,9 @@ package com.activequant.timeseries;
 import java.util.List;
 
 public class DoubleColumn extends TypedColumn<Double> {
+
 	private static final long serialVersionUID = 1L;
+	private double[] doubleCache = null;
 
 	public DoubleColumn(List<Double> list) {
 		super(list);
@@ -12,15 +14,17 @@ public class DoubleColumn extends TypedColumn<Double> {
 	public DoubleColumn() {
 		super();
 	}
-	
-	public double[] asDouble(){
-		double[] ret = new double[size()];
-		for(int i=0;i<ret.length;i++){
-			if(get(i)!=null)
-				ret[i] = get(i);
+
+	public double[] asDouble() {
+		if (doubleCache == null || isDirty()) {
+			doubleCache = new double[size()];
+			for (int i = 0; i < doubleCache.length; i++) {
+				if (get(i) != null)
+					doubleCache[i] = get(i);
+			}
+			setClean();
 		}
-		return ret; 
-		
+		return doubleCache;
 	}
 
 	/**
@@ -33,18 +37,16 @@ public class DoubleColumn extends TypedColumn<Double> {
 		Double currentVal = null;
 		for (int i = 0; i < super.size(); i++) {
 			Double val = super.get(i);
-			if(currentVal!=null && val!=null){
-				currentVal += val; 
-			}
-			else if(val!=null)
-				currentVal = val; 
-			
+			if (currentVal != null && val != null) {
+				currentVal += val;
+			} else
+				currentVal = val;
+
 			ret.add(currentVal);
 		}
 		return ret;
 	}
 
-	
 	/**
 	 * Calculates the sum
 	 * 
@@ -98,8 +100,8 @@ public class DoubleColumn extends TypedColumn<Double> {
 		for (int i = 1; i < this.size(); i++) {
 			Double currentVal = this.get(i);
 			Double formerVal = this.get(i - 1);
-			if(formerVal!=null){
-				ret.add(i, (currentVal - formerVal)/formerVal);
+			if (formerVal != null) {
+				ret.add(i, (currentVal - formerVal) / formerVal);
 			}
 		}
 		return ret;
@@ -123,50 +125,52 @@ public class DoubleColumn extends TypedColumn<Double> {
 			sum1 = sum1 + ret;
 			sum2 = sum2 + ret * ret;
 		}
-		Double var = sum2/(this.size() - 1) - (sum1/(this.size()-1))*(sum1/(this.size()-1));
+		Double var = sum2 / (this.size() - 1) - (sum1 / (this.size() - 1))
+				* (sum1 / (this.size() - 1));
 		Double std = Math.sqrt(var);
-		return Math.sqrt(var); 
+		return Math.sqrt(var);
 	}
-	
+
 	// maximum drawdown
-	// implementation is taken from http://en.wikipedia.org/wiki/Drawdown_%28economics%29
-	// except multiplier 100 on dd calculation line - MATLAB does not use this multiplier
+	// implementation is taken from
+	// http://en.wikipedia.org/wiki/Drawdown_%28economics%29
+	// except multiplier 100 on dd calculation line - MATLAB does not use this
+	// multiplier
 	// test is taken from matlab
 	public Double maxDrawdown() {
 		Double mdd = 0.0;
 		Double peak = Double.MIN_VALUE;
-		Double dd =0.0;
-		
-		for(int i=0; i<this.size(); i++) {
-			if(this.get(i) > peak) {
+		Double dd = 0.0;
+
+		for (int i = 0; i < this.size(); i++) {
+			if (this.get(i) > peak) {
 				peak = this.get(i);
-			}
-			else {
+			} else {
 				dd = (peak - this.get(i)) / peak;
-				if(dd > mdd) {
+				if (dd > mdd) {
 					mdd = dd;
 				}
 			}
 		}
 		return mdd;
 	}
-	
-	// can not have from/to timestamp parameters, 
-	// because there is no timestamps column 
+
+	// can not have from/to timestamp parameters,
+	// because there is no timestamps column
 	public Integer maxRecoveryTime() {
 		Integer maxPeriod = 0;
 		Integer currentLength = 0;
 		Double currentVal = Double.MIN_VALUE;
-		
-		for(int i=0; i<this.size(); i++) {
-			if(this.get(i) < currentVal) {
+
+		for (int i = 0; i < this.size(); i++) {
+			if (this.get(i) < currentVal) {
 				currentLength = currentLength + 1;
 			}
-			if(this.get(i) > currentVal) {
+			if (this.get(i) > currentVal) {
 				currentLength = 0;
 				currentVal = this.get(i);
 			}
-			if(currentLength>maxPeriod) {
+			if (currentLength > maxPeriod) {
 				maxPeriod = currentLength;
 			}
 		}

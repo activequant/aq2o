@@ -168,16 +168,7 @@ public class TSContainer2 {
 		}
 	}
 
-	/**
-	 * Set a value in a column for a specific timestamp. Will insert a double
-	 * column if not found. Will insert timestamp if not found. Rows at newly
-	 * inserted Timestamp will be initialized with null.
-	 * 
-	 * @param headerName
-	 * @param ts
-	 * @param value
-	 */
-
+	
 	
 	public void setValue(String headerName, int rowIdx, Double value) {
 		
@@ -195,12 +186,28 @@ public class TSContainer2 {
 	
 
 	public void setValue(int colIdx, int rowIdx, Double value) {
-		
-		
 		getColumns().get(colIdx).set(rowIdx, value);
-
 	}
 	
+	/**
+	 * Set a value in a column for a specific timestamp. Will insert a double
+	 * column if not found. Will insert timestamp if not found. Rows at newly
+	 * inserted Timestamp will be initialized with null.
+	 * 
+	 * @param headerName
+	 * @param ts
+	 * @param value
+	 */
+
+	public void setValue(String headerName, TimeStamp tsIn, Double value) {
+		
+		int colIdx = getColumnIndex(headerName);
+		if (colIdx == -1) {
+			// add a column.
+			addColumn(headerName, new DoubleColumn());
+		}
+		setValue(getColumnIndex(headerName), tsIn, value);
+	}
 	
 	public void setValue(int colIdx, TimeStamp tsIn, Double value) {
 		TimeStamp ts = tsIn; 
@@ -218,7 +225,8 @@ public class TSContainer2 {
 			// add a row.
 			setRow(ts, new Object[getNumColumns()]);
 			rowIdx = getIndex(ts);
-		}		
+		}	
+		
 		columns.get(colIdx).set(rowIdx, value);
 
 	}

@@ -1,8 +1,6 @@
 package com.activequant.backtesting;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.backtesting.BacktestConfiguration;
 import com.activequant.domainmodel.backtesting.SimulationReport;
 import com.activequant.domainmodel.backtesting.TimeSetup;
@@ -23,6 +20,7 @@ import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.backtesting.IStreamFactory;
+import com.activequant.interfaces.backtesting.ITimeRangeSplitter;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.trading.ITradingSystem;
 import com.activequant.interfaces.transport.ITransportFactory;
@@ -189,44 +187,3 @@ public class ParallelizedBacktester extends AbstractBacktester {
 
 }
 
-interface ITimeRangeSplitter {
-	public List<TimeSetup> split(TimeStamp start, TimeStamp end);
-}
-
-/**
- * Reimplement for YOUR trading algo. Based on the start timestamp, it will
- * generate chunks of seven days length, up to end. The last frame could be
- * shorted than seven days, depending on your end date.
- * 
- * @author GhostRider
- * 
- */
-class TimeRangeSplitterWeekly implements ITimeRangeSplitter {
-
-	public List<TimeSetup> split(TimeStamp start, TimeStamp end) {
-		List<TimeSetup> ret = new ArrayList<TimeSetup>();
-
-		while (start.isBefore(end)) {
-			TimeStamp localStart = new TimeStamp(start.getNanoseconds());
-			//
-			Calendar endCal = GregorianCalendar.getInstance();
-			endCal.setTime(start.getCalendar().getTime());
-			endCal.add(Calendar.DATE, 7);
-			TimeStamp localEnd = new TimeStamp(endCal.getTime());
-			if (localEnd.isAfter(end))
-				localEnd = end;
-			TimeSetup setup = new TimeSetup();
-			setup.dataReplayStart = localStart;
-			setup.tradingStart = localStart;
-			setup.tradingEnd = localEnd;
-			setup.dataReplayEnd = localEnd;
-
-			ret.add(setup);
-			start = localEnd;
-
-		}
-
-		return ret;
-	}
-
-}
