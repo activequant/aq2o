@@ -1,6 +1,5 @@
 package com.activequant.backtesting;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -10,12 +9,12 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.backtesting.reporting.HTMLReportGen;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.backtesting.BacktestConfiguration;
 import com.activequant.domainmodel.backtesting.SimulationReport;
@@ -23,7 +22,6 @@ import com.activequant.domainmodel.backtesting.TimeSetup;
 import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.interfaces.archive.IArchiveFactory;
-import com.activequant.interfaces.backtesting.IReportRenderer;
 import com.activequant.interfaces.backtesting.IStreamFactory;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.trading.ITradingSystem;
@@ -91,41 +89,46 @@ public class ParallelizedBacktester extends AbstractBacktester {
 		String baseReportTgtFldr = "" + System.currentTimeMillis();
 
 		//
-		Set<Callable<SimulationReport>> jobs = new HashSet<Callable<SimulationReport>>();
+		Set<Future<SimulationReport>> futures = new HashSet<Future<SimulationReport>>();
 
 		for (int i = 0; i < chunks.size(); i++) {
 			TimeSetup chunk = chunks.get(i);
 			log.info("Obtained a chunk: " + chunk.toString());
 			BacktestConfiguration localConfig = btConfig.clone();
 			localConfig.setTimeSetup(chunk);
-
-			// I willingly refrain from using a report generator factory here.
-			HTMLReportGen h = new HTMLReportGen(baseReportTgtFldr + File.separator + i, "templates");
 			//
-			BacktestJob job = new BacktestJob(aqAppContextSpringFile, localConfig, h);
-			jobs.add(job);
+			BacktestJob job = new BacktestJob(aqAppContextSpringFile, localConfig);
+			Future<SimulationReport> f = threadPool.submit(job);
+			futures.add(f);
 		}
 
 		//
-		threadPool.invokeAll(jobs);
+		//
+		List<SimulationReport> simReports = new ArrayList<SimulationReport>();
+		for(Future<SimulationReport> f : futures)
+			simReports.add(f.get());
+		
+		//
 		threadPool.shutdown();
 		log.info("All jobs done. Merging minor simulation reports into major report.");
 
 		// need to merge PNL curves and transactions ...
 		// more advanced statistics can be generated through the
 		// transaction-list-2-report generator
+		
+		// 
+		
+		
 
 	}
 
 	class BacktestJob implements Callable<SimulationReport> {
 
 		private BacktestConfiguration btConfig;
-		private IReportRenderer reportGen;
 		private String aqAppContextSpringFile;
 
-		BacktestJob(String aqAppContextSpringFile, BacktestConfiguration btConfig, IReportRenderer reportGen) {
+		BacktestJob(String aqAppContextSpringFile, BacktestConfiguration btConfig) {
 			this.btConfig = btConfig;
-			this.reportGen = reportGen;
 			this.aqAppContextSpringFile = aqAppContextSpringFile;
 		}
 
@@ -133,7 +136,7 @@ public class ParallelizedBacktester extends AbstractBacktester {
 		public SimulationReport call() {
 
 			log.info("Simulating " + btConfig.getTimeSetup() + " with algo config: " + btConfig.getAlgoConfig());
-			SimulationReport sr = new SimulationReport();
+			SimulationReport sr = new SimulationReport ();
 
 			try {
 
@@ -146,8 +149,7 @@ public class ParallelizedBacktester extends AbstractBacktester {
 				// initialize transport layer and VirtEX
 				ITransportFactory transport = new InMemoryTransportFactory();
 				VirtualExchange virtEx = new VirtualExchange(transport);
-				//
-				
+				//				
 				// 
 				ITradingSystem tradSys = (ITradingSystem) appContext.getBean("tradingSystem");
 				IStreamFactory streamFactory= (IStreamFactory) appContext.getBean("streamFactory");
@@ -163,11 +165,9 @@ public class ParallelizedBacktester extends AbstractBacktester {
 				// ok, now that we have all initialized ... execute the
 				// backtest.
 				bt.execute();
+				sr = bt.stop();
 
 				sr.setSimulationStatus("SUCCESS");
-				// create the simulation report.
-
-				//
 				
 
 			} catch (Exception ex) {

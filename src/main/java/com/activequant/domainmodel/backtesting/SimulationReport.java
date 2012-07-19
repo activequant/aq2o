@@ -2,6 +2,8 @@ package com.activequant.domainmodel.backtesting;
 
 import java.io.Serializable;
 
+import com.activequant.timeseries.TSContainer2;
+
 /**
  * Container that contains backtested simulation results. 
  * It cannot be sent around over the wire by default. 
@@ -13,7 +15,8 @@ public class SimulationReport implements Serializable{
 
 	private BacktestConfiguration btConfig;
 	private TimeSetup timeSetup;
-	private String simulationStatus; 
+	private String simulationStatus;
+	private TSContainer2 pnlSeries; 
 
 	public BacktestConfiguration getBtConfig() {
 		return btConfig;
@@ -37,6 +40,14 @@ public class SimulationReport implements Serializable{
 
 	public void setSimulationStatus(String simulationStatus) {
 		this.simulationStatus = simulationStatus;
+	}
+
+	public TSContainer2 getPnlSeries() {
+		return pnlSeries;
+	}
+
+	public void setPnlSeries(TSContainer2 pnlSeries) {
+		this.pnlSeries = pnlSeries;
 	} 
 	
 }

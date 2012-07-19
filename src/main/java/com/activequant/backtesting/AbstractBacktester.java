@@ -1,26 +1,20 @@
 package com.activequant.backtesting;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.util.Log;
 
 import com.activequant.backtesting.reporting.BacktestStatistics;
-import com.activequant.backtesting.reporting.CSVFileFillExporter;
 import com.activequant.backtesting.reporting.HTMLReportGen;
 import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.backtesting.BacktestConfiguration;
-import com.activequant.timeseries.CSVExporter;
-import com.activequant.timeseries.ChartUtils;
+import com.activequant.domainmodel.backtesting.SimulationReport;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TSContainerMethods;
-import com.activequant.utils.CsvMapWriter;
 
 /**
  * 
@@ -57,7 +51,17 @@ public abstract class AbstractBacktester {
 	}
 	
 
-	public void generateReport() throws IOException {		
+	public SimulationReport generateReport() throws IOException {
+		SimulationReport sr = new SimulationReport();
+		
+		TSContainerMethods tcm = new TSContainerMethods();
+		TSContainer2 pnlContainer = pnlMonitor.getCumulatedTSContainer();		
+		tcm.overwriteNull(pnlContainer);
+		tcm.overwriteNull(pnlContainer, 0.0);
+		sr.setPnlSeries(pnlContainer);
+		
+		// 
+		
 		HTMLReportGen h = new HTMLReportGen(targetFolder, templateFolder);
 		if(oelistener.getFillEvents().size()>0){
 			h.genReport(algoConfigs, oelistener, pnlMonitor, btConfig);
@@ -66,6 +70,10 @@ public abstract class AbstractBacktester {
 			log.warn("No trades were generated!");
 			System.out.println("No trades were generated.");
 		}
+		
+		// fill the sr
+		
+		return sr; 
 	}
 
 	public PNLMonitor getPnlMonitor() {

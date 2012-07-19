@@ -16,6 +16,7 @@ import com.activequant.backtesting.reporting.PNLMonitor;
 import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.backtesting.BacktestConfiguration;
+import com.activequant.domainmodel.backtesting.SimulationReport;
 import com.activequant.domainmodel.streaming.MarketDataEvent;
 import com.activequant.domainmodel.streaming.ReferenceDataEvent;
 import com.activequant.domainmodel.streaming.StreamEvent;
@@ -211,7 +212,7 @@ public class VisualBacktester extends AbstractBacktester {
 
 	}
 
-	public void stop() throws Exception {
+	public SimulationReport stop() throws Exception {
 
 		List<AlgoConfig> algoConfigs = new ArrayList<AlgoConfig>();
 		for (ITradingSystem s : tradingSystems) {
@@ -229,14 +230,16 @@ public class VisualBacktester extends AbstractBacktester {
 		runFlag = false;
 
 		// generate the report.
-		super.generateReport();
+		SimulationReport sr = super.generateReport();
 
 		//
 		GlobalVizEvents.getInstance().getEvent().fire("EXIT");
 
+		
+		
 		if(sysExit)System.exit(0);
 		
-
+		return sr; 
 	}
 
 	public void execute() throws Exception {
@@ -286,8 +289,6 @@ public class VisualBacktester extends AbstractBacktester {
 			if (!fs.moreDataInPipe())
 				runFlag = false;
 		}
-		if (!interactive)
-			stop();
 	}
 
 	public boolean isSysExit() {
