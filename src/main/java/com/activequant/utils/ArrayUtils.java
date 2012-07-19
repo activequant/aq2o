@@ -142,6 +142,14 @@ public class ArrayUtils {
 		return ret; 
 	}
 	
+	public static double[] toPrimArray(List<Double> in){
+		double[] ret = new double[in.size()];
+		for(int j = 0; j<in.size();j++){
+			ret[j] = in.get(j);
+		}
+		return ret; 
+	}
+	
 	public static double[] unbox(Double[] in){
 		double[] ret = new double[in.length];
 		for(int j = 0; j<in.length;j++){
