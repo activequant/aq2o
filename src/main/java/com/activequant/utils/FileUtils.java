@@ -28,6 +28,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,6 +37,8 @@ import java.io.OutputStreamWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -86,6 +89,18 @@ public class FileUtils {
         return dir.endsWith(File.separator) ? dir : dir + File.separator;
     }
 
+    public static void writeLines(String fileName, Collection<String> lines) throws IOException {
+        FileWriter fw = new FileWriter(fileName);
+        BufferedWriter bw = new BufferedWriter(fw);
+    	Iterator<String> it = lines.iterator();
+    	while(it.hasNext()){
+    		bw.write(it.next());
+    		bw.newLine();
+    		bw.flush();    		
+    	}
+    	bw.close();    	
+    }
+    
     public static String[] readLines(String fileName) throws IOException {
         return readLines(new FileInputStream(fileName));
     }
