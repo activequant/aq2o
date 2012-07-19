@@ -20,6 +20,7 @@ public class InMemoryTransportFactory implements ITransportFactory {
 	private Map<String, Event<PersistentEntity>> eventMap = new HashMap<String, Event<PersistentEntity>>();
 	private Map<String, IPublisher> publisherMap = new HashMap<String, IPublisher>();
 	private Map<String, IReceiver> recvMap = new HashMap<String, IReceiver>();
+	private StringBuffer sb = new StringBuffer();
 	
 	private Event<Map<String, Object>> getRawEventInstance(String channelName){
 		if(!rawEventMap.containsKey(channelName))rawEventMap.put(channelName, new Event<Map<String, Object>>());
