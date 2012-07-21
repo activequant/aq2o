@@ -1,3 +1,0 @@
-CLASSNAME,INSTRUMENTID,MDPROVIDER,PROVIDERSPECIFICID
-com.activequant.domainmodel.MarketDataInstrument,STOCK.HSBA.L.L,YAHOO,hsba.l
-com.activequant.domainmodel.MarketDataInstrument,STOCK.CBK.DE.DE,YAHOO,cbk.de
