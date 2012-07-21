@@ -1,0 +1,85 @@
+Tagging
+	
+	So, you might ask, what do I need tagging for if I just want to manage financial data? Tagging? Isnt't that some
+	occult internet concept? You are right, it is an internet concept, but what you can use it for becomes
+	immediately apparent when we think about grouping of information. 
+	
+	Let's make an example. 
+	
+* Tagging use case example
+
+	Let's say you have some recorded PNL figures for different instruments. For example, you have
+	a PNL curve for about 100 different instruments, such as GXZ1, NGZ1 and ESZ1. Let's further assume 
+	you have a fancy reporting tool where you can put in arbitrary amount of instrument PNL curves and it will
+	spit you out some nice reports. 
+	
+	So, you want to refine your report and include, for example only instruments that belong to the EURO-Zone, 
+	are of type Equity Index, belong to a single country and are generally highly volatile. 
+	
+	Assuming you have assigned tags to your instruments, for example you have marked NGZ1 as highly volatile based on
+	some vola calculation, have tagged ESZ1 as belonging to the US and GXZ1  as a Euro-zone, single country, equity index, 
+	you would request from your tag library all instruments that fit all three tags. You would receive a 
+	list of instruments in return. 
+	
+	Instead of putting all this information into the corresponding classes and building a relatively complex
+	domain model with lot's of properties and constantly evolving class structures, you can keep key-properties
+	in your domain model and offload fluctuating information into a tag space. 
+	
+	Of course, making up these tags and populating these would still be up to you. 
+	
+* Solution
+
+	AQ comes with a tagging library for tagging objects, identified by an ObjectType and an ObjectID. Tags can 
+	be any case-insensitive words, which are internally always converted to upper case. 
+	
+	Tagging in AQ uses the HBase engine to store tagging related information.  
+	
+* Usage example
+
+	Enough znuff, let's have a look at some code. 
+	
++-----------+
+// instantiate the tag dao layer, connecting to the localhost zookeeper. 
+TagDao td = new TagDao("localhost");
+
+// some example object type, id and tag value.  
+String objectType = "INST";
+String objectId = "ABCD";
+String tag = "TEST";
+
+// doing the tagging. 
+td.tag(objectType, objectId, tag);
+// tagging another object .. 
+td.tag(objectType, "BCD", tag);
+// ... and another one .. 
+td.tag(objectType, "CDE", tag);
+// ... tagging the other object also with another tag
+td.tag(objectType, "CDE", tag+"3");
+
+// committing the tags .. unless you call commit, nothing is stored ... 
+td.commit();
+
+// getting the object IDs that belong to tag1 
+String[] ids = td.getObjectIDs(objectType, tag);
+
+// dumping it. 
+System.out.println(ArrayUtils.toString(ids));	    
+
+// removing some tags ....
+td.untag(objectType, "CDE", tag);
+td.untag(objectType, "CDE", tag+"2");
+td.commit();
+
+// getting the IDs for tag 1 again .. 
+ids = td.getObjectIDs(objectType, tag);
+System.out.println(ArrayUtils.toString(ids));	
+
+// getting the tags for a specific object 
+String[] tags = td.getTags(objectType, "CDE");
+System.out.println(ArrayUtils.toString(tags));
++-----------+	
+
+	In case of questions, don't hesitate to discuss in the AQ forums of contact {{{mailto:ustaudinger@activequant.com}Ulrich}} for
+	commercial support. 
+	
+	 

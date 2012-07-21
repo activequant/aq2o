@@ -1,0 +1,42 @@
+Usage
+
+	The ActiveQuant framework enables you to write applications based on ActiveQuant. Although it is in its core a framework, it is shipped with several utilities and tools for a variety of use cases. Details about included utilities and applications can be found on the corresponding documentation pages.
+
+	To use the ActiveQuant framework, your project needs to be a maven project. We do not recommend to use it in a non-maven context. Due to maven, all dependencies will be automatically included. Please double check the current AQ dependency tree if there is any conflict with other dependencies you might need. We are open for feedback. By referencing AQ in your project, you accept our {{{license.html}license}}.
+
+* Using just the applications
+
+	Although non-maven use is not recommended, for the brave, we distribute a so called uber-jar that includes all dependencies and all compiled AQ sources. All applications are part of this jar, too. 
+
+* Referencing AQ in your project
+
+	To reference AQ in your maven project, add the following segments to your POM file.
+
++-------------------------------+
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.activequant</groupId>
+		<artifactId>aq2o</artifactId>
+		<version>2.1</version>
+	</dependency>
+	...
+</dependencies>
++-------------------------------+ 
+
+	As we deploy snapshots and releases automatically to a maven repository near you. 
+
+Installation/Preparation
+
+	<<Please check the {{{./uberjar.html}UberJar page}} to get a head start.>>
+
+	By default, AQ relies on an HSQL database to store things like instrument specific information. 
+	Please see the {{{./dao.html}DAO}} page for details about how to use this. 
+
+	Also by default, AQ relies on HBase to store time series data. Please see the {{{./seriesarchive.html}Series Archive}} page for details.
+
+	ActiveMQ JMS is used for internal messaging. Please see the {{{./messaging.html}messaging}} page for details. 
+
+	Of course JAVA and Linux are needed. Windows is not a preferred target for ActiveQuant. 
+
+

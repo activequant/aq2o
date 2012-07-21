@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="framework.properties" />
+	</bean>
+	<import resource="fwspring.xml" />
+
+	<bean name="bbmapper" class="com.activequant.tools.mapping.BBMapper"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="instrDao"/>
+		</constructor-arg>
+	</bean>
+
+	<bean name="mapperloop" class="com.activequant.tools.mapping.Mdi2InstrumentMapper"
+		lazy-init="false">
+		<constructor-arg>
+			<ref bean="ibatisDao" />
+		</constructor-arg>
+		<constructor-arg>
+			<list>
+				<ref bean="bbmapper" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+</beans>

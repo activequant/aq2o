@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FrameWork">
+	<publishDate position="right" />
+	<version position="right" />
+
+	<googleAnalyticsAccountId>UA-28069832-1</googleAnalyticsAccountId>
+	<bannerLeft>
+		<name>ActiveQuant AQ2o</name>
+		<src>images/logo.png</src>
+		<href>http://aq2o.activequant.org</href>
+	</bannerLeft>
+	<body>
+
+		<links>
+		    <item name="Our LinkedIn group" href="http://www.linkedin.com/groups/ActiveQuant-4520769"/>
+			<item name="DevCorner" href="http://developers.activequant.org/" />
+			<item name="Investor Relations (invest into us)" href="http://www.activequant.com/" />
+			<item name="ActiveQuant.com" href="http://www.activequant.com/" />
+			<item name="Apache" href="http://www.apache.org/" />
+		</links>
+
+
+		<menu name="Framework">
+			<item name="Welcome" href="index.html" />
+			<item name="High level overview" href="highlevel.html" />
+			<item name="Installation/Use/POM" href="referencingaq.html" />
+			<item name="Live trading" href="livetrading.html" />		
+		</menu>
+
+		<menu name="Example code">
+			<item name="Getting a taste ..." href="examples/atasteofactivequant.html"/>
+			<item name="Tagging?!!" href="examples/tagging.html"/>
+			<item name="R and ActiveQuant" href="examples/r_bridge.html"/>
+		</menu>
+		
+		<menu name="Documentation">
+			<item name="JavaDocs" href="apidocs/index.html"/>
+			<item name="Changelog" href="changelog.html"/>
+		</menu>
+	
+		<menu name="Downloads">
+			<!--   item name="QEmu Appliance" href="qemuapp.html" / -->
+			<item name="Uber-JAR" href="uberjar.html" />
+			<item name="Source Code" href="source_code.html" />
+		</menu>
+		
+		<menu name="Venue connectors">
+			<item name="Currenex FX" href="venueconnectivity/cnx.html" />
+			<item name="Trading Technologies" href="tt.html" />
+			<item name="Bloomberg Terminals" href="bbtb.html" />
+			<item name="CTS T4" href="cts.html" />
+		</menu>
+		<menu name="Usage scenarios">
+			<item name="Using AQ with QlikView" href="integration/qlikview.html"/>
+			<item name="Importing timeseries data" href="importingdata.html" />
+			<item name="Importing reference data" href="importingrefdata.html" />
+			<item name="Backtesting" href="backtesting.html" />
+			<!--   item name="Live trading" href="livetrading.html" / -->
+			<item name="Research" href="research.html" />
+			<item name="Storing your own data" href="impldommod.html"/>
+		</menu>
+
+
+		<menu name="Service facades (SOA)">
+			<item name="Introduction" href="servicefacades.html" />
+			<item name="Matlab (and Java) Facade" href="matlabfacade.html" />
+			<item name="SOAP Facade" href="soapfacade.html" />
+		</menu>
+
+			<menu name="Support">
+			<item name="Forum" href="supp_forums.html" />
+			<item name="Bug tracker" href="bugtracker.html" />
+			<item name="Consulting" href="consulting.html" />
+			<item name="What you can do" href="yourinvolvement.html" />
+		</menu>
+		<menu name="Details">
+				<item name="Introduction" href="aboutdetails.html" />
+				<item name="Domain model" href="domainmodel.html" />
+				<item name="MdiIDs to InstIDs" href="instmapping.html" />
+				<item name="DAO" href="dao.html" />
+				<item name="Series Archive" href="seriesarchive.html" />
+				<item name="Security Chains" href="securitychains.html" />
+				<item name="Events" href="messaging.html" />
+				<item name="Messaging" href="messaging.html" />
+				<item name="SNMP support" href="snmp.html" />
+				<item name="Worker Threads" href="workerpattern.html" />
+				<item name="Fee calculator" href="details/feecalculation.html"/>
+			</menu>
+		
+		
+		
+		
+
+	
+	
+
+		<menu name="License, Disclaimer, etc" >
+			<item name="License" href="license.html" />
+			<item name="Legal" href="legal.html" />
+			<item name="Contact details" href="contact.html" />
+		</menu>
+
+
+		<menu ref="reports"/>
+
+	</body>
+</project>

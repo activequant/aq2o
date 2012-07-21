@@ -1,0 +1,7 @@
++-----------+
+ArchiveStreamToOHLCIterator a = new ArchiveStreamToOHLCIterator(tid, TimeFrame.MINUTES_1, startTimeStamp,
+					endTimeStamp, archReader);				
+while(a.hasNext()){
+	OHLCV o = a.next();
+}									
++-----------+

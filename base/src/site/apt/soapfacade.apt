@@ -1,0 +1,44 @@
+SOAP facade
+
+	Hopelessly underdeveloped, but working. Room for YOU. 
+
+	The SOAP facade uses Apache's JXB library to generate a WAR file that can be dropped into a servlet container, such as Tomcat.
+
+* Building and deploying the WAR
+	
+	Building the WAR file is straightforward as you can see in the following snipplet. The resulting WAR file can be pushed directly into Tomcat's webapps folder. 
+
++-----------+
+mvn clean package war:war
+# now copy the war file over. 
+cp target/aim-framework-1.0-SNAPSHOT.war  /opt/apache-tomcat-7.0.23/webapps/
++-----------+
+
+* Accessing the WSDL 
+
+	The WSDL of the SOAP facade can be accessed through at http://<your server>:<your server's port>/aq-framework/main?wsdl - for example: http://10.0.0.1:8080/aq-framework/main?wsdl
+
+
+* Using the SOAP interface from C#
+
+	First, generate the local implementation with:
+
++-----------+
+generate wsdl /out:MainService.cs http://10.0.0.1:8080/aq-framework/main?wsdl
++-----------+
+
+	Second, reference it in your C# code, assuming you have at least a basic understanding of C# and the environment it looks like this: 
+
++-----------+
+namespace AQSoap{
+	public class AQSoapTest{
+		public AQSoapTest(){
+			MainServiceService s = new MainServiceService();
+			int count = s.instrumentCount();
+			string[] insts = s.instrumentKeys();
+		}
+	}
+}
++-----------+
+
+	It's really super easy. 

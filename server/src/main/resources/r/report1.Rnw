@@ -1,0 +1,15 @@
+\documentclass{article}
+\begin{document}
+\section{Tabular performance}
+
+Test
+
+<<label=tab1,echo=FALSE,results=tex>>=
+a = as.data.frame(rnorm(1:10))
+a = cbind(a, rnorm(1:10))
+library(xtable)
+print(xtable(a, dec = 1, caption = "Example of using xtable to create table", center = "centering", file = "", floating = FALSE))
+@
+
+
+\end{document}

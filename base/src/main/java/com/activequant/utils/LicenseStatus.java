@@ -1,0 +1,7 @@
+package com.activequant.utils;
+
+public enum LicenseStatus {
+
+    ALL_OK, NO_LICENSE, TRIAL_LICENSE, LICENSE_CHECK_FAILED, THREE_INSTANCES_USED, LICENSE_EXPIRING, LICENSE_EXPIRED;
+
+}

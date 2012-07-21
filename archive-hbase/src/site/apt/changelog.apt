@@ -1,0 +1,71 @@
+ChangeLog
+
+* 2.2-SNAPSHOT
+
+** Organizational
+
+	* Major package reshuffling to straighten out the package structure. 
+	 
+
+* 2.1 (5 July 2012)
+
+** New trading systems
+
+	* SimpleMovingAverage trading system
+
+** New features
+
+	* Added Renjin as a dependency - allows using R in Java without having an R installation somewhere.
+
+	* Tagging engine, for example to tag instruments. Tags could be a sector, a currency, a country, a market cap grouping, etc. Tags are not to be misunderstood as actual object properties.  
+
+	* New domain model class: Adding a symbol class, extending Instrument. Adding a link from Instrument to SymbolId, so that instruments can be associated with a generic symbol. The location of this backlink might change in the future.
+	
+	* Adding a MarketDataSnapshot class in addition to the BBOEvent 
+	
+	* Making SQL Session available in MyBatis DAO objects, for example to execute custom SQL statements.  
+
+	* New domain model class: Spread, having a buySide instrument ID and a sellSide instrument ID. 
+
+	* IExchange now has to implement access to order trackers (using iexchange as an order tracker store)
+	
+	* added many more order stream events. 
+	
+	* added an InformationalEvent for instruments. This can be used to distribute some information, for example chatter messages - whatever. 
+	
+	* Added an import routine for tradeable instruments from CSV files. 
+	
+	* Added CSV exporter to Master Server, so that R, etc. can fetch data from the monolith, ticket #60
+	
+	* Added first notice and monthYear info to future class / ticket #73
+	
+	* GUI base tables and interfaces. Really cool but too much to explain.	
+	
+	* Added AbstractTSBase
+	
+	* Addded IFeeCalculator interface and IB specific implementation	
+	
+** Bugfixes 
+
+	* F!ed ticket #64
+	
+	* #11
+
+	
+** Varia
+
+	* Changing SOAP facade from SOAP 1.2 to SOAP 1.1 to ensure that .NET clients can access the service without problems (also disabling MTOM) 
+
+	* Improving portfolio class with some basic getters/setters
+	
+	* Many other changes in the pipeline.
+	
+	* Added support for PiTrading data (importer written)
+	
+
+	
+  
+
+* 2.0 (15 February 2012)
+
+	* First release of AQ2o. 

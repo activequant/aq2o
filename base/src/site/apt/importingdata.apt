@@ -1,0 +1,144 @@
+Importing time series data
+	
+	<Note: This section describes the manual import processes which are part of aq2o's default bundle. Automated data downloaders and importers for well-known commercial data and trading venues are available as commercial applications, contact {{{mailto:ustaudinger@activequant.com}Ulrich}}.>
+	
+	AQ2o includes a central import tool for importing time series data. The importer 
+	processes all <.csv> files in that folder and also traverses recursively through all sub folders. 
+	
+	All .csv files must contain a header. The import routine will load all data. It will strip " and ', should these characters be encountered. 
+	
+	All .csv files must contain at least two columns DATE and TIME, which must be in format <yyyyMMdd>  an in format <HH:mm:ss.SSS>. Mind the "must".  
+		
+	You can run a market data import with the following command.
+
++------+
+java com.activequant.utils.ImportMarketDataCSV $startFolder $providerId $springConfigFile $timeFrame
++------+	 
+
+	Where time frame must be a string representation of the {{{./apidocs/com/activequant/domainmodel/TimeFrame.html}TimeFrame enum}}, for example <MINUTES_5>. 
+
+	Let's make a real-world example based on our distributed appliance. Let's import the <eurusd.csv> file into the archive and let's query this later on. 
+	
+	First, let's log in. 
+
++----------+
+ustaudinger@baikal:~$ ssh root@192.168.100.2
+root@192.168.100.2's password: 
+Linux debian-i386 2.6.32-5-686 #1 SMP Wed Jan 12 04:01:41 UTC 2011 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Jan  3 20:10:23 2012 from 192.168.100.1
+
+root@debian-i386:~# 
+root@debian-i386:~# cd /opt/aq2o/trunk/
+root@debian-i386:/opt/aq2o/trunk# 
++----------+	 
+	
+	
+* Run 1. Dukascopy CSV data	
+	
+	Now, let's start the import. In case you have never built the uber-jar on the virtual machine before, execute <mvn assembly:assembly> before. 
+	Assuming the uber-jar is located at /opt/aq2o/trunk/target/aq2o-2.0-SNAPSHOT-jar-with-dependencies.jar, the call to start the import becomes trivial. 
+	 
++---------+
+root@debian-i386:/opt/aq2o/trunk# java -classpath /opt/shared:target/site/distribution/aq2o-2.0-SNAPSHOT-jar-with-dependencies.jar com.activequant.utils.ImportMarketDataCSV /opt/shared/ DUKASCOPY fwspring.xml EOD
+Importing from /opt/shared/ all .csv files for DUKASCOPY. Using spring configuration fwspring.xml and time frame EOD
+12/01/03 20:52:58 INFO support.ClassPathXmlApplicationContext: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@5e5a50: startup date [Tue Jan 03 20:52:58 UTC 2012]; root of context hierarchy
+12/01/03 20:52:59 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [fwspring.xml]
+12/01/03 20:53:00 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [ibatis/fwbeans.xml]
+12/01/03 20:53:02 INFO config.PropertyPlaceholderConfigurer: Loading properties file from class path resource [framework.properties]
+12/01/03 20:53:02 INFO support.DefaultListableBeanFactory: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@82764b: defining beans [sqlSessionFactory,countryMapper,countryDao,regionMapper,regionDao,genMapper1,instrDao,genMapper2,venueDao,genMapper3,mdiDao,genMapper4,tradeableDao,genMapper5,portfolioDao,genMapper6,positionDao,ibatisDao,placeholderConfig,fwDataSource,archiveFactory,jmsTransport,app]; root of factory hierarchy
+12/01/03 20:53:05 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Country
+12/01/03 20:53:13 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Region
+12/01/03 20:53:14 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Instrument
+12/01/03 20:53:15 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Venue
+12/01/03 20:53:16 INFO mybatis.GenericMapperDao: Initializing GenericDao for table MarketDataInstrument
+12/01/03 20:53:17 INFO mybatis.GenericMapperDao: Initializing GenericDao for table TradeableInstrument
+12/01/03 20:53:18 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Portfolio
+12/01/03 20:53:19 INFO mybatis.GenericMapperDao: Initializing GenericDao for table Position
+/opt/shared/framework.properties
+/opt/shared/readme
+/opt/shared/eurusd.csv
+12/01/03 20:53:22 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.3.2-1031432, built on 11/05/2010 05:32 GMT
+12/01/03 20:53:22 INFO zookeeper.ZooKeeper: Client environment:host.name=debian-i386.local
+12/01/03 20:53:22 INFO zookeeper.ZooKeeper: Client environment:java.version=1.6.0_29
+...
+********* Processing file name >/opt/shared/eurusd.csv<
+********* Created file. 
+Importing /opt/shared/eurusd.csv / DUKASCOPY / eurusd
+All set, ready to parse for DUKASCOPY_eurusd /// 1325671029237
+Took: 28648
+root@debian-i386:/opt/aq2o/trunk# 
+root@debian-i386:/opt/aq2o/trunk# 
++---------+	
+	
+	After several lines, the importer will report that all data was imported successfully. <Note: the appliance can be really slow when running in pure emulation mode. It does not reflect the actual production performance.> 
+	
+	Let's check the database and see which market data instrument has been created. 
+
++---------+
+root@debian-i386:/opt/aq2o/trunk# mysql -uwriter -pwriter aq2o
+...
+mysql> select * from MarketDataInstrument;
++ --------------+------------------+--------------------+-----------+---------------+--------------------------------------------------+
+| created       | keyVal           | fieldName          | doubleVal | longVal       | stringVal                                        |
++ --------------+------------------+--------------------+-----------+---------------+--------------------------------------------------+
+| 1325671028566 | DUKASCOPY_eurusd | MDPROVIDER         |      NULL |          NULL | DUKASCOPY                                        |
+| 1325671028567 | DUKASCOPY_eurusd | CREATIONTIME       |      NULL | 1325671028502 | NULL                                             |
+| 1325671028567 | DUKASCOPY_eurusd | DELETIONTIME       |      NULL |             0 | NULL                                             |
+| 1325671028567 | DUKASCOPY_eurusd | LASTHISTFETCHTIME  |         0 |          NULL | NULL                                             |
+| 1325671028567 | DUKASCOPY_eurusd | SNAPSHOTTIME       |         0 |          NULL | NULL                                             |
+| 1325671028567 | DUKASCOPY_eurusd | PROVIDERSPECIFICID |      NULL |          NULL | eurusd                                           |
+| 1325671028567 | DUKASCOPY_eurusd | CLASSNAME          |      NULL |          NULL | com.activequant.domainmodel.MarketDataInstrument |
++ --------------+------------------+--------------------+-----------+---------------+--------------------------------------------------+
+7 rows in set (0.01 sec)
+
+mysql> 
+
++---------+	
+	
+	
+	Now let's fetch the data for this MDI's key val (DUKASCOPY_eurusd). Let's start up matlab, for simplicity's sake. 
+	
++---------+
+% instantiate the facade. 
+msf = com.activequant.matlab.MatlabServiceFacade('debian-i386.local');
+paramMap = java.util.HashMap()
+array = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
+        {'DUKASCOPY_eurusd'}, ... 
+        {'OPEN', 'HIGH', 'LOW', 'CLOSE'}, ... 
+        20000101000000.0, paramMap);
+vals = array.values;
+open=vals(1,:,1);
+high=vals(1,:,2);
+low=vals(1,:,3);
+close=vals(1,:,4);
+candle(open', high', low', close')
++---------+	
+	
+	... which will yield a chart that shows a nice outlier in the data set. 
+	
+[./images/dukas_import.png] Chart of imported data
+	
+			
+* Run 2. YAHOO CSV market data 
+
+	The distro ships with sample data, which we are this time going to import through the shipped import scripts. 
+	
+	The concepts are the same as above, it all fits a bit better into the appliance, that's all. 
+	So here in quick mode:  
+	
++----------+
+root@debian-i386:/opt/aq2o/trunk/src/test/resources/sampledata# importMarketData.sh 
+Importing from md_yahoo all .csv files for YAHOO. Using spring configuration fwspring.xml and time frame EOD
+12/01/11 14:11:36 INFO support.ClassPathXmlApplicationContext: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@5e5a50: startup date [Wed Jan 11 14:11:36 UTC 2012]; root of context hierarchy
+12/01/11 14:11:37 INFO xml.XmlBeanDefinitionReader: Loading XML bean definitions from class path resource [fwspring.xml]
+....
++----------+ 
+
+	Once done, all CSV files from md_yahoo will be available in your archive and you can load this data in your AQ applications. 

@@ -1,0 +1,68 @@
+Series Archive
+
+	The Series Archive stands on the cutting edge of current technology. So sharp, we were bleeding during this implementation. It is based on HBase and can thus easily scale to terra-bytes of data and maybe even peta-bytes. Pointless to say that hbase and hadoop are projects of Apache and are not shipped with ActiveQuant. You need to take care of the hbase and hadoop installation yourself, but surely someone can help in the forum. 
+
+	If you want to get deeper into the topic, read up on NoSQL databases and in particular about HBase. 
+
+* Archive structure
+
+	The archive is structured into a series identifier, series keys and series values. The structure is somewhat a derivative of the NoSQL approach, but for now, simply take it as it is. You can store an arbitrary amount of series with an "infinite" amount of series keys. Typically, the series identifier is the MarketDataInstrument id, such as EUREX_FDAX201112, a series key would be BID or ASK and a value would be 7042.5. For every value, the archive also knows a timestamp value, which is not the same as the timestamp in HBase! Let's skip the HBase specifics.
+
+	The archive stores only double values, although we might talk about adding support to store string values. 
+
+	Throughout the archive, and also throughout the entire framework, you will encounter nanosecond timestamps.   
+ 
+* TimeSeries container
+
+	Data is returned from and can be also put into the archive through a TimeSeriesContainer. It's the dumbest class you can imagine with two public arrays to hold the timestamp and the corresponding value. 
+
+* ArchiveFactory
+
+	The archive factory will provide a reader and a writer for a time frame. Access has to happen through a time frame. If there is no time frame associated with this kind of information, use TimeFrame.RAW. 
+
+** HBaseArchiveFactory
+
+	The implementation creates a table per time frame. Upon first access, the implementation will check if the table exists and if not, creates it.  
+	
+	The following example shows you how to use the archive factory. 
+
++--------------------+
+IArchiveFactory factory = new HBaseArchiveFactory("<zookeeperhost ip>");
+IArchiveReader  reader1 = factory.getReader(TimeFrame.RAW);
+IArchiveReader  writer1 = factory.getWriter(TimeFrame.RAW);
+IArchiveReader  reader2 = factory.getReader(TimeFrame.MINUTES_1);
++--------------------+
+
+
+* IArchiveReader
+
+	The archive reader is your central access point to data in the archive. At the time of this writing, no data iterator is provided, although it would be possible from the HBase point of view. Within the selected time range, all data that the archve knows about for your series id and series key is returned. 
+
+	Below some example code. 
+
++--------------------+
+IArchiveReader reader = ....
+
+Date8Time6Parser d8t6p = new Date8Time6Parser();
+TimeStamp startTime = new TimeStamp(d8t6p.getNanoSeconds(20110101000000.0));
+TimeStamp endTime = new TimeStamp(d8t6p.getNanoSeconds(20111231235959.0));
+
+TSContainer ts = reader.getTimeSeries("TT_FDAX201112", "PX_SETTLE", startTime, endTime);
++--------------------+
+
+
+* IArchiveWriter
+
+	The archive writer can be used to put something into the archive. It is imperative to call the commit method when you want to write, otherwise things are guaranteed to be written! With HBase, an experience value is to wait until you have called write(..) 100 or 1000 times. Everything above will consume memory and will result in larger RPC calls, whereas everything underneath will increase the overhead for RPC communication unjustifiably. 	
+	
+	The following example shows how to write a value to the archive. 
+
++-----------------+
+IArchiveWriter writer = .... 
+
+UniqueTimeStampGenerator generator = new UniqueTimeStampGenerator();
+
+writer.write("TT_FDAX201112", generator.now(), "BID", 8120.5);
+writer.commit();
++-----------------+
+

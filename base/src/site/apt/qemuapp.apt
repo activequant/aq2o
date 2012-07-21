@@ -1,0 +1,147 @@
+QEmu Image
+
+
+* Deliverables
+
+	The QEmu Image contains an entire AQ working environment. This includes: 
+	
+	[[1]] JAVA JDK 1.6 (<Note: licensing to be figured out. We are working on it. (Jan 2012) >)
+	
+	[[1]] MySQL server running, with a user/pwd <writer/writer>
+	
+	[[1]] Apache ActiveMQ JMS server running
+	 
+	[[1]] ready set-up single node Apache Hadoop (0.20.x) and Apache HBase (0.90.4) installation, running. At the moment without HDFS sync support. Volunteers anyone?
+	 
+	[[1]] SAMBA share, so that you can copy CSV files in
+	
+	[[1]] Apache Tomcat server, so that you can use the SOAP services
+	
+	[[1]] Root user, with password <root>. (<Note: yes, that's simple and unsafe, good for testing, ungood for production.>)
+	
+	[[1]] checked out ActiveQuant project, so that you can keep everything in sync with the repository and also start hacking.
+	
+	
+* Download
+		
+	Click {{{https://sourceforge.net/projects/activequant/files/latest/download?source=files}here}} to download our qemu appliance from sourceforge.
+
+* Start the image	
+
+	<<Please, use the following lines to test the QEMU image and then set it up with proper NAT to get access to its mysql, hbase, soap and samba interfaces. Thanks!>>
+	
+	<<UPDATE: The 7z download (see above) also includes a runImage.sh, please also consult this file to run your qemu image.>> 
+
+	Run the debian image:
+
++---------+
+qemu -m 256 -hda /home/ustaudinger/work/activequant/image/debian_squeeze_i386_standard.qcow2 -redir tcp:65432::22 
++---------+	
+		
+	By default it is not possible to access the QEmu image, unless you configure NATting (see below). 	
+	The above command line tells qemu to redirect traffic from your localhost, port 65432 to the virtual machine's ssh port. Mind that Samba, Mysql, HBase, etc. are not accessible in this setup (again, setup NAT).   
+	
+	Assuming, NAT is not yet setup, log in via ssh from your local machine to test that things go well. 
+	
++---------+	
+ustaudinger@baikal:~/work/activequant/trunk$ ssh root@localhost -p 65432
+root@baikal.local's password: 
+Linux debian-i386 2.6.32-5-686 #1 SMP Wed Jan 12 04:01:41 UTC 2011 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Jan  3 07:19:27 2012
+
+root@debian-i386:~# 
++---------+
+
+	Ready to continue. 
+
+	Note: We strongly advise to use NAT with QEmu, as outlined {{{http://felipec.wordpress.com/2009/12/27/setting-up-qemu-with-a-nat/}here}} or {{{http://wiki.debian.org/QEMU#Guests_on_NATed_internal_network}less clearly here}}. Only by doing so you will be able to continue properly.   
+	  
+	Note 2: It might be necessary that you start the shipped HADOOP and HBase manually. Check /opt/hadoop* and /opt/hbase* and the {{{http://forums.activequant.org}forums}} for more details. 
+	  
+* Included tools 
+
+	Let's assume you were able to deploy the QEmu app on some virtualization cluster or something similar. 
+
+
+** HBase and Hadoop
+
+	You will have to start and stop these services manually. /opt/hbase-0.90.4/bin/start-hbase.sh and /opt/hadoop-0.20.205.0/bin/start-all.sh contain the proper files for this. The actual administration is beyond the scope of this page. Ensure that you first start hadoop and let it settle for a minute and then hbase. 
+
+	Hadoop's job tracker interface is located at http://<qemu-app-ip>:50030/jobtracker.jsp
+	
+	Hadoop's cluster state interface is located at http://<qemu-app-ip>:50070/dfshealth.jsp - from there you can also browse the virtual file system 
+	
+	HBase's web interface at http://<qemu-app-ip>:60010/master.jsp
+	
+** SAMBA	
+
+	The appliance includes a samba share at /opt/shared. On windows or linux, you can mount it with smb://root@<your-appliance-ip>/shared/, uid/pwd <root/root>.
+	
+[./images/samba_screen.png] Screenshot of the samba share. 
+	
+	
+** MySQL
+
+	MySQL is available by default. Assuming your appliance's IP is 192.168.100.2, you can use the following from some other machine to connect to it.
+	
++------------+
+staudinger@baikal:~/work/activequant/trunk$ mysql -uwriter -pwriter -h 192.168.100.2
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 36
+Server version: 5.1.49-3 (Debian)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++ ------------------ + 
+| Database           |
++ ------------------ +
+| information_schema |
+| aq2o               |
+| mysql              |
++ ------------------ +
+3 rows in set (0.01 sec)
+
+mysql> quit
+Bye
+ustaudinger@baikal:~/work/activequant/trunk$ 
++------------+		
+	
+* AQ2o 
+
+	AQ2o is located in /opt/aq2o/trunk. It contains the repository trunk and we recommend the first thing you do after a download of this appliance is to update the svn tree. 
+	
++--------+
+root@debian-i386:/opt/aq2o/trunk# svn update
+At revision 55.
+root@debian-i386:/opt/aq2o/trunk# 
++--------+	
+	
+	Thereafter, build the uber-jar and install the latest version into the appliance's local repository: 
+	
++--------+
+root@debian-i386:/opt/aq2o/trunk# mvn assembly:assembly install
++--------+  
+	
+	The appliance has an environment variable that points to the AQ_HOME folder. The PATH of the appliance contains the external resources folder, as there are tool scripts: 
+	
++-------+
+export AQ_HOME=/opt/aq2o/trunk/
+export PATH=$PATH:$JAVA_HOME/bin:$MVN_HOME/bin:$AQ_HOME/src/main/external-resources
++-------+	
+	
+	Included tool scripts are for example <importInstruments.sh>.
+	
+	
+	
