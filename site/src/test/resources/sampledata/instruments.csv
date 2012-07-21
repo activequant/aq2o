@@ -1,0 +1,3 @@
+CLASSNAME,SHORTNAME,NAME,DESCRIPTION,CURRENCY,EXCHANGECODE,QUOTEUNITS,TICKSIZE,TICKVALUE
+com.activequant.domainmodel.Stock, CBK.DE, Commerzbank, Commerzbank, EUR, DE, Lot, 1.0, 1.0
+com.activequant.domainmodel.Stock, HSBA.L, HSBC Holding, HSBC Holding, GBp, L, Lot, 1.0, 1.0

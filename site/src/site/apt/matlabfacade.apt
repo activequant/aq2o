@@ -1,0 +1,48 @@
+Matlab facade
+
+	The matlab facade offers very convenient methods to matlab users for accessing the functionality within the activequant framework, such as the archive, reference data or simulation functionality. Actually it is a Java class with several convenience methods, which can be used from within Matlab due to the superior Java integration in ML.  
+
+	To use it, put the AQ Framework jar (filename: activequant-framework-2.0-jar-with-dependencies.jar) into the STATIC classpath, not the dynamic classpath, of your matlab. When that is done, you can use and access the matlab facade and also all other parts of AQ. 
+
+	Once you are done with the installation, have a look at the following example that should make some things a bit clearer. 
+
++--------------+
+% define some constants for later, easier use
+EOD = com.activequant.domainmodel.TimeFrame.EOD;
+INTERPOLRULE =  com.activequant.servicelayer.matlab.Parameter.INTERPOLRULE;
+DAYRULE =  com.activequant.servicelayer.matlab.Parameter.DAYRULE;
+INTERPOLRULE_CARRY_FORWARD = com.activequant.servicelayer.matlab.InterpolationRule.CARRY_FORWARD;
+DAYRULE_WEEKDAYS = com.activequant.servicelayer.matlab.DayRule.WEEKDAYS;
+
+% instantiate the service facade. 
+msf = com.activequant.servicelayer.matlab.MatlabServiceFacade();
+paramMap = java.util.HashMap()
+
+% load some time series data. 
+
+array = msf.fetchTSData(com.activequant.domainmodel.TimeFrame.EOD,  ...
+            {'COX'}, ... 
+            {'CLOSE'}, ... 
+            20000101000000.0, 20121010000000.0, paramMap);
+            
+% and plot it.                
+plot(array.timeStamps,array.values)
+dateaxis('x',1)
++--------------+
+	
+	... which would give you something like this. 
+	
+[./images/sample_loaded_data.png] A chart. 
+	
+
+
+	In case your hbase server does not reside on localhost, which is very likely, you can specify the host ip or dns name as a parameter in the constructor of the matlab facade. 
+	This would then look like follows: 
+
++-----------+
+msf = com.activequant.matlab.MatlabServiceFacade('your.zookeeper.com');
++-----------+
+
+	Feel free to add new methods to the facade or to request new functionality through our bug tracker.
+
+ 
