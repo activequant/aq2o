@@ -84,6 +84,9 @@
 	</dependencies>
 
         <modules>
+                <module>base</module>
+                <module>server</module>
+                <module>archive-hbase</module>
                 <module>site</module>
 	</modules>
 </project>
