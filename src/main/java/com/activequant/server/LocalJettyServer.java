@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.kahadb.util.ByteArrayInputStream;
+import org.apache.log4j.Logger;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.HttpConnection;
@@ -22,8 +23,6 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.handler.AbstractHandler;
 import org.mortbay.jetty.handler.HandlerList;
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
@@ -32,24 +31,35 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 
+/**
+ * The local jetty server provides REST like functionality. 
+ * 
+ * @author GhostRider
+ *
+ */
 public class LocalJettyServer {
 
 	private int port;
-	private String zookeeper;
 	private IArchiveFactory archFactory;
+	private Logger log = Logger.getLogger(LocalJettyServer.class);
 
 	public LocalJettyServer(int port, String zookeeper) {
 		this.port = port;
-		this.zookeeper = zookeeper;
 		archFactory = new HBaseArchiveFactory(zookeeper);
 	}
 
+	/**
+	 * default main that runs the jetty server in foreground, connecting to a local hbase server. 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		LocalJettyServer s = new LocalJettyServer(44444, "localhost");
 		s.start();
 	}
 
 	public void start() throws Exception {
+		log.info("Starting new AQ jetty server.");
 		Server server = new Server();
 		Connector connector = new SocketConnector();
 		connector.setPort(port);
@@ -96,14 +106,12 @@ public class LocalJettyServer {
 					String sd = ((String[]) paramMap.get("STARTDATE"))[0];
 					String ed = ((String[]) paramMap.get("ENDDATE"))[0];
 
-					System.out.println("Fetching: " + timeFrame + " - " + mdiId + " - " + field + " - " + sd + " - "
+					log.info("Fetching: " + timeFrame + " - " + mdiId + " - " + field + " - " + sd + " - "
 							+ ed);
 
 					TimeStamp start;
 					try {
 						start = new TimeStamp(sdf.parse(sd));
-
-						int counter = 0;
 						int maxRows = 1000000;
 						TimeStamp end = new TimeStamp(sdf.parse(ed));
 						TSContainer container = archFactory.getReader(tf).getTimeSeries(mdiId, field, start, end);
@@ -114,7 +122,7 @@ public class LocalJettyServer {
 								break;
 							response.getWriter().print(container.timeStamps[i]);
 							response.getWriter().print(",");
-							response.getWriter().print(container.timeStamps[i].getDate());
+							response.getWriter().print(container.timeStamps[i].getCalendar().getTime());
 							response.getWriter().print(",");
 							response.getWriter().print(container.values[i]);
 							response.getWriter().println();
@@ -130,7 +138,7 @@ public class LocalJettyServer {
 
 			} else if (method.equals("POST")) {
 				//
-				System.out.println("Handling post request. ");
+				log.info("Handling post request. ");
 
 				InputStream body = request.getInputStream();
 				BufferedReader br = new BufferedReader(new InputStreamReader(body));
@@ -158,15 +166,16 @@ public class LocalJettyServer {
 					}
 					l = br.readLine();
 				}
-
+				log.info("Post request parsed.");
 				@SuppressWarnings("rawtypes")
 				String s = request.getParameter("SERIESID");
 				if (parameterMap.containsKey("SERIESID") && parameterMap.containsKey("FREQ") && parameterMap.containsKey("FIELD")) {
-
+					
 					IArchiveWriter iaw = archFactory.getWriter(TimeFrame.valueOf((String)parameterMap.get("FREQ")));
 					if(iaw!=null){
 						String seriesId = ((String) parameterMap.get("SERIESID"));
 						String field = ((String) parameterMap.get("FIELD"));
+						log.info("Storing data for " + seriesId+"/"+field+"/"+parameterMap.get("FREQ"));
 						String data = parameterMap.get("DATA").toString();
 						BufferedReader br2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes())));
 						String line = br2.readLine();
@@ -186,7 +195,6 @@ public class LocalJettyServer {
 						}
 						iaw.commit();
 					}
-
 				}
 
 				fullyHandled = true;
