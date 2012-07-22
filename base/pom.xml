@@ -4,7 +4,7 @@
 	<artifactId>aq2o-base</artifactId>
 	<packaging>jar</packaging>
 	<version>2.2-SNAPSHOT</version>
-	<name>ActiveQuant 2.o (AQ2o)</name>
+	<name>ActiveQuant 2.o (AQ2o) - BASE</name>
 	<url>http://activequant.org</url>
 	<description>Security trading related source code platform</description>
 
@@ -207,8 +207,6 @@
 			<name>MyBatis Snapshot Repository</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
-		<!-- repository> <id>hbase</id> <url>https://repository.apache.org/content/repositories/releases/</url> 
-			</repository -->
 		<repository>
 			<id>bedatadriven</id>
 			<name>Bedatadriven Public REpo</name>
@@ -353,13 +351,23 @@
 			<artifactId>asm</artifactId>
 			<version>3.3</version>
 		</dependency>
+		 <dependency>
+                        <groupId>com.googlecode.json-simple</groupId>
+                        <artifactId>json-simple</artifactId>
+                        <version>1.1.1</version>
+                </dependency>
 
 		<dependency>
 			<groupId>jfree</groupId>
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.13</version>
 		</dependency>
-
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+            
 	</dependencies>
 
 	<organization>

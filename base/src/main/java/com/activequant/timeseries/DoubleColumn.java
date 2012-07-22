@@ -39,8 +39,10 @@ public class DoubleColumn extends TypedColumn<Double> {
 			Double val = super.get(i);
 			if (currentVal != null && val != null) {
 				currentVal += val;
-			} else
-				currentVal = val;
+			} else if(currentVal == null)
+				currentVal = val; 
+			else
+				currentVal = currentVal;
 
 			ret.add(currentVal);
 		}

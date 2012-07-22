@@ -7,8 +7,8 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.kahadb.util.DiskBenchmark.Report;
-
+import com.activequant.domainmodel.Report;
+import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.interfaces.dao.IReportDao;
 
 import freemarker.template.Configuration;

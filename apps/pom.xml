@@ -1,17 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.activequant</groupId>
-	<artifactId>aq2o-server</artifactId>
+	<artifactId>aq2o-apps</artifactId>
 	<packaging>jar</packaging>
 	<version>2.2-SNAPSHOT</version>
-	<name>ActiveQuant 2.o (AQ2o)</name>
+	<name>ActiveQuant 2.o (AQ2o) - APPS</name>
 	<url>http://activequant.org</url>
 	<description>Security trading related source code platform</description>
 
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
+		<groupId>com.activequant</groupId>
+		<artifactId>aq2o-trunk</artifactId>
+		<version>2.2-SNAPSHOT</version>
 	</parent>
 	<scm>
 		<connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
@@ -326,144 +326,22 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		  <dependency>
+                        <groupId>com.activequant</groupId>
+                        <artifactId>aq2o-base</artifactId>
+                        <version>2.2-SNAPSHOT</version>
+                </dependency>
 		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>2.2.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
+                        <groupId>com.activequant</groupId>
+                        <artifactId>aq2o-archive-hbase</artifactId>
+                        <version>2.2-SNAPSHOT</version>
+                </dependency>
 		<dependency>
 			<groupId>net.sf.oval</groupId>
 			<artifactId>oval</artifactId>
 			<version>1.80</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
-			<version>5.5.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.0.6</version>
-		</dependency>
-		<!-- dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
-			<version>1.2.16</version> </dependency -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.snmp4j</groupId>
-			<artifactId>snmp4j</artifactId>
-			<version>1.10.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.snmp4j</groupId>
-			<artifactId>snmp4j-agent</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase</artifactId>
-			<version>${hbase.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase</artifactId>
-			<version>${hbase.version}</version>
-			<classifier>tests</classifier>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-
-		<!-- dependency> <groupId>xerces</groupId> <artifactId>xercesImpl</artifactId> 
-			<version>2.9.1</version> </dependency> <dependency> <groupId>xalan</groupId> 
-			<artifactId>xalan</artifactId> <version>2.7.1</version> </dependency> <dependency> 
-			<groupId>jblas</groupId> <artifactId>jblas</artifactId> <version>1.2.1</version> 
-			</dependency -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-ehcache</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-core</artifactId>
-			<version>${hadoop.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>hsqldb</groupId>
-					<artifactId>hsqldb</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.sf.kosmosfs</groupId>
-					<artifactId>kfs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.jdt</groupId>
-					<artifactId>core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.java.dev.jets3t</groupId>
-					<artifactId>jets3t</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>oro</groupId>
-					<artifactId>oro</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<!-- Apache CXF dependencies -->
+	<!-- Apache CXF dependencies -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -493,57 +371,6 @@
 			<version>1.2.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.renjin</groupId>
-			<artifactId>renjin-core</artifactId>
-			<version>0.6.4</version>
-			<exclusions>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm-util</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm-tree</artifactId>
-				</exclusion>
-			</exclusions>
-
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>12.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.7.RC1</version>
-
-		</dependency>
-
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>3.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jfree</groupId>
-			<artifactId>jfreechart</artifactId>
-			<version>1.0.13</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
-		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
