@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.activequant</groupId>
-	<artifactId>aq2o-base</artifactId>	
+	<artifactId>aq2o-trunk</artifactId>	
 	<version>2.2-SNAPSHOT</version>
-	<name>ActiveQuant 2.o (AQ2o) - BASE</name>
+	<name>ActiveQuant 2.o (AQ2o) - TRUNK</name>
 	<url>http://activequant.org</url>
 	<description>Security trading related source code platform</description>
 
@@ -85,8 +85,8 @@
 
         <modules>
                 <module>base</module>
-                <module>server</module>
                 <module>archive-hbase</module>
+                <module>apps</module>
                 <module>site</module>
 	</modules>
 </project>

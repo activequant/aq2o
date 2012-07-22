@@ -10,10 +10,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.activequant.backtesting.OrderEventListener;
 import com.activequant.domainmodel.AlgoConfig;
@@ -25,6 +25,7 @@ import com.activequant.timeseries.CSVExporter;
 import com.activequant.timeseries.ChartUtils;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TSContainerMethods;
+import com.activequant.utils.ArrayUtils;
 import com.activequant.utils.CsvMapWriter;
 import com.activequant.utils.Date8Time6Parser;
 import com.activequant.utils.FileUtils;
