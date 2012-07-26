@@ -5,7 +5,15 @@ ChangeLog
 ** Organizational
 
 	* Major package reshuffling to straighten out the package structure. 
-	 
+
+** New features
+
+	* AccountDataEvent: should be used to send around account specific information, such as CASH, USED_MARGIN, etc. 
+
+	* ParallelizedBacktester: runs a backtest on several cores, splitting it through a ITimeRangeSplitter
+
+	* TimeSetup for backtestss
+
 
 * 2.1 (5 July 2012)
 
