@@ -10,7 +10,6 @@ public class QuoteTable extends AQTableDataBaseAlpha {
 	public enum Columns {
 		INSTRUMENTID(0), BIDSIZE(1), BID(2), ASK(3), ASKSIZE(4), TRADE(5), TRADESIZE(
 				6);
-
 		//
 		int colIdx;
 

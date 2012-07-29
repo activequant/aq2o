@@ -20,7 +20,7 @@ public class PNLMonitorTest extends TestCase {
 	}
 
 	public PNLChangeEvent ce(long l, String id, Double val){		
-		PNLChangeEvent p = new PNLChangeEvent(new TimeStamp(l), id, val);
+		PNLChangeEvent p = new PNLChangeEvent(new TimeStamp(l), id, val, 0.0);
 		return p;
 	}
 	

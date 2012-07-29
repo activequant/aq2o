@@ -39,6 +39,13 @@ public class Portfolio extends PersistentEntity {
         this.tradeableInstrumentIds = positionIds;
     }
 
+    public void reset(){
+    	for(int i=0;i<positions.length;i++){
+    		positions[i] = 0.0; 
+    		entryPrice[i] = 0.0; 
+    	}
+    }
+    
     @Property
 	public double[] getPositions() {
 		return positions;

@@ -42,7 +42,7 @@ class VirtualOrderTracker implements IOrderTracker {
 	@Override
 	public void submit() {
 		OrderEvent oe = new OrderSubmittedEvent();	
-		oe.setCreationTimeStamp(exchange.currentExchangeTime()); 
+		oe.setTimeStamp(exchange.currentExchangeTime()); 
 		event.fire(oe);
 		// 
 	}

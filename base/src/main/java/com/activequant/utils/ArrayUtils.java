@@ -36,11 +36,18 @@ import java.util.Vector;
  * <b>History:</b><br>
  *  - [11.06.2007] Created (Erik Nijkamp)<br>
  *  - [11.06.2007] Added converters, dumper (Ulrich Staudinger)<br>
+ *  - [11.06.2012] More converters and decimalformatter (Ulrich Staudinger)<br>
  *
  *  @author Erik Nijkamp
  *  @author Ulrich Staudinger
  */
 public class ArrayUtils {
+
+	private static DecimalFormat dcf = new DecimalFormat("#.########");
+	
+	public static void setDecimalFormat(String formatString){
+		dcf = new DecimalFormat(formatString);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T[] asArray(final Collection<T> list, Class<T> clazz) {
@@ -74,11 +81,15 @@ public class ArrayUtils {
 		}
 	}
 	
+	
     public static String toString(Double[] input){
         StringBuilder ret = new StringBuilder();
-        for(Object o : input){
+        for(Double o : input){
             ret.append("");
-            ret.append(""+(Double)o);
+            if(o!=null)
+            	ret.append(""+dcf.format(o));
+            else 
+            	ret.append("NULL");
             ret.append(" ");
         }
         return ret.toString();
@@ -87,7 +98,7 @@ public class ArrayUtils {
     public static String toString(double[] input){
         StringBuilder ret = new StringBuilder();
         for(double o : input){
-            ret.append(DecimalFormat.getInstance().format(o));
+            ret.append(dcf.format(o));
             ret.append(", ");
         }
         ret.delete(ret.length()-2, ret.length());

@@ -5,9 +5,9 @@ import com.activequant.interfaces.trading.IExchange;
 import com.activequant.trading.datamodel.AQTableDataBase;
 
 /**
- * intentionally left blank. 
+ * intentionally left blank, naked and shaved. 
  * 
- * @author ustaudinger
+ * @author GhostRider
  *
  */
 public class InstrumentTableViz extends VisualTable implements IInstrumentTableViz{

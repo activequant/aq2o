@@ -162,12 +162,12 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			double commission = Math.max((0.2 * tickSizeAcctCurrency * tradedValueInUsd), 2.50);
 						
 			// track it.			
-			Double existingFees = (Double) feeSeries.getValue(tid, ofe.getCreationTimeStamp());
+			Double existingFees = (Double) feeSeries.getValue(tid, ofe.getTimeStamp());
 			if(existingFees==null)existingFees = 0.0; 
-			feeSeries.setValue(tid, ofe.getCreationTimeStamp(), commission+existingFees);
+			feeSeries.setValue(tid, ofe.getTimeStamp(), commission+existingFees);
 
 			// dump a row.
-			String row = ofe.getRefOrderId() + ";" + ofe.getCreationTimeStamp().getNanoseconds() + ";"
+			String row = ofe.getRefOrderId() + ";" + ofe.getTimeStamp().getNanoseconds() + ";"
 					+ ofe.getOptionalInstId() + ";";
 			row += ofe.getSide() + ";" + dcf.format(ofe.getFillAmount()) + ";" + dcf.format(ofe.getFillPrice()) + ";";
 			row += dcf.format(conversionRate) + ";" + dcf.format(tradedValueInQuotee) + ";"

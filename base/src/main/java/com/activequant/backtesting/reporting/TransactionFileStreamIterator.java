@@ -64,7 +64,7 @@ public class TransactionFileStreamIterator extends StreamEventIterator<TimeStrea
 			ofe.setFillPrice(price);
 			ofe.setFillAmount(quantity);
 			ofe.setSide(dir);			
-			ofe.setCreationTimeStamp(tsUnixGmt);
+			ofe.setTimeStamp(tsUnixGmt);
 
 			// shift it, so that it looks as if it emitted at the end of a
 			// candle.

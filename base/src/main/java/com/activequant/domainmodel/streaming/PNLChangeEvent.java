@@ -9,12 +9,18 @@ import com.activequant.domainmodel.TimeStamp;
  */
 public class PNLChangeEvent extends TradingDataEvent {
 
-	private final Double change;
+	private final double change;
+	private final double totalPnl; 
 	
-	public PNLChangeEvent(TimeStamp ts, String tradInstId, double value)
+	public double getTotalPnl() {
+		return totalPnl;
+	}
+
+	public PNLChangeEvent(TimeStamp ts, String tradInstId, double value, double totalPnl)
 	{
 		super(ts, PNLChangeEvent.class.getCanonicalName(), tradInstId);
-		this.change = value; 
+		this.change = value;
+		this.totalPnl = totalPnl;
 	}
 	
 	public Double getChange() {

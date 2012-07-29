@@ -5,16 +5,15 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.StreamEvent;
 import com.activequant.domainmodel.trade.order.Order;
 
-public abstract class OrderEvent extends StreamEvent{
-	
+public abstract class OrderEvent extends StreamEvent {
+
 	public OrderEvent(String className) {
 		super(className);
 	}
 
-	private TimeStamp creationTimeStamp;
-	private String refOrderId; 
-	private String optionalInstId; 
-	// 
+	private String refOrderId;
+	private String optionalInstId;
+	//
 	private Order refOrder;
 
 	@Override
@@ -22,23 +21,10 @@ public abstract class OrderEvent extends StreamEvent{
 		return ETransportType.TRAD_DATA;
 	}
 
-
 	@Override
 	public String getId() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	@Override
-	public TimeStamp getTimeStamp() {
-		return creationTimeStamp;
-	}
-
-	public TimeStamp getCreationTimeStamp() {
-		return creationTimeStamp;
-	}
-
-	public void setCreationTimeStamp(TimeStamp creationTimeStamp) {
-		this.creationTimeStamp = creationTimeStamp;
 	}
 
 	public String getRefOrderId() {

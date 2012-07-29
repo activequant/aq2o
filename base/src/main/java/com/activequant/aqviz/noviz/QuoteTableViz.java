@@ -4,9 +4,9 @@ import com.activequant.interfaces.aqviz.IQuoteTableViz;
 import com.activequant.interfaces.trading.IExchange;
 import com.activequant.trading.datamodel.AQTableDataBase;
 /**
- * intentionally left blank. 
+ * intentionally left blank, naked and shaved. 
  * 
- * @author ustaudinger
+ * @author GhostRider
  *
  */
 public class QuoteTableViz extends VisualTable implements IQuoteTableViz  {
@@ -14,16 +14,13 @@ public class QuoteTableViz extends VisualTable implements IQuoteTableViz  {
 	public QuoteTableViz(String stub, AQTableDataBase tableBase, IExchange exchange ){
 		super(stub, tableBase);
 	}
+	
 	@Override
-	public void setTitle(String title) {
-		// TODO Auto-generated method stub
-		
+	public void setTitle(String title) {		
 	}
 
 	@Override
 	public void changeSelection(int row, int col, boolean toogle, boolean extend) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

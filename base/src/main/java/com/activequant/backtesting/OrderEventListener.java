@@ -48,7 +48,7 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 		if (event instanceof OrderFillEvent) {
 			OrderFillEvent ofe = (OrderFillEvent) event;
 			if(ofe.getFillAmount()!=0.0)fillEvents.add(ofe);
-			trackFill(ofe.getOptionalInstId(), ofe.getCreationTimeStamp(), ofe.getFillAmount()
+			trackFill(ofe.getOptionalInstId(), ofe.getTimeStamp(), ofe.getFillAmount()
 					* (ofe.getSide().startsWith("B") ? 1.0 : -1.0), ofe.getFillPrice());
 			countFill(ofe.getOptionalInstId());
 		} else if (event instanceof OrderCancelledEvent) {

@@ -6,32 +6,34 @@ import java.util.List;
 import java.util.Map;
 
 import com.activequant.domainmodel.ETransportType;
+import com.activequant.interfaces.streaming.IStreamEventSink;
+import com.activequant.interfaces.streaming.IStreamEventSource;
 
-public abstract class AbstractEventChainLink implements IEventSink, IEventSource {
+public abstract class AbstractEventChainLink implements IStreamEventSink, IStreamEventSource {
 
-	private Map<ETransportType, List<IEventSink>> subscriberMap = 
-			new HashMap<ETransportType, List<IEventSink>>();
+	private Map<ETransportType, List<IStreamEventSink>> subscriberMap = 
+			new HashMap<ETransportType, List<IStreamEventSink>>();
 
 	
-	public List<IEventSink> getSubscriberList(ETransportType type){
+	public List<IStreamEventSink> getSubscriberList(ETransportType type){
 		if(!subscriberMap.containsKey(type)){
-			subscriberMap.put(type, new ArrayList<IEventSink>());
+			subscriberMap.put(type, new ArrayList<IStreamEventSink>());
 		}
 		return subscriberMap.get(type);
 	}
 	
 	@Override
-	public void subscribe(IEventSink sink,ETransportType eventType) {
+	public void subscribe(IStreamEventSink sink,ETransportType eventType) {
 		getSubscriberList(eventType).add(sink);
 	}
 
-	public void unsubscribe(IEventSink sink, ETransportType eventType) {
+	public void unsubscribe(IStreamEventSink sink, ETransportType eventType) {
 		getSubscriberList(eventType).remove(sink);
 	}
 
 	@Override
 	public void process(StreamEvent se) {
-		for(IEventSink sink : getSubscriberList(se.getEventType())){
+		for(IStreamEventSink sink : getSubscriberList(se.getEventType())){
 			sink.process(se);
 		}
 	}

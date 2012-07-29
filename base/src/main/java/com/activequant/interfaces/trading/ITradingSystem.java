@@ -1,10 +1,10 @@
 package com.activequant.interfaces.trading;
 
 import com.activequant.domainmodel.AlgoConfig;
-import com.activequant.domainmodel.streaming.IEventSink;
+import com.activequant.interfaces.streaming.IStreamEventSink;
 import com.activequant.trading.TradingSystemEnvironment;
 
-public interface ITradingSystem extends IEventSink {
+public interface ITradingSystem extends IStreamEventSink {
 
 	/**
 	 * used to inject the environment. 
@@ -17,6 +17,8 @@ public interface ITradingSystem extends IEventSink {
 	void start() throws Exception;
 
 	void stop() throws Exception;
+	
+	boolean isRunning(); 
 	
 	/**
 	 * Must return the current algo configuration. For example during a back test. 

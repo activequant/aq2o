@@ -23,21 +23,21 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 	protected int colSelected = -1;
 	protected boolean toogleSelection;
 
-	protected DecimalFormat dcf = new DecimalFormat("#.####");
+	protected DecimalFormat dcf = new DecimalFormat("#.######");
 
 	public AQTableDataBase() {
 		dcf.setGroupingUsed(false);		
 	}
 
 	public AQTableDataBase(AbstractTSBase abstractTSBase) {
-		dcf.setGroupingUsed(false);
+		dcf.setGroupingUsed(false);		
 		/*
 		 * t = new Timer(100, this); t.setInitialDelay(5000); t.start();
 		 */this.abstractTSBase = abstractTSBase;
 	}
 
 	public String getColumnName(int col) {
-		return getHeader()[col];
+		return getHeader()[col];		
 	}
 
 	public int getRowCount() {

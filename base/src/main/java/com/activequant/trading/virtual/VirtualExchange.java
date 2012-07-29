@@ -97,7 +97,7 @@ public class VirtualExchange implements IExchange {
 				
 				// set out an update event.
 				OrderEvent oe = new OrderUpdateSubmittedEvent();
-				oe.setCreationTimeStamp(currentExchangeTime);
+				oe.setTimeStamp(currentExchangeTime);
 				oe.setRefOrder(le);
 				oe.setRefOrderId(le.getOrderId());
 				getEvent().fire(oe);
@@ -107,7 +107,7 @@ public class VirtualExchange implements IExchange {
 				oe = new OrderReplacedEvent();
 				oe.setRefOrder(le);
 				oe.setRefOrderId(le.getOrderId());
-				oe.setCreationTimeStamp(currentExchangeTime);
+				oe.setTimeStamp(currentExchangeTime);
 				getEvent().fire(oe);
 				sendOrderEvent(le.getTradInstId(), oe);
 
@@ -131,7 +131,7 @@ public class VirtualExchange implements IExchange {
 			// send out the submit event
 
 			OrderEvent oe = new OrderSubmittedEvent();
-			oe.setCreationTimeStamp(currentExchangeTime);
+			oe.setTimeStamp(currentExchangeTime);
 			oe.setRefOrderId(order.getOrderId());
 			oe.setRefOrder(order);
 			oe.setOptionalInstId(order.getTradInstId());
@@ -141,7 +141,7 @@ public class VirtualExchange implements IExchange {
 			// ... and the accepted event
 
 			oe = new OrderAcceptedEvent();
-			oe.setCreationTimeStamp(currentExchangeTime);
+			oe.setTimeStamp(currentExchangeTime);
 			oe.setRefOrderId(order.getOrderId());
 			oe.setRefOrder(order);
 			oe.setOptionalInstId(order.getTradInstId());
@@ -171,10 +171,10 @@ public class VirtualExchange implements IExchange {
 		public void cancel() {
 			getOrderBook(order.getTradInstId()).cancelOrder(order);
 			OrderEvent oe = new OrderCancelSubmittedEvent();
-			oe.setCreationTimeStamp(currentExchangeTime);
+			oe.setTimeStamp(currentExchangeTime);
 			getEvent().fire(oe);
 			oe = new OrderCancelledEvent();
-			oe.setCreationTimeStamp(currentExchangeTime);
+			oe.setTimeStamp(currentExchangeTime);
 			getEvent().fire(oe);
 		}
 
@@ -187,7 +187,7 @@ public class VirtualExchange implements IExchange {
 		try {
 			
 			transport.getPublisher(ETransportType.TRAD_DATA, tradInstId).send(
-					new OrderStreamEvent(tradInstId, oe.getCreationTimeStamp(), oe));
+					new OrderStreamEvent(tradInstId, oe.getTimeStamp(), oe));
 			globalOrderEvent.fire(oe);
 		} catch (TransportException e) {
 			e.printStackTrace();
@@ -232,7 +232,7 @@ public class VirtualExchange implements IExchange {
 				return;
 			LimitOrder lo = (LimitOrder)trck.getOrder();
 			OrderFillEvent ofe = new OrderFillEvent();
-			ofe.setCreationTimeStamp(currentExchangeTime());
+			ofe.setTimeStamp(currentExchangeTime());
 			ofe.setRefOrder(order);
 			ofe.setRefOrderId(order.getOrderId());
 			ofe.setSide(lo.getOrderSide().toString());
@@ -253,7 +253,7 @@ public class VirtualExchange implements IExchange {
 				LimitOrder lo2 = (LimitOrder) order;
 				if (lo.getOpenQuantity() == 0.0) {
 					OrderTerminalEvent ote = new OrderTerminalEvent();
-					ote.setCreationTimeStamp(currentExchangeTime());
+					ote.setTimeStamp(currentExchangeTime());
 					((VirtualOrderTracker) trck).getEvent().fire(ote);
 					// also send it to the internal event layer. 					
 					// clean up the order tracker.

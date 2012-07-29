@@ -17,6 +17,8 @@ public interface IRiskCalculator {
 	 */
 	PNLChangeEvent execution(TimeStamp ts, String tradInstId, double price, double quantity);
 	
+	void setPosition(String tidId, double price, double quantity);
+	
 	/**
 	 * to indicate with price row changed. 
 	 * @param rowIndex

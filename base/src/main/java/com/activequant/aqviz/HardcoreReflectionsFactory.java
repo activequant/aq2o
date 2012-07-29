@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 
+import com.activequant.interfaces.aqviz.IAccountTableViz;
 import com.activequant.interfaces.aqviz.IInstrumentTableViz;
 import com.activequant.interfaces.aqviz.IOrderTableViz;
 import com.activequant.interfaces.aqviz.IQuoteTableViz;
@@ -77,6 +78,20 @@ public class HardcoreReflectionsFactory {
 			if(c.getSimpleName().equals("InstrumentTableViz")){
 				Constructor constr = c.getConstructor(String.class, AQTableDataBase.class, IExchange.class);
 				return (IInstrumentTableViz)constr.newInstance(s, aqt, exch);
+			}
+		}
+		throw new RuntimeException("Could not instantiate instrument table. This installation is totally screwed up.");
+		
+	}
+
+	
+
+	public IAccountTableViz getAccountTableViz(String s, AQTableDataBase aqt) 
+			throws SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException{
+		for(Class c : subTypes){
+			if(c.getSimpleName().equals("AccountTableViz")){
+				Constructor constr = c.getConstructor(String.class, AQTableDataBase.class);
+				return (IAccountTableViz)constr.newInstance(s, aqt);
 			}
 		}
 		throw new RuntimeException("Could not instantiate instrument table. This installation is totally screwed up.");

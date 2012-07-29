@@ -37,6 +37,7 @@ public class SimpleMovingAverage extends AbstractTSBase {
 	private DecimalFormat dcf = new DecimalFormat("#.00");
 	private MarketDataInstrument mdi; 
 	private TradeableInstrument  tdi; 
+	protected boolean isRunning = false; 
 	
 	@Override
 	public void start() throws Exception {		
@@ -48,10 +49,16 @@ public class SimpleMovingAverage extends AbstractTSBase {
 		getInstrumentTable().setValueAt(0.01, getInstrumentTable().getRowIndexOf(mdi.getId()), InstrumentTable.Columns.TICKSIZE.colIdx());
 		getInstrumentTable().setValueAt(12.50, getInstrumentTable().getRowIndexOf(mdi.getId()), InstrumentTable.Columns.TICKVALUE.colIdx());
 		getInstrumentTable().signalUpdate();
+		isRunning = true; 
 	}
 
 	@Override
 	public void stop() throws Exception {
+		isRunning = false; 		
+	}
+	
+	public boolean isRunning(){
+		return isRunning; 
 	}
 	
 	/**

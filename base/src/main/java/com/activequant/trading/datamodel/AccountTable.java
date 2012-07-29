@@ -6,13 +6,11 @@ import com.activequant.trading.AbstractTSBase;
 
 
 @SuppressWarnings("serial")
-public class PositionTable extends AQTableDataBase {
+public class AccountTable extends AQTableDataBase {
 
 	public enum Columns{
-		INSTRUMENTID(0, "Instrument ID"),
-		POSITION(1, "Position"), 
-		ENTRYPRICE(2, "Avg. Entry PX"), 
-		PNLATLIQUIDATION(3, "Crnt. Liquidation P/L");
+		VARIABLE(0, "Variable"),
+		VALUE(1, "Value");
 		// 
 		int colIdx;	
 		String colname; 
@@ -29,7 +27,7 @@ public class PositionTable extends AQTableDataBase {
 	
 	private String[] header;
 	
-	public PositionTable(){
+	public AccountTable(){
 		super();
 
 		header = new String[Columns.values().length];
@@ -39,7 +37,7 @@ public class PositionTable extends AQTableDataBase {
 	}
 	
 
-	public PositionTable(AbstractTSBase abstractTSBase) {
+	public AccountTable(AbstractTSBase abstractTSBase) {
 		super(abstractTSBase);
 		header = new String[Columns.values().length];
 		for(int i=0;i<header.length;i++){
@@ -48,9 +46,9 @@ public class PositionTable extends AQTableDataBase {
 	}
 	
 
-	public void deleteInstrument(String instrumentId){		 
-		if(containsInstrumentId(instrumentId)){
-			int pos = getPosition(instrumentId);
+	public void deleteVariable(String variableId){		 
+		if(containsVariable(variableId)){
+			int pos = getRowIdx(variableId);
 			// 
 			List<Object[]> l = c(data);		
 			l.remove(pos);
@@ -58,60 +56,60 @@ public class PositionTable extends AQTableDataBase {
 		}
 	}
 
-	public boolean containsInstrumentId(String instId){				 
+	public boolean containsVariable(String instId){				 
 		for(Object[] row : data){		 
-			if(row[Columns.INSTRUMENTID.colIdx].equals(instId))return true; 
+			if(row[Columns.VARIABLE.colIdx].equals(instId))return true; 
 		}
 		return false; 
 	}
 	
-	/**
-	 * Use getRowIdx instead
-	 * @param instId
-	 * @return
-	 */
-	@Deprecated
-	public int getPosition(String instId){
-		return getRowIdx(instId);
-	}
-	
+
 	/**
 	 * returns the row index in which information is stored.
 	 * This information never changes unless the table is emptied and new instruments are added. 
 	 * 
-	 * @param instId
+	 * @param variable
 	 * @return
 	 */
-	public int getRowIdx(String instId){
+	public int getRowIdx(String variable){
 		int pos = -1; 
 		for(Object[] row : data){
 			pos++; 
-			if(row[Columns.INSTRUMENTID.colIdx].equals(instId))return pos; 
+			if(row[Columns.VARIABLE.colIdx].equals(variable))return pos; 
 		}
 		throw new RuntimeException("Instrument ID not present in current system configuration. Cannot continue. ");
 	}
 	
 
-	public void addInstrument(String instrumentId){		
+	/**
+	 * Adds a variable to be shown in the account table. 
+	 * 
+	 * @param variableId
+	 */
+	public void addVariable(String variableId){		
 		// convert data to list. 
 		List<Object[]> l = c(data);		
 		Object[] row = new Object[header.length];
-		row[Columns.INSTRUMENTID.colIdx] = instrumentId;
-		row[Columns.POSITION.colIdx] = 0.0;
-		row[Columns.ENTRYPRICE.colIdx] = 0.0;
+		row[Columns.VARIABLE.colIdx] = variableId;
+		row[Columns.VALUE.colIdx] = "";		
 		l.add(row);		
 		data = c(l);
 	}
 	
-	
-	public void setPosition(String instrumentId, Double price, Double quantity){
+	/**
+	 * stores a variable value
+	 * 
+	 * @param variableId
+	 * @param value
+	 */
+	public void setVariable(String variableId, Object value){
 		// 
 		List<Object[]> rows = c(data);
 		Object[] row = null;
 		int rowIndex = -1;
 		for(int i=0;i<rows.size();i++)
 		{
-			if(rows.get(i)[Columns.INSTRUMENTID.colIdx].equals(instrumentId)){
+			if(rows.get(i)[Columns.VARIABLE.colIdx].equals(variableId)){
 				row = rows.get(i);
 				rowIndex = i; 
 				break; 
@@ -121,51 +119,33 @@ public class PositionTable extends AQTableDataBase {
 			row =new Object[header.length];			
 			rows.add(row);
 			rowIndex = rows.size()-1;
-		}
-		
+		}		
 		// 
-		row[Columns.INSTRUMENTID.colIdx] = instrumentId;
-		row[Columns.ENTRYPRICE.colIdx] = price; 
-		row[Columns.POSITION.colIdx] = quantity; 
-		
+		row[Columns.VARIABLE.colIdx] = variableId;
+		row[Columns.VALUE.colIdx] = value; 
 		// 
 		data = c(rows);		
 		getRowUpdateEvent().fire(rowIndex);
 	}
 	
 	/**
-	 * returns the current position for a tradeable.
-	 * @param instrumentId
+	 * returns the current position for a variable.
+	 * 
+	 * @param variableId
 	 * @return
 	 */
-	public double getCurrentPosition(String instrumentId){
+	public Object getCurrentValue(String variableId){
 		int pos = -1; 
 		for(Object[] row : data){
 			pos++; 
-			if(row[Columns.INSTRUMENTID.colIdx].equals(instrumentId))break; 
+			if(row[Columns.VARIABLE.colIdx].equals(variableId))break; 
 		}
 		if(pos!=-1){
-			return ((Double)data[pos][Columns.POSITION.colIdx]).doubleValue();
+			return data[pos][Columns.VALUE.colIdx];
 		}
-		return 0.0; 
+		return null; 
 	}
-	
-	/**
-	 * returns the current entry price for a tradeable.
-	 * @param instrumentId
-	 * @return
-	 */
-	public double getEntryPrice(String instrumentId){
-		int pos = -1; 
-		for(Object[] row : data){
-			pos++; 
-			if(row[Columns.INSTRUMENTID.colIdx].equals(instrumentId))break; 
-		}
-		if(pos!=-1){
-			return ((Double)data[pos][Columns.ENTRYPRICE.colIdx]).doubleValue();
-		}
-		return 0.0; 
-	}
+		
 	
 	@Override
 	public Object[][] getData() {

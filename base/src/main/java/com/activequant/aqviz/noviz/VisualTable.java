@@ -1,11 +1,10 @@
 package com.activequant.aqviz.noviz;
 
 import com.activequant.interfaces.aqviz.IVisualTable;
-import com.activequant.interfaces.trading.IExchange;
 import com.activequant.trading.datamodel.AQTableDataBase;
 
 /**
- * intentionally left blank. 
+ * intentionally left blank, naked and shaved. 
  * 
  * @author ustaudinger
  *

@@ -6,9 +6,15 @@ import com.activequant.domainmodel.TimeStamp;
 
 
 public abstract class StreamEvent extends PersistentEntity {
+	private TimeStamp timeStamp;
 	public StreamEvent(String className){
 		super(className);
 	}
 	public abstract ETransportType getEventType();
-	public abstract TimeStamp getTimeStamp();
+	public TimeStamp getTimeStamp(){
+		return timeStamp; 
+	}
+	public void setTimeStamp(TimeStamp ts){
+		timeStamp = ts; 
+	}
 }

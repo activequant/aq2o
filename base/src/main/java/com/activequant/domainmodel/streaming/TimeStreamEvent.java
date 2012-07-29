@@ -16,7 +16,7 @@ public class TimeStreamEvent extends StreamEvent {
 	public TimeStreamEvent(TimeStamp ts)
 	{
 		super(TimeStreamEvent.class.getCanonicalName());
-		this.timeStamp = ts; 		
+		this.timeStamp = ts;
 	}
 	
 	public TimeStreamEvent(TimeStamp ts, String className)

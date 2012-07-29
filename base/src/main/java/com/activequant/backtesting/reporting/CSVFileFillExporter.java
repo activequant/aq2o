@@ -24,9 +24,9 @@ public class CSVFileFillExporter {
 				bw.write(";");
 				bw.write(ofe.getSide());
 				bw.write(";");
-				bw.write(dcf.format(ofe.getCreationTimeStamp().getMilliseconds()));
+				bw.write(dcf.format(ofe.getTimeStamp().getMilliseconds()));
 				bw.write(";");
-				bw.write(""+ofe.getCreationTimeStamp().getCalendar().getTime());
+				bw.write(""+ofe.getTimeStamp().getCalendar().getTime());
 				bw.write(";");
 				bw.write(dcf.format(ofe.getFillAmount()));
 				bw.write(";");
