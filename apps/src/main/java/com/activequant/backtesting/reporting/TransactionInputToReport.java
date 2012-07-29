@@ -159,7 +159,7 @@ public class TransactionInputToReport {
 				feeCalculator.updateRefRate(ofe.getOptionalInstId().substring(3), ofe.getFillPrice());
 				// order event listener also holds the fee calculator
 				oel.eventFired(ofe);
-				PNLChangeEvent pce = prc.execution(ofe.getCreationTimeStamp(), ofe.getOptionalInstId(),
+				PNLChangeEvent pce = prc.execution(ofe.getTimeStamp(), ofe.getOptionalInstId(),
 						ofe.getFillPrice(), (ofe.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
 				increaseTransactionCount(ofe.getOptionalInstId());
 			} else if (se instanceof OHLCV) {
@@ -175,7 +175,7 @@ public class TransactionInputToReport {
 				// just set something. 
 				ofe.setSide("BUY");
 				ofe.setFillPrice(o.getClose());
-				ofe.setCreationTimeStamp(o.getTimeStamp());
+				ofe.setTimeStamp(o.getTimeStamp());
 				oel.eventFired(ofe);
 				
 				refRates.setValue(o.getMdiId(), o.getTimeStamp(), o.getClose());
