@@ -10,6 +10,8 @@ Uberjar
 	
 	Download the Uber-JAR as a ZIP from our {{{http://sourceforge.net/projects/activequant/files/}sourceforge project}} page. By downloading, you accept our {{{./license.html}license}}.   
 	
+	_You might have to modify the shell scripts to point to the latest jar. The AQ codebase is quite large and it is hard to keep everything in sync._
+	
 	When you start the AQ2Server, you'll see something like: 
 	
 +-------+
