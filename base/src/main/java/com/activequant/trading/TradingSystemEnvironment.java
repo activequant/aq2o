@@ -7,7 +7,7 @@ import com.activequant.interfaces.transport.ITransportFactory;
 
 /**
  * contains relevant pointers to key services. 
- *  * 
+ * 
  * @author GhostRider
  *
  */
