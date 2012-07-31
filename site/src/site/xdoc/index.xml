@@ -14,7 +14,6 @@
     <!-- The body of the document contains a number of sections -->
     <section name="Welcome">
     <p><strong>SVN TRUNK CONTAINS 2.2-SNAPSHOT (18 JULY 2012). This is bleeding edge, but almost stable at the moment.</strong></p>
-    
     <p><i>Others write "thought leadership" on their flag. We just lead.</i></p>
    	<p>You have reached the landing site of the ActiveQuant securities trading framework. <i><strong>University?</strong> We would be happy to support you and your students on your voyage into quantitative finance! What about a guest lecture?</i> </p>
    	<p>This project is an open source project, but not free software, but it is provided free of charge to academics and hobbyists. You could also say it is an open core software. We provide various commercial services around this open core.</p>
@@ -31,6 +30,7 @@
 	
 
     <section name="Typical use cases">
+    <p><img src="./images/comic.gif" align="left" hspace="10"/></p>
     <p>
 	Typical use cases for this project include recording large volume timeseries, managing financial reference data and other information. 
 	You can also backtest and run trading systems in production.  
@@ -38,7 +38,8 @@
 	a SOAP Service Facade or Matlab to access that data. It is also possible simulate trading, high frequency and low frequency and to move seamlessly from simulation to production through one of the trading venue interface implementations.
 	</p>
 	<p>
-		The following diagram shows you briefly, what a typical use case for the price feed part of ActiveQuant looks like. Notice, YOU GET THIS UP AND RUNNING MUCH QUICKER, IF YOU SIMPLY BOOK US FOR A DAY OR TWO!  
+		
+		The following diagram shows you briefly, what an <strong>example use case</strong> for the price feed part of ActiveQuant looks like. Notice, YOU GET THIS UP AND RUNNING MUCH QUICKER, IF YOU SIMPLY BOOK US FOR A DAY OR TWO!  
 	</p>	
 	<p>
 		<img src="http://activequant.org/images/aq_gui3.png"/>
@@ -49,7 +50,7 @@
 
 
 	<p>
-		We invite you to have a look at our jump start video below that shows you the steps to set up AQ2o in your Eclipse IDE, assuming you have the <a href="uberjar.html">AQ Master Server</a>, SVN and Maven up and running.  
+		We invite you to have a look at our jump start video below that shows you the steps to set up AQ2o 2.1 (2.2-TRUNK is slightly different; currently under development)in your Eclipse IDE, assuming you have the <a href="uberjar.html">AQ Master Server</a>, SVN and Maven up and running.  
 		</p>
 	<p>
 		<iframe width="640" height="360" src="http://www.youtube.com/embed/v4UH0-f_pzc" frameborder="0"></iframe>
