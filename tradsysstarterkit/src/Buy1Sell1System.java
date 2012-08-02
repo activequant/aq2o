@@ -64,6 +64,9 @@ public class Buy1Sell1System implements ITradingSystem {
 		}
 	}
 
+	/**
+	 * example method how to close a position. 
+	 */
 	private void closePosition(){
 		console.addLog("----------- Closing position");
 		MarketOrder mo = new MarketOrder(); 
