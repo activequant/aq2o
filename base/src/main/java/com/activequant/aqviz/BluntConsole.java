@@ -8,6 +8,8 @@ import javax.swing.JTextPane;
 
 /**
  * extremely blunt and simple console frame. 
+ * Can be used to instantiate a simple window, 
+ * in which to display logging and other information. 
  * 
  * @author GhostRider
  *
