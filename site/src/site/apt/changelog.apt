@@ -13,6 +13,8 @@ ChangeLog
 	* ParallelizedBacktester: runs a backtest on several cores, splitting it through a ITimeRangeSplitter
 
 	* TimeSetup for backtestss
+	
+	* BluntConsole window for trading systems and other tools. Simple window that offers an easy way to show things. 
 
 
 * 2.1 (5 July 2012)
