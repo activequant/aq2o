@@ -1,7 +1,6 @@
 package com.activequant.aqviz.noviz;
 
-import com.activequant.interfaces.aqviz.IQuoteTableViz;
-import com.activequant.interfaces.trading.IExchange;
+import com.activequant.interfaces.aqviz.IAccountTableViz;
 import com.activequant.trading.datamodel.AQTableDataBase;
 /**
  * intentionally left blank, naked and shaved. 
@@ -9,9 +8,9 @@ import com.activequant.trading.datamodel.AQTableDataBase;
  * @author GhostRider
  *
  */
-public class AccountTableViz extends VisualTable implements IQuoteTableViz  {
+public class AccountTableViz extends VisualTable implements IAccountTableViz  {
 
-	public AccountTableViz(String stub, AQTableDataBase tableBase, IExchange exchange ){
+	public AccountTableViz(String stub, AQTableDataBase tableBase){
 		super(stub, tableBase);
 	}
 	
