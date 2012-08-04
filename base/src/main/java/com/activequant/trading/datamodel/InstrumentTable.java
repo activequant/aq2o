@@ -92,6 +92,15 @@ public class InstrumentTable extends AQTableDataBase {
 		throw new RuntimeException("MDI ID not present in current system configuration. Cannot continue. ");
 	}
 	
+	public int getRowIndexOfByTradeId(String tdiId){
+		int pos = -1; 
+		for(Object[] row : data){
+			pos++; 
+			if(row[1].equals(tdiId))return pos; 
+		}
+		throw new RuntimeException("TDI ID not present in current system configuration. Cannot continue. ");
+	}
+
 	/**
 	 * rather use getRowIndexOf
 	 * @param instId

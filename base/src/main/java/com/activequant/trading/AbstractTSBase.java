@@ -541,7 +541,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	 * @param pe
 	 */
 	public void process(PNLChangeEvent pe) {
-		int row = getInstrumentTable().getRowIndexOf(pe.getTradInstId());
+		int row = getInstrumentTable().getRowIndexOfByTradeId(pe.getTradInstId());
 		getPositionTable().setValueAt(pe.getTotalPnl(), row,
 				PositionTable.Columns.PNLATLIQUIDATION.colIdx());
 		getPositionTable().signalUpdate();
