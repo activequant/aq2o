@@ -1,6 +1,9 @@
 TT
 
-	TT/Trading Technologies is a superior commercial trading platform that offers low-cost colocations and very good user interfaces. 
+	TT/Trading Technologies is a superior commercial trading platform that offers low-cost colocations and very good user interfaces and FIX interfaces.  
+	
+	Use our TT connector connect straight to their FIX service. All you need is a broker that supports TT, such as {{{http://www.macquarie.com}Macquarie Futures}}. Then contact TT to enable your FIX gateway and talk with us you get you up and running.   
+	
 	With our TT connector, you can keep your AQ database in sync with reference data from TT, you can receive live market data, but also 
 	trade automatically. 
 	
