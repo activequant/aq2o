@@ -92,6 +92,12 @@ public class CsvArchiveReaderFormat1 implements IArchiveReader {
 
 		final TSContainer t = getTimeSeries(streamId, key, startTimeStamp, stopTimeStamp);
 		
+		TimeSeriesIterator tsi = getIterator(t);
+		
+		return tsi; 
+	}
+
+	private TimeSeriesIterator getIterator(final TSContainer t) {
 		TimeSeriesIterator tsi = new TimeSeriesIterator() {
 			int index = 0; 
 			@Override
@@ -109,8 +115,7 @@ public class CsvArchiveReaderFormat1 implements IArchiveReader {
 				return false; 
 			}
 		};
-		
-		return tsi; 
+		return tsi;
 	}
 
 	@Override

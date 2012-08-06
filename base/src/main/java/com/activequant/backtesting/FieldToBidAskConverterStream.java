@@ -54,8 +54,14 @@ public class FieldToBidAskConverterStream extends StreamEventIterator<MarketData
     public MarketDataEvent next() {
         Tuple<TimeStamp, Double> valueMap = streamIterator.next();
         
-        // take the value and create a synthetic bid and ask out of  it. 
-        
+ 
+        // fixing ... 
+        bid = new double[1];
+        ask = new double[1];
+        bidQ = new double[1];
+        askQ = new double[1];    
+
+        // take the value and create a synthetic bid and ask out of  it.
         ask[0] = valueMap.getB()+this.getAskOffset();
         bid[0] = valueMap.getB()+this.getBidOffset();
         askQ[0] = this.getAskQuantity();
