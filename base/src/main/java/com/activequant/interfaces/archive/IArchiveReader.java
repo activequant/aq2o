@@ -5,6 +5,11 @@ import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeStamp;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public interface IArchiveReader {
 
     public TSContainer getTimeSeries(String streamId, String key, TimeStamp startTimeStamp) throws Exception;

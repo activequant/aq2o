@@ -52,6 +52,8 @@ public class FastStreamer {
 				fastQueue.add(fs);
 			}
 		}
+		// sort all events once. 
+		Collections.sort(fastQueue);
 	}
 
 	/**

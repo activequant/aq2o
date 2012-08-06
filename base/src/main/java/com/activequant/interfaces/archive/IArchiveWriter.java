@@ -5,6 +5,14 @@ import java.io.IOException;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 
+/**
+ * 
+ * This interface collects archive writer related functionality. 
+ * 
+ * 
+ * @author GhostRider
+ *
+ */
 public interface IArchiveWriter {
 
     /**
@@ -14,6 +22,7 @@ public interface IArchiveWriter {
      */
     public abstract void commit() throws IOException;
 
+    
     public abstract void write(String instrumentId, TimeStamp timeStamp, Tuple<String, Double>... value)
             throws IOException;
 
@@ -25,6 +34,12 @@ public interface IArchiveWriter {
     
     public abstract void delete(String seriesKey, String valueKey, TimeStamp from, TimeStamp to) throws IOException;
     
+    /**
+     * deletes all data for this writer and this serieskey. 
+     * 
+     * @param seriesKey
+     * @throws IOException
+     */
     public abstract void delete(String seriesKey) throws IOException;
     
     public abstract void delete(String seriesKey, TimeStamp from, TimeStamp to) throws IOException;
