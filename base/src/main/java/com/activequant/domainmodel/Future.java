@@ -1,5 +1,6 @@
 package com.activequant.domainmodel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -49,6 +50,19 @@ public class Future extends Derivative {
         return firstTradingDate;
     }
 
+    /**
+     * expensive function.
+     * @return
+     */
+    public TimeStamp getFirstTradingDateAsTS(){
+    	SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
+    	try {
+			return new TimeStamp(date8.parse(""+getFirstTradingDate()));
+		} catch (ParseException e) {
+			return null; 
+		}
+    }
+
     public String getId() {
         return "FUT." + nullSafe(getExchangeCode()) + "." + nullSafe(getShortName()) + "." + nullSafe(expiry);
     }
@@ -56,6 +70,19 @@ public class Future extends Derivative {
     @Property
     public Long getLastTradingDate() {
         return lastTradingDate;
+    }
+
+    /**
+     * expensive function.
+     * @return
+     */
+    public TimeStamp getLastTradingDateAsTS(){
+    	SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
+    	try {
+			return new TimeStamp(date8.parse(""+getLastTradingDate()));
+		} catch (ParseException e) {
+			return null; 
+		}
     }
 
     @Property
@@ -68,9 +95,36 @@ public class Future extends Derivative {
         return rollDate;
     }
 
+    /**
+     * expensive function.
+     * @return
+     */
+    public TimeStamp getRollDateAsTS(){
+    	SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
+    	try {
+			return new TimeStamp(date8.parse(""+getRollDate()));
+		} catch (ParseException e) {
+			return null; 
+		}
+    }
+
     @Property
     public Long getSettlementDate() {
         return settlementDate;
+    }
+    
+
+    /**
+     * expensive function.
+     * @return
+     */
+    public TimeStamp getSettlementDateAsTS(){
+    	SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
+    	try {
+			return new TimeStamp(date8.parse(""+getSettlementDate()));
+		} catch (ParseException e) {
+			return null; 
+		}
     }
 
     @Property
@@ -126,6 +180,19 @@ public class Future extends Derivative {
 		return firstNotice;
 	}
 
+    /**
+     * expensive function.
+     * @return
+     */
+    public TimeStamp getFirstNoticeAsTS(){
+    	SimpleDateFormat date8 = new SimpleDateFormat("yyyyMMdd");
+    	try {
+			return new TimeStamp(date8.parse(""+getFirstNotice()));
+		} catch (ParseException e) {
+			return null; 
+		}
+    }
+    
 	public void setFirstNotice(Long firstNotice) {
 		this.firstNotice = firstNotice;
 	}
