@@ -57,6 +57,7 @@
 			<item name="CTS T4" href="cts.html" />
 		</menu>
 		<menu name="Usage scenarios">
+			<item name="ActiveQuant and Amazon EC2" href="ec2.html"/>
 			<item name="Using AQ with QlikView" href="integration/qlikview.html"/>
 			<item name="Importing timeseries data" href="importingdata.html" />
 			<item name="Importing reference data" href="importingrefdata.html" />
