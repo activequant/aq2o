@@ -22,12 +22,31 @@ public interface IEntityDao<T extends PersistentEntity> {
 
     public void update(T t) throws DaoException;
 
+    /**
+     * find IDs where value = key; 
+     * @param key
+     * @param sValue
+     * @return
+     */
     public String[] findIDs(String key, String sValue);
 
+    /**
+     * find IDs where value = key; 
+     * @param key
+     * @param sValue
+     * @return
+     */
     public String[] findIDs(String key, Double dValue);
-
+    
+    /**
+     * find IDs where value = key; 
+     * @param key
+     * @param sValue
+     * @return
+     */
     public String[] findIDs(String key, Long lValue);
 
+    
     public String[] findIDs(int startIndex, int endIndex);
 
     int count();

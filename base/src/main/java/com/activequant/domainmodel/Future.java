@@ -143,14 +143,26 @@ public class Future extends Derivative {
         return (expiry < currentDate);
     }
 
+    /**
+     * Should be in date8 format. 
+     * @param expiry
+     */
     public void setExpiry(Long expiry) {
         this.expiry = expiry;
     }
 
+    /**
+     * Should be in date8 format. 
+     * @param firstTradingDate
+     */
     public void setFirstTradingDate(Long firstTradingDate) {
         this.firstTradingDate = firstTradingDate;
     }
 
+    /**
+     * Should be in date8 format. 
+     * @param lastTradingDate
+     */
     public void setLastTradingDate(Long lastTradingDate) {
         this.lastTradingDate = lastTradingDate;
     }
@@ -159,10 +171,18 @@ public class Future extends Derivative {
         this.lotSize = lotSize;
     }
 
+    /**
+     * Should be in date8 format. 
+     * @param rollDate
+     */
     public void setRollDate(Long rollDate) {
         this.rollDate = rollDate;
     }
 
+    /**
+     * Should be in date8 format. 
+     * @param settlementDate
+     */
     public void setSettlementDate(Long settlementDate) {
         this.settlementDate = settlementDate;
     }
