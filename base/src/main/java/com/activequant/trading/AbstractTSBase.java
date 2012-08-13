@@ -296,7 +296,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			orderViz = hrf.getOrderTableViz("Working orders", getOrderTable(),
 					env.getExchange());
 			posViz = hrf.getVisualTableViz("Positions", getPositionTable());
-			auditViz = hrf.getVisualTableViz("Audit", getAuditLogTable());
+			auditViz = hrf.getAuditTableViz("Audit", getAuditLogTable());
 			accountViz = hrf.getAccountTableViz("Account information",
 					getAccountTable());
 		}
