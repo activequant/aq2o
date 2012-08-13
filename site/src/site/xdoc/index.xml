@@ -13,11 +13,11 @@
 
     <!-- The body of the document contains a number of sections -->
     <section name="Welcome">
-    <div align="right" style="display: block; float: right;">
+<!--    <div align="right" style="display: block; float: right;">
 				<iframe width="250" height="400" frameborder="0" scrolling="no"
 					marginheight="0" marginwidth="0" allowtransparency="true"
 					src="http://activequant.org/html/test.html"></iframe>							
-			</div>
+			</div> -->
     <p><strong>SVN TRUNK CONTAINS 2.2-SNAPSHOT (18 JULY 2012). This is bleeding edge, but almost stable at the moment.</strong></p>
     <p><i>Others write "thought leadership" on their flag. We just lead.</i></p>
    	<p>You have reached the landing site of the ActiveQuant securities trading framework. <i><strong>University?</strong> We would be happy to support you and your students on your voyage into quantitative finance! What about a guest lecture?</i> </p>
