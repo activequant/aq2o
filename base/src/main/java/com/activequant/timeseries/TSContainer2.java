@@ -34,6 +34,10 @@ public class TSContainer2 {
 
 	private int windowSize = 0;
 
+	public TSContainer2(final String seriesId){
+		this.seriesId = seriesId; 
+	}
+	
 	public TSContainer2(final String seriesId, List<String> columnHeaders, List<TypedColumn> columns) {
 		this(seriesId, columnHeaders, columns, 0L);
 	}

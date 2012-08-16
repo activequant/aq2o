@@ -10,6 +10,7 @@ import com.activequant.interfaces.aqviz.IAccountTableViz;
 import com.activequant.interfaces.aqviz.IAuditTableViz;
 import com.activequant.interfaces.aqviz.IInstrumentTableViz;
 import com.activequant.interfaces.aqviz.IOrderTableViz;
+import com.activequant.interfaces.aqviz.IPositionTableViz;
 import com.activequant.interfaces.aqviz.IQuoteTableViz;
 import com.activequant.interfaces.aqviz.IVisualTable;
 import com.activequant.interfaces.trading.IExchange;
@@ -135,6 +136,23 @@ public class HardcoreReflectionsFactory {
 				"Could not instantiate instrument table. This installation is totally screwed up.");
 
 	}
+	
+	public IPositionTableViz getPositionTableViz(String s, AQTableDataBase aqt)
+			throws SecurityException, NoSuchMethodException,
+			IllegalArgumentException, InstantiationException,
+			IllegalAccessException, InvocationTargetException {
+		for (Class c : subTypes) {
+			if (c.getSimpleName().equals("PositionTableViz")) {
+				Constructor constr = c.getConstructor(String.class,
+						AQTableDataBase.class);
+				return (IPositionTableViz) constr.newInstance(s, aqt);
+			}
+		}
+		throw new RuntimeException(
+				"Could not instantiate instrument table. This installation is totally screwed up.");
+
+	}
+	
 
 	public static void main(String[] args) throws SecurityException,
 			IllegalArgumentException, NoSuchMethodException,

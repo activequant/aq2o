@@ -9,45 +9,46 @@ import java.util.List;
 
 import com.activequant.domainmodel.TimeStamp;
 
-/** 
+/**
  * compatible to AQ CSVExpoter.
- *  
+ * 
  * @author GhostRider
- *
+ * 
  */
 public class CSVImporter {
 
-	
+	public TSContainer2 importFile(InputStream inStream) throws IOException {
 
-	
-	public TSContainer2 importFile(InputStream inStream) throws IOException{
-		
 		BufferedReader br = new BufferedReader(new InputStreamReader(inStream));
-		String headerLine = br.readLine(); 
+		String headerLine = br.readLine();
 		String columnNames[] = headerLine.split(",");
 		List<String> header = new ArrayList<String>();
 		List<TypedColumn> cols = new ArrayList<TypedColumn>();
-		for(int i=2;i<columnNames.length;i++){
+		for (int i = 2; i < columnNames.length; i++) {
 			header.add(columnNames[i]);
 			cols.add(new DoubleColumn());
 		}
 		// ...
 		TSContainer2 ret = new TSContainer2("IMPORTED", header, cols);
-		
+
 		String l = br.readLine();
-		while(l!=null){
+		while (l != null) {
 			String[] s = l.split(",");
 			TimeStamp ts = new TimeStamp(Long.parseLong(s[0]));
-			for(int i=2;i<columnNames.length;i++){
-				Double val = Double.parseDouble(s[i]);
-				ret.setValue(columnNames[i], ts, val);
+			for (int i = 2; i < columnNames.length; i++) {
+				if (s.length > i) {
+					if (!s[i].isEmpty()) {
+						Double val = Double.parseDouble(s[i]);
+						ret.setValue(columnNames[i], ts, val);
+					}
+				}
 			}
-			
-			l = br.readLine(); 
+
+			l = br.readLine();
 		}
-		
-		// 
-		return ret; 
-		
+
+		//
+		return ret;
+
 	}
 }
