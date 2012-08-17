@@ -137,15 +137,15 @@ public class HardcoreReflectionsFactory {
 
 	}
 	
-	public IPositionTableViz getPositionTableViz(String s, AQTableDataBase aqt)
+	public IPositionTableViz getPositionTableViz(String s, AQTableDataBase aqt, IExchange exchange)
 			throws SecurityException, NoSuchMethodException,
 			IllegalArgumentException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
 		for (Class c : subTypes) {
 			if (c.getSimpleName().equals("PositionTableViz")) {
 				Constructor constr = c.getConstructor(String.class,
-						AQTableDataBase.class);
-				return (IPositionTableViz) constr.newInstance(s, aqt);
+						AQTableDataBase.class, IExchange.class);
+				return (IPositionTableViz) constr.newInstance(s, aqt, exchange);
 			}
 		}
 		throw new RuntimeException(

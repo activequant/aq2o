@@ -14,14 +14,23 @@ import com.activequant.utils.events.Event;
  * Event based, stream reader, will read CSV lines from a stream and will then
  * fire an event to an event listener.
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
 public class CsvMapReader {
 
     private String[] headerNames = null;
+    private String delimiter = ",";
 
-    /**
+    public String getDelimiter() {
+		return delimiter;
+	}
+
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+	}
+
+	/**
      * use for files without header. if set, read in header will be ignored.
      */
     public void setHeader(String[] header) {
@@ -56,7 +65,7 @@ public class CsvMapReader {
                 line = line.replaceAll("\"", "");
                 line = line.replaceAll("'", "");
                 line = line.trim();
-                String[] content = line.split(",");
+                String[] content = line.split(delimiter);
                 Map<String, String> map = new HashMap<String, String>();
                 for (int i = 0; i < content.length; i++) {
                     String trimmedH = headerNames[i].trim().toUpperCase();
