@@ -152,6 +152,13 @@ public class ArrayUtils {
 		}
 		return ret; 
 	}
+
+	public static List<Double> toDoubleList(double[] in){
+		List<Double> ret = new ArrayList<Double>();
+		for(double d : in)
+			ret.add(d);
+		return ret;
+	}
 	
 	public static double[] toPrimArray(List<Double> in){
 		double[] ret = new double[in.size()];
