@@ -14,7 +14,13 @@ ChangeLog
 
 	* TimeSetup for backtestss
 	
-	* BluntConsole window for trading systems and other tools. Simple window that offers an easy way to show things. 
+	* BluntConsole window for trading systems and other tools. Simple window that offers an easy way to show things.
+	
+	* CSVImporter for TSContainer2 objects 
+	
+** Improvements
+
+	* delimiter in csv map reader readable	
 
 
 * 2.1 (5 July 2012)
