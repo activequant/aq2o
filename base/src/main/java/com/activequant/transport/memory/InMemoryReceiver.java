@@ -26,4 +26,10 @@ public class InMemoryReceiver implements IReceiver {
 	public IEventSource<PersistentEntity> getMsgRecEvent() {
 		return event;
 	}
+
+	public IEventSource<byte[]> getRawEvent(){
+		throw new RuntimeException("Not implemented.");
+	}
+
 }
+

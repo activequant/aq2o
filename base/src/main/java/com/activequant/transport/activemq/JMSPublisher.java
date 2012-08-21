@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.jms.BytesMessage;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -90,6 +91,14 @@ class JMSPublisher implements IPublisher {
 	@Override
 	public void send(PersistentEntity entity) throws Exception {
 		send(entity.propertyMap());
+	}
+
+	public void send(byte[] bytes) throws Exception {
+
+		BytesMessage bm = session.createBytesMessage();
+		bm.writeBytes(bytes);
+                bm.setStringProperty("channelId", channelId);
+		producer.send(bm);
 	}
 
 }

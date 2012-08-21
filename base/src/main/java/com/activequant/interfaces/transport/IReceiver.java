@@ -14,4 +14,5 @@ public interface IReceiver {
      */
 	IEventSource<Map<String, Object>> getRawMsgRecEvent();
 	IEventSource<PersistentEntity> getMsgRecEvent();
+	IEventSource<byte[]> getRawEvent();
 }

@@ -9,6 +9,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import javax.jms.BytesMessage;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -31,6 +32,7 @@ class JMSReceiver implements IReceiver, MessageListener {
 
 	private Logger log = Logger.getLogger(JMSReceiver.class.getName());
 	private Event<Map<String, Object>> rawMsgRecEvent = new Event<Map<String, Object>>();
+	private Event<byte[]> rawEvent = new Event<byte[]>();
 	private Event<PersistentEntity> msgRecEvent = new Event<PersistentEntity>();
 
 	/**
@@ -38,6 +40,10 @@ class JMSReceiver implements IReceiver, MessageListener {
 	 * the converter.
 	 */
 	private MapToString mapToString = new MapToString();
+
+	public IEventSource<byte[]> getRawEvent() {
+		return rawEvent;
+	}
 
 	public IEventSource<Map<String, Object>> getRawMsgRecEvent() {
 		return rawMsgRecEvent;
@@ -50,13 +56,31 @@ class JMSReceiver implements IReceiver, MessageListener {
 	@SuppressWarnings("unchecked")
 	public void onMessage(Message message) {
 	
+	if(message instanceof BytesMessage){
+	  BytesMessage m = (BytesMessage) message;
+            try {
+                long bytesLength= m.getBodyLength();
+                byte[] bytes = new byte[(int)bytesLength];
+                m.readBytes(bytes);
+		rawEvent.fire(bytes);
+		}
+		catch(Exception ex){
+                log.warn("Error while receiving message", ex);
 
-        if (message instanceof TextMessage) {
+		}	
+	}
+        else if (message instanceof TextMessage) {
             TextMessage textMessage = (TextMessage) message;
             try {
-                String text = textMessage.getText();
+               String text = textMessage.getText();
                 // convert to hashmap.
+			
                 
+
+		// performance improvement. 
+		if(msgRecEvent.isEmpty() && rawMsgRecEvent.isEmpty())
+			return;
+
                 
                 
                 Object obj = parser.parse(text);
