@@ -20,7 +20,9 @@ ChangeLog
 	
 ** Improvements
 
-	* delimiter in csv map reader readable	
+	* delimiter in csv map reader settable	
+	
+	* TSContainerViewer helper added - more details here: {{{http://developers.activequant.org/news/11}AQ News Blog}}
 
 
 * 2.1 (5 July 2012)
