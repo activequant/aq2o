@@ -33,6 +33,13 @@
 			<item name="Live trading" href="livetrading.html" />		
 		</menu>
 
+		<menu name="Documentation/Support">
+			<item name="JavaDocs" href="apidocs/index.html"/>
+			<item name="Changelog" href="changelog.html"/>
+			<item name="Forum, IRC, etc." href="getting_in_touch.html"/>
+		</menu>
+		
+		
 		<menu name="Example code">
 			<item name="Getting a taste ..." href="examples/atasteofactivequant.html"/>
 			<item name="Simple Quote Recorder" href="examples/simple_recorder.html"/>
@@ -40,11 +47,7 @@
 			<item name="R and ActiveQuant" href="examples/r_bridge.html"/>
 		</menu>
 		
-		<menu name="Documentation/Support">
-			<item name="JavaDocs" href="apidocs/index.html"/>
-			<item name="Changelog" href="changelog.html"/>
-			<item name="Forum, IRC, etc." href="getting_in_touch.html"/>
-		</menu>
+		
 	
 		<menu name="Downloads">
 			<!--   item name="QEmu Appliance" href="qemuapp.html" / -->
