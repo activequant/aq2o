@@ -25,6 +25,10 @@ ChangeLog
 	* TSContainerViewer helper added - more details here: {{{http://developers.activequant.org/news/11}AQ News Blog}}
 
 
+** Bug fixes
+
+	* #114
+
 * 2.1 (5 July 2012)
 
 ** New trading systems
