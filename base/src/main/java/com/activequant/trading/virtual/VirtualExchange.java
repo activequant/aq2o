@@ -129,7 +129,6 @@ public class VirtualExchange implements IExchange {
 			getOrderBook(order.getTradInstId()).addOrder(order);
 			
 			// send out the submit event
-
 			OrderEvent oe = new OrderSubmittedEvent();
 			oe.setTimeStamp(currentExchangeTime);
 			oe.setRefOrderId(order.getOrderId());
@@ -139,7 +138,6 @@ public class VirtualExchange implements IExchange {
 			sendOrderEvent(order.getTradInstId(), oe);
 
 			// ... and the accepted event
-
 			oe = new OrderAcceptedEvent();
 			oe.setTimeStamp(currentExchangeTime);
 			oe.setRefOrderId(order.getOrderId());
@@ -147,7 +145,6 @@ public class VirtualExchange implements IExchange {
 			oe.setOptionalInstId(order.getTradInstId());
 			getEvent().fire(oe);
 			sendOrderEvent(order.getTradInstId(), oe);
-
 			getOrderBook(order.getTradInstId()).match();
 			
 		}
@@ -265,7 +262,7 @@ public class VirtualExchange implements IExchange {
 	}
 	
 	
-	private void updatePortfolio(String tdiId, Double price, Double lastFill, int side) {
+	public void updatePortfolio(String tdiId, Double price, Double lastFill, int side) {
 		// update the position.
 		//
 		double currentPosition = clientPortfolio.getPosition(tdiId);
@@ -276,11 +273,9 @@ public class VirtualExchange implements IExchange {
 		double newOpenPrice = price; 
 		/// ((currentPosition * openPrice) + (lastFill * side * price));
 		
-		if(Math.signum(newPosition)==Math.signum(currentPosition)){
-			newOpenPrice = ((currentPosition * openPrice) + (lastFill * price)) / newPosition;
+		if(Math.abs(newPosition)>Math.abs(currentPosition) && newPosition!=0.0){
+			newOpenPrice = ((Math.abs(currentPosition) * openPrice) + (lastFill * price)) / Math.abs(newPosition);
 		}
-		
-		
 		
 		//
 		if (newPosition == 0.0)
