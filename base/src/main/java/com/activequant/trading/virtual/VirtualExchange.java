@@ -264,12 +264,12 @@ public class VirtualExchange implements IExchange {
 	
 	public void updatePortfolio(String tdiId, Double price, Double lastFill, int side) {
 		// update the position.
-		//
 		double currentPosition = clientPortfolio.getPosition(tdiId);
 		log.info("Current position " + currentPosition);
 		double openPrice = clientPortfolio.getOpenPrice(tdiId);
 		double newPosition = currentPosition + side * lastFill;
 		
+		// 
 		double newOpenPrice = price; 
 		/// ((currentPosition * openPrice) + (lastFill * side * price));
 		
