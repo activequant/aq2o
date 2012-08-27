@@ -105,4 +105,57 @@ public class VirtualExchangeTest extends TestCase {
         // run the matcher.
 
     }
+    
+    public void testPositionKeeping(){
+
+    	// 
+    	VirtualExchange ve = new VirtualExchange(new InMemoryTransportFactory());
+    	ve.updatePortfolio("A", 100.0, 100.0, OrderSide.BUY.getSide());
+    	assertEquals(100.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(100.0, ve.getClientPortfolio().getOpenPrice("A"));    	
+    	
+    	ve.updatePortfolio("A", 100.0, 100.0, OrderSide.SELL.getSide());
+    	assertEquals(0.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(0.0, ve.getClientPortfolio().getOpenPrice("A"));    	
+    	
+    	ve.updatePortfolio("A", 100.0, 100.0, OrderSide.BUY.getSide());
+    	assertEquals(100.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(100.0, ve.getClientPortfolio().getOpenPrice("A"));    	
+    	
+    	ve.updatePortfolio("A", 100.0, 100.0, OrderSide.BUY.getSide());
+    	assertEquals(200.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(100.0, ve.getClientPortfolio().getOpenPrice("A"));    	
+    	
+    	ve.updatePortfolio("A", 200.0, 200.0, OrderSide.BUY.getSide());
+    	assertEquals(400.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(150.0, ve.getClientPortfolio().getOpenPrice("A"));    	
+    	
+    	// now we have 400 at an every price of 150. let's sell 200 at 100. 
+    	// we should have 200 at an average price of 150. 
+    	ve.updatePortfolio("A", 150.0, 200.0, OrderSide.SELL.getSide());
+    	assertEquals(200.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(150.0, ve.getClientPortfolio().getOpenPrice("A"));    
+    	
+    	// now let's cross the side. 
+    	// now we have 400 at an every price of 150. let's sell 200 at 100. 
+    	// we should have 200 at an average price of 150. 
+    	ve.updatePortfolio("A", 100.0, 400.0, OrderSide.SELL.getSide());
+    	assertEquals(-200.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(100.0, ve.getClientPortfolio().getOpenPrice("A"));    
+    	
+    	ve.updatePortfolio("A", 100.0, 200.0, OrderSide.SELL.getSide());
+    	assertEquals(-400.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(100.0, ve.getClientPortfolio().getOpenPrice("A"));    
+    	
+
+    	ve.updatePortfolio("A", 200.0, 400.0, OrderSide.SELL.getSide());
+    	assertEquals(-800.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(150.0, ve.getClientPortfolio().getOpenPrice("A"));    
+    	
+    	ve.updatePortfolio("A", 100.0, 800.0, OrderSide.BUY.getSide());
+    	assertEquals(0.0, ve.getClientPortfolio().getPosition("A"));
+    	assertEquals(0.0, ve.getClientPortfolio().getOpenPrice("A"));    
+    	
+    }
+    
 }
