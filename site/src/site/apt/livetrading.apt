@@ -52,3 +52,14 @@ Live trading
 	{{{http://developers.activequant.org/projects/aq2o/repository/entry/trunk/base/src/main/java/com/activequant/trading/systems/sma/SimpleMovingAverage.java}Simple moving average implementation}}
 
 
+Key structures 
+	
+	Certain key structures are used throughout ActiveQuant. A noncomplete list is: 
+	
+	* IOrderTracker - an order tracker is your entry to submitting, cancelling or updating orders. You can get an order tracker from an exchange object's prepareOrder method. 
+	
+	* Order - different types exist
+	
+	* Portfolio - the portfolio class is a basic position keeping class. It is very convenient to store and maintain a view on present positions. 
+
+	
