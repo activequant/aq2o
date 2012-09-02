@@ -215,6 +215,25 @@
 	</bean>
 	
 
+
+	<bean id="genMapper12" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="orderEventDao" class="com.activequant.dao.mybatis.OrderEventDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper12"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+
 	<bean id="ibatisDao" class="com.activequant.dao.mybatis.DaoFactory"
 		lazy-init="true">
 		<constructor-arg index="0">
@@ -252,6 +271,9 @@
 		</constructor-arg>
 		<constructor-arg index="11">
 			<ref bean="reportDao" />
+		</constructor-arg>
+		<constructor-arg index="12">
+			<ref bean="orderEventDao" />
 		</constructor-arg>
 	</bean>
 

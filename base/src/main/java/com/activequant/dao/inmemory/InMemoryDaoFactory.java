@@ -6,6 +6,7 @@ import com.activequant.interfaces.dao.ICountryDao;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
+import com.activequant.interfaces.dao.IOrderEventDao;
 import com.activequant.interfaces.dao.IPerformanceReportDao;
 import com.activequant.interfaces.dao.IPortfolioDao;
 import com.activequant.interfaces.dao.IPositionDao;
@@ -80,6 +81,12 @@ public class InMemoryDaoFactory implements IDaoFactory {
 
 	@Override
 	public IReportDao reportDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IOrderEventDao orderEventDao() {
 		// TODO Auto-generated method stub
 		return null;
 	}

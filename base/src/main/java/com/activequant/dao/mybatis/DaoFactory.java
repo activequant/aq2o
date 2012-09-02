@@ -5,6 +5,7 @@ import com.activequant.interfaces.dao.ICountryDao;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
+import com.activequant.interfaces.dao.IOrderEventDao;
 import com.activequant.interfaces.dao.IPerformanceReportDao;
 import com.activequant.interfaces.dao.IPortfolioDao;
 import com.activequant.interfaces.dao.IPositionDao;
@@ -34,11 +35,12 @@ public class DaoFactory implements IDaoFactory {
     private IAdjustedSeriesDateEntryDao adjSDao;
     private IPerformanceReportDao perfReportDao;
     private IReportDao reportDao; 
+    private IOrderEventDao orderEventDao;
 
     public DaoFactory(ICountryDao countryDao, IRegionDao regionDao, IInstrumentDao instrDao, IVenueDao venueDao,
             ITradeableInstrumentDao tradInstDao, IMarketDataInstrumentDao mdiDao, IPositionDao positionDao,
             IPortfolioDao portfolioDao, ISecurityChainDao securityChainDao, IAdjustedSeriesDateEntryDao aD, 
-            IPerformanceReportDao perfReportDao, IReportDao reportDao) {
+            IPerformanceReportDao perfReportDao, IReportDao reportDao, IOrderEventDao orderEventDao) {
         this.countryDao = countryDao;
         this.regionDao = regionDao;
         this.instrumentDao = instrDao;
@@ -51,6 +53,7 @@ public class DaoFactory implements IDaoFactory {
         this.adjSDao = aD;
         this.perfReportDao = perfReportDao;
         this.reportDao = reportDao; 
+        this.orderEventDao = orderEventDao; 
     }
 
     public ICountryDao countryDao() {
@@ -102,6 +105,11 @@ public class DaoFactory implements IDaoFactory {
 	@Override
 	public IReportDao reportDao() {
 		return reportDao;
+	}
+
+	@Override
+	public IOrderEventDao orderEventDao() {
+		return orderEventDao;
 	}
     
 }

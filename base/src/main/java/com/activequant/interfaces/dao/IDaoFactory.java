@@ -24,4 +24,7 @@ public interface IDaoFactory {
     IPerformanceReportDao perfDao();
     
     IReportDao reportDao();
+
+    IOrderEventDao orderEventDao();
+
 }
