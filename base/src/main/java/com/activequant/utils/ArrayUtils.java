@@ -171,7 +171,8 @@ public class ArrayUtils {
 	public static double[] unbox(Double[] in){
 		double[] ret = new double[in.length];
 		for(int j = 0; j<in.length;j++){
-			ret[j] = in[j];
+			if(in[j]!=null)
+				ret[j] = in[j];
 		}
 		return ret; 
 	}
