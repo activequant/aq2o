@@ -85,8 +85,6 @@ public class MessageFactory {
 	public BaseMessage orderMktOrder(String orderId, String tdiId,
 			Double quantity, OrderSide side) {
 		int s = side.getSide();
-		if (s < 0)
-			s = 2;
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
 				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
 				.setSide(s).setOrdType(1).build();
@@ -94,11 +92,11 @@ public class MessageFactory {
 				n);
 	}
 
+	
 	public BaseMessage orderLimitOrder(String orderId, String tdiId,
 			Double quantity, Double limitPrice, OrderSide side) {
 		int s = side.getSide();
-		if (s < 0)
-			s = 2;
+	
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
 				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
 				.setSide(s).setPrice(limitPrice).setOrdType(2).build();
@@ -109,8 +107,7 @@ public class MessageFactory {
 	public BaseMessage orderStopOrder(String orderId, String tdiId,
 			Double quantity, Double limitPrice, OrderSide side) {
 		int s = side.getSide();
-		if (s < 0)
-			s = 2;
+
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
 				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
 				.setSide(s).setOrdType(3).setPrice(limitPrice).build();

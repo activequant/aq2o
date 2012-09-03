@@ -11,11 +11,14 @@ public abstract class OrderEvent extends StreamEvent {
 		super(className);
 	}
 
+	// 
 	private String refOrderId;
+	// 
 	private String optionalInstId;
 	//
 	private Order refOrder;
 
+	// 
 	@Override
 	public ETransportType getEventType() {
 		return ETransportType.TRAD_DATA;
