@@ -19,6 +19,8 @@ ChangeLog
 	* CSVImporter for TSContainer2 objects 
 	
 	* Added a start for a TradingBus data recorder
+	
+	* transport factory based order tracker and venue, based on the newly added protocol buffers. It listens and works with an INBOUND and OUTBOUND message bus (see code). 
 
 	
 ** Improvements
