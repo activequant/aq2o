@@ -1,0 +1,160 @@
+package com.activequant.messages;
+
+option java_package = "com.activequant.messages";
+option java_outer_classname = "AQMessages";
+
+message BaseMessage {
+        extensions 100 to max;
+ 		enum CommandType {
+                VERSION = 1;
+                LOGIN   = 2;                
+                SERVER_TIME = 3;
+                LOGIN_RESPONSE = 4;  
+                MDS = 5; 
+                ACCT_DATA = 6;
+                POSITION_REPORT=7;  
+                EXECUTION_REPORT = 8; 
+                ORD_CNCL_REQ = 9; 
+                ORD_CNCL_REJ = 10; 
+                ORD_CNCL_REPL_REQ = 11; 
+                NEW_ORDER = 12; 
+        }
+        required CommandType type = 1;
+
+}
+
+message Login {
+    extend BaseMessage {
+    	required Login cmd = 100;
+    }
+	required string userId = 1; 
+	required string password = 2;
+	required string sessionType = 3;  
+}
+
+message ServerTime {
+    extend BaseMessage {
+    	required ServerTime cmd = 101;
+    }
+	required int64 timestamp = 1; 	 
+}
+
+message LoginResponse {
+    extend BaseMessage {
+    	required LoginResponse cmd = 102;
+    }
+	required string status = 1; 	 
+}
+
+message MarketDataSnapshot {
+   extend BaseMessage {
+    	required MarketDataSnapshot cmd = 103;
+    }
+	required int64 timestamp = 1;
+	repeated double bidPx = 2;
+	repeated double askPx = 3;
+	repeated double bidQ = 4;
+	repeated double askQ = 5;   
+	required string mdiId = 6; 
+}
+
+message AccountDataMessage {
+    extend BaseMessage {
+    	required AccountDataMessage cmd = 104;
+    }
+	required string type = 1;
+	required string value = 2;  	 
+}
+
+message PositionReport {
+    extend BaseMessage {
+    	required PositionReport cmd = 105;
+    }
+	required string openDate = 1;  
+	required double entryPrice = 2; 
+	required double quantity = 3; 
+	required string tdiId = 4; 	  	 
+}
+
+message ExecutionReport {
+    extend BaseMessage {
+    	required ExecutionReport cmd = 106;
+    }
+	required string clOrdId = 1;  
+	required string execId = 2; 
+	required int32 side = 3;
+	required string currency = 4;	
+	required double orderQty = 5;
+	required double price = 6;
+	required string symbol = 7;
+	required string transactTime = 8;
+	required string orderId = 9;
+	required int32 execType = 10;
+	required int32 ordStatus = 11;
+	required double cumQty = 12;
+	required double leavesQty = 13;
+	required double avgPx = 14;
+	required string ordType = 16;
+	optional string text = 17;
+	 optional string massStatusReqId = 18; 	 	  	
+}
+
+message OrderCancelRequest {
+    extend BaseMessage {
+    	required OrderCancelRequest cmd = 107;
+    }
+	required string orgCldOrdId = 1;  
+	required string clOrdId = 2; 
+	required string symbol = 3; 
+	required int32 side = 4; 
+	required double orderQty = 6;
+}
+
+
+message OrderCancelReject {
+    extend BaseMessage {
+    	required OrderCancelReject cmd = 108;
+    }
+	required string orderId = 1;  
+	required string clOrdId = 2; 
+	required string orgClOrdId = 3; 
+	required string ordStatus = 4;  
+	required string CxlRejResponseTo = 5;
+	optional string clxRejReason = 6;
+	optional string text = 7;
+}
+
+
+message OrderCancelReplaceRequest {
+    extend BaseMessage {
+    	required OrderCancelReplaceRequest cmd = 109;
+    }
+	required string symbol = 1;  
+	required string clOrdId = 2; 
+	required string orgClOrdId = 3;
+	required int32 side = 4; 
+	required string transactTime = 5; 
+	required double orderQty = 6; 	
+	required int32 ordType = 7;
+	required double price = 8;
+	required int32 timeInForce = 9;
+	
+}
+
+message NewOrder {
+    extend BaseMessage {
+    	required NewOrder cmd = 110;
+    }
+	required string symbol = 1;  
+	required string clOrdId = 2; 
+	optional string orgClOrdId = 3;
+	required int32 side = 4; 
+	optional string transactTime = 5; 
+	required double orderQty = 6; 	
+	required int32 ordType = 7;
+	optional double price = 8;
+	optional int32 timeInForce = 9;
+	
+}
+
+

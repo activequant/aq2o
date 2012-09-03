@@ -6,7 +6,7 @@ public class Spread extends Instrument {
 
 	private String instrument1, instrument2;
 	private Double quantity1, quantity2;
-	private String spreadType, exchange, currency;
+	private String spreadType, exchange, currency;	
 
 	public Spread() {
 		super(Spread.class.getCanonicalName());
