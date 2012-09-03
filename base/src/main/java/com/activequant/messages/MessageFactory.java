@@ -56,7 +56,7 @@ public class MessageFactory {
 			String symbol, OrderSide side, Double orderQty) {
 		int s = side.getSide()==OrderSide.BUY.getSide()?1:2;
 		AQMessages.OrderCancelRequest l = AQMessages.OrderCancelRequest.newBuilder()
-				.setClOrdId(requestId).setOrgCldOrdId(originalClientOrderId).setOrderQty(orderQty).setSymbol(symbol).setSide(s).
+				.setClOrdId(requestId).setOrgCldOrdId(originalClientOrderId).setOrderQty(orderQty).setTradInstId(symbol).setSide(s).
 				build();
 		return wrap(BaseMessage.CommandType.ORD_CNCL_REQ,
 				AQMessages.OrderCancelRequest.cmd, l);
@@ -65,7 +65,7 @@ public class MessageFactory {
 	public BaseMessage OrderCancelRejected(String mdiId, String entryDate,
 			Double entryPrice, Double quantity) {
 		AQMessages.PositionReport l = AQMessages.PositionReport.newBuilder()
-				.setTdiId(mdiId).setOpenDate(entryDate)
+				.setTradInstId(mdiId).setOpenDate(entryDate)
 				.setEntryPrice(entryPrice).setQuantity(quantity).build();
 		return wrap(BaseMessage.CommandType.POSITION_REPORT,
 				AQMessages.PositionReport.cmd, l);
@@ -74,20 +74,13 @@ public class MessageFactory {
 	public BaseMessage OrderCancelReplaceReq(String mdiId, String entryDate,
 			Double entryPrice, Double quantity) {
 		AQMessages.PositionReport l = AQMessages.PositionReport.newBuilder()
-				.setTdiId(mdiId).setOpenDate(entryDate)
+				.setTradInstId(mdiId).setOpenDate(entryDate)
 				.setEntryPrice(entryPrice).setQuantity(quantity).build();
 		return wrap(BaseMessage.CommandType.POSITION_REPORT,
 				AQMessages.PositionReport.cmd, l);
 	}
 
-	public BaseMessage NewOrder(String mdiId, String entryDate,
-			Double entryPrice, Double quantity) {
-		AQMessages.PositionReport l = AQMessages.PositionReport.newBuilder()
-				.setTdiId(mdiId).setOpenDate(entryDate)
-				.setEntryPrice(entryPrice).setQuantity(quantity).build();
-		return wrap(BaseMessage.CommandType.POSITION_REPORT,
-				AQMessages.PositionReport.cmd, l);
-	}
+	
 
 	public BaseMessage orderMktOrder(String orderId, String tdiId,
 			Double quantity, OrderSide side) {
@@ -95,7 +88,7 @@ public class MessageFactory {
 		if (s < 0)
 			s = 2;
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
-				.setClOrdId(orderId).setOrderQty(quantity).setSymbol(tdiId)
+				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
 				.setSide(s).setOrdType(1).build();
 		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
 				n);
@@ -107,7 +100,7 @@ public class MessageFactory {
 		if (s < 0)
 			s = 2;
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
-				.setClOrdId(orderId).setOrderQty(quantity).setSymbol(tdiId)
+				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
 				.setSide(s).setPrice(limitPrice).setOrdType(2).build();
 		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
 				n);
@@ -119,7 +112,7 @@ public class MessageFactory {
 		if (s < 0)
 			s = 2;
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
-				.setClOrdId(orderId).setOrderQty(quantity).setSymbol(tdiId)
+				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
 				.setSide(s).setOrdType(3).setPrice(limitPrice).build();
 		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
 				n);

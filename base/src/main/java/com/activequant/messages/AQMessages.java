@@ -3210,9 +3210,9 @@ public final class AQMessages {
     boolean hasQuantity();
     double getQuantity();
     
-    // required string tdiId = 4;
-    boolean hasTdiId();
-    String getTdiId();
+    // required string tradInstId = 4;
+    boolean hasTradInstId();
+    String getTradInstId();
   }
   public static final class PositionReport extends
       com.google.protobuf.GeneratedMessage
@@ -3295,14 +3295,14 @@ public final class AQMessages {
       return quantity_;
     }
     
-    // required string tdiId = 4;
-    public static final int TDIID_FIELD_NUMBER = 4;
-    private Object tdiId_;
-    public boolean hasTdiId() {
+    // required string tradInstId = 4;
+    public static final int TRADINSTID_FIELD_NUMBER = 4;
+    private Object tradInstId_;
+    public boolean hasTradInstId() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
-    public String getTdiId() {
-      Object ref = tdiId_;
+    public String getTradInstId() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -3310,17 +3310,17 @@ public final class AQMessages {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          tdiId_ = s;
+          tradInstId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getTdiIdBytes() {
-      Object ref = tdiId_;
+    private com.google.protobuf.ByteString getTradInstIdBytes() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        tdiId_ = b;
+        tradInstId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -3331,7 +3331,7 @@ public final class AQMessages {
       openDate_ = "";
       entryPrice_ = 0D;
       quantity_ = 0D;
-      tdiId_ = "";
+      tradInstId_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3350,7 +3350,7 @@ public final class AQMessages {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasTdiId()) {
+      if (!hasTradInstId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -3371,7 +3371,7 @@ public final class AQMessages {
         output.writeDouble(3, quantity_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getTdiIdBytes());
+        output.writeBytes(4, getTradInstIdBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -3396,7 +3396,7 @@ public final class AQMessages {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getTdiIdBytes());
+          .computeBytesSize(4, getTradInstIdBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3526,7 +3526,7 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000002);
         quantity_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000004);
-        tdiId_ = "";
+        tradInstId_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
@@ -3581,7 +3581,7 @@ public final class AQMessages {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.tdiId_ = tdiId_;
+        result.tradInstId_ = tradInstId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3607,8 +3607,8 @@ public final class AQMessages {
         if (other.hasQuantity()) {
           setQuantity(other.getQuantity());
         }
-        if (other.hasTdiId()) {
-          setTdiId(other.getTdiId());
+        if (other.hasTradInstId()) {
+          setTradInstId(other.getTradInstId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3627,7 +3627,7 @@ public final class AQMessages {
           
           return false;
         }
-        if (!hasTdiId()) {
+        if (!hasTradInstId()) {
           
           return false;
         }
@@ -3674,7 +3674,7 @@ public final class AQMessages {
             }
             case 34: {
               bitField0_ |= 0x00000008;
-              tdiId_ = input.readBytes();
+              tradInstId_ = input.readBytes();
               break;
             }
           }
@@ -3761,39 +3761,39 @@ public final class AQMessages {
         return this;
       }
       
-      // required string tdiId = 4;
-      private Object tdiId_ = "";
-      public boolean hasTdiId() {
+      // required string tradInstId = 4;
+      private Object tradInstId_ = "";
+      public boolean hasTradInstId() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
-      public String getTdiId() {
-        Object ref = tdiId_;
+      public String getTradInstId() {
+        Object ref = tradInstId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          tdiId_ = s;
+          tradInstId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setTdiId(String value) {
+      public Builder setTradInstId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000008;
-        tdiId_ = value;
+        tradInstId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearTdiId() {
+      public Builder clearTradInstId() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        tdiId_ = getDefaultInstance().getTdiId();
+        tradInstId_ = getDefaultInstance().getTradInstId();
         onChanged();
         return this;
       }
-      void setTdiId(com.google.protobuf.ByteString value) {
+      void setTradInstId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000008;
-        tdiId_ = value;
+        tradInstId_ = value;
         onChanged();
       }
       
@@ -3845,9 +3845,9 @@ public final class AQMessages {
     boolean hasPrice();
     double getPrice();
     
-    // required string symbol = 7;
-    boolean hasSymbol();
-    String getSymbol();
+    // required string tradInstId = 7;
+    boolean hasTradInstId();
+    String getTradInstId();
     
     // required string transactTime = 8;
     boolean hasTransactTime();
@@ -3888,6 +3888,10 @@ public final class AQMessages {
     // optional string massStatusReqId = 18;
     boolean hasMassStatusReqId();
     String getMassStatusReqId();
+    
+    // optional string comment = 19;
+    boolean hasComment();
+    String getComment();
   }
   public static final class ExecutionReport extends
       com.google.protobuf.GeneratedMessage
@@ -4044,14 +4048,14 @@ public final class AQMessages {
       return price_;
     }
     
-    // required string symbol = 7;
-    public static final int SYMBOL_FIELD_NUMBER = 7;
-    private Object symbol_;
-    public boolean hasSymbol() {
+    // required string tradInstId = 7;
+    public static final int TRADINSTID_FIELD_NUMBER = 7;
+    private Object tradInstId_;
+    public boolean hasTradInstId() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
-    public String getSymbol() {
-      Object ref = symbol_;
+    public String getTradInstId() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -4059,17 +4063,17 @@ public final class AQMessages {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          symbol_ = s;
+          tradInstId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getSymbolBytes() {
-      Object ref = symbol_;
+    private com.google.protobuf.ByteString getTradInstIdBytes() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        symbol_ = b;
+        tradInstId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -4286,6 +4290,38 @@ public final class AQMessages {
       }
     }
     
+    // optional string comment = 19;
+    public static final int COMMENT_FIELD_NUMBER = 19;
+    private Object comment_;
+    public boolean hasComment() {
+      return ((bitField0_ & 0x00020000) == 0x00020000);
+    }
+    public String getComment() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          comment_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getCommentBytes() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        comment_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
       clOrdId_ = "";
       execId_ = "";
@@ -4293,7 +4329,7 @@ public final class AQMessages {
       currency_ = "";
       orderQty_ = 0D;
       price_ = 0D;
-      symbol_ = "";
+      tradInstId_ = "";
       transactTime_ = "";
       orderId_ = "";
       execType_ = 0;
@@ -4304,6 +4340,7 @@ public final class AQMessages {
       ordType_ = "";
       text_ = "";
       massStatusReqId_ = "";
+      comment_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4334,7 +4371,7 @@ public final class AQMessages {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasSymbol()) {
+      if (!hasTradInstId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -4396,7 +4433,7 @@ public final class AQMessages {
         output.writeDouble(6, price_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeBytes(7, getSymbolBytes());
+        output.writeBytes(7, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeBytes(8, getTransactTimeBytes());
@@ -4427,6 +4464,9 @@ public final class AQMessages {
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         output.writeBytes(18, getMassStatusReqIdBytes());
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        output.writeBytes(19, getCommentBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -4463,7 +4503,7 @@ public final class AQMessages {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(7, getSymbolBytes());
+          .computeBytesSize(7, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
@@ -4504,6 +4544,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(18, getMassStatusReqIdBytes());
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(19, getCommentBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4639,7 +4683,7 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000010);
         price_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000020);
-        symbol_ = "";
+        tradInstId_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
         transactTime_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
@@ -4661,6 +4705,8 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00008000);
         massStatusReqId_ = "";
         bitField0_ = (bitField0_ & ~0x00010000);
+        comment_ = "";
+        bitField0_ = (bitField0_ & ~0x00020000);
         return this;
       }
       
@@ -4726,7 +4772,7 @@ public final class AQMessages {
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.symbol_ = symbol_;
+        result.tradInstId_ = tradInstId_;
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
         }
@@ -4767,6 +4813,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00010000;
         }
         result.massStatusReqId_ = massStatusReqId_;
+        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+          to_bitField0_ |= 0x00020000;
+        }
+        result.comment_ = comment_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4801,8 +4851,8 @@ public final class AQMessages {
         if (other.hasPrice()) {
           setPrice(other.getPrice());
         }
-        if (other.hasSymbol()) {
-          setSymbol(other.getSymbol());
+        if (other.hasTradInstId()) {
+          setTradInstId(other.getTradInstId());
         }
         if (other.hasTransactTime()) {
           setTransactTime(other.getTransactTime());
@@ -4834,6 +4884,9 @@ public final class AQMessages {
         if (other.hasMassStatusReqId()) {
           setMassStatusReqId(other.getMassStatusReqId());
         }
+        if (other.hasComment()) {
+          setComment(other.getComment());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -4863,7 +4916,7 @@ public final class AQMessages {
           
           return false;
         }
-        if (!hasSymbol()) {
+        if (!hasTradInstId()) {
           
           return false;
         }
@@ -4957,7 +5010,7 @@ public final class AQMessages {
             }
             case 58: {
               bitField0_ |= 0x00000040;
-              symbol_ = input.readBytes();
+              tradInstId_ = input.readBytes();
               break;
             }
             case 66: {
@@ -5008,6 +5061,11 @@ public final class AQMessages {
             case 146: {
               bitField0_ |= 0x00010000;
               massStatusReqId_ = input.readBytes();
+              break;
+            }
+            case 154: {
+              bitField0_ |= 0x00020000;
+              comment_ = input.readBytes();
               break;
             }
           }
@@ -5187,39 +5245,39 @@ public final class AQMessages {
         return this;
       }
       
-      // required string symbol = 7;
-      private Object symbol_ = "";
-      public boolean hasSymbol() {
+      // required string tradInstId = 7;
+      private Object tradInstId_ = "";
+      public boolean hasTradInstId() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
-      public String getSymbol() {
-        Object ref = symbol_;
+      public String getTradInstId() {
+        Object ref = tradInstId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          symbol_ = s;
+          tradInstId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setSymbol(String value) {
+      public Builder setTradInstId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000040;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearSymbol() {
+      public Builder clearTradInstId() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        symbol_ = getDefaultInstance().getSymbol();
+        tradInstId_ = getDefaultInstance().getTradInstId();
         onChanged();
         return this;
       }
-      void setSymbol(com.google.protobuf.ByteString value) {
+      void setTradInstId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000040;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
       }
       
@@ -5508,6 +5566,42 @@ public final class AQMessages {
         onChanged();
       }
       
+      // optional string comment = 19;
+      private Object comment_ = "";
+      public boolean hasComment() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      public String getComment() {
+        Object ref = comment_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          comment_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setComment(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00020000;
+        comment_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearComment() {
+        bitField0_ = (bitField0_ & ~0x00020000);
+        comment_ = getDefaultInstance().getComment();
+        onChanged();
+        return this;
+      }
+      void setComment(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00020000;
+        comment_ = value;
+        onChanged();
+      }
+      
       // @@protoc_insertion_point(builder_scope:com.activequant.messages.ExecutionReport)
     }
     
@@ -5540,9 +5634,9 @@ public final class AQMessages {
     boolean hasClOrdId();
     String getClOrdId();
     
-    // required string symbol = 3;
-    boolean hasSymbol();
-    String getSymbol();
+    // required string tradInstId = 3;
+    boolean hasTradInstId();
+    String getTradInstId();
     
     // required int32 side = 4;
     boolean hasSide();
@@ -5551,6 +5645,10 @@ public final class AQMessages {
     // required double orderQty = 6;
     boolean hasOrderQty();
     double getOrderQty();
+    
+    // optional string comment = 19;
+    boolean hasComment();
+    String getComment();
   }
   public static final class OrderCancelRequest extends
       com.google.protobuf.GeneratedMessage
@@ -5645,14 +5743,14 @@ public final class AQMessages {
       }
     }
     
-    // required string symbol = 3;
-    public static final int SYMBOL_FIELD_NUMBER = 3;
-    private Object symbol_;
-    public boolean hasSymbol() {
+    // required string tradInstId = 3;
+    public static final int TRADINSTID_FIELD_NUMBER = 3;
+    private Object tradInstId_;
+    public boolean hasTradInstId() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
-    public String getSymbol() {
-      Object ref = symbol_;
+    public String getTradInstId() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -5660,17 +5758,17 @@ public final class AQMessages {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          symbol_ = s;
+          tradInstId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getSymbolBytes() {
-      Object ref = symbol_;
+    private com.google.protobuf.ByteString getTradInstIdBytes() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        symbol_ = b;
+        tradInstId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -5697,12 +5795,45 @@ public final class AQMessages {
       return orderQty_;
     }
     
+    // optional string comment = 19;
+    public static final int COMMENT_FIELD_NUMBER = 19;
+    private Object comment_;
+    public boolean hasComment() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    public String getComment() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          comment_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getCommentBytes() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        comment_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
       orgCldOrdId_ = "";
       clOrdId_ = "";
-      symbol_ = "";
+      tradInstId_ = "";
       side_ = 0;
       orderQty_ = 0D;
+      comment_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5717,7 +5848,7 @@ public final class AQMessages {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasSymbol()) {
+      if (!hasTradInstId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -5743,13 +5874,16 @@ public final class AQMessages {
         output.writeBytes(2, getClOrdIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getSymbolBytes());
+        output.writeBytes(3, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(4, side_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeDouble(6, orderQty_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(19, getCommentBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -5770,7 +5904,7 @@ public final class AQMessages {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getSymbolBytes());
+          .computeBytesSize(3, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
@@ -5779,6 +5913,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeDoubleSize(6, orderQty_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(19, getCommentBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5906,12 +6044,14 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000001);
         clOrdId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        symbol_ = "";
+        tradInstId_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
         side_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
         orderQty_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000010);
+        comment_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
       
@@ -5961,7 +6101,7 @@ public final class AQMessages {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.symbol_ = symbol_;
+        result.tradInstId_ = tradInstId_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
@@ -5970,6 +6110,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00000010;
         }
         result.orderQty_ = orderQty_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.comment_ = comment_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5992,14 +6136,17 @@ public final class AQMessages {
         if (other.hasClOrdId()) {
           setClOrdId(other.getClOrdId());
         }
-        if (other.hasSymbol()) {
-          setSymbol(other.getSymbol());
+        if (other.hasTradInstId()) {
+          setTradInstId(other.getTradInstId());
         }
         if (other.hasSide()) {
           setSide(other.getSide());
         }
         if (other.hasOrderQty()) {
           setOrderQty(other.getOrderQty());
+        }
+        if (other.hasComment()) {
+          setComment(other.getComment());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6014,7 +6161,7 @@ public final class AQMessages {
           
           return false;
         }
-        if (!hasSymbol()) {
+        if (!hasTradInstId()) {
           
           return false;
         }
@@ -6064,7 +6211,7 @@ public final class AQMessages {
             }
             case 26: {
               bitField0_ |= 0x00000004;
-              symbol_ = input.readBytes();
+              tradInstId_ = input.readBytes();
               break;
             }
             case 32: {
@@ -6075,6 +6222,11 @@ public final class AQMessages {
             case 49: {
               bitField0_ |= 0x00000010;
               orderQty_ = input.readDouble();
+              break;
+            }
+            case 154: {
+              bitField0_ |= 0x00000020;
+              comment_ = input.readBytes();
               break;
             }
           }
@@ -6155,39 +6307,39 @@ public final class AQMessages {
         onChanged();
       }
       
-      // required string symbol = 3;
-      private Object symbol_ = "";
-      public boolean hasSymbol() {
+      // required string tradInstId = 3;
+      private Object tradInstId_ = "";
+      public boolean hasTradInstId() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
-      public String getSymbol() {
-        Object ref = symbol_;
+      public String getTradInstId() {
+        Object ref = tradInstId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          symbol_ = s;
+          tradInstId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setSymbol(String value) {
+      public Builder setTradInstId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000004;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearSymbol() {
+      public Builder clearTradInstId() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        symbol_ = getDefaultInstance().getSymbol();
+        tradInstId_ = getDefaultInstance().getTradInstId();
         onChanged();
         return this;
       }
-      void setSymbol(com.google.protobuf.ByteString value) {
+      void setTradInstId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000004;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
       }
       
@@ -6233,6 +6385,42 @@ public final class AQMessages {
         return this;
       }
       
+      // optional string comment = 19;
+      private Object comment_ = "";
+      public boolean hasComment() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      public String getComment() {
+        Object ref = comment_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          comment_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setComment(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        comment_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearComment() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        comment_ = getDefaultInstance().getComment();
+        onChanged();
+        return this;
+      }
+      void setComment(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000020;
+        comment_ = value;
+        onChanged();
+      }
+      
       // @@protoc_insertion_point(builder_scope:com.activequant.messages.OrderCancelRequest)
     }
     
@@ -6257,9 +6445,9 @@ public final class AQMessages {
   public interface OrderCancelRejectOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required string orderId = 1;
-    boolean hasOrderId();
-    String getOrderId();
+    // required string tradInstId = 1;
+    boolean hasTradInstId();
+    String getTradInstId();
     
     // required string clOrdId = 2;
     boolean hasClOrdId();
@@ -6284,6 +6472,10 @@ public final class AQMessages {
     // optional string text = 7;
     boolean hasText();
     String getText();
+    
+    // optional string comment = 19;
+    boolean hasComment();
+    String getComment();
   }
   public static final class OrderCancelReject extends
       com.google.protobuf.GeneratedMessage
@@ -6314,14 +6506,14 @@ public final class AQMessages {
     }
     
     private int bitField0_;
-    // required string orderId = 1;
-    public static final int ORDERID_FIELD_NUMBER = 1;
-    private Object orderId_;
-    public boolean hasOrderId() {
+    // required string tradInstId = 1;
+    public static final int TRADINSTID_FIELD_NUMBER = 1;
+    private Object tradInstId_;
+    public boolean hasTradInstId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public String getOrderId() {
-      Object ref = orderId_;
+    public String getTradInstId() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -6329,17 +6521,17 @@ public final class AQMessages {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          orderId_ = s;
+          tradInstId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getOrderIdBytes() {
-      Object ref = orderId_;
+    private com.google.protobuf.ByteString getTradInstIdBytes() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        orderId_ = b;
+        tradInstId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -6538,21 +6730,54 @@ public final class AQMessages {
       }
     }
     
+    // optional string comment = 19;
+    public static final int COMMENT_FIELD_NUMBER = 19;
+    private Object comment_;
+    public boolean hasComment() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    public String getComment() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          comment_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getCommentBytes() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        comment_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
-      orderId_ = "";
+      tradInstId_ = "";
       clOrdId_ = "";
       orgClOrdId_ = "";
       ordStatus_ = "";
       cxlRejResponseTo_ = "";
       clxRejReason_ = "";
       text_ = "";
+      comment_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (!hasOrderId()) {
+      if (!hasTradInstId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -6580,7 +6805,7 @@ public final class AQMessages {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getOrderIdBytes());
+        output.writeBytes(1, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getClOrdIdBytes());
@@ -6600,6 +6825,9 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeBytes(7, getTextBytes());
       }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(19, getCommentBytes());
+      }
       getUnknownFields().writeTo(output);
     }
     
@@ -6611,7 +6839,7 @@ public final class AQMessages {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getOrderIdBytes());
+          .computeBytesSize(1, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -6636,6 +6864,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(7, getTextBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(19, getCommentBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6759,7 +6991,7 @@ public final class AQMessages {
       
       public Builder clear() {
         super.clear();
-        orderId_ = "";
+        tradInstId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         clOrdId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -6773,6 +7005,8 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000020);
         text_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
+        comment_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
       
@@ -6814,7 +7048,7 @@ public final class AQMessages {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.orderId_ = orderId_;
+        result.tradInstId_ = tradInstId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -6839,6 +7073,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00000040;
         }
         result.text_ = text_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.comment_ = comment_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6855,8 +7093,8 @@ public final class AQMessages {
       
       public Builder mergeFrom(com.activequant.messages.AQMessages.OrderCancelReject other) {
         if (other == com.activequant.messages.AQMessages.OrderCancelReject.getDefaultInstance()) return this;
-        if (other.hasOrderId()) {
-          setOrderId(other.getOrderId());
+        if (other.hasTradInstId()) {
+          setTradInstId(other.getTradInstId());
         }
         if (other.hasClOrdId()) {
           setClOrdId(other.getClOrdId());
@@ -6876,12 +7114,15 @@ public final class AQMessages {
         if (other.hasText()) {
           setText(other.getText());
         }
+        if (other.hasComment()) {
+          setComment(other.getComment());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
       
       public final boolean isInitialized() {
-        if (!hasOrderId()) {
+        if (!hasTradInstId()) {
           
           return false;
         }
@@ -6929,7 +7170,7 @@ public final class AQMessages {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              orderId_ = input.readBytes();
+              tradInstId_ = input.readBytes();
               break;
             }
             case 18: {
@@ -6962,45 +7203,50 @@ public final class AQMessages {
               text_ = input.readBytes();
               break;
             }
+            case 154: {
+              bitField0_ |= 0x00000080;
+              comment_ = input.readBytes();
+              break;
+            }
           }
         }
       }
       
       private int bitField0_;
       
-      // required string orderId = 1;
-      private Object orderId_ = "";
-      public boolean hasOrderId() {
+      // required string tradInstId = 1;
+      private Object tradInstId_ = "";
+      public boolean hasTradInstId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public String getOrderId() {
-        Object ref = orderId_;
+      public String getTradInstId() {
+        Object ref = tradInstId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          orderId_ = s;
+          tradInstId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setOrderId(String value) {
+      public Builder setTradInstId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        orderId_ = value;
+        tradInstId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearOrderId() {
+      public Builder clearTradInstId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        orderId_ = getDefaultInstance().getOrderId();
+        tradInstId_ = getDefaultInstance().getTradInstId();
         onChanged();
         return this;
       }
-      void setOrderId(com.google.protobuf.ByteString value) {
+      void setTradInstId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000001;
-        orderId_ = value;
+        tradInstId_ = value;
         onChanged();
       }
       
@@ -7220,6 +7466,42 @@ public final class AQMessages {
         onChanged();
       }
       
+      // optional string comment = 19;
+      private Object comment_ = "";
+      public boolean hasComment() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      public String getComment() {
+        Object ref = comment_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          comment_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setComment(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        comment_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearComment() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        comment_ = getDefaultInstance().getComment();
+        onChanged();
+        return this;
+      }
+      void setComment(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000080;
+        comment_ = value;
+        onChanged();
+      }
+      
       // @@protoc_insertion_point(builder_scope:com.activequant.messages.OrderCancelReject)
     }
     
@@ -7244,9 +7526,9 @@ public final class AQMessages {
   public interface OrderCancelReplaceRequestOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required string symbol = 1;
-    boolean hasSymbol();
-    String getSymbol();
+    // required string tradInstId = 1;
+    boolean hasTradInstId();
+    String getTradInstId();
     
     // required string clOrdId = 2;
     boolean hasClOrdId();
@@ -7279,6 +7561,10 @@ public final class AQMessages {
     // required int32 timeInForce = 9;
     boolean hasTimeInForce();
     int getTimeInForce();
+    
+    // optional string comment = 19;
+    boolean hasComment();
+    String getComment();
   }
   public static final class OrderCancelReplaceRequest extends
       com.google.protobuf.GeneratedMessage
@@ -7309,14 +7595,14 @@ public final class AQMessages {
     }
     
     private int bitField0_;
-    // required string symbol = 1;
-    public static final int SYMBOL_FIELD_NUMBER = 1;
-    private Object symbol_;
-    public boolean hasSymbol() {
+    // required string tradInstId = 1;
+    public static final int TRADINSTID_FIELD_NUMBER = 1;
+    private Object tradInstId_;
+    public boolean hasTradInstId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public String getSymbol() {
-      Object ref = symbol_;
+    public String getTradInstId() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -7324,17 +7610,17 @@ public final class AQMessages {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          symbol_ = s;
+          tradInstId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getSymbolBytes() {
-      Object ref = symbol_;
+    private com.google.protobuf.ByteString getTradInstIdBytes() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        symbol_ = b;
+        tradInstId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -7487,8 +7773,40 @@ public final class AQMessages {
       return timeInForce_;
     }
     
+    // optional string comment = 19;
+    public static final int COMMENT_FIELD_NUMBER = 19;
+    private Object comment_;
+    public boolean hasComment() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    public String getComment() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          comment_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getCommentBytes() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        comment_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
-      symbol_ = "";
+      tradInstId_ = "";
       clOrdId_ = "";
       orgClOrdId_ = "";
       side_ = 0;
@@ -7497,13 +7815,14 @@ public final class AQMessages {
       ordType_ = 0;
       price_ = 0D;
       timeInForce_ = 0;
+      comment_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (!hasSymbol()) {
+      if (!hasTradInstId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -7547,7 +7866,7 @@ public final class AQMessages {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getSymbolBytes());
+        output.writeBytes(1, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getClOrdIdBytes());
@@ -7573,6 +7892,9 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeInt32(9, timeInForce_);
       }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(19, getCommentBytes());
+      }
       getUnknownFields().writeTo(output);
     }
     
@@ -7584,7 +7906,7 @@ public final class AQMessages {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getSymbolBytes());
+          .computeBytesSize(1, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -7617,6 +7939,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(9, timeInForce_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(19, getCommentBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -7740,7 +8066,7 @@ public final class AQMessages {
       
       public Builder clear() {
         super.clear();
-        symbol_ = "";
+        tradInstId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         clOrdId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -7758,6 +8084,8 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000080);
         timeInForce_ = 0;
         bitField0_ = (bitField0_ & ~0x00000100);
+        comment_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       
@@ -7799,7 +8127,7 @@ public final class AQMessages {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.symbol_ = symbol_;
+        result.tradInstId_ = tradInstId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -7832,6 +8160,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00000100;
         }
         result.timeInForce_ = timeInForce_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.comment_ = comment_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -7848,8 +8180,8 @@ public final class AQMessages {
       
       public Builder mergeFrom(com.activequant.messages.AQMessages.OrderCancelReplaceRequest other) {
         if (other == com.activequant.messages.AQMessages.OrderCancelReplaceRequest.getDefaultInstance()) return this;
-        if (other.hasSymbol()) {
-          setSymbol(other.getSymbol());
+        if (other.hasTradInstId()) {
+          setTradInstId(other.getTradInstId());
         }
         if (other.hasClOrdId()) {
           setClOrdId(other.getClOrdId());
@@ -7875,12 +8207,15 @@ public final class AQMessages {
         if (other.hasTimeInForce()) {
           setTimeInForce(other.getTimeInForce());
         }
+        if (other.hasComment()) {
+          setComment(other.getComment());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
       
       public final boolean isInitialized() {
-        if (!hasSymbol()) {
+        if (!hasTradInstId()) {
           
           return false;
         }
@@ -7944,7 +8279,7 @@ public final class AQMessages {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              symbol_ = input.readBytes();
+              tradInstId_ = input.readBytes();
               break;
             }
             case 18: {
@@ -7987,45 +8322,50 @@ public final class AQMessages {
               timeInForce_ = input.readInt32();
               break;
             }
+            case 154: {
+              bitField0_ |= 0x00000200;
+              comment_ = input.readBytes();
+              break;
+            }
           }
         }
       }
       
       private int bitField0_;
       
-      // required string symbol = 1;
-      private Object symbol_ = "";
-      public boolean hasSymbol() {
+      // required string tradInstId = 1;
+      private Object tradInstId_ = "";
+      public boolean hasTradInstId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public String getSymbol() {
-        Object ref = symbol_;
+      public String getTradInstId() {
+        Object ref = tradInstId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          symbol_ = s;
+          tradInstId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setSymbol(String value) {
+      public Builder setTradInstId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearSymbol() {
+      public Builder clearTradInstId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        symbol_ = getDefaultInstance().getSymbol();
+        tradInstId_ = getDefaultInstance().getTradInstId();
         onChanged();
         return this;
       }
-      void setSymbol(com.google.protobuf.ByteString value) {
+      void setTradInstId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000001;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
       }
       
@@ -8242,6 +8582,42 @@ public final class AQMessages {
         return this;
       }
       
+      // optional string comment = 19;
+      private Object comment_ = "";
+      public boolean hasComment() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      public String getComment() {
+        Object ref = comment_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          comment_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setComment(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        comment_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearComment() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        comment_ = getDefaultInstance().getComment();
+        onChanged();
+        return this;
+      }
+      void setComment(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000200;
+        comment_ = value;
+        onChanged();
+      }
+      
       // @@protoc_insertion_point(builder_scope:com.activequant.messages.OrderCancelReplaceRequest)
     }
     
@@ -8266,9 +8642,9 @@ public final class AQMessages {
   public interface NewOrderOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required string symbol = 1;
-    boolean hasSymbol();
-    String getSymbol();
+    // required string tradInstId = 1;
+    boolean hasTradInstId();
+    String getTradInstId();
     
     // required string clOrdId = 2;
     boolean hasClOrdId();
@@ -8301,6 +8677,10 @@ public final class AQMessages {
     // optional int32 timeInForce = 9;
     boolean hasTimeInForce();
     int getTimeInForce();
+    
+    // optional string comment = 19;
+    boolean hasComment();
+    String getComment();
   }
   public static final class NewOrder extends
       com.google.protobuf.GeneratedMessage
@@ -8331,14 +8711,14 @@ public final class AQMessages {
     }
     
     private int bitField0_;
-    // required string symbol = 1;
-    public static final int SYMBOL_FIELD_NUMBER = 1;
-    private Object symbol_;
-    public boolean hasSymbol() {
+    // required string tradInstId = 1;
+    public static final int TRADINSTID_FIELD_NUMBER = 1;
+    private Object tradInstId_;
+    public boolean hasTradInstId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public String getSymbol() {
-      Object ref = symbol_;
+    public String getTradInstId() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -8346,17 +8726,17 @@ public final class AQMessages {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          symbol_ = s;
+          tradInstId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getSymbolBytes() {
-      Object ref = symbol_;
+    private com.google.protobuf.ByteString getTradInstIdBytes() {
+      Object ref = tradInstId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        symbol_ = b;
+        tradInstId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -8509,8 +8889,40 @@ public final class AQMessages {
       return timeInForce_;
     }
     
+    // optional string comment = 19;
+    public static final int COMMENT_FIELD_NUMBER = 19;
+    private Object comment_;
+    public boolean hasComment() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    public String getComment() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          comment_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getCommentBytes() {
+      Object ref = comment_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        comment_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
-      symbol_ = "";
+      tradInstId_ = "";
       clOrdId_ = "";
       orgClOrdId_ = "";
       side_ = 0;
@@ -8519,13 +8931,14 @@ public final class AQMessages {
       ordType_ = 0;
       price_ = 0D;
       timeInForce_ = 0;
+      comment_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (!hasSymbol()) {
+      if (!hasTradInstId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -8553,7 +8966,7 @@ public final class AQMessages {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getSymbolBytes());
+        output.writeBytes(1, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getClOrdIdBytes());
@@ -8579,6 +8992,9 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeInt32(9, timeInForce_);
       }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(19, getCommentBytes());
+      }
       getUnknownFields().writeTo(output);
     }
     
@@ -8590,7 +9006,7 @@ public final class AQMessages {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getSymbolBytes());
+          .computeBytesSize(1, getTradInstIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -8623,6 +9039,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(9, timeInForce_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(19, getCommentBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -8746,7 +9166,7 @@ public final class AQMessages {
       
       public Builder clear() {
         super.clear();
-        symbol_ = "";
+        tradInstId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         clOrdId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -8764,6 +9184,8 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000080);
         timeInForce_ = 0;
         bitField0_ = (bitField0_ & ~0x00000100);
+        comment_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       
@@ -8805,7 +9227,7 @@ public final class AQMessages {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.symbol_ = symbol_;
+        result.tradInstId_ = tradInstId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -8838,6 +9260,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00000100;
         }
         result.timeInForce_ = timeInForce_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.comment_ = comment_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -8854,8 +9280,8 @@ public final class AQMessages {
       
       public Builder mergeFrom(com.activequant.messages.AQMessages.NewOrder other) {
         if (other == com.activequant.messages.AQMessages.NewOrder.getDefaultInstance()) return this;
-        if (other.hasSymbol()) {
-          setSymbol(other.getSymbol());
+        if (other.hasTradInstId()) {
+          setTradInstId(other.getTradInstId());
         }
         if (other.hasClOrdId()) {
           setClOrdId(other.getClOrdId());
@@ -8881,12 +9307,15 @@ public final class AQMessages {
         if (other.hasTimeInForce()) {
           setTimeInForce(other.getTimeInForce());
         }
+        if (other.hasComment()) {
+          setComment(other.getComment());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
       
       public final boolean isInitialized() {
-        if (!hasSymbol()) {
+        if (!hasTradInstId()) {
           
           return false;
         }
@@ -8934,7 +9363,7 @@ public final class AQMessages {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              symbol_ = input.readBytes();
+              tradInstId_ = input.readBytes();
               break;
             }
             case 18: {
@@ -8977,45 +9406,50 @@ public final class AQMessages {
               timeInForce_ = input.readInt32();
               break;
             }
+            case 154: {
+              bitField0_ |= 0x00000200;
+              comment_ = input.readBytes();
+              break;
+            }
           }
         }
       }
       
       private int bitField0_;
       
-      // required string symbol = 1;
-      private Object symbol_ = "";
-      public boolean hasSymbol() {
+      // required string tradInstId = 1;
+      private Object tradInstId_ = "";
+      public boolean hasTradInstId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public String getSymbol() {
-        Object ref = symbol_;
+      public String getTradInstId() {
+        Object ref = tradInstId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          symbol_ = s;
+          tradInstId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setSymbol(String value) {
+      public Builder setTradInstId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearSymbol() {
+      public Builder clearTradInstId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        symbol_ = getDefaultInstance().getSymbol();
+        tradInstId_ = getDefaultInstance().getTradInstId();
         onChanged();
         return this;
       }
-      void setSymbol(com.google.protobuf.ByteString value) {
+      void setTradInstId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000001;
-        symbol_ = value;
+        tradInstId_ = value;
         onChanged();
       }
       
@@ -9232,6 +9666,42 @@ public final class AQMessages {
         return this;
       }
       
+      // optional string comment = 19;
+      private Object comment_ = "";
+      public boolean hasComment() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      public String getComment() {
+        Object ref = comment_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          comment_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setComment(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        comment_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearComment() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        comment_ = getDefaultInstance().getComment();
+        onChanged();
+        return this;
+      }
+      void setComment(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000200;
+        comment_ = value;
+        onChanged();
+      }
+      
       // @@protoc_insertion_point(builder_scope:com.activequant.messages.NewOrder)
     }
     
@@ -9350,48 +9820,51 @@ public final class AQMessages {
       "e\022\014\n\004type\030\001 \002(\t\022\r\n\005value\030\002 \002(\t2`\n\003cmd\022%." +
       "com.activequant.messages.BaseMessage\030h \002" +
       "(\0132,.com.activequant.messages.AccountDat" +
-      "aMessage\"\265\001\n\016PositionReport\022\020\n\010openDate\030" +
+      "aMessage\"\272\001\n\016PositionReport\022\020\n\010openDate\030" +
       "\001 \002(\t\022\022\n\nentryPrice\030\002 \002(\001\022\020\n\010quantity\030\003 ",
-      "\002(\001\022\r\n\005tdiId\030\004 \002(\t2\\\n\003cmd\022%.com.activequ" +
-      "ant.messages.BaseMessage\030i \002(\0132(.com.act" +
-      "ivequant.messages.PositionReport\"\230\003\n\017Exe" +
-      "cutionReport\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006execId\030" +
-      "\002 \002(\t\022\014\n\004side\030\003 \002(\005\022\020\n\010currency\030\004 \002(\t\022\020\n" +
-      "\010orderQty\030\005 \002(\001\022\r\n\005price\030\006 \002(\001\022\016\n\006symbol" +
-      "\030\007 \002(\t\022\024\n\014transactTime\030\010 \002(\t\022\017\n\007orderId\030" +
-      "\t \002(\t\022\020\n\010execType\030\n \002(\005\022\021\n\tordStatus\030\013 \002" +
-      "(\005\022\016\n\006cumQty\030\014 \002(\001\022\021\n\tleavesQty\030\r \002(\001\022\r\n" +
-      "\005avgPx\030\016 \002(\001\022\017\n\007ordType\030\020 \002(\t\022\014\n\004text\030\021 ",
-      "\001(\t\022\027\n\017massStatusReqId\030\022 \001(\t2]\n\003cmd\022%.co" +
-      "m.activequant.messages.BaseMessage\030j \002(\013" +
-      "2).com.activequant.messages.ExecutionRep" +
-      "ort\"\314\001\n\022OrderCancelRequest\022\023\n\013orgCldOrdI" +
-      "d\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\016\n\006symbol\030\003 \002(\t" +
-      "\022\014\n\004side\030\004 \002(\005\022\020\n\010orderQty\030\006 \002(\0012`\n\003cmd\022" +
-      "%.com.activequant.messages.BaseMessage\030k" +
-      " \002(\0132,.com.activequant.messages.OrderCan" +
-      "celRequest\"\373\001\n\021OrderCancelReject\022\017\n\007orde" +
-      "rId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\norgClOrdId",
-      "\030\003 \002(\t\022\021\n\tordStatus\030\004 \002(\t\022\030\n\020CxlRejRespo" +
-      "nseTo\030\005 \002(\t\022\024\n\014clxRejReason\030\006 \001(\t\022\014\n\004tex" +
-      "t\030\007 \001(\t2_\n\003cmd\022%.com.activequant.message" +
-      "s.BaseMessage\030l \002(\0132+.com.activequant.me" +
-      "ssages.OrderCancelReject\"\244\002\n\031OrderCancel" +
-      "ReplaceRequest\022\016\n\006symbol\030\001 \002(\t\022\017\n\007clOrdI" +
-      "d\030\002 \002(\t\022\022\n\norgClOrdId\030\003 \002(\t\022\014\n\004side\030\004 \002(" +
-      "\005\022\024\n\014transactTime\030\005 \002(\t\022\020\n\010orderQty\030\006 \002(" +
-      "\001\022\017\n\007ordType\030\007 \002(\005\022\r\n\005price\030\010 \002(\001\022\023\n\013tim" +
-      "eInForce\030\t \002(\0052g\n\003cmd\022%.com.activequant.",
-      "messages.BaseMessage\030m \002(\01323.com.activeq" +
-      "uant.messages.OrderCancelReplaceRequest\"" +
-      "\202\002\n\010NewOrder\022\016\n\006symbol\030\001 \002(\t\022\017\n\007clOrdId\030" +
-      "\002 \002(\t\022\022\n\norgClOrdId\030\003 \001(\t\022\014\n\004side\030\004 \002(\005\022" +
-      "\024\n\014transactTime\030\005 \001(\t\022\020\n\010orderQty\030\006 \002(\001\022" +
-      "\017\n\007ordType\030\007 \002(\005\022\r\n\005price\030\010 \001(\001\022\023\n\013timeI" +
-      "nForce\030\t \001(\0052V\n\003cmd\022%.com.activequant.me" +
-      "ssages.BaseMessage\030n \002(\0132\".com.activequa" +
-      "nt.messages.NewOrderB&\n\030com.activequant." +
-      "messagesB\nAQMessages"
+      "\002(\001\022\022\n\ntradInstId\030\004 \002(\t2\\\n\003cmd\022%.com.act" +
+      "ivequant.messages.BaseMessage\030i \002(\0132(.co" +
+      "m.activequant.messages.PositionReport\"\255\003" +
+      "\n\017ExecutionReport\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006ex" +
+      "ecId\030\002 \002(\t\022\014\n\004side\030\003 \002(\005\022\020\n\010currency\030\004 \002" +
+      "(\t\022\020\n\010orderQty\030\005 \002(\001\022\r\n\005price\030\006 \002(\001\022\022\n\nt" +
+      "radInstId\030\007 \002(\t\022\024\n\014transactTime\030\010 \002(\t\022\017\n" +
+      "\007orderId\030\t \002(\t\022\020\n\010execType\030\n \002(\005\022\021\n\tordS" +
+      "tatus\030\013 \002(\005\022\016\n\006cumQty\030\014 \002(\001\022\021\n\tleavesQty" +
+      "\030\r \002(\001\022\r\n\005avgPx\030\016 \002(\001\022\017\n\007ordType\030\020 \002(\t\022\014",
+      "\n\004text\030\021 \001(\t\022\027\n\017massStatusReqId\030\022 \001(\t\022\017\n" +
+      "\007comment\030\023 \001(\t2]\n\003cmd\022%.com.activequant." +
+      "messages.BaseMessage\030j \002(\0132).com.activeq" +
+      "uant.messages.ExecutionReport\"\341\001\n\022OrderC" +
+      "ancelRequest\022\023\n\013orgCldOrdId\030\001 \002(\t\022\017\n\007clO" +
+      "rdId\030\002 \002(\t\022\022\n\ntradInstId\030\003 \002(\t\022\014\n\004side\030\004" +
+      " \002(\005\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007comment\030\023 \001(\t2" +
+      "`\n\003cmd\022%.com.activequant.messages.BaseMe" +
+      "ssage\030k \002(\0132,.com.activequant.messages.O" +
+      "rderCancelRequest\"\217\002\n\021OrderCancelReject\022",
+      "\022\n\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\n" +
+      "orgClOrdId\030\003 \002(\t\022\021\n\tordStatus\030\004 \002(\t\022\030\n\020C" +
+      "xlRejResponseTo\030\005 \002(\t\022\024\n\014clxRejReason\030\006 " +
+      "\001(\t\022\014\n\004text\030\007 \001(\t\022\017\n\007comment\030\023 \001(\t2_\n\003cm" +
+      "d\022%.com.activequant.messages.BaseMessage" +
+      "\030l \002(\0132+.com.activequant.messages.OrderC" +
+      "ancelReject\"\271\002\n\031OrderCancelReplaceReques" +
+      "t\022\022\n\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022" +
+      "\n\norgClOrdId\030\003 \002(\t\022\014\n\004side\030\004 \002(\005\022\024\n\014tran" +
+      "sactTime\030\005 \002(\t\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007ordT",
+      "ype\030\007 \002(\005\022\r\n\005price\030\010 \002(\001\022\023\n\013timeInForce\030" +
+      "\t \002(\005\022\017\n\007comment\030\023 \001(\t2g\n\003cmd\022%.com.acti" +
+      "vequant.messages.BaseMessage\030m \002(\01323.com" +
+      ".activequant.messages.OrderCancelReplace" +
+      "Request\"\227\002\n\010NewOrder\022\022\n\ntradInstId\030\001 \002(\t" +
+      "\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\norgClOrdId\030\003 \001(\t\022\014\n" +
+      "\004side\030\004 \002(\005\022\024\n\014transactTime\030\005 \001(\t\022\020\n\010ord" +
+      "erQty\030\006 \002(\001\022\017\n\007ordType\030\007 \002(\005\022\r\n\005price\030\010 " +
+      "\001(\001\022\023\n\013timeInForce\030\t \001(\005\022\017\n\007comment\030\023 \001(" +
+      "\t2V\n\003cmd\022%.com.activequant.messages.Base",
+      "Message\030n \002(\0132\".com.activequant.messages" +
+      ".NewOrderB&\n\030com.activequant.messagesB\nA" +
+      "QMessages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -9451,7 +9924,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_PositionReport_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_PositionReport_descriptor,
-              new java.lang.String[] { "OpenDate", "EntryPrice", "Quantity", "TdiId", },
+              new java.lang.String[] { "OpenDate", "EntryPrice", "Quantity", "TradInstId", },
               com.activequant.messages.AQMessages.PositionReport.class,
               com.activequant.messages.AQMessages.PositionReport.Builder.class);
           internal_static_com_activequant_messages_ExecutionReport_descriptor =
@@ -9459,7 +9932,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_ExecutionReport_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_ExecutionReport_descriptor,
-              new java.lang.String[] { "ClOrdId", "ExecId", "Side", "Currency", "OrderQty", "Price", "Symbol", "TransactTime", "OrderId", "ExecType", "OrdStatus", "CumQty", "LeavesQty", "AvgPx", "OrdType", "Text", "MassStatusReqId", },
+              new java.lang.String[] { "ClOrdId", "ExecId", "Side", "Currency", "OrderQty", "Price", "TradInstId", "TransactTime", "OrderId", "ExecType", "OrdStatus", "CumQty", "LeavesQty", "AvgPx", "OrdType", "Text", "MassStatusReqId", "Comment", },
               com.activequant.messages.AQMessages.ExecutionReport.class,
               com.activequant.messages.AQMessages.ExecutionReport.Builder.class);
           internal_static_com_activequant_messages_OrderCancelRequest_descriptor =
@@ -9467,7 +9940,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_OrderCancelRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_OrderCancelRequest_descriptor,
-              new java.lang.String[] { "OrgCldOrdId", "ClOrdId", "Symbol", "Side", "OrderQty", },
+              new java.lang.String[] { "OrgCldOrdId", "ClOrdId", "TradInstId", "Side", "OrderQty", "Comment", },
               com.activequant.messages.AQMessages.OrderCancelRequest.class,
               com.activequant.messages.AQMessages.OrderCancelRequest.Builder.class);
           internal_static_com_activequant_messages_OrderCancelReject_descriptor =
@@ -9475,7 +9948,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_OrderCancelReject_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_OrderCancelReject_descriptor,
-              new java.lang.String[] { "OrderId", "ClOrdId", "OrgClOrdId", "OrdStatus", "CxlRejResponseTo", "ClxRejReason", "Text", },
+              new java.lang.String[] { "TradInstId", "ClOrdId", "OrgClOrdId", "OrdStatus", "CxlRejResponseTo", "ClxRejReason", "Text", "Comment", },
               com.activequant.messages.AQMessages.OrderCancelReject.class,
               com.activequant.messages.AQMessages.OrderCancelReject.Builder.class);
           internal_static_com_activequant_messages_OrderCancelReplaceRequest_descriptor =
@@ -9483,7 +9956,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_OrderCancelReplaceRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_OrderCancelReplaceRequest_descriptor,
-              new java.lang.String[] { "Symbol", "ClOrdId", "OrgClOrdId", "Side", "TransactTime", "OrderQty", "OrdType", "Price", "TimeInForce", },
+              new java.lang.String[] { "TradInstId", "ClOrdId", "OrgClOrdId", "Side", "TransactTime", "OrderQty", "OrdType", "Price", "TimeInForce", "Comment", },
               com.activequant.messages.AQMessages.OrderCancelReplaceRequest.class,
               com.activequant.messages.AQMessages.OrderCancelReplaceRequest.Builder.class);
           internal_static_com_activequant_messages_NewOrder_descriptor =
@@ -9491,7 +9964,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_NewOrder_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_NewOrder_descriptor,
-              new java.lang.String[] { "Symbol", "ClOrdId", "OrgClOrdId", "Side", "TransactTime", "OrderQty", "OrdType", "Price", "TimeInForce", },
+              new java.lang.String[] { "TradInstId", "ClOrdId", "OrgClOrdId", "Side", "TransactTime", "OrderQty", "OrdType", "Price", "TimeInForce", "Comment", },
               com.activequant.messages.AQMessages.NewOrder.class,
               com.activequant.messages.AQMessages.NewOrder.Builder.class);
           return null;
