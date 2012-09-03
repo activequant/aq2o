@@ -12,12 +12,12 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * @author GhostRider
  *
  */
-public class MDSMarshaller {
+public class Marshaller {
 	MessageFactory mf = new MessageFactory();
 
 	ExtensionRegistry registry;
 
-	public MDSMarshaller() {
+	public Marshaller() {
 		registry = ExtensionRegistry.newInstance();
 		AQMessages.registerAllExtensions(registry);
 	}

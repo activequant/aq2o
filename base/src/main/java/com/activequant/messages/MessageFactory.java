@@ -1,6 +1,7 @@
 package com.activequant.messages;
 
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.messages.AQMessages.BaseMessage;
 
 /**
@@ -28,4 +29,99 @@ public class MessageFactory {
 				AQMessages.MarketDataSnapshot.cmd, m);
 	}
 
+	public BaseMessage buildServerTime(long timestamp) {
+		AQMessages.ServerTime l = AQMessages.ServerTime.newBuilder().setTimestamp(timestamp).build();
+		return wrap(BaseMessage.CommandType.SERVER_TIME, AQMessages.ServerTime.cmd, l);
+	}
+
+	/**
+	 * Builds a login message. 
+	 * 
+	 * 
+	 * @param username
+	 * @param password
+	 * @param session
+	 * @return
+	 */
+	public BaseMessage buildLogin(String username, String password, String session) {
+		AQMessages.Login l = AQMessages.Login.newBuilder().setPassword(password).setUserId(username).setSessionType(session).build();
+		return wrap(BaseMessage.CommandType.LOGIN, AQMessages.Login.cmd, l);
+	}
+
+	
+	
+	
+	
+	public BaseMessage OrderCancelRequest(String requestId, String originalClientOrderId,
+			String symbol, OrderSide side, Double orderQty) {
+		int s = side.getSide()==OrderSide.BUY.getSide()?1:2;
+		AQMessages.OrderCancelRequest l = AQMessages.OrderCancelRequest.newBuilder()
+				.setClOrdId(requestId).setOrgCldOrdId(originalClientOrderId).setOrderQty(orderQty).setSymbol(symbol).setSide(s).
+				build();
+		return wrap(BaseMessage.CommandType.ORD_CNCL_REQ,
+				AQMessages.OrderCancelRequest.cmd, l);
+	}
+
+	public BaseMessage OrderCancelRejected(String mdiId, String entryDate,
+			Double entryPrice, Double quantity) {
+		AQMessages.PositionReport l = AQMessages.PositionReport.newBuilder()
+				.setTdiId(mdiId).setOpenDate(entryDate)
+				.setEntryPrice(entryPrice).setQuantity(quantity).build();
+		return wrap(BaseMessage.CommandType.POSITION_REPORT,
+				AQMessages.PositionReport.cmd, l);
+	}
+
+	public BaseMessage OrderCancelReplaceReq(String mdiId, String entryDate,
+			Double entryPrice, Double quantity) {
+		AQMessages.PositionReport l = AQMessages.PositionReport.newBuilder()
+				.setTdiId(mdiId).setOpenDate(entryDate)
+				.setEntryPrice(entryPrice).setQuantity(quantity).build();
+		return wrap(BaseMessage.CommandType.POSITION_REPORT,
+				AQMessages.PositionReport.cmd, l);
+	}
+
+	public BaseMessage NewOrder(String mdiId, String entryDate,
+			Double entryPrice, Double quantity) {
+		AQMessages.PositionReport l = AQMessages.PositionReport.newBuilder()
+				.setTdiId(mdiId).setOpenDate(entryDate)
+				.setEntryPrice(entryPrice).setQuantity(quantity).build();
+		return wrap(BaseMessage.CommandType.POSITION_REPORT,
+				AQMessages.PositionReport.cmd, l);
+	}
+
+	public BaseMessage orderMktOrder(String orderId, String tdiId,
+			Double quantity, OrderSide side) {
+		int s = side.getSide();
+		if (s < 0)
+			s = 2;
+		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
+				.setClOrdId(orderId).setOrderQty(quantity).setSymbol(tdiId)
+				.setSide(s).setOrdType(1).build();
+		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
+				n);
+	}
+
+	public BaseMessage orderLimitOrder(String orderId, String tdiId,
+			Double quantity, Double limitPrice, OrderSide side) {
+		int s = side.getSide();
+		if (s < 0)
+			s = 2;
+		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
+				.setClOrdId(orderId).setOrderQty(quantity).setSymbol(tdiId)
+				.setSide(s).setPrice(limitPrice).setOrdType(2).build();
+		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
+				n);
+	}
+
+	public BaseMessage orderStopOrder(String orderId, String tdiId,
+			Double quantity, Double limitPrice, OrderSide side) {
+		int s = side.getSide();
+		if (s < 0)
+			s = 2;
+		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
+				.setClOrdId(orderId).setOrderQty(quantity).setSymbol(tdiId)
+				.setSide(s).setOrdType(3).setPrice(limitPrice).build();
+		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
+				n);
+	}
 }
