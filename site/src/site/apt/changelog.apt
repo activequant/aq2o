@@ -12,13 +12,13 @@ ChangeLog
 
 	* ParallelizedBacktester: runs a backtest on several cores, splitting it through a ITimeRangeSplitter
 
-	* TimeSetup for backtestss
+	* TimeSetup for backtests
 	
 	* BluntConsole window for trading systems and other tools. Simple window that offers an easy way to show things.
 	
 	* CSVImporter for TSContainer2 objects 
 	
-	* Added a TradingBus data recorder
+	* Added a start for a TradingBus data recorder
 
 	
 ** Improvements
@@ -26,9 +26,13 @@ ChangeLog
 	* delimiter in csv map reader settable	
 	
 	* TSContainerViewer helper added - more details here: {{{http://developers.activequant.org/news/11}AQ News Blog}}
+	
+	* Adding protocol buffer support. 
 
 
 ** Bug fixes
+
+	among others: 
 
 	* #114
 
