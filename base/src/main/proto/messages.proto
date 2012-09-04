@@ -18,8 +18,11 @@ message BaseMessage {
                 ORD_CNCL_REJ = 10; 
                 ORD_CNCL_REPL_REQ = 11; 
                 NEW_ORDER = 12; 
+                ORD_SUBMITTED = 13;
+                ORD_ACCPTD = 14;  
         }
         required CommandType type = 1;
+         
 
 }
 
@@ -73,7 +76,7 @@ message PositionReport {
 	required string openDate = 1;  
 	required double entryPrice = 2; 
 	required double quantity = 3; 
-	required string tdiId = 4; 	  	 
+	required string tradInstId = 4; 	  	 
 }
 
 message ExecutionReport {
@@ -86,7 +89,7 @@ message ExecutionReport {
 	required string currency = 4;	
 	required double orderQty = 5;
 	required double price = 6;
-	required string symbol = 7;
+	required string tradInstId = 7;
 	required string transactTime = 8;
 	required string orderId = 9;
 	required int32 execType = 10;
@@ -96,7 +99,8 @@ message ExecutionReport {
 	required double avgPx = 14;
 	required string ordType = 16;
 	optional string text = 17;
-	 optional string massStatusReqId = 18; 	 	  	
+	 optional string massStatusReqId = 18; 	 	
+	 optional string comment = 19;  	
 }
 
 message OrderCancelRequest {
@@ -105,9 +109,10 @@ message OrderCancelRequest {
     }
 	required string orgCldOrdId = 1;  
 	required string clOrdId = 2; 
-	required string symbol = 3; 
+	required string tradInstId = 3; 
 	required int32 side = 4; 
 	required double orderQty = 6;
+	optional string comment = 19;
 }
 
 
@@ -115,13 +120,14 @@ message OrderCancelReject {
     extend BaseMessage {
     	required OrderCancelReject cmd = 108;
     }
-	required string orderId = 1;  
+	required string tradInstId = 1;  
 	required string clOrdId = 2; 
 	required string orgClOrdId = 3; 
 	required string ordStatus = 4;  
 	required string CxlRejResponseTo = 5;
 	optional string clxRejReason = 6;
 	optional string text = 7;
+	optional string comment = 19;
 }
 
 
@@ -129,7 +135,7 @@ message OrderCancelReplaceRequest {
     extend BaseMessage {
     	required OrderCancelReplaceRequest cmd = 109;
     }
-	required string symbol = 1;  
+	required string tradInstId = 1;  
 	required string clOrdId = 2; 
 	required string orgClOrdId = 3;
 	required int32 side = 4; 
@@ -138,6 +144,7 @@ message OrderCancelReplaceRequest {
 	required int32 ordType = 7;
 	required double price = 8;
 	required int32 timeInForce = 9;
+	optional string comment = 19;
 	
 }
 
@@ -145,7 +152,7 @@ message NewOrder {
     extend BaseMessage {
     	required NewOrder cmd = 110;
     }
-	required string symbol = 1;  
+	required string tradInstId = 1;  
 	required string clOrdId = 2; 
 	optional string orgClOrdId = 3;
 	required int32 side = 4; 
@@ -154,7 +161,21 @@ message NewOrder {
 	required int32 ordType = 7;
 	optional double price = 8;
 	optional int32 timeInForce = 9;
+	optional string comment = 19;
 	
 }
 
+message OrderSubmitted {
+	extend BaseMessage {
+    	required OrderSubmitted cmd = 111;
+    }
+    required string clOrdId = 2;
+}
+
+message OrderAccepted {
+	extend BaseMessage {
+    	required OrderAccepted cmd = 112;
+    }
+    required string clOrdId = 2;
+}
 
