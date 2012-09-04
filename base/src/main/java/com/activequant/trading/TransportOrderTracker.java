@@ -52,6 +52,7 @@ public class TransportOrderTracker implements IOrderTracker {
 				lastState = event;
 			}
 		});
+		messageFactory = new MessageFactory();
 	}
 
 	@Override

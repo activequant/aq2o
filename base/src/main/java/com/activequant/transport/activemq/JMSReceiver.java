@@ -78,6 +78,7 @@ class JMSReceiver implements IReceiver, MessageListener {
                 
 
 		// performance improvement. 
+        // Only trying to handle it in legacy mode if raw event subscribers are empty.  
 		if(msgRecEvent.isEmpty() && rawMsgRecEvent.isEmpty())
 			return;
 
@@ -160,11 +161,11 @@ class JMSReceiver implements IReceiver, MessageListener {
 						pe.initFromMap(map);
 						msgRecEvent.fire(pe);
 					} catch (ClassNotFoundException e) {
-						log.warn("Map containing classname, but could not instantiate it. ", e);
+						log.warn("Class not found: " + map);
 					} catch (InstantiationException e) {
-						e.printStackTrace();
+						log.warn("Could not instantiate class: " + map);
 					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+						log.warn("Illegal access: " + map);
 					}                	
                 	 
                 }
