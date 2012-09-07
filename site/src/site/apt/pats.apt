@@ -1,0 +1,12 @@
+PATS FIX Connectivity
+
+	Recently, we have spent a significant amount of time working on a PATS connector for AQ. 
+	We cannot say it's perfect, as PATS isn't perfect and our time is limited, but we can say it 
+	works reasonable well. Given the pricing of PATS, it works great. 
+	
+	As an example, it is possible to monitor the DOM in AQ with our connector. The following image shows
+	side by side the PATS DOM and the AQ DOM.
+	
+[./images/dom_alpha1.png] DOM 
+	
+	Contact {{{mailto:ustaudinger@activequant.com}Ulrich}} if you would like to use this connector. We make good prize. 

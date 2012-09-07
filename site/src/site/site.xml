@@ -60,6 +60,7 @@
 			<item name="Trading Technologies" href="tt.html" />
 			<item name="Bloomberg Terminals" href="bbtb.html" />
 			<item name="CTS T4" href="cts.html" />
+			<item name="PATS" href="pats.html" />
 		</menu>
 		<menu name="Usage scenarios">
 			<item name="ActiveQuant and Amazon EC2" href="ec2.html"/>
