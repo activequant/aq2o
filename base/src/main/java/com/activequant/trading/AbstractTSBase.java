@@ -390,6 +390,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	 */
 	public void process(OrderStreamEvent ose) {
 		Order refOrder = ose.getOe().getRefOrder();
+		if(refOrder==null){
+			log.warn("No ref order in order stream event.");
+		}
 		if (ose.getOe() instanceof OrderFillEvent) {
 			// add an execution.
 			OrderFillEvent ofe = (OrderFillEvent) ose.getOe();
@@ -440,7 +443,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		if (refOrder instanceof MarketOrder) {
 			MarketOrder mo = (MarketOrder) refOrder;
 			getOrderTable().addOrder(refOrder.getOrderId(), mo.getTradInstId(),
-					"MKT", mo.getOrderSide().toString(), Double.NaN,
+					"MKT", mo.getOrderSide().toString(), Double.POSITIVE_INFINITY,
 					mo.getQuantity(), mo.getQuantity() - mo.getOpenQuantity());
 		} else if (refOrder instanceof LimitOrder) {
 			LimitOrder lo = (LimitOrder) refOrder;
@@ -457,7 +460,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	}
 
 	/**
-	 * Market Data Snapshots arrive here.
+	 * Market Data Snapshots arrive here. At the moment, this updates only the qoute table. 
+	 * It should also update some sort of a DOM. 
 	 * 
 	 * @param mds
 	 */

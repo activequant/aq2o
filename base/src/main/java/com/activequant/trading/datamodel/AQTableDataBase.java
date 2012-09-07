@@ -39,6 +39,8 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 	public String getColumnName(int col) {
 		return getHeader()[col];		
 	}
+	
+	public void clear(){}
 
 	public int getRowCount() {
 		return getData().length;

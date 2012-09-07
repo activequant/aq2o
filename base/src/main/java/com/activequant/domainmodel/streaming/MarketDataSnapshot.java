@@ -26,6 +26,13 @@ public class MarketDataSnapshot extends MarketDataEvent {
 		this.tdiId = tdiId; 
 	}
 
+	public boolean liquid(){
+		if(bidPrices.length>0 && askPrices.length>0){
+			return true; 
+		}
+		return false; 
+	}
+	
 	public String toString(){
 		return mdiId + " - " + getTimeStamp().getDate() + " - " + ArrayUtils.toString(bidPrices) + " - " + ArrayUtils.toString(askPrices); 
 	}

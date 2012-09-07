@@ -34,6 +34,10 @@ public class AuditLogTable extends AQTableDataBase {
 		}
 	}
 	
+	@Override
+	public void clear(){
+		data = new Object[0][];
+	}
 
 	public AuditLogTable(AbstractTSBase abstractTSBase) {
 		super(abstractTSBase);

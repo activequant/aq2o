@@ -1,5 +1,7 @@
 package com.activequant.messages;
 
+import java.util.List;
+
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
 import com.activequant.messages.AQMessages.BaseMessage;
@@ -22,6 +24,21 @@ public class Marshaller {
 		AQMessages.registerAllExtensions(registry);
 	}
 
+	/**
+	 * faster marshaller for MDS.  
+	 * 
+	 * @param mdiId
+	 * @param bidPrices
+	 * @param askPrices
+	 * @param bidSizes
+	 * @param askSizes
+	 * @return
+	 */
+	public byte[] marshallToMDS(String mdiId, List<Double> bidPrices, List<Double> askPrices, List<Double> bidSizes, List<Double> askSizes){
+		BaseMessage mdsm = mf.buildMds(mdiId, bidPrices, askPrices, bidSizes, askSizes);
+		return mdsm.toByteArray();
+	}
+	
 	public byte[] marshall(MarketDataSnapshot mds)
 			throws InvalidProtocolBufferException {
 		BaseMessage mdsm = mf.buildMds(mds.getMdiId(),

@@ -153,6 +153,22 @@ public class ArrayUtils {
 		return ret; 
 	}
 
+	public static List<Double> toDoubleListSkipNull(Double[] in){
+		List<Double> ret = new ArrayList<Double>();
+		for(Double d : in)
+			if(d!=null)
+				ret.add(d);
+		return ret;
+	}
+	
+	
+	public static List<Double> toDoubleList(Double[] in){
+		List<Double> ret = new ArrayList<Double>();
+		for(Double d : in)
+			ret.add(d);
+		return ret;
+	}
+	
 	public static List<Double> toDoubleList(double[] in){
 		List<Double> ret = new ArrayList<Double>();
 		for(double d : in)

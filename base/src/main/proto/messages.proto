@@ -13,13 +13,17 @@ message BaseMessage {
                 MDS = 5; 
                 ACCT_DATA = 6;
                 POSITION_REPORT=7;  
-                EXECUTION_REPORT = 8; 
-                ORD_CNCL_REQ = 9; 
+                EXECUTION_REPORT = 8;                
+                ORD_CNCL_REQ = 9;                 
                 ORD_CNCL_REJ = 10; 
                 ORD_CNCL_REPL_REQ = 11; 
                 NEW_ORDER = 12; 
                 ORD_SUBMITTED = 13;
                 ORD_ACCPTD = 14;  
+                ORD_CANCELLED = 15;
+                ORD_UPDATED = 16;  
+                SECURITY_STATUS = 17; 
+                ORD_REJ = 18;
         }
         required CommandType type = 1;
          
@@ -99,7 +103,6 @@ message ExecutionReport {
 	required double avgPx = 14;
 	required string ordType = 16;
 	optional string text = 17;
-	 optional string massStatusReqId = 18; 	 	
 	 optional string comment = 19;  	
 }
 
@@ -179,3 +182,34 @@ message OrderAccepted {
     required string clOrdId = 2;
 }
 
+message OrderCancelled {
+    extend BaseMessage {
+    	required OrderCancelled cmd = 113;
+    }
+	required string clOrdId = 2; 
+}
+
+
+message OrderUpdated {
+    extend BaseMessage {
+    	required OrderUpdated cmd = 114;
+    }
+	required string clOrdId = 2; 
+}
+
+
+message SecurityStatus {
+   extend BaseMessage {
+    	required SecurityStatus cmd = 115;
+    }
+	required string tdiId = 2;
+	required string status = 3;  
+}
+
+message OrderRejected {
+    extend BaseMessage {
+    	required OrderRejected cmd = 116;
+    }
+	required string clOrdId = 2;
+	required string reason = 3;  
+}
