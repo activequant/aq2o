@@ -21,6 +21,9 @@ public class TransportOrderTracker implements IOrderTracker {
 
 	private SingleLegOrder orderContainer;
 	private SingleLegOrder pendingOrderContainer;
+	
+
+	private SingleLegOrder nextPendingOrderContainer;
 	private Event<OrderEvent> event = new Event<OrderEvent>();
 	UniqueTimeStampGenerator utsg = new UniqueTimeStampGenerator();
 	private Logger log = Logger.getLogger(TransportOrderTracker.class);
@@ -31,7 +34,6 @@ public class TransportOrderTracker implements IOrderTracker {
 
 	private MessageFactory messageFactory;
 	private IPublisher transportPublisher; 
-	private Order nextPendingOrderContainer; 
 
 	public TransportOrderTracker(IPublisher publisher, SingleLegOrder order) {
 		this.transportPublisher = publisher; 		  
@@ -94,8 +96,21 @@ public class TransportOrderTracker implements IOrderTracker {
 	@Override
 	/**
 	 * Functionality is limited to updating limit order price and limit order size. 
+	 * 
+	 * If another order is pending, this order is scheduled for being executed AFTER the current
+	 * order update is done. 
+	 * 
+	 * There is no queue of order updates, just ONE pending order update plus one next order update. 
+	 * 
+	 * Meaning, if you update a hundred times, but the first order update is not through yet while you update 100 times, 98 of those
+	 * updates are dropped and only the last update will go through. 
+	 * 
 	 */
 	public void update(Order o) {
+		if(pendingOrderContainer!=null){
+			nextPendingOrderContainer = (SingleLegOrder)o;
+			return; 
+		}
 		BaseMessage msg = null;		
 		String originalClOrdId = internalOrderId; // this.orderContainer.getOrderId();
 		String updateid = "UPDT:"+originalClOrdId + ":"+ seqCounter;
@@ -150,11 +165,21 @@ public class TransportOrderTracker implements IOrderTracker {
 			pendingOrderContainer = null;
 			//
 			this.fireEvent(new OrderReplacedEvent());
+			
+			// check if there is a next pending order container. 
+			if(nextPendingOrderContainer!=null)
+				update(nextPendingOrderContainer);
+			
+			
 		}
 	}
 
 	@Override
 	public void cancel() {
+		
+		// check the last state. 
+		
+		
 		//
 		String reqId = "CNCL:" + originalOrderId + ":"
 				+ seqCounter;
@@ -180,6 +205,10 @@ public class TransportOrderTracker implements IOrderTracker {
 
 	public OrderEvent lastState() {
 		return lastState;
+	}
+	
+	public SingleLegOrder getPendingOrder() {
+		return pendingOrderContainer;
 	}
 
 }

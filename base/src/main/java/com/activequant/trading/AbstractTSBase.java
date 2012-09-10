@@ -466,6 +466,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	 * @param mds
 	 */
 	public void process(MarketDataSnapshot mds) {
+		if(mds==null)return;
 		// update the current mkt quotes table.
 		String mdiId = mds.getMdiId();
 		if (getInstrumentTable().containsInstrumentId(mdiId)) {
@@ -474,7 +475,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			// call by reference
 			Object[][] row = getQuoteTable().getData();
 			// update the quote table.
-			if (mds.getAskPrices() != null && mds.getAskPrices()[0] != 0.0) {
+			if (mds.getAskPrices() != null && mds.getAskPrices().length>0 && mds.getAskPrices()[0] != 0.0) {
 				row[rowIndx][ASK_COL_IDX] = mds.getAskPrices()[0];
 				row[rowIndx][ASK_SIZE_COL_INDX] = mds.getAskSizes()[0];
 				// getQuoteTable().setValueAt(mds.getAskPrices()[0], rowIndx,
@@ -488,7 +489,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_COL_IDX);
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_SIZE_COL_INDX);
 			}
-			if (mds.getBidPrices() != null && mds.getBidPrices()[0] != 0.0) {
+			if (mds.getBidPrices() != null && mds.getBidPrices().length>0 && mds.getBidPrices()[0] != 0.0) {
 
 				row[rowIndx][BID_COL_IDX] = mds.getBidPrices()[0];
 				row[rowIndx][BID_SIZE_COL_IDX] = mds.getBidSizes()[0];
