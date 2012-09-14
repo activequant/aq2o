@@ -187,6 +187,7 @@ public class DefaultTransportExchange implements IExchange {
 			// alright, let's split it.
 			orderId = orderId.split(":")[1];
 		}
+		log.info("Order rejected: " + or.getClOrdId());
 		TransportOrderTracker iot = trackers.get(orderId);
 		if (iot != null) {
 			//
@@ -201,6 +202,7 @@ public class DefaultTransportExchange implements IExchange {
 	}
 
 	private void handle(AQMessages.OrderAccepted oa) {
+		log.info("Order accepted: " + oa.getClOrdId());
 		TransportOrderTracker iot = trackers.get(oa.getClOrdId());
 		if (iot != null) {
 			//
@@ -214,7 +216,7 @@ public class DefaultTransportExchange implements IExchange {
 	}
 
 	private void handle(AQMessages.ExecutionReport er) {
-
+		log.info("Execution report: " + er.getClOrdId());
 		String orderId = er.getClOrdId();
 		if (orderId.startsWith("UPDT:")) {
 			// alright, let's split it.
@@ -267,6 +269,7 @@ public class DefaultTransportExchange implements IExchange {
 	}
 
 	private void handle(AQMessages.OrderUpdated ou) {
+		log.info("Order updated: " + ou.getClOrdId());
 		String orderId = ou.getClOrdId();
 		if (orderId.startsWith("UPDT:")) {
 			// alright, let's split it.
@@ -293,9 +296,10 @@ public class DefaultTransportExchange implements IExchange {
 			// alright, let's split it.
 			orderId = orderId.split(":")[1];
 		}
+		log.info("Order cancellation rejected of " + orderId);
 		TransportOrderTracker iot = trackers.get(orderId);
 		if (iot != null) {
-			//
+			//s
 			OrderCancellationRejectedEvent oce = new OrderCancellationRejectedEvent();
 			oce.setReason(ocr.getClxRejReason());
 			oce.setRefOrderId(orderId);
