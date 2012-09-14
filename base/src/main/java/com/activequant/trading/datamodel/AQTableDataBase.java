@@ -87,9 +87,9 @@ public abstract class AQTableDataBase extends AbstractTableModel {
 	public abstract String[] getHeader();
 
 	public Object getCell(int row, int col) {
-		if (row > getData().length)
+		if (row > (getData().length-1))
 			return null;
-		if (col > getData()[row].length)
+		if (col > (getData()[row].length-1))
 			return null;
 		return getData()[row][col];
 	}

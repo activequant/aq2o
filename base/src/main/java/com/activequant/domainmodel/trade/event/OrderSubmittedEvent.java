@@ -8,7 +8,10 @@ public class OrderSubmittedEvent extends OrderEvent {
 	}
 	
 	public String toString(){
-		return "Order " + super.getRefOrderId() + " submitted."; 
+		String r =  "Order " + super.getRefOrderId() + " submitted.";
+		if(refOrder!=null)
+			r += " "+ refOrder.toString();
+		return r; 
 	}
 	
 }

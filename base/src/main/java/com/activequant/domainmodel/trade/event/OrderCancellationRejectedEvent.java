@@ -19,6 +19,6 @@ public class OrderCancellationRejectedEvent extends OrderEvent {
 	
 
 	public String toString(){
-		return "Order " + super.getRefOrderId() + " rejected: " + reason; 
+		return "Order cancellation " + super.getRefOrderId() + " rejected: " + reason; 
 	}
 }

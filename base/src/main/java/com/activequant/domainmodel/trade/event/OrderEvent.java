@@ -16,7 +16,7 @@ public abstract class OrderEvent extends StreamEvent {
 	// 
 	private String optionalInstId;
 	//
-	private Order refOrder;
+	protected Order refOrder;
 
 	// 
 	@Override

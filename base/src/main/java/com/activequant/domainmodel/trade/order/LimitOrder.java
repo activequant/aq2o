@@ -30,4 +30,8 @@ public class LimitOrder extends SingleLegOrder {
 		ret.setTradInstId(getTradInstId());
 		return ret; 
 	}
+	
+	public String toString(){
+		return "["+getOrderId()+"] LO: "+getTradInstId()+"/"+getOrderSide()+"/"+getLimitPrice()+"/"+getQuantity();				
+	}
 }

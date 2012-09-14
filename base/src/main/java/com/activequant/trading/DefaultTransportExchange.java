@@ -11,6 +11,9 @@ import com.activequant.domainmodel.exceptions.IncompleteOrderInstructions;
 import com.activequant.domainmodel.exceptions.NoSuchOrderBook;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.domainmodel.exceptions.UnsupportedOrderType;
+import com.activequant.domainmodel.orderbook.MarketOpen;
+import com.activequant.domainmodel.orderbook.MarketState;
+import com.activequant.domainmodel.streaming.InformationalEvent;
 import com.activequant.domainmodel.streaming.OrderStreamEvent;
 import com.activequant.domainmodel.streaming.StreamEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
@@ -31,6 +34,7 @@ import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.OrderRejected;
 import com.activequant.messages.Marshaller;
+import com.activequant.trading.virtual.LimitOrderBook;
 import com.activequant.utils.UniqueTimeStampGenerator;
 import com.activequant.utils.events.Event;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -52,6 +56,11 @@ public class DefaultTransportExchange implements IExchange {
 	private final Marshaller marshaller = new Marshaller();
 	private final Logger log = Logger.getLogger(DefaultTransportExchange.class);
 	private final Event<OrderStreamEvent> event = new Event<OrderStreamEvent>();
+	private final Event<MarketState> marketStateEvent = new Event<MarketState>();
+	public Event<MarketState> getMarketStateEvent() {
+		return marketStateEvent;
+	}
+
 	private final Map<String, TransportOrderTracker> trackers = new HashMap<String, TransportOrderTracker>();
 	private UniqueTimeStampGenerator utsg = new UniqueTimeStampGenerator();
 
@@ -86,6 +95,13 @@ public class DefaultTransportExchange implements IExchange {
 		try {
 			bm = marshaller.demarshall(rawMessage);
 			switch (bm.getType()) {
+			case SECURITY_STATUS:
+			{
+				AQMessages.SecurityStatus os = ((AQMessages.SecurityStatus) bm
+						.getExtension(AQMessages.SecurityStatus.cmd));
+				handle(os);				
+				break;
+			}
 			case ORD_SUBMITTED:
 				log.info("Order submitted.");
 				AQMessages.OrderSubmitted os = ((AQMessages.OrderSubmitted) bm
@@ -137,6 +153,15 @@ public class DefaultTransportExchange implements IExchange {
 
 	}
 
+	private void handle(AQMessages.SecurityStatus sa) {
+		
+		// 
+		MarketOpen mo = new MarketOpen();
+		mo.setTdiId(sa.getTdiId());
+		mo.setText(sa.getStatus());
+		this.marketStateEvent.fire(mo);
+	}
+	
 	private void handle(AQMessages.OrderSubmitted oa) {
 		// should do something about UPD messages.
 		String ordId = oa.getClOrdId();
@@ -250,10 +275,11 @@ public class DefaultTransportExchange implements IExchange {
 		TransportOrderTracker iot = trackers.get(orderId);
 		if (iot != null) {
 			//
-			iot.signalSuccessfullUpdate();
+			
 			OrderReplacedEvent ore = new OrderReplacedEvent();
 			ore.setRefOrderId(orderId);
-			ore.setRefOrder(iot.getOrder());
+			ore.setRefOrder(iot.getPendingOrder());
+			iot.fireEvent(ore);
 			OrderStreamEvent ose = new OrderStreamEvent("", utsg.now(), ore);
 			this.event.fire(ose);
 
@@ -305,6 +331,7 @@ public class DefaultTransportExchange implements IExchange {
 	@Override
 	public AbstractOrderBook<?> getOrderBook(String tradeableInstrumentId)
 			throws NoSuchOrderBook {
+		LimitOrderBook lob = new LimitOrderBook(null, null);
 		return null;
 	}
 
