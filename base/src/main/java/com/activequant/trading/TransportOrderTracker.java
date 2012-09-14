@@ -227,8 +227,11 @@ public class TransportOrderTracker implements IOrderTracker {
 
 	@Override
 	public void cancel() {
-		if (cancellationPending)
+		if (cancellationPending){
+			log.info("Cancellation pending for order " + orderContainer.getOrderId());
 			return;
+		}
+			
 		cancellationPending = true;
 		// check the last state.
 		if (((lastState instanceof OrderAcceptedEvent) || (lastState instanceof OrderReplacedEvent))
