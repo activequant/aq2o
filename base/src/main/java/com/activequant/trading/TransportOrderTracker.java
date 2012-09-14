@@ -64,13 +64,14 @@ public class TransportOrderTracker implements IOrderTracker {
 
 	public void fireEvent(OrderEvent oe) {
 		lastState = oe;
+		log.info("Received an order event: " + oe);
 		if (oe instanceof OrderCancelledEvent) {
 			// terminal.
 		} else if (oe instanceof OrderReplacedEvent) {
-			CheckPendingOrderUpdate();
+			checkPendingOrderUpdate();
 			checkPendingCancellation();
 		} else if (oe instanceof OrderAcceptedEvent) {
-			CheckPendingOrderUpdate();
+			checkPendingOrderUpdate();
 			checkPendingCancellation();
 		}
 		event.fire(oe);
@@ -149,7 +150,7 @@ public class TransportOrderTracker implements IOrderTracker {
 			nextPendingOrderContainer = (SingleLegOrder) o;
 			return;
 		}
-		BaseMessage msg = null;
+		
 		String originalClOrdId = internalOrderId; // this.orderContainer.getOrderId();
 		String updateid = "UPDT:" + originalClOrdId + ":" + seqCounter;
 		if (originalClOrdId.startsWith("UPDT:")) {
@@ -191,10 +192,11 @@ public class TransportOrderTracker implements IOrderTracker {
 			fireEvent(new OrderUpdateSubmittedEvent());
 		} else {
 			log.warn("Cannot update order with a different type.");
+			fireEvent(new OrderUpdateRejectedEvent());	
 		}
 	}
 
-	public void CheckPendingOrderUpdate() {
+	public void checkPendingOrderUpdate() {
 		if (pendingOrderContainer != null) {
 			// making the new order the current order.
 			internalOrderId = this.pendingOrderContainer.getOrderId();
