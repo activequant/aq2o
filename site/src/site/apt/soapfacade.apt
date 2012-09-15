@@ -3,8 +3,11 @@ SOAP facade
 	Hopelessly underdeveloped, but working. Room for YOU. 
 
 	The SOAP facade uses Apache's JXB library to generate a WAR file that can be dropped into a servlet container, such as Tomcat.
+	
+	UPDATE: Since AQ 2.1, we bundle a jetty server in our master uber-jar. This includes a fully working soap facade and removes the dependency to run TOMCAT. 	
+	
 
-* Building and deploying the WAR
+* Building and deploying the WAR for TOMCAT
 	
 	Building the WAR file is straightforward as you can see in the following snipplet. The resulting WAR file can be pushed directly into Tomcat's webapps folder. 
 
