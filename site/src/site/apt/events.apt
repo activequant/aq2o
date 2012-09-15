@@ -4,7 +4,10 @@ Events
 	
 * Order events
 
-	The following diagram summarizes the order event flow as we understand it in AQ2o. 
+	The following diagram summarizes the order event flow as we understand and enforce it in AQ2o.  
 	
 [./images/order_event_flow.png]	
+
+	As an example, if an order is in "accepted" state, a user may submit a cancellation. Once the cancellation is submitted, he may not (and AQ will throw an exception) submit and order update until the cancellation has been either confirmed or rejected. 
+	 
 	
