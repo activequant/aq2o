@@ -1,0 +1,18 @@
+= Building and installation
+
+This project uses maven. 
+
+ 
+= Install
+
+Run "mvn install" to install the submodules into your local maven repository. 
+
+
+
+
+= CONTACT, etc. 
+Commercial support available on request. 
+ustaudinger@activequant.com 
+
+(c) 2002-2012ff ActiveQuant GmbH
+Listed on Freshmeat.net since 2004. For real. 

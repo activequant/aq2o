@@ -254,10 +254,12 @@ public class DefaultTransportExchange implements IExchange {
 			// alright, let's split it.
 			orderId = orderId.split(":")[1];
 		}
+		
 
 		//
 		TransportOrderTracker iot = trackers.get(orderId);
 		if (iot != null) {
+			log.info("Cancel received for " + orderId);
 			//
 			OrderCancelledEvent oce = new OrderCancelledEvent();
 			oce.setRefOrderId(orderId);
@@ -265,6 +267,9 @@ public class DefaultTransportExchange implements IExchange {
 			iot.fireEvent(oce);
 			OrderStreamEvent ose = new OrderStreamEvent("", utsg.now(), oce);
 			this.event.fire(ose);
+		}
+		else{
+			log.info("Could not find order tracker " + oc.getClOrdId());
 		}
 	}
 
@@ -296,7 +301,7 @@ public class DefaultTransportExchange implements IExchange {
 			// alright, let's split it.
 			orderId = orderId.split(":")[1];
 		}
-		log.info("Order cancellation rejected of " + orderId);
+		log.info("Order cancellation rejected of " + ocr.getClOrdId());
 		TransportOrderTracker iot = trackers.get(orderId);
 		if (iot != null) {
 			//s
@@ -308,6 +313,7 @@ public class DefaultTransportExchange implements IExchange {
 			OrderStreamEvent ose = new OrderStreamEvent("", utsg.now(), oce);
 			this.event.fire(ose);
 		}
+		
 	}
 
 	@Override

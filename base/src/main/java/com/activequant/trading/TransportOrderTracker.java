@@ -4,9 +4,13 @@ import org.apache.log4j.Logger;
 
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
+import com.activequant.domainmodel.trade.event.OrderCancellationRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
 import com.activequant.domainmodel.trade.event.OrderEvent;
+import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.domainmodel.trade.event.OrderRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
+import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderUpdateRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderUpdateSubmittedEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
@@ -23,6 +27,7 @@ import com.activequant.utils.UniqueTimeStampGenerator;
 import com.activequant.utils.events.Event;
 
 /**
+ * not thread safe. permit access from one thread only.
  * 
  * @author GhostRider
  * 
@@ -40,10 +45,19 @@ public class TransportOrderTracker implements IOrderTracker {
 	private OrderEvent lastState;
 	private String internalOrderId = "";
 	private String originalOrderId = "";
+	//
 	private boolean cancellationPending = false;
+
+	//
+	private boolean workingState = false;
+	private boolean terminalState = false;
+	private boolean submitted = false;
 
 	public boolean isCancellationPending() {
 		return cancellationPending;
+	}
+	public boolean isInTerminalState(){
+		return terminalState;
 	}
 
 	private MessageFactory messageFactory;
@@ -62,17 +76,57 @@ public class TransportOrderTracker implements IOrderTracker {
 		return orderContainer;
 	}
 
+	/**
+	 * Called from outside and inside this class.
+	 * 
+	 * @param oe
+	 */
 	public void fireEvent(OrderEvent oe) {
 		lastState = oe;
 		log.info("Received an order event: " + oe);
-		if (oe instanceof OrderCancelledEvent) {
-			// terminal.
-		} else if (oe instanceof OrderReplacedEvent) {
-			checkPendingOrderUpdate();
+		if (oe instanceof OrderSubmittedEvent) {
+			submitted = true;
+			workingState = false;
+		} else if (oe instanceof OrderRejectedEvent) {
+			terminalState = true;
+			workingState = false;
+		} else if (oe instanceof OrderCancelledEvent) {
+			terminalState = true;
+			workingState = false;
+		} else if (oe instanceof OrderReplacedEvent
+				|| oe instanceof OrderAcceptedEvent
+				|| oe instanceof OrderCancellationRejectedEvent
+				|| oe instanceof OrderUpdateRejectedEvent) {
+			// ok, order is working again.
+			workingState = true;
+
+			if (oe instanceof OrderReplacedEvent)
+				this.orderUpdateSucceeded();
+			else if(oe instanceof OrderUpdateRejectedEvent)
+				this.orderUpdateFailed();
+			//
+			if (oe instanceof OrderCancellationRejectedEvent)
+				cancellationPending = false;
+
+			// first check if there is a scheduled cancellation ...
 			checkPendingCancellation();
-		} else if (oe instanceof OrderAcceptedEvent) {
-			checkPendingOrderUpdate();
-			checkPendingCancellation();
+			// then check if there is a pending order update.
+			// we also check if we are still in a working state, as there could
+			// have been a cancellation
+			// indeed!!!
+			if (workingState)
+				checkPendingOrderUpdate();
+
+		} else if (oe instanceof OrderCancelSubmittedEvent) {
+			// we have to wait for a response now, so mark as nonworking.
+			workingState = false;
+		} else if (oe instanceof OrderUpdateSubmittedEvent) {
+			// we have to wait for a response now, so mark as nonworking.
+			workingState = false;
+		}
+		else if(oe instanceof OrderFillEvent){
+			// 
+			fill((OrderFillEvent)oe);
 		}
 		event.fire(oe);
 	}
@@ -85,6 +139,17 @@ public class TransportOrderTracker implements IOrderTracker {
 
 	@Override
 	public void submit() {
+
+		if (submitted) {
+			log.info("order has been submitted already.");
+			return;
+		}
+
+		if (terminalState) {
+			log.warn("Order is in terminal state, cannot resubmit.");
+			return;
+		}
+
 		Order o = orderContainer;
 		String tradInstId = orderContainer.getTradInstId();
 		BaseMessage bm = null;
@@ -109,6 +174,9 @@ public class TransportOrderTracker implements IOrderTracker {
 				throw new RuntimeException(e);
 			}
 		}
+
+		fireEvent(new OrderSubmittedEvent());
+
 	}
 
 	//
@@ -132,25 +200,23 @@ public class TransportOrderTracker implements IOrderTracker {
 	 * 
 	 */
 	public void update(Order o) {
-		log.info("Updating order:" + orderContainer.toString() + " to " + o.toString());
-		if (cancellationPending) {
-			log.info("Update rejected, as cancellation is pending.");
+
+		if (terminalState) {
+			log.info("Cannot update order as order is in terminal state.");
 			fireEvent(new OrderUpdateRejectedEvent());
 			return;
 		}
 
-		if (lastState instanceof OrderCancelledEvent) {
-			log.info("Update rejected, as order has been cancelled already.");
-			fireEvent(new OrderUpdateRejectedEvent());
-			return;
-		}
+		log.info("Updating order:" + orderContainer.toString() + " to "
+				+ o.toString());
 
-		if (pendingOrderContainer != null) {
-			log.info("Update scheduled, as order update is pending. ");
+		if (!workingState) {
+			log.info("Cannot update order as order is not in a working state, setting it as pending.");
+			// mark for update.
 			nextPendingOrderContainer = (SingleLegOrder) o;
 			return;
 		}
-		
+
 		String originalClOrdId = internalOrderId; // this.orderContainer.getOrderId();
 		String updateid = "UPDT:" + originalClOrdId + ":" + seqCounter;
 		if (originalClOrdId.startsWith("UPDT:")) {
@@ -192,61 +258,84 @@ public class TransportOrderTracker implements IOrderTracker {
 			fireEvent(new OrderUpdateSubmittedEvent());
 		} else {
 			log.warn("Cannot update order with a different type.");
-			fireEvent(new OrderUpdateRejectedEvent());	
+			fireEvent(new OrderUpdateRejectedEvent());
 		}
 	}
 
-	public void checkPendingOrderUpdate() {
-		if (pendingOrderContainer != null) {
-			// making the new order the current order.
-			internalOrderId = this.pendingOrderContainer.getOrderId();
-			this.pendingOrderContainer.setOrderId(originalOrderId);
-			pendingOrderContainer.setOpenQuantity(pendingOrderContainer
-					.getQuantity()
-					- (orderContainer.getQuantity() - orderContainer
-							.getOpenQuantity()));
+	private void fill(OrderFillEvent oe){
+		if(oe.getLeftQuantity()==0.0){
+			// fully done. 
+			workingState = false;
+			terminalState = true; 
+			
+		}
+	}
+	
+	private void orderUpdateSucceeded() {
+		// making the new order the current order.
+		internalOrderId = this.pendingOrderContainer.getOrderId();
+		this.pendingOrderContainer.setOrderId(originalOrderId);
+		pendingOrderContainer.setOpenQuantity(pendingOrderContainer
+				.getQuantity()
+				- (orderContainer.getQuantity() - orderContainer
+						.getOpenQuantity()));
 
-			this.orderContainer = pendingOrderContainer;
-			pendingOrderContainer = null;
-			//
+		this.orderContainer = pendingOrderContainer;
+		pendingOrderContainer = null;
+	}
+	
+	private void orderUpdateFailed() {
+		// making the new order the current order.		
+		pendingOrderContainer = null;
+	}
 
-			// DO
-			if (cancellationPending)
-				return;
-
-			// check if there is a next pending order container.
-			if (nextPendingOrderContainer != null)
-				update(nextPendingOrderContainer);
+	private void checkPendingOrderUpdate() {
+		// check if there is a next pending order container.
+		if (nextPendingOrderContainer != null) {
+			update(nextPendingOrderContainer);
+			nextPendingOrderContainer = null;
 		}
 	}
 
-	public void checkPendingCancellation() {
+	/**
+	 * checks if there is a cancellation pending and if so, it send it.
+	 */
+	private void checkPendingCancellation() {
 		if (cancellationPending) {
 			sendCancel();
-			cancellationPending = false;
 		}
 	}
 
 	@Override
 	public void cancel() {
-		if (cancellationPending){
-			log.info("Cancellation pending for order " + orderContainer.getOrderId());
+
+		if (terminalState) {
+			log.info("Cannot cancel order as order is in terminal state.");
+			fireEvent(new OrderCancellationRejectedEvent());
 			return;
-		}
-			
-		cancellationPending = true;
-		// check the last state.
-		if (((lastState instanceof OrderAcceptedEvent) || (lastState instanceof OrderReplacedEvent))
-				&& pendingOrderContainer == null) {
+		} else if (!workingState) {
+			log.info("Cannot cancel order as order is not in a working state (but waiting for response), marking order as to be cancelled. ");
+			cancellationPending = true;
+			return;
+		} else {
 			sendCancel();
 		}
+
 	}
 
 	private void sendCancel() {
+
+		// ok, we are working out a pending cancellation.
+		cancellationPending = false;
+
+		fireEvent(new OrderCancelSubmittedEvent());
+		log.info("Cancellation called for " + internalOrderId + ". "
+				+ lastState);
 		//
 		String reqId = "CNCL:" + originalOrderId + ":" + seqCounter;
 		seqCounter++;
 		String tradInstId = orderContainer.getTradInstId();
+		log.info("Sending cancel with cancel reqId:" + reqId);
 
 		BaseMessage bm = messageFactory.OrderCancelRequest(reqId,
 				internalOrderId, tradInstId, orderContainer.getOrderSide(),
@@ -255,12 +344,14 @@ public class TransportOrderTracker implements IOrderTracker {
 			try {
 				log.info("Sending cancellation: " + orderContainer.toString());
 				transportPublisher.send(bm.toByteArray());
+
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				// DIRTY.
+				log.warn("Exception!!", e);
+				fireEvent(new OrderCancellationRejectedEvent());
 			}
 
 		}
-		fireEvent(new OrderCancelSubmittedEvent());
 	}
 
 	@Override
