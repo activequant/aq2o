@@ -281,7 +281,10 @@
 				<executions>
 					<execution>
 						<id>push</id>
-						<phase>run</phase>
+						<phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
 
 						<configuration>
 
@@ -309,14 +312,14 @@
 							</tasks>
 						</configuration>
 					</execution>
-					<execution>
+					<!-- execution>
 						<id>compile-protoc</id>
 						<phase>generate-sources</phase>
 						<configuration>
 							<tasks>
 								<mkdir dir="target/generated-sources" />
 								<exec executable="protoc" failonerror="true">
-									<arg value="--java_out=src/main/java" />
+									<arg value="- -java_out=src/main/java" />
 									<arg value="src/main/proto/messages.proto" />
 								</exec>
 							</tasks>
@@ -324,7 +327,7 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
-					</execution>
+					</execution -->
 
 				</executions>
 
