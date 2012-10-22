@@ -185,7 +185,7 @@ public class MainService implements IMainService {
 	}
 
 	@Override
-	public String[] mdiKeys(String regexPattern) {
+	public String[] findMdiKeys(String regexPattern) {
 		try {
 			String[] ids = mdiDao.loadIDs();
 			Pattern p = Pattern.compile(regexPattern);
@@ -204,7 +204,7 @@ public class MainService implements IMainService {
 	}
 
 	@Override
-	public String[] instrumentKeys(String regexPattern) {
+	public String[] findInstrumentKeys(String regexPattern) {
 		try {
 			String[] ids = idao.loadIDs();
 			Pattern p = Pattern.compile(regexPattern);
@@ -223,7 +223,7 @@ public class MainService implements IMainService {
 	}
 
 	@Override
-	public String[] tdiKeys(String regexPattern) {
+	public String[] findTdiKeys(String regexPattern) {
 		try {
 			String[] ids = tdiDao.loadIDs();
 			Pattern p = Pattern.compile(regexPattern);

@@ -21,20 +21,20 @@ public interface IMainService {
 	public String[] instrumentKeys();
 
 	@WebMethod
-	public String[] instrumentKeys(@WebParam(name="regexPattern") String regexPattern);
+	public String[] findInstrumentKeys(@WebParam(name="regexPattern") String regexPattern);
 
 	
 	@WebMethod
 	public String[] mdiKeys();
 	
 	@WebMethod
-	public String[] mdiKeys(@WebParam(name="regexPattern") String regexPattern);
+	public String[] findMdiKeys(@WebParam(name="regexPattern") String regexPattern);
 	
 	@WebMethod
 	public String[] tdiKeys();
 	
 	@WebMethod
-	public String[] tdiKeys(@WebParam(name="regexPattern") String regexPattern);
+	public String[] findTdiKeys(@WebParam(name="regexPattern") String regexPattern);
 	
 	@WebMethod
 	public Instrument loadInstrument(@WebParam(name="PrimaryKey") String primaryKey);
