@@ -14,36 +14,33 @@ import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.exceptions.DaoException;
 
 @WebService
-@MTOM(enabled=false)
+@MTOM(enabled = false)
 @BindingType(SOAPBinding.SOAP11HTTP_BINDING)
 public interface IMainService {
-    public String[] instrumentKeys();
+	public String[] instrumentKeys();
 
-    @WebMethod
-    public Instrument loadInstrument(String primaryKey);
+	@WebMethod
+	public Instrument loadInstrument(String primaryKey);
 
-    @WebMethod
-    public int instrumentCount();
+	@WebMethod
+	public int instrumentCount();
 
-    @WebMethod
-    public int mdiCount();
-    
-    @WebMethod
-    public double[][] getTimeSeries(String seriesId, String column, TimeFrame timeFrame, long date8Start, long date8End) throws Exception ;
+	@WebMethod
+	public int mdiCount();
 
-    @Deprecated
-    @WebMethod
-	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException;
-    
-    
-    @WebMethod 
-	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, long nanoSeconds, String key, Object value) throws IOException;
-        
-    @WebMethod 
-	public void announceBTOutputFolder(String reportId, String backtestOutputFolder) throws Exception;
-    
-    @WebMethod 
-	public String pollReportStatus(String reportId) throws Exception;
-    
-    
+	@WebMethod
+	public double[][] getTimeSeries(String seriesId, String column,
+			TimeFrame timeFrame, String date8Start, String date8End)
+			throws Exception;
+
+	@WebMethod
+	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame,
+			long nanoSeconds, String key, Object value) throws IOException;
+
+	@WebMethod
+	public void storeKeyVal(String key, String val);
+	
+	@WebMethod
+	public String fetchKeyVal(String key);
+
 }

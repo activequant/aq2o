@@ -1,7 +1,8 @@
 package com.activequant.servicelayer.soap;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
@@ -9,10 +10,7 @@ import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
 import com.activequant.archive.TSContainer;
-import com.activequant.backtesting.reporting.ExtTrsctFileReporting;
 import com.activequant.domainmodel.Instrument;
-import com.activequant.domainmodel.PerformanceReport;
-import com.activequant.domainmodel.Report;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.exceptions.DaoException;
@@ -34,6 +32,8 @@ public class MainService implements IMainService {
 	private IPerformanceReportDao perfDao;
 	private IReportDao reportDao;
 	
+	// only for development purposes. 
+	private Map<String, String> inMemoryKeyValMap = new HashMap<String, String>();
 
 	public MainService(IDaoFactory daoFactory, IArchiveFactory factory) {
 		this.idao = daoFactory.instrumentDao();
@@ -68,8 +68,51 @@ public class MainService implements IMainService {
 		return (int) (100 * Math.random());
 	}
 
-	public double[][] getTimeSeries(String seriesId, String column, TimeFrame timeFrame, long date8Time6Start,
-			long date8Time6End) throws Exception {
+	public double[][] getTimeSeries(String seriesId, String column, TimeFrame timeFrame, String date8Time6Start,
+			String date8Time6End) throws Exception {
+
+		// format date...
+		// expected output = "yyyyMMddHHmmss.SSS"
+		// (1) yyyyMMdd
+		if (date8Time6Start.length() == "yyyyMMdd".length()) {
+			date8Time6Start += "000000.000";
+		}
+		if (date8Time6End.length() == "yyyyMMdd".length()) {
+			date8Time6End += "235959.999";
+		}
+		// (2) yyyyMMddHHmm
+		if (date8Time6Start.length() == "yyyyMMddHHmm".length()) {
+			date8Time6Start += "00.000";
+		}
+		if (date8Time6End.length() == "yyyyMMddHHmm".length()) {
+			date8Time6End += "59.999";
+		}
+		// (3) yyyyMMddHHmmss
+		if (date8Time6Start.length() == "yyyyMMddHHmmss".length()) {
+			date8Time6Start += ".000";
+		}
+		if (date8Time6End.length() == "yyyyMMddHHmmss".length()) {
+			date8Time6End += ".999";
+		}
+		// (4) yyyyMMddHHmmss.S
+		if (date8Time6Start.length() == "yyyyMMddHHmmss.S".length()) {
+			date8Time6Start += "00";
+		}
+		if (date8Time6End.length() == "yyyyMMddHHmmss.S".length()) {
+			date8Time6End += "99";
+		}
+		// (5) yyyyMMddHHmmss.SS
+		if (date8Time6Start.length() == "yyyyMMddHHmmss.SS".length()) {
+			date8Time6Start += "0";
+		}
+		if (date8Time6End.length() == "yyyyMMddHHmmss.SS".length()) {
+			date8Time6End += "9";
+		}
+		// (5) yyyyMMddHHmmss.SSS
+		if (date8Time6Start.length() == "yyyyMMddHHmmss.SSS".length()) {
+		}
+		if (date8Time6End.length() == "yyyyMMddHHmmss.SSS".length()) {
+		}
 
 		Date8Time6Parser p = new Date8Time6Parser();
 
@@ -95,51 +138,23 @@ public class MainService implements IMainService {
 		}
 	}
 
-	public void createOrUpdatePerformanceReport(PerformanceReport report) throws DaoException {
-		perfDao.delete(report);
-		perfDao.create(report);
-	}
-
-	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, long nanoSeconds, String key, Object value) throws IOException {
+	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, long nanoSeconds, String key, Object value)
+			throws IOException {
 		IArchiveWriter w = archFac.getWriter(timeFrame);
-		w.write(seriesKey, new TimeStamp(nanoSeconds), key, (Double)value);
+		w.write(seriesKey, new TimeStamp(nanoSeconds), key, (Double) value);
 		w.commit();
 	}
 
 	@Override
-	public void announceBTOutputFolder(final String reportId, final String backtestOutputFolder) throws Exception {
-		Report r = reportDao.load(reportId);
-		if(r!=null)
-			throw new Exception("Report ID exists already. Not overwriting. Please submit new one");
-		r = new Report();
-		r.setId(reportId);
-		r.setSourceFolder(backtestOutputFolder);
-		reportDao.create(r);
-		Runnable runnable = new Runnable(){
-			public void run(){
-				try {
-					new ExtTrsctFileReporting(reportDao).run(reportId, backtestOutputFolder);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (DaoException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}		
-			}			
-		};
-		Thread t = new Thread(runnable);
-		t.start();
+	public void storeKeyVal(String key, String val) {
+		inMemoryKeyValMap.put(key, val);
 	}
 
 	@Override
-	public String pollReportStatus(String reportId) throws Exception {		
-		Report r = reportDao.load(reportId);
-		if(r==null)
-			throw new Exception("Report ID doesn't exist.");
-		return r.getStatus();
+	public String fetchKeyVal(String key) {
+		return inMemoryKeyValMap.get(key);
 	}
-	
+
 	
 
 }
