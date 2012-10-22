@@ -1,8 +1,11 @@
 package com.activequant.servicelayer.soap;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
@@ -18,8 +21,10 @@ import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.dao.IInstrumentDao;
+import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.dao.IPerformanceReportDao;
 import com.activequant.interfaces.dao.IReportDao;
+import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 import com.activequant.utils.Date8Time6Parser;
 
 @WebService(endpointInterface = "com.activequant.servicelayer.soap.IMainService", serviceName = "MainService")
@@ -28,6 +33,8 @@ import com.activequant.utils.Date8Time6Parser;
 public class MainService implements IMainService {
 
 	private IInstrumentDao idao;
+	private IMarketDataInstrumentDao mdiDao; 
+	private ITradeableInstrumentDao tdiDao; 
 	private IArchiveFactory archFac;
 	private IPerformanceReportDao perfDao;
 	private IReportDao reportDao;
@@ -40,6 +47,8 @@ public class MainService implements IMainService {
 		this.archFac = factory;
 		this.perfDao = daoFactory.perfDao();
 		this.reportDao = daoFactory.reportDao();
+		this.tdiDao = daoFactory.tradeableDao(); 
+		this.mdiDao = daoFactory.mdiDao(); 
 	}
 
 	public String[] instrumentKeys() {
@@ -155,6 +164,84 @@ public class MainService implements IMainService {
 		return inMemoryKeyValMap.get(key);
 	}
 
+	@Override
+	public String[] mdiKeys() {
+		try {
+			return mdiDao.loadIDs();
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public String[] tdiKeys() {
+		try {
+			return tdiDao.loadIDs();
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public String[] mdiKeys(String regexPattern) {
+		try {
+			String[] ids = mdiDao.loadIDs();
+			Pattern p = Pattern.compile(regexPattern);
+			List<String> ret = new ArrayList<String>();
+			for(String id : ids)
+			{
+				if(p.matcher(id).matches())
+					ret.add(id);
+			}
+			return ret.toArray(new String[]{});
+			
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public String[] instrumentKeys(String regexPattern) {
+		try {
+			String[] ids = idao.loadIDs();
+			Pattern p = Pattern.compile(regexPattern);
+			List<String> ret = new ArrayList<String>();
+			for(String id : ids)
+			{
+				if(p.matcher(id).matches())
+					ret.add(id);
+			}
+			return ret.toArray(new String[]{});
+			
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public String[] tdiKeys(String regexPattern) {
+		try {
+			String[] ids = tdiDao.loadIDs();
+			Pattern p = Pattern.compile(regexPattern);
+			List<String> ret = new ArrayList<String>();
+			for(String id : ids)
+			{
+				if(p.matcher(id).matches())
+					ret.add(id);
+			}
+			return ret.toArray(new String[]{});
+			
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
 	
 
 }
