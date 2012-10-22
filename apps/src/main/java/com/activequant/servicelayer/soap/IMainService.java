@@ -16,6 +16,8 @@ import com.activequant.domainmodel.TimeFrame;
 @MTOM(enabled = false)
 @BindingType(SOAPBinding.SOAP11HTTP_BINDING)
 public interface IMainService {
+	
+	@WebMethod
 	public String[] instrumentKeys();
 
 	@WebMethod
