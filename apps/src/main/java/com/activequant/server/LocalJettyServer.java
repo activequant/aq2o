@@ -23,6 +23,7 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.handler.AbstractHandler;
 import org.mortbay.jetty.handler.HandlerList;
+import org.mortbay.jetty.handler.ResourceHandler;
 
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
@@ -43,18 +44,24 @@ public class LocalJettyServer {
 	private IArchiveFactory archFactory;
 	private Logger log = Logger.getLogger(LocalJettyServer.class);
 
-	public LocalJettyServer(int port, String zookeeper) {
+	public LocalJettyServer(int port, String zookeeper, String zookeeperPort) {
 		this.port = port;
-		archFactory = new HBaseArchiveFactory(zookeeper);
+		if(zookeeper!=null){
+			archFactory = new HBaseArchiveFactory(zookeeper, Integer.parseInt(zookeeperPort));
+		}
 	}
-
+	
+	public LocalJettyServer(int port){
+		this.port = port; 
+	}
+	
 	/**
 	 * default main that runs the jetty server in foreground, connecting to a local hbase server. 
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		LocalJettyServer s = new LocalJettyServer(44444, "localhost");
+		LocalJettyServer s = new LocalJettyServer(44444);
 		s.start();
 	}
 
@@ -67,8 +74,12 @@ public class LocalJettyServer {
 
 		Handler handler = new RequestHandler();
 
+		ResourceHandler resource_handler = new ResourceHandler();		
+        resource_handler.setWelcomeFiles(new String[]{ "index.html" }); 
+        resource_handler.setResourceBase("htmlroot");
+		
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { /*servletHandler, */handler });
+		handlers.setHandlers(new Handler[] { handler, resource_handler});
 		server.setHandler(handlers);
 
 		server.start();
@@ -82,7 +93,19 @@ public class LocalJettyServer {
 				throws IOException, ServletException {
 			Request base_request = (request instanceof Request) ? (Request) request : HttpConnection
 					.getCurrentConnection().getRequest();
+			// only handling /csv/
+			System.out.println(base_request.getUri());
+			if(!base_request.getUri().getPath().equals("/csv/")){				
+				base_request.setHandled(false);
+				return; 
+			}
 			base_request.setHandled(true);
+			
+			if(archFactory==null){
+				//
+				response.getWriter().println("No archive endpoint configured. Cannot fetch or write time series data. ");
+				return; 
+			}
 
 			String method = base_request.getMethod();
 

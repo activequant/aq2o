@@ -1,0 +1,52 @@
+package com.activequant.messages;
+
+option java_package = "com.activequant.messages";
+option java_outer_classname = "AQMessages";
+
+message BaseMessage {
+        extensions 100 to max;
+ 		enum CommandType {
+                VERSION = 1;
+                LOGIN   = 2;                
+                SERVER_TIME = 3;
+                LOGIN_RESPONSE = 4;  
+                MDS = 5; 
+        }
+        required CommandType type = 1;
+
+}
+
+message Login {
+    extend BaseMessage {
+    	required Login cmd = 100;
+    }
+	required string userId = 1; 
+	required string password = 2;
+	required string sessionType = 3;  
+}
+
+message ServerTime {
+    extend BaseMessage {
+    	required ServerTime cmd = 101;
+    }
+	required int64 timestamp = 1; 	 
+}
+
+message LoginResponse {
+    extend BaseMessage {
+    	required LoginResponse cmd = 102;
+    }
+	required string status = 1; 	 
+}
+
+message MarketDataSnapshot {
+   extend BaseMessage {
+    	required MarketDataSnapshot cmd = 103;
+    }
+	required int64 timestamp = 1;
+	repeated double bidPx = 2;
+	repeated double askPx = 3;
+	repeated double bidQ = 4;
+	repeated double askQ = 5;   
+	required string mdiId = 6; 
+}

@@ -186,8 +186,10 @@ public final class AQMessages {
       return size;
     }
     
+    private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected Object writeReplace() throws java.io.ObjectStreamException {
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
       return super.writeReplace();
     }
     
@@ -504,12 +506,12 @@ public final class AQMessages {
     private int bitField0_;
     // required string userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
-    private Object userId_;
+    private java.lang.Object userId_;
     public boolean hasUserId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     public String getUserId() {
-      Object ref = userId_;
+      java.lang.Object ref = userId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -523,7 +525,7 @@ public final class AQMessages {
       }
     }
     private com.google.protobuf.ByteString getUserIdBytes() {
-      Object ref = userId_;
+      java.lang.Object ref = userId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
@@ -536,12 +538,12 @@ public final class AQMessages {
     
     // required string password = 2;
     public static final int PASSWORD_FIELD_NUMBER = 2;
-    private Object password_;
+    private java.lang.Object password_;
     public boolean hasPassword() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     public String getPassword() {
-      Object ref = password_;
+      java.lang.Object ref = password_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -555,7 +557,7 @@ public final class AQMessages {
       }
     }
     private com.google.protobuf.ByteString getPasswordBytes() {
-      Object ref = password_;
+      java.lang.Object ref = password_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
@@ -568,12 +570,12 @@ public final class AQMessages {
     
     // required string sessionType = 3;
     public static final int SESSIONTYPE_FIELD_NUMBER = 3;
-    private Object sessionType_;
+    private java.lang.Object sessionType_;
     public boolean hasSessionType() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     public String getSessionType() {
-      Object ref = sessionType_;
+      java.lang.Object ref = sessionType_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -587,7 +589,7 @@ public final class AQMessages {
       }
     }
     private com.google.protobuf.ByteString getSessionTypeBytes() {
-      Object ref = sessionType_;
+      java.lang.Object ref = sessionType_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
@@ -662,8 +664,10 @@ public final class AQMessages {
       return size;
     }
     
+    private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected Object writeReplace() throws java.io.ObjectStreamException {
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
       return super.writeReplace();
     }
     
@@ -925,12 +929,12 @@ public final class AQMessages {
       private int bitField0_;
       
       // required string userId = 1;
-      private Object userId_ = "";
+      private java.lang.Object userId_ = "";
       public boolean hasUserId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       public String getUserId() {
-        Object ref = userId_;
+        java.lang.Object ref = userId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
           userId_ = s;
@@ -961,12 +965,12 @@ public final class AQMessages {
       }
       
       // required string password = 2;
-      private Object password_ = "";
+      private java.lang.Object password_ = "";
       public boolean hasPassword() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       public String getPassword() {
-        Object ref = password_;
+        java.lang.Object ref = password_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
           password_ = s;
@@ -997,12 +1001,12 @@ public final class AQMessages {
       }
       
       // required string sessionType = 3;
-      private Object sessionType_ = "";
+      private java.lang.Object sessionType_ = "";
       public boolean hasSessionType() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       public String getSessionType() {
-        Object ref = sessionType_;
+        java.lang.Object ref = sessionType_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
           sessionType_ = s;
@@ -1139,8 +1143,10 @@ public final class AQMessages {
       return size;
     }
     
+    private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected Object writeReplace() throws java.io.ObjectStreamException {
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
       return super.writeReplace();
     }
     
@@ -1445,12 +1451,12 @@ public final class AQMessages {
     private int bitField0_;
     // required string status = 1;
     public static final int STATUS_FIELD_NUMBER = 1;
-    private Object status_;
+    private java.lang.Object status_;
     public boolean hasStatus() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     public String getStatus() {
-      Object ref = status_;
+      java.lang.Object ref = status_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -1464,7 +1470,7 @@ public final class AQMessages {
       }
     }
     private com.google.protobuf.ByteString getStatusBytes() {
-      Object ref = status_;
+      java.lang.Object ref = status_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
@@ -1515,8 +1521,10 @@ public final class AQMessages {
       return size;
     }
     
+    private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected Object writeReplace() throws java.io.ObjectStreamException {
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
       return super.writeReplace();
     }
     
@@ -1742,12 +1750,12 @@ public final class AQMessages {
       private int bitField0_;
       
       // required string status = 1;
-      private Object status_ = "";
+      private java.lang.Object status_ = "";
       public boolean hasStatus() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       public String getStatus() {
-        Object ref = status_;
+        java.lang.Object ref = status_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
           status_ = s;
@@ -1926,12 +1934,12 @@ public final class AQMessages {
     
     // required string mdiId = 6;
     public static final int MDIID_FIELD_NUMBER = 6;
-    private Object mdiId_;
+    private java.lang.Object mdiId_;
     public boolean hasMdiId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     public String getMdiId() {
-      Object ref = mdiId_;
+      java.lang.Object ref = mdiId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -1945,7 +1953,7 @@ public final class AQMessages {
       }
     }
     private com.google.protobuf.ByteString getMdiIdBytes() {
-      Object ref = mdiId_;
+      java.lang.Object ref = mdiId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
@@ -2048,8 +2056,10 @@ public final class AQMessages {
       return size;
     }
     
+    private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected Object writeReplace() throws java.io.ObjectStreamException {
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
       return super.writeReplace();
     }
     
@@ -2618,12 +2628,12 @@ public final class AQMessages {
       }
       
       // required string mdiId = 6;
-      private Object mdiId_ = "";
+      private java.lang.Object mdiId_ = "";
       public boolean hasMdiId() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       public String getMdiId() {
-        Object ref = mdiId_;
+        java.lang.Object ref = mdiId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
           mdiId_ = s;
