@@ -65,11 +65,11 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
 	 * @see com.activequant.archive.IArchiveWriter#write(java.lang.String,
 	 * java.lang.Long, com.activequant.domainmodel.Tuple)
 	 */
-	public void write(String instrumentId, TimeStamp timeStamp,
+	public void write(String seriesId, TimeStamp timeStamp,
 			Tuple<String, Double>... value) throws IOException {
 
 		for (Tuple<String, Double> t : value) {
-			write(instrumentId, timeStamp, t.getA(), t.getB());
+			write(seriesId, timeStamp, t.getA(), t.getB());
 		}
 
 	}
@@ -80,14 +80,14 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
 	 * @see com.activequant.archive.IArchiveWriter#write(java.lang.String,
 	 * java.lang.Long, java.lang.String[], java.lang.Double[])
 	 */
-	public void write(String instrumentId, TimeStamp timeStamp, String[] keys,
+	public void write(String seriesId, TimeStamp timeStamp, String[] keys,
 			Double[] values) {
 		assert (values != null);
 		assert (keys != null);
 		assert (keys.length == values.length);
 
 		for (int i = 0; i < keys.length; i++) {
-			write(instrumentId, timeStamp, keys[i], values[i]);
+			write(seriesId, timeStamp, keys[i], values[i]);
 		}
 	}
 
@@ -97,11 +97,11 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
 	 * @see com.activequant.archive.IArchiveWriter#write(java.lang.String,
 	 * java.lang.Long, java.lang.String, java.lang.Double)
 	 */
-	public void write(String instrumentId, TimeStamp timeStamp, String key,
+	public void write(String seriesId, TimeStamp timeStamp, String key,
 			Double value) {
 		assert (key != null);
 		assert (value != null);
-		String rowKey = instrumentId + "_" + padded(timeStamp.toString());
+		String rowKey = seriesId + "_" + padded(timeStamp.toString());
 		Put p = new Put(rowKey.getBytes());
 		p.add("numbers".getBytes(), key.getBytes(), Bytes.toBytes(value));
 		p.add("numbers".getBytes(), "ts".getBytes(),

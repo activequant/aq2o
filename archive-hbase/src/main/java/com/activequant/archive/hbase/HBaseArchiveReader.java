@@ -61,8 +61,8 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
      * com.activequant.archive.IArchiveReader#getTimeSeries(java.lang.String,
      * java.lang.String, java.lang.Long)
      */
-    public TSContainer getTimeSeries(final String instrumentId, final String value, final TimeStamp startTimeStamp) throws Exception {
-        return getTimeSeries(instrumentId, value, startTimeStamp, timeStampGenerator.now());
+    public TSContainer getTimeSeries(final String seriesId, final String value, final TimeStamp startTimeStamp) throws Exception {
+        return getTimeSeries(seriesId, value, startTimeStamp, timeStampGenerator.now());
     }
 
     /*
@@ -72,9 +72,9 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
      * com.activequant.archive.IArchiveReader#getTimeSeries(java.lang.String,
      * java.lang.String, java.lang.Long, java.lang.Long)
      */
-    public TSContainer getTimeSeries(final String instrumentId, final String value, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp)
+    public TSContainer getTimeSeries(final String seriesId, final String value, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp)
             throws Exception {
-        ResultScanner scanner = getScanner(instrumentId, startTimeStamp, stopTimeStamp);
+        ResultScanner scanner = getScanner(seriesId, startTimeStamp, stopTimeStamp);
         
 
         List<TimeStamp> timeStamps = new ArrayList<TimeStamp>();
@@ -98,7 +98,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
     }
 
 
-    public TimeSeriesIterator getTimeSeriesStream(final String instrumentId, final String key, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp) throws Exception {
+    public TimeSeriesIterator getTimeSeriesStream(final String seriesId, final String key, final TimeStamp startTimeStamp, final TimeStamp stopTimeStamp) throws Exception {
         
 
         return new TimeSeriesIterator() {
@@ -116,7 +116,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
             			start = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
             		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60 * 60 * 1000 * 1000 * 1000);
             		log.info("Prepared scanner from " + start.getCalendar().getTime()+ " to " + end.getCalendar().getTime());
-					scanner = getScanner(instrumentId, start, end);
+					scanner = getScanner(seriesId, start, end);
 					resultIterator = scanner.iterator();
 				} catch (IOException e) {
 					e.printStackTrace();
