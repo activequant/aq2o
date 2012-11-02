@@ -1,30 +1,56 @@
 package com.activequant.interfaces.dao;
 
+import com.activequant.dao.mybatis.IAccountDao;
+import com.activequant.dao.mybatis.IClearedTradeDao;
+import com.activequant.dao.mybatis.IClearerAccountSnapDao;
+import com.activequant.dao.mybatis.IPNLDao;
+import com.activequant.dao.mybatis.IPortfolioSnapDao;
+import com.activequant.dao.mybatis.ISubClearerAccountDao;
+import com.activequant.dao.mybatis.ISubClearerAccountSnapDao;
+
 public interface IDaoFactory {
-    ICountryDao countryDao();
+	ICountryDao countryDao();
 
-    IRegionDao regionDao();
+	IRegionDao regionDao();
 
-    IInstrumentDao instrumentDao();
+	IInstrumentDao instrumentDao();
 
-    IVenueDao venueDao();
+	IVenueDao venueDao();
 
-    IMarketDataInstrumentDao mdiDao();
+	IMarketDataInstrumentDao mdiDao();
 
-    ITradeableInstrumentDao tradeableDao();
+	ITradeableInstrumentDao tradeableDao();
 
-    IPositionDao positionDao();
+	IPositionDao positionDao();
 
-    IPortfolioDao portfolioDao();
-    
-    ISecurityChainDao securityChainDao();
-    
-    IAdjustedSeriesDateEntryDao adjSerDtEntryDao();
-    
-    IPerformanceReportDao perfDao();
-    
-    IReportDao reportDao();
+	IPortfolioDao portfolioDao();
 
-    IOrderEventDao orderEventDao();
+	ISecurityChainDao securityChainDao();
+
+	IAdjustedSeriesDateEntryDao adjSerDtEntryDao();
+
+	IPerformanceReportDao perfDao();
+
+	IReportDao reportDao();
+
+	IOrderEventDao orderEventDao();
+
+	IOrderFillDao orderFillDao();
+
+	IPandSDao pAndSDao();
+
+	public IAccountDao accountDao();
+
+	public IClearedTradeDao clearedTradeDao();
+
+	public IClearerAccountSnapDao clearerAccountSnapDao();
+
+	public IPNLDao pnlDao();
+
+	public IPortfolioSnapDao portfolioSnapDao();
+
+	public ISubClearerAccountDao subClearerAccountDao();
+
+	public ISubClearerAccountSnapDao subClearerAccountSnapDao();
 
 }

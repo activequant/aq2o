@@ -1,5 +1,12 @@
 package com.activequant.dao.inmemory;
 
+import com.activequant.dao.mybatis.IAccountDao;
+import com.activequant.dao.mybatis.IClearedTradeDao;
+import com.activequant.dao.mybatis.IClearerAccountSnapDao;
+import com.activequant.dao.mybatis.IPNLDao;
+import com.activequant.dao.mybatis.IPortfolioSnapDao;
+import com.activequant.dao.mybatis.ISubClearerAccountDao;
+import com.activequant.dao.mybatis.ISubClearerAccountSnapDao;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.interfaces.dao.IAdjustedSeriesDateEntryDao;
 import com.activequant.interfaces.dao.ICountryDao;
@@ -7,6 +14,8 @@ import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.dao.IOrderEventDao;
+import com.activequant.interfaces.dao.IOrderFillDao;
+import com.activequant.interfaces.dao.IPandSDao;
 import com.activequant.interfaces.dao.IPerformanceReportDao;
 import com.activequant.interfaces.dao.IPortfolioDao;
 import com.activequant.interfaces.dao.IPositionDao;
@@ -87,6 +96,60 @@ public class InMemoryDaoFactory implements IDaoFactory {
 
 	@Override
 	public IOrderEventDao orderEventDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IOrderFillDao orderFillDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IPandSDao pAndSDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IAccountDao accountDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IClearedTradeDao clearedTradeDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IClearerAccountSnapDao clearerAccountSnapDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IPNLDao pnlDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IPortfolioSnapDao portfolioSnapDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ISubClearerAccountDao subClearerAccountDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ISubClearerAccountSnapDao subClearerAccountSnapDao() {
 		// TODO Auto-generated method stub
 		return null;
 	}
