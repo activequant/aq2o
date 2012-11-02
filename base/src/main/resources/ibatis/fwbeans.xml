@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-2.0.xsd 
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop-2.0.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-2.1.xsd">
+
+    <context:annotation-config/>
+
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
 		lazy-init="true">
 		<property name="dataSource" ref="fwDataSource" />
@@ -233,6 +244,177 @@
 		</constructor-arg>
 	</bean>
 	
+	
+	
+
+	<bean id="genMapper13" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="orderFillDao" class="com.activequant.dao.mybatis.OrderFillDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper13"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+
+	<bean id="genMapper14" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pAndSDao" class="com.activequant.dao.mybatis.PandSDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper14"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+
+
+	<bean id="genMapper15" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="accountDao" class="com.activequant.dao.mybatis.AccountDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper15"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+
+	<bean id="genMapper16" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="clearedTradeDao" class="com.activequant.dao.mybatis.ClearedTradeDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper16"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="genMapper17" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="clearerAccountSnapDao" class="com.activequant.dao.mybatis.ClearerAccountSnapDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper17"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="genMapper18" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pnlDao" class="com.activequant.dao.mybatis.PNLDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper18"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	
+	<bean id="genMapper19" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="portfolioSnapDao" class="com.activequant.dao.mybatis.PortfolioSnapDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper19"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="genMapper20" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="subClearerAccountDao" class="com.activequant.dao.mybatis.SubClearerAccountDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper20"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="genMapper21" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="subClearerAccountSnapDao" class="com.activequant.dao.mybatis.SubClearerAccountSnapDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper21"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	
+	
+	
+
+
+
+
+
+
+
 
 	<bean id="ibatisDao" class="com.activequant.dao.mybatis.DaoFactory"
 		lazy-init="true">
