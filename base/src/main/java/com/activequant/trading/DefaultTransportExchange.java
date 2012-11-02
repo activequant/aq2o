@@ -24,6 +24,7 @@ import com.activequant.domainmodel.trade.event.OrderRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
 import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.order.Order;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
 import com.activequant.interfaces.trading.IExchange;
 import com.activequant.interfaces.trading.IOrderTracker;
@@ -43,7 +44,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * This transport exchange acts as an injectable exchange, based on a transport
  * factory. The Google protocol buffer approach. not that it's anything specific
  * which Google came up with, it's just that Google has a good open source
- * library out.
+ * library for this stuff.
  * 
  * @author GhostRider
  * 
@@ -215,6 +216,13 @@ public class DefaultTransportExchange implements IExchange {
 		}
 	}
 
+	/**
+	 * 
+	 * Translates wire execution reports to internal OrderFillEvents. 
+	 * 
+	 * @param er
+	 */
+	
 	private void handle(AQMessages.ExecutionReport er) {
 		log.info("Execution report: " + er.getClOrdId());
 		String orderId = er.getClOrdId();
@@ -254,8 +262,6 @@ public class DefaultTransportExchange implements IExchange {
 			// alright, let's split it.
 			orderId = orderId.split(":")[1];
 		}
-		
-
 		//
 		TransportOrderTracker iot = trackers.get(orderId);
 		if (iot != null) {
@@ -283,7 +289,6 @@ public class DefaultTransportExchange implements IExchange {
 		TransportOrderTracker iot = trackers.get(orderId);
 		if (iot != null) {
 			//
-			
 			OrderReplacedEvent ore = new OrderReplacedEvent();
 			ore.setRefOrderId(orderId);
 			ore.setRefOrder(iot.getPendingOrder());

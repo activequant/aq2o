@@ -514,7 +514,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 			//
 		} else {
-			log.info("Dropping data for unknown instrument. ");
+			log.info("Dropping data for unknown instrument: "+ mds.getMdiId());
 		}
 	}
 

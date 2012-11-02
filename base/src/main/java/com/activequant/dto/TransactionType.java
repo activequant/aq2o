@@ -1,0 +1,5 @@
+package com.activequant.dto;
+
+public enum TransactionType{ 
+    ADJUSTMENT, BUST, CANCEL, EXERCISE, PNL, MEMO, POSITION, REVERSE_PS, DEL_RECP, SETTLING_TRADE, TRADE, EXPIRATION, CONFIRM_REVERSAL;
+}
