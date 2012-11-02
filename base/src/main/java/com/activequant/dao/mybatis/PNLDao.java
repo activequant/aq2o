@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.backoffice.PNL;
+import com.activequant.interfaces.dao.IPNLDao;
 
 /**
  * 

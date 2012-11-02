@@ -1,12 +1,5 @@
 package com.activequant.interfaces.dao;
 
-import com.activequant.dao.mybatis.IAccountDao;
-import com.activequant.dao.mybatis.IClearedTradeDao;
-import com.activequant.dao.mybatis.IClearerAccountSnapDao;
-import com.activequant.dao.mybatis.IPNLDao;
-import com.activequant.dao.mybatis.IPortfolioSnapDao;
-import com.activequant.dao.mybatis.ISubClearerAccountDao;
-import com.activequant.dao.mybatis.ISubClearerAccountSnapDao;
 
 public interface IDaoFactory {
 	ICountryDao countryDao();

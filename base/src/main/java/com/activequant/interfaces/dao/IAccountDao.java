@@ -1,7 +1,6 @@
-package com.activequant.dao.mybatis;
+package com.activequant.interfaces.dao;
 
 import com.activequant.domainmodel.backoffice.Account;
-import com.activequant.interfaces.dao.IEntityDao;
 
 public interface IAccountDao extends IEntityDao<Account>{
 

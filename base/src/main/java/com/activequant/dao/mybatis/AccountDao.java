@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.backoffice.Account;
+import com.activequant.interfaces.dao.IAccountDao;
 
 public class AccountDao extends GenericMapperDao<Account> implements IAccountDao {
 

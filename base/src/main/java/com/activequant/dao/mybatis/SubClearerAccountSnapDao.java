@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.backoffice.SubClearerAccountSnap;
+import com.activequant.interfaces.dao.ISubClearerAccountSnapDao;
 
 public class SubClearerAccountSnapDao extends AbstractSnapshotDao<SubClearerAccountSnap> implements ISubClearerAccountSnapDao {
 

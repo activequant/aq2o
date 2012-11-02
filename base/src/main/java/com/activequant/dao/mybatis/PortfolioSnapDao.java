@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.backoffice.PortfolioSnap;
+import com.activequant.interfaces.dao.IPortfolioSnapDao;
 
 public class PortfolioSnapDao extends AbstractSnapshotDao<PortfolioSnap> implements IPortfolioSnapDao {
 

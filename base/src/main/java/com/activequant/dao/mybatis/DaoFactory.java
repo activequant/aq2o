@@ -2,20 +2,27 @@ package com.activequant.dao.mybatis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.activequant.interfaces.dao.IAccountDao;
 import com.activequant.interfaces.dao.IAdjustedSeriesDateEntryDao;
+import com.activequant.interfaces.dao.IClearedTradeDao;
+import com.activequant.interfaces.dao.IClearerAccountSnapDao;
 import com.activequant.interfaces.dao.ICountryDao;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.dao.IOrderEventDao;
 import com.activequant.interfaces.dao.IOrderFillDao;
+import com.activequant.interfaces.dao.IPNLDao;
 import com.activequant.interfaces.dao.IPandSDao;
 import com.activequant.interfaces.dao.IPerformanceReportDao;
 import com.activequant.interfaces.dao.IPortfolioDao;
+import com.activequant.interfaces.dao.IPortfolioSnapDao;
 import com.activequant.interfaces.dao.IPositionDao;
 import com.activequant.interfaces.dao.IRegionDao;
 import com.activequant.interfaces.dao.IReportDao;
 import com.activequant.interfaces.dao.ISecurityChainDao;
+import com.activequant.interfaces.dao.ISubClearerAccountDao;
+import com.activequant.interfaces.dao.ISubClearerAccountSnapDao;
 import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 import com.activequant.interfaces.dao.IVenueDao;
 
