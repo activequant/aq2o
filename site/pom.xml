@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.activequant</groupId>
-	<artifactId>aq2o-site</artifactId>
+	<artifactId>aq2o-server-site</artifactId>
 	<packaging>jar</packaging>
 	<version>2.2-SNAPSHOT</version>
 	<name>ActiveQuant 2.o (AQ2o) - SITE</name>
@@ -38,7 +38,7 @@
 	<distributionManagement>
 		<site>
 			<id>aq-framework-site</id>
-			<url>scp://activequant.org/var/aq2o.activequant.org</url>
+			<url>scp://activequant.org/var/server.activequant.com</url>
 		</site>
 	</distributionManagement>
 
