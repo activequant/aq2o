@@ -1,0 +1,55 @@
+SOAP facade documentation
+
+    The SOAP facade of AQMS hosts a WSDL which can be used to create your SOAP service consumer. The following steps show how to link a .NET application to the SOAP facade, for example to write a data importer. 
+
+    For the sake of simplicity, this tutorial uses SharpDevelop. The steps are very similar to the one in MS VisualStudio. 
+
+* Create a new .NET solution
+
+[./images/soap_1.png] 
+
+    The screenshot above shows how the empty and new project looks like in SharpDevelop. 
+
+
+* Add the Web-Reference
+
+    Right-click on the References node in a project, in our case in <SOAP Test>. 
+
+[./images/soap_2.png] 
+
+
+* Enter WSDL URL 
+
+  
+    The AQMS server hosts also the WSDL, which you can reference and access via HTTP. Please enter the WSDL URL into the <Add Web Reference> dialog. Also name the reference and specify the namespace. 
+
+[./images/soap_3.png] 
+
+    When done, click <Add>.
+
+
+* That's how it should look like
+
+[./images/soap_4.png] 
+ 
+
+* Add the source code 
+
+    First, add the <using AQMS.MainService> directive. Then, in the <Main> method, instantiate the <MainService> and as an example call <mdiCount>. The code should look as in the screenshot below. 
+
+[./images/soap_5.png] 
+
+
+* Run the application
+
+    When you run the application, a console should open up. After a short moment, you should see a figure in your console. That's the result of a SOAP call to the server. 
+
+[./images/soap_6.png]     
+
+    If you made it so far: CONGRATULATIONS! 
+
+
+
+
+    
+

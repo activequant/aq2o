@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.activequant</groupId>
+	<artifactId>aq2o-server-site</artifactId>
+	<packaging>jar</packaging>
+	<version>2.2-SNAPSHOT</version>
+	<name>ActiveQuant 2.o (AQ2o) - SITE</name>
+	<url>http://activequant.org</url>
+	<description>Security trading related source code platform</description>
+	
+	<parent>
+	  <groupId>com.activequant</groupId>
+	  <artifactId>aq2o-trunk</artifactId>
+	  <version>2.2-SNAPSHOT</version>	  
+	</parent>
+	
+	<scm>
+		<connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
+		<developerConnection>scm:svn:svn://activequant.org/opt/repositories/aq2o/trunk</developerConnection>
+		<url>http://activequant.org/svn/aq2o/trunk</url>
+	</scm>
+	<licenses>
+		<license>
+			<name>Proprietary</name>
+			<url>http://aq2o.activequant.org</url>
+			<distribution>releases</distribution>
+			<comments>Free for academic and hobbyist use. Commercial use permitted under a fair use policy with licensing costs capped at 1 million EUR trading profits generated through ActiveQuant.</comments>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>ustaudinger</id>
+			<name>Ulrich Staudinger</name>
+			<email>ustaudinger@activequant.com</email>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<site>
+			<id>aq-framework-site</id>
+			<url>scp://activequant.org/var/server.activequant.com</url>
+		</site>
+	</distributionManagement>
+
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
+
+		<plugins>
+
+			<plugin>
+
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+				<dependencies>
+					<dependency><!-- add support for ssh/scp -->
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-ssh</artifactId>
+						<version>1.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0-beta-9</version>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<organization>
+		<name>ActiveQuant GmbH</name>
+		<url>http://www.activequant.com</url>
+	</organization>
+	<issueManagement>
+		<system>Redmine</system>
+		<url>http://developers.activequant.org/projects/aq2o/issues</url>
+	</issueManagement>
+</project>

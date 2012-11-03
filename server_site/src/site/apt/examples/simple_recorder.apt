@@ -1,0 +1,111 @@
+Simple recorder example
+
+	The following code shows you a very trivial recorder implementation. This code works with AQ 2.2, as we have 
+	Google's protocol buffer (and a marshaller) only from 2.2 onwards. 
+	
+	With minor modifications, it is possible to run a similar code with AQ 2.0 and AQ 2.1.
+
+
+
++------------+
+package com.activequant.examples;
+
+import java.util.Map;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.activequant.domainmodel.ETransportType;
+import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.TimeFrame;
+import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.archive.IArchiveWriter;
+import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.interfaces.utils.IEventListener;
+import com.activequant.messages.AQMessages;
+import com.activequant.messages.AQMessages.BaseMessage.CommandType;
+import com.activequant.messages.AQMessages.MarketDataSnapshotMessage;
+import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.InvalidProtocolBufferException;
+
+/**
+ * Very simple quote recorder. you need to subscribe from outside. 
+ * 
+ * @author GhostRider
+ * 
+ */
+public class SimpleQR {
+	private ITransportFactory transFac;
+	private MDSMarshaller marshal = new MDSMarshaller();
+	private ConfigLoader cl = new ConfigLoader();
+	private IArchiveFactory archiveFactory;
+	private IArchiveWriter iaw;
+
+	public SimpleQR() {
+		ApplicationContext appContext = new ClassPathXmlApplicationContext(
+				new String[] { "fwspring.xml" });
+		System.out.println("Starting up and fetching idf");
+		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+		archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
+		transFac = appContext.getBean("jmsTransport", ITransportFactory.class);
+		iaw = archiveFactory.getWriter(TimeFrame.RAW);
+	}
+
+	public void subscribe(MarketDataInstrument mdi)
+			throws TransportException {
+		transFac.getReceiver(ETransportType.MARKET_DATA, mdi.getId())
+				.getRawEvent().addEventListener(new IEventListener<byte[]>() {
+					public void eventFired(byte[] arg0) {
+						try {
+							AQMessages.BaseMessage bm = marshal
+									.demarshall(arg0);
+
+							if (bm.getType().equals(CommandType.MDS)) {
+								Map<FieldDescriptor, Object> map = bm
+										.getAllFields();
+								MarketDataSnapshotMessage mdsm = ((AQMessages.MarketDataSnapshotMessage) bm
+										.getExtension(AQMessages.MarketDataSnapshotMessage.cmd));
+								//
+								MarketDataSnapshot mds = marshal
+										.demarshall(mdsm);
+								process(mds);
+
+							}
+						} catch (InvalidProtocolBufferException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+
+	private void process(MarketDataSnapshot mds) {
+		if (mds.getBidPrices().length > 0)
+			iaw.write(mds.getMdiId(), mds.getTimeStamp(), "BID",
+					mds.getBidPrices()[0]);
+
+		if (mds.getBidSizes().length > 0)
+			iaw.write(mds.getMdiId(), mds.getTimeStamp(), "BID_SIZE",
+					mds.getBidSizes()[0]);
+
+		if (mds.getAskPrices().length > 0)
+			iaw.write(mds.getMdiId(), mds.getTimeStamp(), "ASK",
+					mds.getAskPrices()[0]);
+
+		if (mds.getAskSizes().length > 0)
+			iaw.write(mds.getMdiId(), mds.getTimeStamp(), "ASK_SIZE",
+					mds.getAskSizes()[0]);
+
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		new SimpleQR();
+	}
+
+}
++------------+

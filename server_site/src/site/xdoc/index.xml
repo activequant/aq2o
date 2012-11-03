@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+  <properties>
+    <title>Welcome to ActiveQuant 2.o</title>
+    <author email="ustaudinger@activequant.com">Ulrich Staudinger</author>
+  </properties>
+
+ 
+  <body>
+
+    <!-- The body of the document contains a number of sections -->
+    <section name="Welcome">
+      <p><img src="./images/7732680_s2.jpg" align="right" hspace="10"/></p>
+      <p><strong>The AQ MASTER SERVER is your one-stop-shop for everything financial (and nonfinancial) data.</strong></p>
+	<p>Use to store, retrieve and real-time relay: 
+	  <ul>
+	    <li>Instrument reference data, such as tick size, tick value, first and last trading dates</li>
+	    <li>Order fills and other order events</li>
+	    <li>Clearing account and subaccount values, such as total equity, currency, available margin, used margin</li>
+	    <li>Portfolio positions, not only current but also historical</li>
+	    <li>Time series data, such as NAV over time, price data, such as bid, ask, OHLC data</li>	    
+	  </ul>
+	  All out of the box. <strong>FOR FREE with full source code</strong>.	
+      </p>      
+      <p><strong> Download. Unpack. Run.</strong> <i>In less than 2 minutes*. Promise.</i> <a href="./two_minutes.html"><img align="top" src="./images/watch_video.png"/></a></p>
+      <p><small>* Depending on your internet speed.</small></p>
+    </section>	
+    
+    
+<section name="Interfacing to the server">
+          <p><img src="./images/aq_master_server_interfaces.png" align="left" hspace="10"/></p>
+    <p>
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget urna vitae leo condimentum pellentesque in eget eros. Nullam malesuada, elit vitae mattis ultrices, neque nisl posuere nisl, in scelerisque neque augue eget neque. Praesent vitae convallis felis. Proin sit amet augue sit amet turpis eleifend fermentum vel id enim. In ultricies fermentum mi, eget porttitor urna pulvinar sed. Curabitur sem neque, tristique in viverra eu, condimentum eget lacus. In quis leo sit amet purus cursus congue non id orci. Vivamus tortor nisl, consequat quis bibendum nec, pulvinar nec elit. Cras in eros at dui gravida rutrum. Suspendisse aliquet erat eu nulla mollis eu pretium neque molestie. Maecenas vel diam eget urna dapibus vulputate ac eu ante.
+  </p>
+  <p>
+    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
+    </p>  
+     <p>
+    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
+    </p>  
+    </section>
+
+    
+    <section name="Technical schema">
+      
+        <p><img src="./images/aq_master_server.png" align="left" hspace="10"/></p>
+    <p>
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget urna vitae leo condimentum pellentesque in eget eros. Nullam malesuada, elit vitae mattis ultrices, neque nisl posuere nisl, in scelerisque neque augue eget neque. Praesent vitae convallis felis. Proin sit amet augue sit amet turpis eleifend fermentum vel id enim. In ultricies fermentum mi, eget porttitor urna pulvinar sed. Curabitur sem neque, tristique in viverra eu, condimentum eget lacus. In quis leo sit amet purus cursus congue non id orci. Vivamus tortor nisl, consequat quis bibendum nec, pulvinar nec elit. Cras in eros at dui gravida rutrum. Suspendisse aliquet erat eu nulla mollis eu pretium neque molestie. Maecenas vel diam eget urna dapibus vulputate ac eu ante.
+  </p>
+  <p>
+    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
+    </p>  
+    </section>
+
+    
+    
+    <section name="Conceptual schema">
+          <p><img src="./images/server_schematic.png" align="left" hspace="10"/></p>
+    <p>
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget urna vitae leo condimentum pellentesque in eget eros. Nullam malesuada, elit vitae mattis ultrices, neque nisl posuere nisl, in scelerisque neque augue eget neque. Praesent vitae convallis felis. Proin sit amet augue sit amet turpis eleifend fermentum vel id enim. In ultricies fermentum mi, eget porttitor urna pulvinar sed. Curabitur sem neque, tristique in viverra eu, condimentum eget lacus. In quis leo sit amet purus cursus congue non id orci. Vivamus tortor nisl, consequat quis bibendum nec, pulvinar nec elit. Cras in eros at dui gravida rutrum. Suspendisse aliquet erat eu nulla mollis eu pretium neque molestie. Maecenas vel diam eget urna dapibus vulputate ac eu ante.
+  </p>
+  <p>
+    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
+    </p>  
+    </section>
+
+
+    
+
+  </body>
+
+</document>
+	

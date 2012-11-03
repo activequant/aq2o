@@ -1,0 +1,27 @@
+Minimal requirements
+
+  The minimal requirements to run the <ActiveQuant Master Server> are: 
+
+  * JRE 1.6
+
+  * 250 MB storage space
+
+  * 1.6 GHz single core processor
+
+  * 64 MB free RAM
+
+
+Preferred platform 
+  
+  * JRE 1.7
+
+  * dyna-scale processor farm
+
+  * infinite storage space
+
+  * infinite free RAM 
+
+  * <<LINUX>> or a BSD derivative. 
+
+
+
