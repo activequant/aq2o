@@ -1,0 +1,77 @@
+Setup instructions 
+  
+    This page shows you how to setup, start, stop and test the server. The entire process can be separated into six steps. 
+    
+    [[I]] Download the latest version
+    
+    [[I]] Unpack the installation 
+
+    [[I]] Review or modify the configuration file
+
+    [[I]] Start the server
+
+    [[I]] ... use it ... 
+  
+    [[I]] Stop the server
+
+    
+* Download the latest version
+
+    Grab the latest version from the {{{./download.html}download page}}. Store it to a new folder on your disc. 
+    
+* Unpack the installation 
+
+    Unzip the formerly downloaded file. You should end up with a folder structure like shown in the next picture. 
+
+[./images/folder_content.png]
+
+
+* Review or modify the configuration file
+
+    Open the configuration file <aq2server.properties>. It should look like the one shown next. 
+
+[./images/config_content.png]
+  
+
+* Start the server
+
+    First check that JAVA is installed properly. Do so by opening a new console and type <java>. You should see the command line parameters of <java>. 
+
+    Next, run the <runserver> script. For Linux and BSD, run <runserver.sh>, for Windows run <runserver.bat>. You should see the AQMS start screen. 
+
+
+[./images/start_screen.png]
+
+    You should see a line like this once the server has settled down. 
+
+[./images/start2.png]
+
+
+    Now, open a browser and surf to http://localhost:44444 and see if the server responds. 
+
+[./images/browser1.png]
+
+
+    
+    
+
+* ... use it ... 
+  
+    For details, consult the {{{./getting_data_in.html}storing and retrieving data}} page. 
+
+  
+* Stop the server
+
+    In the console where you started the AQMS, press <CTRL-C> to stop the server. Do not just close the console window. By pressing <CTRL-C>, you signal the server to shutdown - you give it time to gracefully store all data, which it might have in memory, to disc. 
+
+    
+
+
+    
+
+
+
+
+
+
+
