@@ -1,7 +1,0 @@
-Fee calculation
-
-	AQ supports plugging in FeeCalculators. These fee calculators have to implement the IFeeCalculator interface (see the JavaDocs). You can plug in your own fee calculator into the  OrderEventListener, as it is present in an abstract trade system. 
-	
-	By default, AQ includes an IBFeeCalculator implementation. More details see source code. 
-	
-	Contact {{{ustaudinger@activequant.com}Ulrich}} if you need help.    
