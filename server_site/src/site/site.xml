@@ -9,11 +9,11 @@
 		<src>images/logo.png</src>
 		<href>http://aq2o.activequant.org</href>
 	</bannerLeft>
- <skin>
+ <!-- skin>
     <groupId>com.activequant</groupId>
     <artifactId>site-skin</artifactId>
     <version>1.0-SNAPSHOT</version>
-  </skin>
+  </skin -->
 
 	<body>
 

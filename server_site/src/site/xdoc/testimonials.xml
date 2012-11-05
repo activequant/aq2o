@@ -14,20 +14,25 @@
 
     <section name="What our clients say ... ">
       <p><img src="./images/14664496_s_2.jpg" align="right" hspace="10"/></p>
-      
-      <p>We offer support to paying clients. We also offer customized tools around the <i>AQ Master Server</i>. 
-      Typical examples of short running projects are: </p>
-      <p>
-	<ul>
-	  <li>ETLs to transform the AQ database structure into something more human friendly, taking care of your needs. </li>
-	  <li>Writing a special importer for some proprietary data source</li>
-	  <li>Setting up the master server on a proper hadoop/hbase+clustered MySQL landscape</li>
-	</ul>
-      
-      </p>
+
+		<p>
+		  "<strong>I couldn't be happier with my ActiveQuant server.</strong> Its not just stable, its rock solid, easily coping with the 1500 messages a second we see in peaks. Data is quick and easy to access. The database is massively scaleable and the package doesnt have a huge hardware requirement, nor does it require you to purchase licenses from multiple vendors to run it. I looked at multiple alternatives to ActiveQuant, none could offer close to the same value proposition. Ulrich has my contact details, I'm happy to answer questions" - <i><strong>John F.</strong></i></p>
+		
+		<p>
+			"We are very pleased with the ActiveQuant server application. 
+			- quality, 
+			- stability
+			- scalability
+			- data amount 
+			- collaboration
+		</p>
+	  
+	  
+	  
+	 <subsection name="Inquiries">
       <p>Contact us for more information: <a href="mailto:sales@activequant.com">sales@activequant.com</a> or proceed 
 	to <a href="http://www.activequant.com">http://www.activequant.com</a>.</p>
-      
+      </subsection>
     </section>	
     
     

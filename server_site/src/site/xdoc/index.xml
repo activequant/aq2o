@@ -13,8 +13,10 @@
 
     <!-- The body of the document contains a number of sections -->
     <section name="Welcome">
-      <p><img src="./images/7732680_s2.jpg" align="right" hspace="10"/></p>
-      <p><strong>The AQ MASTER SERVER is your one-stop-shop for everything financial (and nonfinancial) data.</strong></p>
+      <!-- p><img src="./images/7732680_s2.jpg" align="right" hspace="10"/></p -->
+      <p><img src="./images/7732680_s2.jpg" align="right" hspace="10"/></p>	  
+      
+	  <p><strong>The AQ MASTER SERVER is your one-stop-shop for everything financial (and nonfinancial) data.</strong></p>
 	<p>Use to store, retrieve and real-time relay: 
 	  <ul>
 	    <li>Instrument reference data, such as tick size, tick value, first and last trading dates</li>
