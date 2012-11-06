@@ -202,6 +202,7 @@ public class LocalJettyServer {
 						String data = parameterMap.get("DATA").toString();
 						BufferedReader br2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes())));
 						String line = br2.readLine();
+						long lineCounter = 0; 
 						while(line!=null){
 							try{
 								String[] parts = line.split(",");
@@ -210,6 +211,7 @@ public class LocalJettyServer {
 								Double val = Double.parseDouble(parts[1]);
 								// 
 								iaw.write(seriesId, ts, field, val);
+								lineCounter ++; 
 							}
 							catch(Exception ex){
 								ex.printStackTrace();
@@ -217,6 +219,7 @@ public class LocalJettyServer {
 							line = br2.readLine();
 						}
 						iaw.commit();
+						log.info("Committed " + lineCounter + " lines to storage. ");
 					}
 				}
 
