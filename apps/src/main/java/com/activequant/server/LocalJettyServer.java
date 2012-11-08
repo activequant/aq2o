@@ -61,7 +61,7 @@ public class LocalJettyServer {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		LocalJettyServer s = new LocalJettyServer(44444);
+		LocalJettyServer s = new LocalJettyServer(44444, "localhost", "2181");
 		s.start();
 	}
 
@@ -170,12 +170,13 @@ public class LocalJettyServer {
 				Map<String, String> parameterMap = new HashMap<String, String>(); 
 				String currentPart = ""; 
 				while (l != null) {
-					System.out.println(l);
+					//System.out.println(l);
 					if(l.startsWith("-------------") ){
 						// next part
 						l = br.readLine();
 						if(l==null)break;
 						pname = l.substring(l.indexOf("\""));
+						
 						pname = pname.replaceAll("\"", "");
 						currentPart = ""; 
 						br.readLine();
@@ -186,6 +187,7 @@ public class LocalJettyServer {
 						if(!currentPart.equals(""))currentPart+="\n";
 						currentPart += l;
 						parameterMap.put(pname, currentPart);
+						log.debug("Updating map value of " + pname);
 					}
 					l = br.readLine();
 				}
@@ -220,6 +222,7 @@ public class LocalJettyServer {
 						}
 						iaw.commit();
 						log.info("Committed " + lineCounter + " lines to storage. ");
+						response.getWriter().println("Wrote "+lineCounter + " lines. ");
 					}
 				}
 
@@ -230,7 +233,7 @@ public class LocalJettyServer {
 			if (!fullyHandled) {
 				response.getWriter().println(instructions);
 			}
-
+			
 		}
 	}
 
