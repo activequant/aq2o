@@ -20,31 +20,31 @@ public interface GenericRowMapper {
     @Select("create table ${table} (created bigint not null, keyVal varchar(200) not null, fieldName varchar(200) not null, doubleVal double, longVal bigint, stringVal varchar(200))")
     void init(@Param("table") String table);
 
-    @Select("CREATE INDEX i1 on ${table} (keyVal, fieldName)")
+    @Select("CREATE INDEX i1 on ${table} (keyVal(255), fieldName(255))")
     void genIndex1(@Param("table") String table);
 
-    @Select("CREATE INDEX i2 on ${table} (keyVal)")
+    @Select("CREATE INDEX i2 on ${table} (keyVal(255))")
     void genIndex2(@Param("table") String table);
 
-    @Select("CREATE INDEX i3 on ${table} (keyVal, fieldName, doubleVal)")
+    @Select("CREATE INDEX i3 on ${table} (keyVal, fieldName(255), doubleVal)")
     void genIndex3(@Param("table") String table);
 
-    @Select("CREATE INDEX i4 on ${table} (keyVal, fieldName, stringVal)")
+    @Select("CREATE INDEX i4 on ${table} (keyVal, fieldName(255), stringVal(255))")
     void genIndex4(@Param("table") String table);
 
-    @Select("CREATE INDEX i5 on ${table} (keyVal, fieldName, longVal)")
+    @Select("CREATE INDEX i5 on ${table} (keyVal, fieldName(255), longVal)")
     void genIndex5(@Param("table") String table);
 
-    @Select("CREATE INDEX i6 on ${table} (fieldName, longVal)")
+    @Select("CREATE INDEX i6 on ${table} (fieldName(255), longVal)")
     void genIndex6(@Param("table") String table);
 
-    @Select("CREATE INDEX i7 on ${table} (fieldName, doubleVal)")
+    @Select("CREATE INDEX i7 on ${table} (fieldName(255), doubleVal)")
     void genIndex7(@Param("table") String table);
 
-    @Select("CREATE INDEX i8 on ${table} (fieldName, stringVal)")
+    @Select("CREATE INDEX i8 on ${table} (fieldName(255), stringVal)")
     void genIndex8(@Param("table") String table);
 
-    @Select("ALTER TABLE ${table} ADD PRIMARY KEY (fieldName, keyVal)")
+    @Select("ALTER TABLE ${table} ADD PRIMARY KEY (fieldName(255), keyVal(255))")
     void genKey9(@Param("table") String table);
 
     @Select("select * from ${table} where keyVal = #{keyValue} order by fieldName ASC")
