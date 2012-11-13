@@ -34,6 +34,8 @@ class HBaseBase {
             HTableDescriptor desc = new HTableDescriptor(tableName.getBytes());
             HColumnDescriptor col1 = new HColumnDescriptor("numbers".getBytes());
             desc.addFamily(col1);
+            HColumnDescriptor col2 = new HColumnDescriptor("fields".getBytes());
+            desc.addFamily(col2);
             admin.createTable(desc);
             boolean avail = admin.isTableAvailable(tableName.getBytes());
             log.info("HTable is available: " + avail);

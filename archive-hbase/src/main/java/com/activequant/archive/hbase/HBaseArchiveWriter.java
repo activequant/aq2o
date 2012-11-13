@@ -103,13 +103,21 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
 		assert (value != null);
 		String rowKey = seriesId + "_" + padded(timeStamp.toString());
 		Put p = new Put(rowKey.getBytes());
+		// 
 		p.add("numbers".getBytes(), key.getBytes(), Bytes.toBytes(value));
 		p.add("numbers".getBytes(), "ts".getBytes(),
 				Bytes.toBytes(timeStamp.getNanoseconds()));
+		
+		// also add the key to the series/key map. 
+		Put p2 = new Put(("FIELDS_"+seriesId).getBytes());
+		p2.add("fields".getBytes(), key.getBytes(), Bytes.toBytes(1));
+		
+		
 		// relatively expensive call. have to find a way around.
 		// maybe by using a special class.
 		synchronized (puts) {
 			puts.add(p);
+			puts.add(p2);
 		}
 
 	}
