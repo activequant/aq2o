@@ -277,18 +277,22 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.3</version>
+				<version>1.7</version>
 				<executions>
 					<execution>
-						<id>push</id>
+						<id>default-cli</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<!-- id>push</id -->
 						<!-- phase>package</phase -->
-            <goals>
-              <goal>run</goal>
-            </goals>
+						<!-- goals> <goal>run</goal> </goals -->
 
 						<configuration>
+							<!-- line=" -v target/${project.build.finalName}-bundle.zip ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant" 
+								/ -->
 
-							<tasks>
+							<target>
 								<echo message="Building distro zip." />
 
 								<!-- mkdir dir="target/site/distribution" / -->
@@ -300,34 +304,24 @@
 										prefix="aq2o" />
 									<zipfileset dir="src/main/scripts/" includes="**"
 										prefix="aq2o" />
+									<zipfileset dir="src/main/htmlroot" includes="**"
+										prefix="aq2o/htmlroot" />
 								</zip>
 								<echo message="Zipped. Pushing to SF" />
 								<exec executable="scp" output="scpROOT.dir">
 									<arg
-										line=" -v target/${project.build.finalName}-bundle.zip ustaudinger,activequant@frs.sourceforge.net:/home/frs/project/a/ac/activequant" />
+										line=" -v target/${project.build.finalName}-bundle.zip ustaudinger@activequant.com:/var/server.activequant.com/downloads" />
 								</exec>
 								<echo message="Done" />
 
 
-							</tasks>
+							</target>
 						</configuration>
 					</execution>
-					<!-- execution>
-						<id>compile-protoc</id>
-						<phase>generate-sources</phase>
-						<configuration>
-							<tasks>
-								<mkdir dir="target/generated-sources" />
-								<exec executable="protoc" failonerror="true">
-									<arg value="- -java_out=src/main/java" />
-									<arg value="src/main/proto/messages.proto" />
-								</exec>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution -->
+					<!-- execution> <id>compile-protoc</id> <phase>generate-sources</phase> 
+						<configuration> <tasks> <mkdir dir="target/generated-sources" /> <exec executable="protoc" 
+						failonerror="true"> <arg value="- -java_out=src/main/java" /> <arg value="src/main/proto/messages.proto" 
+						/> </exec> </tasks> </configuration> <goals> <goal>run</goal> </goals> </execution -->
 
 				</executions>
 
@@ -382,6 +376,12 @@
 			<groupId>com.activequant</groupId>
 			<artifactId>aq2o-archive-hbase</artifactId>
 			<version>2.2-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>servlet-api-2.5</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.oval</groupId>
