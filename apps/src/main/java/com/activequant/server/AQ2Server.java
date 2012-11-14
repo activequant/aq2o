@@ -54,15 +54,7 @@ public final class AQ2Server {
         properties.load(new FileInputStream("aq2server.properties"));
         log.info("Loaded.");
 
-        if (isTrue(properties, "soapserver.start")) {
-            log.info("Starting soap server ....");
-            ss = new LocalSoapServer(properties.getProperty("soapserver.hostname"), Integer.parseInt(properties.getProperty("soapserver.port")));
-            ss.start();
-            log.info("Starting soap server succeeded.");
-        } else {
-            log.info("Not starting soap server, as it has been disabled.");
-        }
-
+        // changed start order, as the DAO layer could require a running HSQLDB. 
         if (isTrue(properties, "hbase.start")) {
             log.info("Starting mighty HBase ....");
             new LocalHBaseCluster().start();
@@ -86,6 +78,16 @@ public final class AQ2Server {
         } else {
             log.info("Not starting HSQDLB server, as it has been disabled.");
         }
+        
+        if (isTrue(properties, "soapserver.start")) {
+            log.info("Starting soap server ....");
+            ss = new LocalSoapServer(properties.getProperty("soapserver.hostname"), Integer.parseInt(properties.getProperty("soapserver.port")));
+            ss.start();
+            log.info("Starting soap server succeeded.");
+        } else {
+            log.info("Not starting soap server, as it has been disabled.");
+        }
+
         if (isTrue(properties, "jetty.start")) {
             log.info("Starting JETTY ....");
             new LocalJettyServer(Integer.parseInt(properties.getProperty("jetty.port")), properties.getProperty("zookeeper.host", null), properties.getProperty("zookeeper.port", "2181")).start();

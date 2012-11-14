@@ -1,6 +1,7 @@
 package com.activequant.servicelayer.soap;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -16,7 +17,6 @@ import com.activequant.domainmodel.exceptions.InvalidDataException;
 import com.activequant.dto.ClearedTradeDto;
 import com.activequant.dto.ClearerAccountStatementDto;
 import com.activequant.dto.OrderFillDto;
-import com.activequant.dto.PortfolioDto;
 import com.activequant.dto.PositionDto;
 
 @WebService
@@ -47,14 +47,29 @@ public interface IMainService {
 
 	@WebMethod
 	public Instrument loadInstrument(
-			@WebParam(name = "PrimaryKey") String primaryKey);
+			@WebParam(name = "primaryKey") String primaryKey);
 
+	@WebMethod
+	public void storeInstrument(
+			@WebParam(name = "instrument")	Instrument instrument);
+	
+	
+	@WebMethod
+	public int randomNumber();
+
+	
 	@WebMethod
 	public int instrumentCount();
 
-	@WebMethod
+	@WebMethod	
 	public int mdiCount();
 
+	@WebMethod
+	public int add(@WebParam(name = "a")int a, @WebParam(name = "b")int b);
+
+	@WebMethod
+	public HashMap<String, Object> getSampleMap();
+	
 	@WebMethod
 	public double[][] getTimeSeries(
 			@WebParam(name = "seriesId") String seriesId,
@@ -65,7 +80,12 @@ public interface IMainService {
 
 	@WebMethod
 	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame,
-			long nanoSeconds, String key, Object value) throws IOException;
+			long nanoSeconds, String key, double value) throws IOException;
+	
+	@WebMethod
+	public void saveTimeSeriesValues(String seriesKey, TimeFrame timeFrame, String key, 
+			long[] nanoSeconds, double[] value) throws IOException;
+	
 
 	@WebMethod
 	public void storeKeyVal(@WebParam(name = "key") String key,
@@ -89,8 +109,13 @@ public interface IMainService {
 
 	@WebMethod
 	public void addPosition(PositionDto dto) throws Exception;
-
-
+	
+	@WebMethod
+	public PositionDto[] 
+			getPositions(
+					String clearingAccountId, 
+					String subClearingAccountId, 
+					String date8Time6) throws Exception; 
 
 	@WebMethod
 	public void addClearerAccountSnap(ClearerAccountStatementDto csdto)

@@ -1,3 +1,4 @@
+
 package com.activequant.servicelayer.soap;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import com.activequant.archive.TSContainer;
 import com.activequant.domainmodel.BloombergMarketDataInstrument;
+import com.activequant.domainmodel.Future;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
@@ -65,15 +67,16 @@ import com.activequant.utils.worker.WorkerThread;
 @WebService(endpointInterface = "com.activequant.servicelayer.soap.IMainService", serviceName = "MainService")
 @BindingType(SOAPBinding.SOAP11HTTP_BINDING)
 @MTOM(enabled = false)
+// 
+
 public class MainService implements IMainService {
 
 	private IInstrumentDao idao;
-	private IMarketDataInstrumentDao mdiDao; 
-	private ITradeableInstrumentDao tdiDao; 
+	private IMarketDataInstrumentDao mdiDao;
+	private ITradeableInstrumentDao tdiDao;
 	private IArchiveFactory archFac;
 	private IPerformanceReportDao perfDao;
 	private IReportDao reportDao;
-
 
 	private DtoToDomainConv converter = new DtoToDomainConv();
 	private final IOrderFillDao ofDao;
@@ -95,32 +98,52 @@ public class MainService implements IMainService {
 	private WorkerThread<PortfolioDto> workerThread2 = null;
 	private IPandSDao pandsDao;
 	private IPNLDao pnlDao;
-	// only for development purposes. 
+	// only for development purposes.
 	private Map<String, String> inMemoryKeyValMap = new HashMap<String, String>();
 
-	public MainService(IDaoFactory daoFactory, IArchiveFactory factory) {
+	public MainService(IDaoFactory daoFactory, IArchiveFactory factory) throws DaoException {
 		this.idao = daoFactory.instrumentDao();
 		this.archFac = factory;
 		this.perfDao = daoFactory.perfDao();
 		this.reportDao = daoFactory.reportDao();
-		this.tdiDao = daoFactory.tradeableDao(); 
+		this.tdiDao = daoFactory.tradeableDao();
 		this.mdiDao = daoFactory.mdiDao();
-		
-		
-		
+
 		ofDao = daoFactory.orderFillDao();
 		ctDao = daoFactory.clearedTradeDao();
 		accDao = daoFactory.accountDao();
 		pSnapDao = daoFactory.portfolioSnapDao();
 		pDao = daoFactory.portfolioDao();
 		subClrAccDao = daoFactory.subClearerAccountDao();
-		
+
 		caSnapDao = daoFactory.clearerAccountSnapDao();
-		
+
 		pnlDao = daoFactory.pnlDao();
 		pandsDao = daoFactory.pAndSDao();
-	
+
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+		// create the three test instruments
+		initTestData();
+	}
+
+	public void initTestData() throws DaoException {
+		Future f = new Future();
+		f.setCurrency("EUR");
+		f.setExchangeCode("EUR");
+		f.setDescription("TEST FDAX 2012/12");
+		f.setExpiry(20121217L);
+		f.setFirstTradingDate(20120317L);
+		f.setLastTradingDate(f.getExpiry());
+		f.setSettlementDate(f.getLastTradingDate());
+		f.setLotSize(1.0);
+		f.setTickSize(0.5);
+		f.setTickValue(12.5);
+		f.setShortName("TEST GXZ12");
+		f.setSymbolId("TEST DAX30");
+		this.idao.delete(f);
+		this.idao.create(f);
+		
 		
 	}
 
@@ -147,11 +170,12 @@ public class MainService implements IMainService {
 	}
 
 	public int mdiCount() {
-		return (int) (100 * Math.random());
+		return mdiDao.count();
 	}
 
-	public double[][] getTimeSeries(String seriesId, String column, TimeFrame timeFrame, String date8Time6Start,
-			String date8Time6End) throws Exception {
+	public double[][] getTimeSeries(String seriesId, String column,
+			TimeFrame timeFrame, String date8Time6Start, String date8Time6End)
+			throws Exception {
 
 		// format date...
 		// expected output = "yyyyMMddHHmmss.SSS"
@@ -159,49 +183,50 @@ public class MainService implements IMainService {
 		if (date8Time6Start.length() == "yyyyMMdd".length()) {
 			date8Time6Start += "000000.000";
 		}
-		if (date8Time6End.length() == "yyyyMMdd".length()) {
-			date8Time6End += "235959.999";
-		}
+		 if (date8Time6End.length() == "yyyyMMdd".length()) {
+		 date8Time6End += "235959.999";
+		 }
 		// (2) yyyyMMddHHmm
 		if (date8Time6Start.length() == "yyyyMMddHHmm".length()) {
 			date8Time6Start += "00.000";
 		}
-		if (date8Time6End.length() == "yyyyMMddHHmm".length()) {
-			date8Time6End += "59.999";
-		}
+		 if (date8Time6End.length() == "yyyyMMddHHmm".length()) {
+		 date8Time6End += "59.999";
+		 }
 		// (3) yyyyMMddHHmmss
 		if (date8Time6Start.length() == "yyyyMMddHHmmss".length()) {
 			date8Time6Start += ".000";
 		}
-		if (date8Time6End.length() == "yyyyMMddHHmmss".length()) {
-			date8Time6End += ".999";
-		}
+		 if (date8Time6End.length() == "yyyyMMddHHmmss".length()) {
+		 date8Time6End += ".999";
+		 }
 		// (4) yyyyMMddHHmmss.S
 		if (date8Time6Start.length() == "yyyyMMddHHmmss.S".length()) {
 			date8Time6Start += "00";
 		}
-		if (date8Time6End.length() == "yyyyMMddHHmmss.S".length()) {
-			date8Time6End += "99";
-		}
+		 if (date8Time6End.length() == "yyyyMMddHHmmss.S".length()) {
+		 date8Time6End += "99";
+		 }
 		// (5) yyyyMMddHHmmss.SS
 		if (date8Time6Start.length() == "yyyyMMddHHmmss.SS".length()) {
 			date8Time6Start += "0";
 		}
-		if (date8Time6End.length() == "yyyyMMddHHmmss.SS".length()) {
-			date8Time6End += "9";
-		}
+		 if (date8Time6End.length() == "yyyyMMddHHmmss.SS".length()) {
+		 date8Time6End += "9";
+		 }
 		// (5) yyyyMMddHHmmss.SSS
 		if (date8Time6Start.length() == "yyyyMMddHHmmss.SSS".length()) {
 		}
-		if (date8Time6End.length() == "yyyyMMddHHmmss.SSS".length()) {
-		}
+		 if (date8Time6End.length() == "yyyyMMddHHmmss.SSS".length()) {
+		 }
 
 		Date8Time6Parser p = new Date8Time6Parser();
 
 		TSContainer ts;
 		try {
 			ts = archFac.getReader(timeFrame).getTimeSeries(seriesId, column,
-					new TimeStamp(p.parse("" + date8Time6Start)), new TimeStamp(p.parse("" + date8Time6End)));
+					new TimeStamp(p.parse(date8Time6Start)),
+					new TimeStamp(p.parse(date8Time6End)));
 
 			// //////////// synthetic, custom fields.
 			double[][] ret = new double[ts.timeStamps.length][2];
@@ -220,14 +245,13 @@ public class MainService implements IMainService {
 		}
 	}
 
-	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame, long nanoSeconds, String key, Object value)
-			throws IOException {
+	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame,
+			long nanoSeconds, String key, double value) throws IOException {
 		IArchiveWriter w = archFac.getWriter(timeFrame);
 		w.write(seriesKey, new TimeStamp(nanoSeconds), key, (Double) value);
 		w.commit();
 	}
 
-	
 	/**
 	 * Stores something in-memory
 	 */
@@ -237,7 +261,7 @@ public class MainService implements IMainService {
 	}
 
 	/**
-	 * Fetches from the in-memory key-value store. 
+	 * Fetches from the in-memory key-value store.
 	 */
 	@Override
 	public String fetchKeyVal(String key) {
@@ -262,21 +286,33 @@ public class MainService implements IMainService {
 			e.printStackTrace();
 		}
 		return null;
+	
 	}
-
+	
+	@Override
+	public HashMap<String, Object> getSampleMap(){
+		HashMap<String, Object> ret = new HashMap<String, Object>();
+		ret.put("A", "B");
+		return ret; 
+	}
+	
+	@Override
+	public int add(int a, int b){
+		return a + b;  
+	}
+	
 	@Override
 	public String[] findMdiKeys(String regexPattern) {
 		try {
 			String[] ids = mdiDao.loadIDs();
 			Pattern p = Pattern.compile(regexPattern);
 			List<String> ret = new ArrayList<String>();
-			for(String id : ids)
-			{
-				if(p.matcher(id).matches())
+			for (String id : ids) {
+				if (p.matcher(id).matches())
 					ret.add(id);
 			}
-			return ret.toArray(new String[]{});
-			
+			return ret.toArray(new String[] {});
+
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
@@ -289,13 +325,12 @@ public class MainService implements IMainService {
 			String[] ids = idao.loadIDs();
 			Pattern p = Pattern.compile(regexPattern);
 			List<String> ret = new ArrayList<String>();
-			for(String id : ids)
-			{
-				if(p.matcher(id).matches())
+			for (String id : ids) {
+				if (p.matcher(id).matches())
 					ret.add(id);
 			}
-			return ret.toArray(new String[]{});
-			
+			return ret.toArray(new String[] {});
+
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
@@ -308,27 +343,22 @@ public class MainService implements IMainService {
 			String[] ids = tdiDao.loadIDs();
 			Pattern p = Pattern.compile(regexPattern);
 			List<String> ret = new ArrayList<String>();
-			for(String id : ids)
-			{
-				if(p.matcher(id).matches())
+			for (String id : ids) {
+				if (p.matcher(id).matches())
 					ret.add(id);
 			}
-			return ret.toArray(new String[]{});
-			
+			return ret.toArray(new String[] {});
+
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	
-
 	public double testCall() {
 		return (int) (100 * Math.random());
 	}
 
-	
-	
 	/**
 	 * adds an order fill.
 	 * 
@@ -377,7 +407,8 @@ public class MainService implements IMainService {
 	@Override
 	public void setSeriesValue(@WebParam(name = "portfolio") String portfolio,
 			@WebParam(name = "seriesName") String seriesName,
-			@WebParam(name = "timeStampInNanos") long timeStampInNanos, @WebParam(name = "value") double value) {
+			@WebParam(name = "timeStampInNanos") long timeStampInNanos,
+			@WebParam(name = "value") double value) {
 		String seriesId = "CUSTSERIES." + portfolio;
 		IArchiveWriter iaw = archFac.getWriter(TimeFrame.RAW);
 		iaw.write(seriesId, new TimeStamp(timeStampInNanos), seriesName, value);
@@ -411,7 +442,8 @@ public class MainService implements IMainService {
 						PortfolioSnap snap;
 						try {
 							snap = getSnapCache(sca.getId(), date8);
-							log.info("Adding position to snap (" + snap.getId() + "): " + p.toString());
+							log.info("Adding position to snap (" + snap.getId()
+									+ "): " + p.toString());
 							snap.addPosition(p);
 						} catch (ParseException e) {
 							e.printStackTrace();
@@ -419,13 +451,14 @@ public class MainService implements IMainService {
 					} catch (DaoException e1) {
 						e1.printStackTrace();
 					}
-					
+
 				}
 
 				@Override
 				public void queueEmpty() {
 					synchronized (portfolioSnapCache) {
-						Collection<PortfolioSnap> snaps = portfolioSnapCache.values();
+						Collection<PortfolioSnap> snaps = portfolioSnapCache
+								.values();
 						for (PortfolioSnap snap : snaps) {
 							log.info("Saving position snap ...");
 							// ... and update it in the database.
@@ -452,16 +485,17 @@ public class MainService implements IMainService {
 
 	}
 
-	private PortfolioSnap getSnapCache(String ownerId, Long date8) throws ParseException {
+	private PortfolioSnap getSnapCache(String ownerId, Long date8)
+			throws ParseException {
 		synchronized (portfolioSnapCache) {
 			String key = ownerId + "." + date8;
 			if (!portfolioSnapCache.containsKey(key)) {
 				TimeStamp when = new TimeStamp(sdf.parse(date8.toString()));
 				PortfolioSnap snap = new PortfolioSnap();
-				snap.setOwnerObjectId(ownerId);		
+				snap.setOwnerObjectId(ownerId);
 				snap.setTimeStampInNanoseconds(when.getNanoseconds());
 				snap.setCreationTime(date8);
-		
+
 				portfolioSnapCache.put(key, snap);
 			}
 			return portfolioSnapCache.get(key);
@@ -470,7 +504,8 @@ public class MainService implements IMainService {
 
 	private Map<String, PortfolioSnap> portfolioSnapCache = new HashMap<String, PortfolioSnap>();
 
-	private PortfolioSnap getSnapCache2(String ownerId, Long date8) throws ParseException {
+	private PortfolioSnap getSnapCache2(String ownerId, Long date8)
+			throws ParseException {
 		synchronized (portfolioSnapCache2) {
 			String key = ownerId + "." + date8;
 			if (!portfolioSnapCache2.containsKey(key)) {
@@ -478,7 +513,9 @@ public class MainService implements IMainService {
 				PortfolioSnap snap = new PortfolioSnap();
 				snap.setOwnerObjectId(ownerId);
 				snap = pSnapDao.loadSnapshot(snap.getNonUniqueID(), when);
-				if (snap == null || snap.getTimeStampInNanoseconds() != when.getNanoseconds()) {
+				if (snap == null
+						|| snap.getTimeStampInNanoseconds() != when
+								.getNanoseconds()) {
 					// ok, the most up-to-date snap is not our position's snap.
 					snap = new PortfolioSnap();
 					snap.setTimeStampInNanoseconds(when.getNanoseconds());
@@ -493,8 +530,11 @@ public class MainService implements IMainService {
 
 	private Map<String, PortfolioSnap> portfolioSnapCache2 = new HashMap<String, PortfolioSnap>();
 
-	private SubClearerAccount checkClearerAccount(@WebParam(name = "legalEntity") String legalEntity,
-			@WebParam(name = "accountId") String accountId, @WebParam(name = "subAccountId") String subAccountId) throws DaoException {
+	private SubClearerAccount checkClearerAccount(
+			@WebParam(name = "legalEntity") String legalEntity,
+			@WebParam(name = "accountId") String accountId,
+			@WebParam(name = "subAccountId") String subAccountId)
+			throws DaoException {
 		//
 		ClearerAccount ca = new ClearerAccount();
 		ca.setLegalEntity(legalEntity);
@@ -513,34 +553,35 @@ public class MainService implements IMainService {
 		return sca;
 	}
 
-
 	@Override
-	public void addClearerAccountSnap(ClearerAccountStatementDto csdto) throws InvalidDataException, DaoException{
+	public void addClearerAccountSnap(ClearerAccountStatementDto csdto)
+			throws InvalidDataException, DaoException {
 		//
 		ClearerAccountSnap c = converter.convert(csdto);
 		// create the snap.
 		caSnapDao.update(c);
 	}
 
-	
 	/**
 	 * 
 	 */
-	public void addPnS(String tradeableId, long date8, String clearingAccountId, String currency, Double netAmount) throws DaoException{
+	public void addPnS(String tradeableId, long date8,
+			String clearingAccountId, String currency, Double netAmount)
+			throws DaoException {
 		PandS p = new PandS();
 		p.setTradeableId(tradeableId);
 		p.setDate8(date8);
 		p.setClearingAccount(clearingAccountId);
 		p.setCurrency(currency);
 		p.setNetAmount(netAmount);
-		
+
 		pandsDao.delete(p);
-		pandsDao.create(p);		
+		pandsDao.create(p);
 	}
 
-
-	
-	public void addPNL(String tradeableId, long date8, String clearingAccountId, String currency, Double grossPNL, Double netPNL) throws DaoException{
+	public void addPNL(String tradeableId, long date8,
+			String clearingAccountId, String currency, Double grossPNL,
+			Double netPNL) throws DaoException {
 		PNL p = new PNL();
 		p.setTradeableId(tradeableId);
 		p.setDate8(date8);
@@ -552,8 +593,28 @@ public class MainService implements IMainService {
 		pnlDao.create(p);
 	}
 
-	
-	
-	
+	@Override
+	public void storeInstrument(Instrument instrument) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void saveTimeSeriesValues(String seriesKey, TimeFrame timeFrame,
+			String key, long[] nanoSeconds, double[] value) throws IOException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public PositionDto[] getPositions(String clearingAccountId,
+			String subClearingAccountId, String date8Time6) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int randomNumber() {
+		return (int) (100 * Math.random());
+	}
 
 }
