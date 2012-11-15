@@ -19,7 +19,7 @@ import org.apache.hadoop.hbase.zookeeper.MiniZooKeeperCluster;
  */
 public class LocalHBaseCluster {
 
-	private String hostName = "localhost";
+	private String hostName = "127.0.0.1";
 	private int port = 2181;
 	private String dataDir = "." + File.separator;
 

@@ -50,6 +50,9 @@ public final class AQ2Server {
     public AQ2Server() throws Exception {
         printBanner();
         log.info("Loading aq2server.properties from classpath.");
+        log.info("Telling Java to prefer IPV4 ...");
+        System.setProperty("java.net.preferIPv4Stack" , "true");
+
         Properties properties = new Properties();
         properties.load(new FileInputStream("aq2server.properties"));
         log.info("Loaded.");
