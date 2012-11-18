@@ -61,6 +61,7 @@ import com.activequant.interfaces.dao.IReportDao;
 import com.activequant.interfaces.dao.ISubClearerAccountDao;
 import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 import com.activequant.utils.Date8Time6Parser;
+import com.activequant.utils.MapToString;
 import com.activequant.utils.worker.Worker;
 import com.activequant.utils.worker.WorkerThread;
 
@@ -290,9 +291,18 @@ public class MainService implements IMainService {
 	}
 	
 	@Override
-	public HashMap<String, Object> getSampleMap(){
-		HashMap<String, Object> ret = new HashMap<String, Object>();
-		ret.put("A", "B");
+	public	String[][] getSampleMap(){
+		
+		Map<String, String> object = new HashMap<String, String>(); 
+		object.put("A","b");
+		String[][] ret = new String[object.keySet().size()][2];
+		int n = object.keySet().size();
+		Object[] keyArray = object.keySet().toArray();
+		Object[] valueArray = object.values().toArray();
+		for(int i =0;i<n;i++){
+			ret[i][0] = (String)keyArray[i];
+			ret[i][1] = (String)valueArray[i];			
+		}
 		return ret; 
 	}
 	

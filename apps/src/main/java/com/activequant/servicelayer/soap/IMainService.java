@@ -68,7 +68,7 @@ public interface IMainService {
 	public int add(@WebParam(name = "a")int a, @WebParam(name = "b")int b);
 
 	@WebMethod
-	public HashMap<String, Object> getSampleMap();
+	public String[][] getSampleMap();
 	
 	@WebMethod
 	public double[][] getTimeSeries(

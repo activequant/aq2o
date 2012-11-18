@@ -1,9 +1,12 @@
 package com.activequant.server;
 
 import java.io.FileInputStream;
+import java.net.InetAddress;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+
+import com.activequant.utils.RandomMarketDataGenerator;
 
 public final class AQ2Server {
 
@@ -29,7 +32,7 @@ public final class AQ2Server {
 "  \\/___/_/   \\/_____/   \\/_/\\/_/   \\/_/ \\/_/     \\/_/ \n" +
 "                                                      \n" +
 " __   __     ______     ______     ______   ______     ______\n" +    
-"/\\ -./  \\   /\\  __ \\   /\\  ___\\   /\\__  _\\ /\\  ___\\   /\\  == \\   \n" +
+"/\\ \\-./  \\   /\\  __ \\   /\\  ___\\   /\\__  _\\ /\\  ___\\   /\\  == \\   \n" +
 "\\ \\ \\-./\\ \\  \\ \\  __ \\  \\ \\___  \\  \\/_/\\ \\/ \\ \\  __\\   \\ \\  __<   \n" +
 " \\ \\_\\ \\ \\_\\  \\ \\_\\ \\_\\  \\/\\_____\\    \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ \n" +
 "  \\/_/  \\/_/   \\/_/\\/_/   \\/_____/     \\/_/   \\/_____/   \\/_/ /_/ \n" +
@@ -51,6 +54,7 @@ public final class AQ2Server {
         printBanner();
         log.info("Loading aq2server.properties from classpath.");
         log.info("Telling Java to prefer IPV4 ...");
+        log.info("LocalHost() says: " + InetAddress.getLocalHost().getCanonicalHostName());
         System.setProperty("java.net.preferIPv4Stack" , "true");
 
         Properties properties = new Properties();
@@ -60,7 +64,7 @@ public final class AQ2Server {
         // changed start order, as the DAO layer could require a running HSQLDB. 
         if (isTrue(properties, "hbase.start")) {
             log.info("Starting mighty HBase ....");
-            new LocalHBaseCluster().start();
+            new LocalHBaseCluster(properties, properties.getProperty("zookeeper.host", null), Integer.parseInt(properties.getProperty("zookeeper.port", "2181"))).start();
             log.info("Starting HBase succeeded.");
         } else {
             log.info("Not starting HBase server, as it has been disabled.");
@@ -97,6 +101,13 @@ public final class AQ2Server {
             log.info("Starting Jetty succeeded.");
         } else {
             log.info("Not starting JETTY server, as it has been disabled.");
+        }
+        if (isTrue(properties, "startRandDatGen")) {
+            log.info("Starting random market data generator....");
+            new RandomMarketDataGenerator();
+            log.info("Random market data generator started.");
+        } else {
+            log.info("Not starting random market data generator, as it has been disabled.");
         }
         
         

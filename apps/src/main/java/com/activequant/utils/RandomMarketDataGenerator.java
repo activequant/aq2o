@@ -2,6 +2,7 @@ package com.activequant.utils;
 
 import java.util.List;
 
+import org.snmp4j.agent.mo.snmp.SNMPv2MIB.SysOREntry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -15,16 +16,17 @@ import com.activequant.messages.Marshaller;
 public class RandomMarketDataGenerator {
 
 	int maxInstruments = 1000;
-	int delayBetweenSendingInMS = 1;
+	int delayBetweenSendingInMS = 5000;
 	IPublisher[] publishers; 
+	IPublisher textLine; 
 	ITransportFactory transFac;
 	Marshaller m = new Marshaller();
 	
 	public RandomMarketDataGenerator() throws TransportException{
 		// 		
-		maxInstruments = Integer.parseInt(System.getProperties().getProperty("MAX_INSTRUMENTS", "1000"));
+		maxInstruments = Integer.parseInt(System.getProperties().getProperty("MAX_INSTRUMENTS", "100"));
 		// 
-		delayBetweenSendingInMS = Integer.parseInt(System.getProperties().getProperty("SEND_DELAY", "1"));
+		delayBetweenSendingInMS = Integer.parseInt(System.getProperties().getProperty("SEND_DELAY", "5000"));
 		
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[]{"fwspring.xml"});
 		System.out.println("Starting up and fetching idf");
@@ -34,7 +36,7 @@ public class RandomMarketDataGenerator {
 		for(int i=0;i<maxInstruments;i++){
 			publishers[i] = transFac.getPublisher(ETransportType.MARKET_DATA,"INST"+i);
 		}
-		
+		textLine = transFac.getPublisher("TEXTCHANNEL");
 		
 		Runnable r = new Runnable(){
 			public void run(){
@@ -53,9 +55,12 @@ public class RandomMarketDataGenerator {
 									.toDoubleListSkipNull(new Double[]{Math.random()});
 							publishers[i].send(m.marshallToMDS("MDI"+i,
 									doubleListSkipNull, doubleListSkipNull2,
-									doubleListSkipNull3, doubleListSkipNull4));													
+									doubleListSkipNull3, doubleListSkipNull4));
+							
 							
 						}
+						textLine.send("TEST".getBytes());
+						System.out.println("Sent.");
 					}
 					catch(Exception ex){
 						ex.printStackTrace();
