@@ -35,10 +35,8 @@
 		</developer>
 	</developers>
 	<properties>
-		<jdk.version>1.6</jdk.version>
+		<jdk.version>1.7</jdk.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
-		<hadoop.version>1.0.3</hadoop.version>
-		<hbase.version>0.94.0</hbase.version>
 		<cxf.version>2.5.1</cxf.version>
 		<commons-logging-version>1.1.1</commons-logging-version>
 	</properties>
@@ -428,6 +426,11 @@
 			<artifactId>freemarker</artifactId>
 			<!-- Latest 2.3.x (not 2.4.x), at least 2.3.19 -->
 			<version>[2.3.19,2.4)</version>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.3</version>
 		</dependency>
 
 	</dependencies>

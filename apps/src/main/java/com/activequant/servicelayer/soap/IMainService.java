@@ -79,12 +79,12 @@ public interface IMainService {
 			@WebParam(name = "endTimeStamp") String date8End) throws Exception;
 
 	@WebMethod
-	public void saveTimeSeriesValue(String seriesKey, TimeFrame timeFrame,
-			long nanoSeconds, String key, double value) throws IOException;
+	public void saveTimeSeriesValue(@WebParam(name = "seriesKey") String seriesKey, @WebParam(name = "timeFrame") TimeFrame timeFrame,
+			@WebParam(name = "nanoseconds") long nanoSeconds, @WebParam(name = "field") String key, @WebParam(name = "value") double value) throws IOException;
 	
 	@WebMethod
-	public void saveTimeSeriesValues(String seriesKey, TimeFrame timeFrame, String key, 
-			long[] nanoSeconds, double[] value) throws IOException;
+	public void saveTimeSeriesValues(@WebParam(name = "seriesKey") String seriesKey, @WebParam(name = "timeFrame") TimeFrame timeFrame, @WebParam(name = "field") String key, 
+			@WebParam(name = "nanoseconds") long[] nanoSeconds, @WebParam(name = "values") double[] value) throws IOException;
 	
 
 	@WebMethod
@@ -98,17 +98,17 @@ public interface IMainService {
 	public double testCall() throws Exception;
 
 	@WebMethod
-	public void addOrderFill(OrderFillDto dto) throws Exception;
+	public void addOrderFill(@WebParam(name = "orderFillDto") OrderFillDto dto) throws Exception;
 
 	@WebMethod
-	public void addClearedTrade(ClearedTradeDto dto) throws Exception;
+	public void addClearedTrade(@WebParam(name = "clearedTradeDto") ClearedTradeDto dto) throws Exception;
 
 	@WebMethod
 	public void setSeriesValue(String portfolio, String seriesName,
 			long timeStampInNanos, double value);
 
 	@WebMethod
-	public void addPosition(PositionDto dto) throws Exception;
+	public void addPosition(@WebParam(name = "positionDto") PositionDto dto) throws Exception;
 	
 	@WebMethod
 	public PositionDto[] 
@@ -124,12 +124,12 @@ public interface IMainService {
 
 
 	@WebMethod
-	public void addPnS(String tradeableId, long date8,
-			String clearingAccountId, String currency, Double netAmount) throws DaoException;
+	public void addPnS(@WebParam(name = "tradeableId") String tradeableId, @WebParam(name = "date8")  long date8,
+			@WebParam(name = "clearingAccountId") String clearingAccountId, @WebParam(name = "currency") String currency, @WebParam(name = "netAmount") Double netAmount) throws DaoException;
 
 	@WebMethod
-	public void addPNL(String tradeableId, long date8,
-			String clearingAccountId, String currency, Double grossPNL,
-			Double netPNL) throws DaoException;
+	public void addPNL(@WebParam(name = "tradeableId") String tradeableId,@WebParam(name = "date8")  long date8,
+			@WebParam(name = "clearingAccountId") String clearingAccountId, @WebParam(name = "currency") String currency, @WebParam(name = "grossPnL") Double grossPNL,
+			@WebParam(name = "netPnL") Double netPNL) throws DaoException;
 
 }
