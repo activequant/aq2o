@@ -26,7 +26,7 @@ public class RandomMarketDataGenerator {
 		// 		
 		maxInstruments = Integer.parseInt(System.getProperties().getProperty("MAX_INSTRUMENTS", "100"));
 		// 
-		delayBetweenSendingInMS = Integer.parseInt(System.getProperties().getProperty("SEND_DELAY", "5000"));
+		delayBetweenSendingInMS = Integer.parseInt(System.getProperties().getProperty("SEND_DELAY", "2500"));
 		
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[]{"fwspring.xml"});
 		System.out.println("Starting up and fetching idf");

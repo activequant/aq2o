@@ -77,7 +77,13 @@ public final class AQ2Server {
         } else {
             log.info("Not starting JMS server, as it has been disabled.");
         }
-        
+        if (isTrue(properties, "startRandDatGen")) {
+            log.info("Starting random market data generator....");
+            //new RandomMarketDataGenerator();
+            log.info("Random market data generator started.");
+        } else {
+            log.info("Not starting random market data generator, as it has been disabled.");
+        }
         if (isTrue(properties, "hsqldb.start")) {
             log.info("Starting HSQLDB ....");
             new LocalHSQLDBServer().start(Integer.parseInt(properties.getProperty("hsqldb.port")));
@@ -102,13 +108,7 @@ public final class AQ2Server {
         } else {
             log.info("Not starting JETTY server, as it has been disabled.");
         }
-        if (isTrue(properties, "startRandDatGen")) {
-            log.info("Starting random market data generator....");
-            new RandomMarketDataGenerator();
-            log.info("Random market data generator started.");
-        } else {
-            log.info("Not starting random market data generator, as it has been disabled.");
-        }
+        
         
         
         

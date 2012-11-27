@@ -40,6 +40,9 @@ public class LocalJMSServer {
     }
     public static void main(String[] args) throws NumberFormatException, Exception{
     	LocalJMSServer t = new LocalJMSServer();
+    	if(args.length==0){
+    		args = new String[]{"localhost", "61616"};
+    	}
     	t.start(args[0], Integer.parseInt(args[1]));
     	t.runKeepaliveThread();        
     }

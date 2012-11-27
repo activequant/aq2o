@@ -43,6 +43,8 @@ public class LocalJettyServer {
 	private int port;
 	private IArchiveFactory archFactory;
 	private Logger log = Logger.getLogger(LocalJettyServer.class);
+	// the actual jetty server instance. 
+	private Server server; 
 
 	public LocalJettyServer(int port, String zookeeper, String zookeeperPort) {
 		this.port = port;
@@ -51,6 +53,8 @@ public class LocalJettyServer {
 					Integer.parseInt(zookeeperPort));
 		}
 	}
+
+	
 
 	public LocalJettyServer(int port) {
 		this.port = port;
@@ -70,21 +74,26 @@ public class LocalJettyServer {
 
 	public void start() throws Exception {
 		log.info("Starting new AQ jetty server.");
-		Server server = new Server();
+		// instantiating the server. 
+		server = new Server();
 		Connector connector = new SocketConnector();
 		connector.setPort(port);
 		server.setConnectors(new Connector[] { connector });
 
+		// instantiate a local request handler. 
 		Handler handler = new RequestHandler();
 
+		// 
 		ResourceHandler resource_handler = new ResourceHandler();
 		resource_handler.setWelcomeFiles(new String[] { "index.html" });
 		resource_handler.setResourceBase("htmlroot");
 
+		// 
 		HandlerList handlers = new HandlerList();
 		handlers.setHandlers(new Handler[] { handler, resource_handler });
 		server.setHandler(handlers);
 
+		// 
 		server.start();
 		server.join();
 	}
