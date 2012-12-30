@@ -24,10 +24,10 @@
    	<p>This project is an open source project, but not free software, but it is provided free of charge to academics and hobbyists. You could also say it is an open core software. We provide various commercial services around this open core.</p>
    	<p><strong>RESPECT OUR <a href="license.html">LICENSE</a>.</strong></p> 
 	<p>Our people are available for consulting, please contact <a href="mailto:ustaudinger@activequant.com">Ulrich</a> to get in touch with us to make your security trading happen.</p>	
-    
-    <p><strong>WATCH IT GROW! Have you already seen our FPGA hardware? Check it out.</strong></p>
     <p>FOLLOW OUR ATOM/RSS FEED: <a href="http://developers.activequant.org:3000/projects/aq2o/news.atom?key=c3b3aa299eac63a3143dd453d42302ef2090d550">AQ DEV RSS FEED</a></p>
-    <p><a href="http://fpga.activequant.com/"><img src="./images/ad1.png"/></a></p>
+    
+    <!-- p><strong>WATCH IT GROW! Have you already seen our FPGA hardware? Check it out.</strong></p>
+    <p><a href="http://fpga.activequant.com/"><img src="./images/ad1.png"/></a></p -->
     </section>
 	
 	
@@ -36,7 +36,7 @@
 	
 
     <section name="Typical use cases">
-    <p><img src="./images/comic.gif" align="left" hspace="10"/></p>
+    <!-- p><img src="./images/comic.gif" align="left" hspace="10"/></p -->
     <p>
 	Typical use cases for this project include recording large volume timeseries, managing financial reference data and other information. 
 	You can also backtest and run trading systems in production.  
