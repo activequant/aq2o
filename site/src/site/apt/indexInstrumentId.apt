@@ -1,0 +1,11 @@
+In general ...
+
+      ... we distinguish between an instrument, data feed instrument and traded instrument. 
+      One instrument can be available from multiple data feeds and multiple trading venues. 
+      Data feed and trading venue are two separate entities. Trading venues are not the same as 
+      data feed locations, for example Bloomberg and EUREX. Nonetheless, a trading venue could 
+      also provide a market data feed, in which case we would have a data feed entry for EUREX next to 
+      EUREX as a trading venue for an instrument.    
+
+      In order to fetch information from the archive, you have to specify which _specific_ market data instrument you would 
+      like to load. 

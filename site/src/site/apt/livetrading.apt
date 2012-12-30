@@ -1,0 +1,65 @@
+Live trading 
+
+	This page is work in progress. Documentation will follow at one point. 
+	
+	
+
+
+   	Key class is AbstractTSBase, from which all trading systems are derived. The following diagram shows some key components in it. 
+	
+	{{{http://developers.activequant.org/projects/aq2o/repository/changes/trunk/base/src/main/java/com/activequant/trading/AbstractTSBase.java}AbstractTSBase}}
+
+[./images/scan1.jpg]	
+
+	Inside AbstractTSBase you'll find, among other things, TableModels and TableViz. 
+
+[./images/abstract_ts_base.png]
+
+
+	A key method in AbstractTSBase is process(StreamEvent), shown below. This method delegates on to internal other methods. You can override this method and plug in your own StreamEvent processors. If you do so, don't forget to call super.process(..) in your overridden method. 
+
++-------------+
+	@Override
+	public void process(StreamEvent se) {
+		if (se instanceof Tick) {
+			process((Tick) se);
+		} else if (se instanceof MarketDataSnapshot) {
+			process((MarketDataSnapshot) se);
+		} else if (se instanceof PositionEvent) {
+			process((PositionEvent) se);
+			// log it to audit, too.
+			auditLog(se.getTimeStamp(), se.toString());
+		} else if (se instanceof OrderStreamEvent) {
+			process((OrderStreamEvent) se);
+			// log it to audit, too.
+			auditLog(se.getTimeStamp(), ((OrderStreamEvent) se).getOe()
+					.toString());
+		} else if (se instanceof InformationalEvent) {
+			auditLog(se.getTimeStamp(), ((InformationalEvent) se).getText());
+		}
+		// TimeStreamEvents should be handled always.
+		if (se instanceof TimeStreamEvent) {
+			process((TimeStreamEvent) se);
+		}
+	}
++-------------+
+
+
+	Have a look at the example code for a simple moving average trade system: 
+	
+	{{{http://developers.activequant.org/projects/aq2o/repository/changes/trunk/base/src/main/java/com/activequant/trading/systems/sma/SMATest.java}Simple System Test}}
+	
+	{{{http://developers.activequant.org/projects/aq2o/repository/entry/trunk/base/src/main/java/com/activequant/trading/systems/sma/SimpleMovingAverage.java}Simple moving average implementation}}
+
+
+Key structures 
+	
+	Certain key structures are used throughout ActiveQuant. A noncomplete list is: 
+	
+	* IOrderTracker - an order tracker is your entry to submitting, cancelling or updating orders. You can get an order tracker from an exchange object's prepareOrder method. 
+	
+	* Order - different types exist
+	
+	* Portfolio - the portfolio class is a basic position keeping class. It is very convenient to store and maintain a view on present positions. 
+
+	
