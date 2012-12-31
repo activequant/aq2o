@@ -24,6 +24,7 @@ import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.handler.AbstractHandler;
 import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.handler.ResourceHandler;
+import org.mortbay.jetty.servlet.DefaultServlet;
 
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.hbase.HBaseArchiveFactory;
@@ -43,8 +44,8 @@ public class LocalJettyServer {
 	private int port;
 	private IArchiveFactory archFactory;
 	private Logger log = Logger.getLogger(LocalJettyServer.class);
-	// the actual jetty server instance. 
-	private Server server; 
+	// the actual jetty server instance.
+	private Server server;
 
 	public LocalJettyServer(int port, String zookeeper, String zookeeperPort) {
 		this.port = port;
@@ -53,8 +54,6 @@ public class LocalJettyServer {
 					Integer.parseInt(zookeeperPort));
 		}
 	}
-
-	
 
 	public LocalJettyServer(int port) {
 		this.port = port;
@@ -74,26 +73,27 @@ public class LocalJettyServer {
 
 	public void start() throws Exception {
 		log.info("Starting new AQ jetty server.");
-		// instantiating the server. 
+		// instantiating the server.
 		server = new Server();
 		Connector connector = new SocketConnector();
 		connector.setPort(port);
 		server.setConnectors(new Connector[] { connector });
 
-		// instantiate a local request handler. 
+		// instantiate a local request handler.
 		Handler handler = new RequestHandler();
 
-		// 
+		//
 		ResourceHandler resource_handler = new ResourceHandler();
 		resource_handler.setWelcomeFiles(new String[] { "index.html" });
 		resource_handler.setResourceBase("htmlroot");
 
-		// 
+	
+		//
 		HandlerList handlers = new HandlerList();
 		handlers.setHandlers(new Handler[] { handler, resource_handler });
 		server.setHandler(handlers);
 
-		// 
+		//
 		server.start();
 		server.join();
 	}
@@ -193,7 +193,7 @@ public class LocalJettyServer {
 				Map<String, String> parameterMap = new HashMap<String, String>();
 				String currentPart = "";
 				while (l != null) {
-					System.out.println(l);
+					// System.out.println(l);
 					if (l.startsWith("-------------")) {
 						// next part
 						l = br.readLine();
@@ -209,7 +209,8 @@ public class LocalJettyServer {
 					}
 					if (!pname.equals("")) {
 						String current = parameterMap.get(pname);
-						if(pname.equals("DATA"))l += "\n";
+						if (pname.equals("DATA"))
+							l += "\n";
 						if (current != null)
 							current += l;
 						else
@@ -253,6 +254,9 @@ public class LocalJettyServer {
 												.parseDouble(parts[1]);
 										//
 										iaw.write(seriesId, ts, field, val);
+										log.info("Writing " + seriesId + " / "
+												+ ts + " / " + field + " /"
+												+ val);
 										lineCounter++;
 									}
 								}

@@ -79,7 +79,7 @@ public final class AQ2Server {
         }
         if (isTrue(properties, "startRandDatGen")) {
             log.info("Starting random market data generator....");
-            //new RandomMarketDataGenerator();
+            new RandomMarketDataGenerator();
             log.info("Random market data generator started.");
         } else {
             log.info("Not starting random market data generator, as it has been disabled.");
