@@ -49,27 +49,15 @@ public class DaoFactory implements IDaoFactory {
     private final IOrderEventDao orderEventDao;
     
     // new interfaces. 
-    @Autowired
-    private IOrderFillDao orderFillDao;
-    
-	@Autowired
-    private IPandSDao pAndSDao; 
-	@Autowired
-	private IAccountDao accountDao;
-	
-
-	@Autowired
-	private IClearedTradeDao clearedTradeDao;
-	@Autowired
-	private IClearerAccountSnapDao clearerAccountSnapDao;
-	@Autowired
-	private IPNLDao pnlDao;
-	@Autowired
-	private IPortfolioSnapDao portfolioSnapDao;
-	@Autowired
-	private ISubClearerAccountDao subClearerAccountDao;
-	@Autowired
-	private ISubClearerAccountSnapDao subClearerAccountSnapDao; 
+    private final IOrderFillDao orderFillDao;
+    private final IPandSDao pAndSDao; 	
+	private final IAccountDao accountDao;
+	private final IClearedTradeDao clearedTradeDao;	
+	private final IClearerAccountSnapDao clearerAccountSnapDao;	
+	private final IPNLDao pnlDao;	
+	private final IPortfolioSnapDao portfolioSnapDao;	
+	private final ISubClearerAccountDao subClearerAccountDao;	
+	private final ISubClearerAccountSnapDao subClearerAccountSnapDao; 
 	
     
     
@@ -77,7 +65,11 @@ public class DaoFactory implements IDaoFactory {
     public DaoFactory(ICountryDao countryDao, IRegionDao regionDao, IInstrumentDao instrDao, IVenueDao venueDao,
             ITradeableInstrumentDao tradInstDao, IMarketDataInstrumentDao mdiDao, IPositionDao positionDao,
             IPortfolioDao portfolioDao, ISecurityChainDao securityChainDao, IAdjustedSeriesDateEntryDao aD, 
-            IPerformanceReportDao perfReportDao, IReportDao reportDao, IOrderEventDao orderEventDao) {
+            IPerformanceReportDao perfReportDao, IReportDao reportDao, IOrderEventDao orderEventDao, 
+            IOrderFillDao orderFillDao, IPandSDao pAndSDao, IAccountDao accountDao, IClearedTradeDao clearedTradeDao,
+            IClearerAccountSnapDao clearerAccountSnapDao, IPNLDao pnlDao, IPortfolioSnapDao portfolioSnapDao,
+            ISubClearerAccountDao subClearerAccountDao, ISubClearerAccountSnapDao subClearerAccountSnapDao
+    		) {
         this.countryDao = countryDao;
         this.regionDao = regionDao;
         this.instrumentDao = instrDao;
@@ -91,6 +83,16 @@ public class DaoFactory implements IDaoFactory {
         this.perfReportDao = perfReportDao;
         this.reportDao = reportDao; 
         this.orderEventDao = orderEventDao; 
+        // 
+        this.orderFillDao = orderFillDao; 
+        this.pAndSDao = pAndSDao; 
+        this.accountDao = accountDao; 
+        this.clearedTradeDao = clearedTradeDao; 
+        this.clearerAccountSnapDao = clearerAccountSnapDao; 
+        this.pnlDao = pnlDao;
+        this.portfolioSnapDao = portfolioSnapDao; 
+        this.subClearerAccountDao = subClearerAccountDao;
+        this.subClearerAccountSnapDao = subClearerAccountSnapDao; 
     }
 
     public ICountryDao countryDao() {

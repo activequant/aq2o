@@ -12,5 +12,5 @@ public enum ETransportType {
     /**
      * transport can be of type reference data or market data.
      */
-    REF_DATA, MARKET_DATA, TRAD_DATA, RISK_DATA, TIME, INFORMATIONAL;
+    REF_DATA, MARKET_DATA, TRAD_DATA, RISK_DATA, TIME, INFORMATIONAL, CONTROL;
 }
