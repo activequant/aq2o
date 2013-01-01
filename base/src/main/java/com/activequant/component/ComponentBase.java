@@ -22,7 +22,7 @@ public abstract class ComponentBase {
 	protected final Logger log = Logger.getLogger(ComponentBase.class);
 	private final String name; 
 
-	public ComponentBase(String name, ITransportFactory transFac) throws TransportException {
+	public ComponentBase(String name, ITransportFactory transFac) throws Exception {
 		this.transFac = transFac;
 		this.name = name; 
 		this.compML = new ComponentMessagingLayer(transFac);
@@ -39,6 +39,8 @@ public abstract class ComponentBase {
 				}
 			}
 		}, 2 * 60 * 1000, 2 * 60 * 1000);
+		heartbeat();
+		sendStatus("Constructed.");
 	}
 
 	public String getName(){return name;}
@@ -47,8 +49,8 @@ public abstract class ComponentBase {
 		compML.sendHeartbeat();
 	}
 	
-	protected void sendStatus(String message){
-		
+	protected void sendStatus(String message) throws TransportException, Exception{
+		compML.sendStatus(message);
 	}
 	
 }
