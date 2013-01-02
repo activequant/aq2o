@@ -4,17 +4,12 @@ import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.proxy.ProxyConnector;
 
 public class LocalJMSServer {
-    private BrokerService broker;
-
-    
-    
+    private BrokerService broker;    
     public void start(String hostname, int port) throws Exception{
         broker = new BrokerService();
         broker.setUseJmx(false);        
         broker.addConnector("tcp://" + hostname + ":" + port);     
-        broker.addConnector("stomp://"+hostname+":"+(port+2));
-        
-        
+        broker.addConnector("stomp://"+hostname+":"+(port+2));        
         broker.start();
     }
     

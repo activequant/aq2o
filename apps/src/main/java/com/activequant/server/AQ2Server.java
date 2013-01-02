@@ -2,11 +2,15 @@ package com.activequant.server;
 
 import java.io.FileInputStream;
 import java.net.InetAddress;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.utils.RandomMarketDataGenerator;
+import com.activequant.interfaces.transport.ITransportFactory;
+
 
 public final class AQ2Server {
 
@@ -61,6 +65,18 @@ public final class AQ2Server {
         properties.load(new FileInputStream("aq2server.properties"));
         log.info("Loaded.");
 
+        // track back for statistical reasons.  
+        if (isFalse(properties, "skipTrackback")) {
+        	try{
+        		URL u = new URL("http://www.zugtrader.com/thanks.html");
+        		u.openStream();        		
+        	}
+        	catch(RuntimeException ex){}
+        	catch(Exception ex){}
+        }
+        
+        
+       
         // changed start order, as the DAO layer could require a running HSQLDB. 
         if (isTrue(properties, "hbase.start")) {
             log.info("Starting mighty HBase ....");
@@ -79,7 +95,10 @@ public final class AQ2Server {
         }
         if (isTrue(properties, "startRandDatGen")) {
             log.info("Starting random market data generator....");
-            new RandomMarketDataGenerator();
+            ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[]{"fwspring.xml"});
+    		System.out.println("Starting up and fetching idf");
+    		ITransportFactory transFac = appContext.getBean(ITransportFactory.class);		    		
+            new RandomMarketDataGenerator(transFac);
             log.info("Random market data generator started.");
         } else {
             log.info("Not starting random market data generator, as it has been disabled.");
@@ -101,6 +120,7 @@ public final class AQ2Server {
             log.info("Not starting soap server, as it has been disabled.");
         }
 
+        // 
         if (isTrue(properties, "jetty.start")) {
             log.info("Starting JETTY ....");
             new LocalJettyServer(Integer.parseInt(properties.getProperty("jetty.port")), properties.getProperty("zookeeper.host", null), properties.getProperty("zookeeper.port", "2181")).start();
@@ -109,9 +129,7 @@ public final class AQ2Server {
             log.info("Not starting JETTY server, as it has been disabled.");
         }
         
-        
-        
-        
+        // 
         while (runFlag) {
             Thread.sleep(250);
         }
@@ -119,6 +137,10 @@ public final class AQ2Server {
 
     private boolean isTrue(Properties properties, String key) {
         return properties.containsKey(key) && properties.getProperty(key).equals("true");
+    }
+    
+    private boolean isFalse(Properties properties, String key) {
+        return (!properties.containsKey(key)) ||  properties.getProperty(key).equals("false");
     }
     
     public void stop(){

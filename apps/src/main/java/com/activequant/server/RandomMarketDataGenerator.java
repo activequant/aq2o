@@ -1,4 +1,4 @@
-package com.activequant.utils;
+package com.activequant.server;
 
 import java.util.List;
 
@@ -6,14 +6,16 @@ import org.snmp4j.agent.mo.snmp.SNMPv2MIB.SysOREntry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.activequant.component.ComponentBase;
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.interfaces.transport.IPublisher;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.messages.AQMessages;
 import com.activequant.messages.Marshaller;
+import com.activequant.utils.ArrayUtils;
 
-public class RandomMarketDataGenerator {
+public class RandomMarketDataGenerator extends ComponentBase{
 
 	int maxInstruments = 1000;
 	int delayBetweenSendingInMS = 5000;
@@ -22,15 +24,14 @@ public class RandomMarketDataGenerator {
 	ITransportFactory transFac;
 	Marshaller m = new Marshaller();
 	
-	public RandomMarketDataGenerator() throws TransportException{
+	public RandomMarketDataGenerator(ITransportFactory transFac) throws Exception{
+		super("RandomDataGenerator", transFac);
 		// 		
 		maxInstruments = Integer.parseInt(System.getProperties().getProperty("MAX_INSTRUMENTS", "100"));
 		// 
 		delayBetweenSendingInMS = Integer.parseInt(System.getProperties().getProperty("SEND_DELAY", "2500"));
 		
-		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[]{"fwspring.xml"});
-		System.out.println("Starting up and fetching idf");
-		transFac = appContext.getBean("jmsTransport", ITransportFactory.class);				
+				
 		
 		publishers = new IPublisher[maxInstruments];
 		for(int i=0;i<maxInstruments;i++){
@@ -72,7 +73,4 @@ public class RandomMarketDataGenerator {
 		t.start();
 	}
 	
-	public static void main(String[] args) throws TransportException{
-		new RandomMarketDataGenerator();
-	}		
 }
