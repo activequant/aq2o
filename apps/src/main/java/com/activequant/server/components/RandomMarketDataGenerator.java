@@ -1,4 +1,4 @@
-package com.activequant.server;
+package com.activequant.server.components;
 
 import java.util.List;
 
@@ -15,62 +15,75 @@ import com.activequant.messages.AQMessages;
 import com.activequant.messages.Marshaller;
 import com.activequant.utils.ArrayUtils;
 
-public class RandomMarketDataGenerator extends ComponentBase{
+public class RandomMarketDataGenerator extends ComponentBase {
 
 	int maxInstruments = 1000;
 	int delayBetweenSendingInMS = 5000;
-	IPublisher[] publishers; 
-	IPublisher textLine; 
+	IPublisher[] publishers;
+	IPublisher textLine;
 	ITransportFactory transFac;
 	Marshaller m = new Marshaller();
-	
-	public RandomMarketDataGenerator(ITransportFactory transFac) throws Exception{
+
+	public RandomMarketDataGenerator(ITransportFactory transFac)
+			throws Exception {
 		super("RandomDataGenerator", transFac);
-		// 		
-		maxInstruments = Integer.parseInt(System.getProperties().getProperty("MAX_INSTRUMENTS", "100"));
-		// 
-		delayBetweenSendingInMS = Integer.parseInt(System.getProperties().getProperty("SEND_DELAY", "2500"));
-		
-				
-		
+		//
+		maxInstruments = Integer.parseInt(System.getProperties().getProperty(
+				"MAX_INSTRUMENTS", "100"));
+		//
+		delayBetweenSendingInMS = Integer.parseInt(System.getProperties()
+				.getProperty("SEND_DELAY", "2500"));
+
 		publishers = new IPublisher[maxInstruments];
-		for(int i=0;i<maxInstruments;i++){
-			publishers[i] = transFac.getPublisher(ETransportType.MARKET_DATA,"INST"+i);
+		for (int i = 0; i < maxInstruments; i++) {
+			publishers[i] = transFac.getPublisher(ETransportType.MARKET_DATA,
+					"INST" + i);
 		}
 		textLine = transFac.getPublisher("TEXTCHANNEL");
-		
-		Runnable r = new Runnable(){
-			public void run(){
-				while(true){
-					try{
+
+		Runnable r = new Runnable() {
+			public void run() {
+				while (true) {
+					try {
 						Thread.sleep(delayBetweenSendingInMS);
-						for(int i=0;i<maxInstruments;i++){
-							
+						for (int i = 0; i < maxInstruments; i++) {
+
 							List<Double> doubleListSkipNull = ArrayUtils
-									.toDoubleListSkipNull(new Double[]{Math.random()});
+									.toDoubleListSkipNull(new Double[] { Math
+											.random() });
 							List<Double> doubleListSkipNull2 = ArrayUtils
-									.toDoubleListSkipNull(new Double[]{Math.random()});
+									.toDoubleListSkipNull(new Double[] { Math
+											.random() });
 							List<Double> doubleListSkipNull3 = ArrayUtils
-									.toDoubleListSkipNull(new Double[]{Math.random()});
+									.toDoubleListSkipNull(new Double[] { Math
+											.random() });
 							List<Double> doubleListSkipNull4 = ArrayUtils
-									.toDoubleListSkipNull(new Double[]{Math.random()});
-							publishers[i].send(m.marshallToMDS("MDI"+i,
+									.toDoubleListSkipNull(new Double[] { Math
+											.random() });
+							publishers[i].send(m.marshallToMDS("MDI" + i,
 									doubleListSkipNull, doubleListSkipNull2,
 									doubleListSkipNull3, doubleListSkipNull4));
-							
-							
+
 						}
 						textLine.send("TEST".getBytes());
-						System.out.println("Sent.");
-					}
-					catch(Exception ex){
+						// System.out.println("Sent.");
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}
 			}
-		};		
+		};
 		Thread t = new Thread(r);
 		t.start();
 	}
-	
+
+	@Override
+	public String getDescription() {
+		//
+		return "The random market data generator generates random bid/ask events for "
+				+ maxInstruments
+				+ " instruments. Their IDs look like this: INST1, INST25, INST99.";
+
+	}
+
 }

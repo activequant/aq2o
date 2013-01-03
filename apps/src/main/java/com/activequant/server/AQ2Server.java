@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.server.components.RandomMarketDataGenerator;
 
 
 public final class AQ2Server {

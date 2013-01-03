@@ -1,7 +1,6 @@
 package com.activequant.server.web;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +16,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MainController {
@@ -119,23 +121,39 @@ public class MainController {
 		return "license";
 	}
 	
-
 	@RequestMapping("/refdata")
 	public String refdata(Map<String, Object> map) {
 		return "refdata";
-	}
-	
+	}	
 
 	@RequestMapping("/marketdata")
 	public String marketdata(Map<String, Object> map) {
 		return "marketdata";
-	}
-	
+	}	
 
 	@RequestMapping("/traddata")
 	public String traddata(Map<String, Object> map) {
 		return "traddata";
 	}
 	
+	@RequestMapping("/documentation")
+	public String documentation(Map<String, Object> map) {
+		return "documentation_main";
+	}
+	
+	@RequestMapping(value="/component/description", method=RequestMethod.GET)
+	public @ResponseBody String description(@RequestParam String componentId) {
+		if(sc.getComponentDescriptions().containsKey(componentId))
+			return sc.getComponentDescriptions().get(componentId);
+	    return "N/A";
+	}
+	
+	@RequestMapping(value="/component", method=RequestMethod.GET)
+	public String component(@RequestParam String componentId, Map<String, Object> map) {
+		map.put("description", sc.getComponentDescriptions().get(componentId));
+		map.put("id", componentId);
+		map.put("name", sc.getComponentIdToName().get(componentId));
+	    return "component";
+	}
 	
 }
