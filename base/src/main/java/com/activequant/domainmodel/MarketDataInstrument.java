@@ -6,7 +6,7 @@ import com.activequant.domainmodel.annotations.Property;
  * key for this is an aim hedge instrument ID. This table is populated from
  * connectivity drivers.
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
 public class MarketDataInstrument extends PersistentEntity {
@@ -29,7 +29,7 @@ public class MarketDataInstrument extends PersistentEntity {
     }
 
     public String getId() {
-        return nullSafe(mdProvider) + "_" + nullSafe(providerSpecificId);
+        return nullSafe(mdProvider) + "." + nullSafe(providerSpecificId);
     }
 
     @Override
