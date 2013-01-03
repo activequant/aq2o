@@ -1,5 +1,6 @@
 package com.activequant.component;
 
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
@@ -21,11 +22,11 @@ public class ComponentMessagingLayer {
 	private IServer server;
 	private ComponentBase component;
 	private final Logger log = Logger.getLogger(ComponentMessagingLayer.class);
-	private final String randomId = "ID"+new Random().nextInt();
-	 
+	private final String randomId = "ID" + new Random().nextInt();
 
 	public ComponentMessagingLayer(ITransportFactory transFac)
 			throws TransportException {
+		this.transFac = transFac;
 		// subscribe to the control channel.
 		transFac.getReceiver(ETransportType.CONTROL.toString()).getRawEvent()
 				.addEventListener(new IEventListener<byte[]>() {
@@ -41,42 +42,91 @@ public class ComponentMessagingLayer {
 		//
 		try {
 			String s = new String(bytes);
+			if (log.isDebugEnabled())
+				log.debug("RECV:" + s);
 			String[] parts = s.split(";");
 			String to = parts[0];
-			String cmd = parts[1];			
-			if(to.equals("server") && server!=null){
-				// H = Heartbeat. 
-				if(cmd.equals("H")){
+			String cmd = parts[1];
+			if (to.equals("server") && server != null) {
+				// H = Heartbeat.
+				if (cmd.equals("H")) {
 					String id = parts[2];
 					String componentName = parts[3];
 					server.heartbeat(id, componentName);
 				}
 				// S = Status
-				if(cmd.equals("S")){
+				else if (cmd.equals("S")) {
 					String id = parts[2];
 					String statusMessage = parts[3];
 					server.statusMessage(id, statusMessage);
 				}
-			}
-			else if(to.equals(randomId)){
-				if(component!=null){
-					// target end point. 
-				}				
+				// SD = Description
+				else if (cmd.equals("SD")) {
+					server.componentDescription(parts[2], parts[3]);
+				}
+			} else {
+				if (server == null) {
+					if (to.equals(randomId)) {
+						if (component != null) {
+							// target end point. let's check the command.
+							if (cmd.equals("RD"))
+								sendDescription(component.getDescription());
+						}
+					}
+				}
 			}
 		} catch (Exception ex) {
 			log.warn("Could not process byte message.", ex);
 		}
 		//
 	}
-		
+
+	//
 	public void sendStatus(String message) throws TransportException, Exception {
-		String msg = "server;S;"+randomId+";"+message+"\n";
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(msg.getBytes());
+		String msg = "server;S;" + randomId + ";" + message;
+		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+				msg.getBytes());
 	}
-	
-	public void sendHeartbeat() throws TransportException, Exception{
-		String message = "server;H;"+randomId+";"+component.getName()+"\n";
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(message.getBytes());
+
+	//
+	public void sendHeartbeat() throws TransportException, Exception {
+		String message = "server;H;" + randomId + ";" + component.getName();
+		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+				message.getBytes());
+	}
+
+	//
+	public void sendDescription(String description) throws TransportException,
+			Exception {
+		String message = "server;SD;" + randomId + ";" + description;
+		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+				message.getBytes());
+	}
+
+	//
+	public void requestDescription(String componentId)
+			throws TransportException, Exception {
+		String message = componentId + ";RD";
+		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+				message.getBytes());
+	}
+
+	//
+	public void response(String component, String function,
+			Map<String, Object> map) throws TransportException, Exception {
+		//
+		String message = component + ";S;" + function + ";";
+		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+				message.getBytes());
+	}
+
+	//
+	public void request(String componentId, String function,
+			Map<String, Object> map) throws TransportException, Exception {
+		//
+		String message = componentId + ";G;" + function + ";";
+		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+				message.getBytes());
 	}
 
 	// ---

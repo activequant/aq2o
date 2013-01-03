@@ -1,5 +1,6 @@
 package com.activequant.component;
 
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,6 +27,7 @@ public abstract class ComponentBase {
 		this.transFac = transFac;
 		this.name = name; 
 		this.compML = new ComponentMessagingLayer(transFac);
+		this.compML.setComponent(this);
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -38,7 +40,7 @@ public abstract class ComponentBase {
 					log.warn("Could not send heartbeat", e);
 				}
 			}
-		}, 2 * 60 * 1000, 2 * 60 * 1000);
+		}, 10 * 1000, 10 * 1000);
 		heartbeat();
 		sendStatus("Constructed.");
 	}
@@ -53,4 +55,22 @@ public abstract class ComponentBase {
 		compML.sendStatus(message);
 	}
 	
+	
+	/**
+	 * Get requests should result in a set response.
+	 * You should override this function in order to handle specific get requests. 
+	 *  
+	 * NOT DONE YET - WORK IN PROGRESS. THINKING ABOUT WHETHER I SHOULD USE SOME RPC APPROACH OR NOT. 
+	 * (lock-in to java comes into mind)
+	 * 
+	 * @param function
+	 */
+	protected void request(String function){
+		
+	}
+	
+	public abstract String getDescription();
+	
+	
+
 }

@@ -26,6 +26,12 @@ public class MarketDataSnapshot extends MarketDataEvent {
 		this.tdiId = tdiId; 
 	}
 
+	/**
+	 * checks if book is complete or not ...
+	 * could be renamed. 
+	 * 
+	 * @return
+	 */
 	public boolean liquid(){
 		if(bidPrices.length>0 && askPrices.length>0){
 			return true; 

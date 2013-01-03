@@ -36,7 +36,6 @@ public class SMATest {
 	 *
 	 */
 	private class BasicBacktestEnv {
-
 		
 
 		public void backtest(BacktestConfiguration bc, ITradingSystem[] its, List<StreamEventIterator> listOfStreams) throws Exception {
@@ -46,7 +45,7 @@ public class SMATest {
 			ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
 			IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
 			IArchiveFactory archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
-			//
+			//d
 			//
 			// initialize transport layer and VirtEX
 			ITransportFactory transport = new InMemoryTransportFactory();

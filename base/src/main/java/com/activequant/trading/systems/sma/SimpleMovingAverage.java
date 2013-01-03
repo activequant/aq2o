@@ -31,7 +31,7 @@ import com.activequant.utils.RenjinCore;
  */
 public class SimpleMovingAverage extends AbstractTSBase {
 	
-	private List<Double> closes = new ArrayList<Double>();
+	private List<Double> midpoints = new ArrayList<Double>();
  	private RenjinCore R = new RenjinCore();
 	private double currentPos = 0;
 	private DecimalFormat dcf = new DecimalFormat("#.00");
@@ -69,21 +69,21 @@ public class SimpleMovingAverage extends AbstractTSBase {
 	public void process(StreamEvent se) {
 		super.process(se);
 		TimeStamp ts = se.getTimeStamp();
-		DateTime dt = new DateTime(ts.getMilliseconds());
-		if(se.getEventType().equals(ETransportType.MARKET_DATA)){
+		
+		if(se.getEventType().equals(ETransportType.MARKET_DATA) && se instanceof MarketDataSnapshot){
 			Double mid = ((MarketDataSnapshot)se).getBidPrices()[0] +  ((MarketDataSnapshot)se).getAskPrices()[0];
 			mid /= 2.0; 
-			closes.add(mid);
+			midpoints.add(mid);
 			// restricting total length of our stored data ... 
-			if(closes.size()>20)
-				closes.remove(0);
+			if(midpoints.size()>100)
+				midpoints.remove(0);
 			// size calculation
-			if(closes.size()==20){
+			if(midpoints.size()==100){
 				// calculate some stuff.
 				try {
-					R.put("x", closes.toArray(new Double[]{}));
-					R.execute("sma = sum(x)");
-					Double sma = R.getDoubleVector("sma").getElementAsObject(0)/closes.size();
+					R.put("x", midpoints.toArray(new Double[]{}));
+					R.execute("summedValue = sum(x)");
+					Double sma = R.getDoubleVector("summedValue").getElementAsObject(0)/midpoints.size();
 					
 					double tgtPos = Math.signum(mid - sma.doubleValue());
 					System.out.println(ts.getDate()+ " \tClose: " + dcf.format(mid) + " \tMean: " + dcf.format(sma) + "\tPos: " + dcf.format(tgtPos));
