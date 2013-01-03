@@ -7,7 +7,7 @@
 	<version>2.2-SNAPSHOT</version>
 	<name>ActiveQuant 2.o (AQ2o) - APPS</name>
 	<url>http://activequant.org</url>
-	<description>Security trading related source code platform</description>
+	<description>Securities trading related source code platform</description>
 
 	<parent>
 		<groupId>com.activequant</groupId>
@@ -39,6 +39,8 @@
 		<spring.version>3.0.6.RELEASE</spring.version>
 		<cxf.version>2.5.1</cxf.version>
 		<commons-logging-version>1.1.1</commons-logging-version>
+		<jetty.version>9.0.0.M0</jetty.version>
+		<jetty.jsp.version>9.0.0.M0</jetty.jsp.version>
 	</properties>
 
 	<distributionManagement>
@@ -366,6 +368,57 @@
 	</repositories>
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>3.0.6.RELEASE</version>
+		</dependency>
+
+		<!-- JETTY DEPENDENCIES -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-io</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlets</artifactId>
+			<version>${jetty.version}</version>
+		</dependency> -->
+	
+
+
+		<!-- JSP and JSTL SUPPORT -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<version>${jetty.jsp.version}</version>
+		</dependency>
+
+
+
+		<!-- dependency> <groupId>taglibs</groupId> <artifactId>standard</artifactId> 
+			<version>1.2</version> </dependency -->
+		<dependency>
 			<groupId>com.activequant</groupId>
 			<artifactId>aq2o-base</artifactId>
 			<version>2.2-SNAPSHOT</version>
@@ -379,6 +432,40 @@
 					<groupId>org.mortbay.jetty</groupId>
 					<artifactId>servlet-api-2.5</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jetty</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jetty-util</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jsp-api-2.1</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jsp-2.1</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>tomcat</groupId>
+					<artifactId>jasper-runtime</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>tomcat</groupId>
+					<artifactId>jasper-compiler</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				
+				
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -392,15 +479,17 @@
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http-jetty</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.jboss.netty</groupId>
 			<artifactId>netty</artifactId>
 			<version>3.2.7.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.commons</groupId>
+			<artifactId>logging-api</artifactId>
+			<version>1.0.4</version>
 		</dependency>
 
 		<dependency>
@@ -432,6 +521,8 @@
 			<artifactId>xstream</artifactId>
 			<version>1.4.3</version>
 		</dependency>
+
+
 
 	</dependencies>
 
