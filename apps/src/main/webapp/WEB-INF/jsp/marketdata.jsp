@@ -8,5 +8,9 @@ Build on a rock solid, scalable architecture and access it from R, Matlab, .NET 
 <p>
 Because of a clear distinction of market data between providers, you won't have to think about where data is from: all MarketDataInstrument IDs are provider specific.  
 </p>
+
+<p>You see the solution right on your screen!</p>
+
+
 <hr/>
 <%@include file="footer.jsp" %>

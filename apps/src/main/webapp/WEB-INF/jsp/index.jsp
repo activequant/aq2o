@@ -39,9 +39,9 @@
 		</p>
 	</div>
 	<div class="span4">
-		<h2>Trading data</h2>
-		<p>Current portfolio. Order fills and cleared trades. Do they
-			match? What's on our bank account? Combine it all.</p>
+		<h2>Trading</h2>
+		<p>Direct market access. Current portfolio. Order fills and cleared trades. Do they
+			match? Place some orders. </p>
 		<p>
 			<a class="btn" href="traddata">Curious? &raquo;</a>
 		</p>

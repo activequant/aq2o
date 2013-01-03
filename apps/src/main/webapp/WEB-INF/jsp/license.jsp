@@ -18,6 +18,8 @@
 	international copyright treaties.</p>
 <p>You may not reverse engineer, modify, decompile, or disassemble
 	the binary distribution of AQMS.</p>
+<p>You grant us the right to track your usage anonymously to improve your user experience. 
+	This feature can be switched off in the configuration file. </p>	
 <p>Without prejudice to any other rights, AQ may terminate this
 	License Agreement if you fail to comply with the terms and conditions
 	of this Agreement. In such event, you must destroy all copies of AQMS
