@@ -64,6 +64,7 @@ body {
                   <li class="divider"></li>
                 <li><a href="about">About</a></li>
                 <li><a href="license">License</a></li>
+                <li><a href="http://server.activequant.com/download.html">Download page</a></li>
                   <li class="divider"></li>                                  
                   <li><a href="http://activequant.com/contact">Contact &amp; Consulting</a></li>
                   
