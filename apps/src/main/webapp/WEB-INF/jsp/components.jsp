@@ -14,7 +14,7 @@
 	<tbody>
 		<c:forEach var="e" items="${entries}">
 			<tr>
-				<td>${e.id}</td>
+				<td><a href="/component?componentId=${e.id}">${e.id}</a></td>
 				<td>${e.name}</td>
 				<td>${e.lastSeen}</td>
 			</tr>

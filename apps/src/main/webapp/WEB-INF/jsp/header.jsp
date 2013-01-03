@@ -59,6 +59,9 @@ body {
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
                 <ul class="dropdown-menu">
+                
+                <li><a href="documentation">Documentation</a></li>
+                  <li class="divider"></li>
                 <li><a href="about">About</a></li>
                 <li><a href="license">License</a></li>
                   <li class="divider"></li>                                  
