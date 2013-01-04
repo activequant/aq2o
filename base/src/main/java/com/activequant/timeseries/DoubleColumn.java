@@ -141,7 +141,7 @@ public class DoubleColumn extends TypedColumn<Double> {
 	// test is taken from matlab
 	public Double maxDrawdown() {
 		Double mdd = 0.0;
-		Double peak = Double.MIN_VALUE;
+		Double peak = -Double.MAX_VALUE;
 		Double dd = 0.0;
 
 		for (int i = 0; i < this.size(); i++) {
