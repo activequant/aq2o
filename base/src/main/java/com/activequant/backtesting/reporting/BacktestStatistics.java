@@ -8,6 +8,9 @@ import java.util.Map;
 import com.activequant.backtesting.OrderEventListener;
 import com.activequant.timeseries.DoubleColumn;
 import com.activequant.timeseries.TSContainer2;
+import com.activequant.timeseries.TSContainerMethods;
+import java.lang.Double;
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * deprecated right from the start. Will become a persistent entity soon.
@@ -20,6 +23,7 @@ public class BacktestStatistics {
 	private String reportId;
 	private List<String> instrumentIDs;
 	final private Map<String, Object> statistics = new HashMap<String, Object>();
+        private TSContainerMethods methods = new TSContainerMethods();
 
 	public void calcPNLStats(TSContainer2 cumPnlSeries) {
 		instrumentIDs = new ArrayList<String>();
@@ -33,8 +37,22 @@ public class BacktestStatistics {
 			DoubleColumn dc = (DoubleColumn) cumPnlSeries.getColumn(header);
 			Double finalPnl = dc.get(dc.size() - 1);
 			statistics.put(header + ".FINALPNL", finalPnl);
+
+                        Double[] drawDown = methods.maxDrawdown(cumPnlSeries);
+                        statistics.put(header+".MAXDRAWDOWN",drawDown[i]);
 		}
 	}
+
+        public void setReturnStatistics(Map<String, Double> totalReturn) {
+         for(String header : totalReturn.keySet()) {
+           String varName = header + ".TOTALRETURN";
+           statistics.put(varName, totalReturn.get(header));
+         } 
+        }
+
+        public void setStatisticsParameter(String name, Object value) {
+          statistics.put(name, value);
+        }
 
 	public void calcPosStats(TSContainer2 positionSeries) {
 
