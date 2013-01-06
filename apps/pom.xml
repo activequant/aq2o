@@ -299,13 +299,15 @@
 								<zip destfile="target/${project.build.finalName}-bundle.zip">
 									<zipfileset dir="src/main/resources/" includes="aq2server.properties"
 										prefix="aq2o" />
+									<zipfileset dir="src/main/resources/" includes="serverspring.xml"
+										prefix="aq2o" />
 									<zipfileset dir="target/"
 										includes="${project.build.finalName}-jar-with-dependencies.jar"
 										prefix="aq2o" />
 									<zipfileset dir="src/main/scripts/" includes="**"
 										prefix="aq2o" />
-									<zipfileset dir="src/main/htmlroot" includes="**"
-										prefix="aq2o/htmlroot" />
+									<zipfileset dir="src/main/webapp" includes="**"
+										prefix="aq2o/webapp" />
 								</zip>
 								<echo message="Zipped. Pushing to SF" />
 								<exec executable="scp" output="scpROOT.dir">
