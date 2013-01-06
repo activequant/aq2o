@@ -15,6 +15,12 @@ import com.activequant.messages.AQMessages;
 import com.activequant.messages.Marshaller;
 import com.activequant.utils.ArrayUtils;
 
+/**
+ * sample component that creates random market data. 
+ * 
+ * @author GhostRider
+ *
+ */
 public class RandomMarketDataGenerator extends ComponentBase {
 
 	int maxInstruments = 1000;

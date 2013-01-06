@@ -19,7 +19,7 @@ public final class AQ2Server {
     private LocalSoapServer ss;
     //
     private Logger log = Logger.getLogger(AQ2Server.class);
-
+    
     private boolean runFlag = true;
 
     private void printBanner() throws InterruptedException{
@@ -124,7 +124,8 @@ public final class AQ2Server {
         // 
         if (isTrue(properties, "jetty.start")) {
             log.info("Starting JETTY ....");
-            new LocalJettyServer(Integer.parseInt(properties.getProperty("jetty.port")), properties.getProperty("zookeeper.host", null), properties.getProperty("zookeeper.port", "2181")).start();
+            new LocalJettyServer(Integer.parseInt(properties.getProperty("jetty.port")), properties.getProperty("zookeeper.host", null), properties.getProperty("zookeeper.port", "2181"), 
+            		properties.getProperty("jetty.webapp.folder", "./webapp")).start();
             log.info("Starting Jetty succeeded.");
         } else {
             log.info("Not starting JETTY server, as it has been disabled.");
