@@ -68,6 +68,13 @@ public abstract class ComponentBase {
 	protected void request(String function){
 		
 	}
+
+	/**
+	 * method that gets called when a so-called custom message hsa been sent to this component.  
+	 * 
+	 * @param customMessage
+	 */
+	public void customMessage(String customMessage){}
 	
 	public abstract String getDescription();
 	

@@ -71,6 +71,8 @@ public class ComponentMessagingLayer {
 							// target end point. let's check the command.
 							if (cmd.equals("RD"))
 								sendDescription(component.getDescription());
+							if(cmd.equals("C"))
+								component.customMessage(parts[2]);
 						}
 					}
 				}
@@ -111,6 +113,12 @@ public class ComponentMessagingLayer {
 				message.getBytes());
 	}
 
+	public void customMessage(String componentId, String msg) throws TransportException, Exception{
+		String message = componentId + ";C;"+msg;
+		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+				message.getBytes());
+	}
+	
 	//
 	public void response(String component, String function,
 			Map<String, Object> map) throws TransportException, Exception {
