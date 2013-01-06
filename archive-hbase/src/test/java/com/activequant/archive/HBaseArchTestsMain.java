@@ -55,7 +55,7 @@ public class HBaseArchTestsMain {
         iwr.write("TZTEST", new TimeStamp(0L), new Tuple<String, Double>("A",1.0));
         
         Calendar cal = GregorianCalendar.getInstance();
-        cal.set(Calendar.YEAR, 2000);
+        cal.set(Calendar.YEAR, 2003);
         cal.set(Calendar.MONTH, Calendar.MAY);
         cal.set(Calendar.DATE, 1);
         cal.set(Calendar.HOUR_OF_DAY, 8);
