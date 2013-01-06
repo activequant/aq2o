@@ -11,7 +11,8 @@ import com.activequant.interfaces.archive.IArchiveReader;
 import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
- * not to be run without an underlying hbase, therefore not including in junit testing. 
+ * not to be run without an underlying hbase, therefore not including in junit testing.
+ *  
  * @author ustaudinger
  *
  */
