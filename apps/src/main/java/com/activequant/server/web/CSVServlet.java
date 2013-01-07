@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -36,9 +37,25 @@ public class CSVServlet extends HttpServlet {
 	}
 	private String instructions = "You need to specify: SERIESID, FREQ, FIELD, STARTDATE, ENDDATE. Example:http://localhost:44444/csv/?SERIESID=BBGT_IRZ10 Comdty&FREQ=EOD&FIELD=PX_SETTLE&STARTDATE=20010101&ENDDATE=20120301";
 
+	private void dumpSampleData(HttpServletResponse response) throws IOException{
+		response.getWriter().println(
+				"TimeStampNanos,DateTime,RAND");
+		for(long i=0;i<1000;i++){
+			Date d = new Date(i*10000000);
+			String line = d.getTime()+","+d+","+Math.random();
+			response.getWriter().println(line);
+			response.getWriter().flush();		
+		}		
+	}
+	
 	protected void doGet(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		if(req.getRequestURI().endsWith("sampledata")){
+			dumpSampleData(response);
+			return;
+		}
+		
 		@SuppressWarnings("rawtypes")
 		Map paramMap = req.getParameterMap();
 		if (paramMap.containsKey("SERIESID") && paramMap.containsKey("FREQ")

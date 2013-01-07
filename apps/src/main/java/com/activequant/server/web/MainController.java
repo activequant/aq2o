@@ -41,9 +41,13 @@ public class MainController {
 	}
 	
 	@RequestMapping("/about")
-	public String about(Map<String, Object> map) {
-		
+	public String about(Map<String, Object> map) {		
 		return "about";
+	}
+	
+	@RequestMapping("/charting")
+	public String charting(Map<String, Object> map) {		
+		return "charting";
 	}
 	
 	@RequestMapping("/server")
