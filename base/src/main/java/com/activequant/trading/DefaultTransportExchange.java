@@ -46,6 +46,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * which Google came up with, it's just that Google has a good open source
  * library for this stuff.
  * 
+ * This exchange is a default transport exchange. It requires a ITransportFactory to work properly. 
+ * 
  * @author GhostRider
  * 
  */

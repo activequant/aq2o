@@ -1,6 +1,7 @@
 package com.activequant.messages;
 
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.streaming.PositionEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancellationRejectedEvent;
@@ -64,6 +65,24 @@ public class MessageFactory {
 				.setPassword(password).setUserId(username)
 				.setSessionType(session).build();
 		return wrap(BaseMessage.CommandType.LOGIN, AQMessages.Login.cmd, l);
+	}
+
+	
+	/**
+	 * converts a position report to google protocol buffers. 
+	 * 
+	 * @param pe
+	 * @return
+	 */
+	public BaseMessage convert(PositionEvent pe) {
+		//
+		AQMessages.PositionReport l = AQMessages.PositionReport.newBuilder()
+				.setEntryPrice(pe.getPrice()).setOpenDate("")
+				.setQuantity(pe.getQuantity())
+				.setTradInstId(pe.getTradInstId()).build();
+		return wrap(BaseMessage.CommandType.POSITION_REPORT,
+				AQMessages.PositionReport.cmd, l);
+
 	}
 
 	public BaseMessage convert(OrderEvent oe) {
