@@ -24,6 +24,13 @@ message BaseMessage {
                 ORD_UPDATED = 16;  
                 SECURITY_STATUS = 17; 
                 ORD_REJ = 18;
+                
+                ORD_UPDATE_SUBMITTED = 19; 
+                ORD_CANCEL_SUBMITTED = 20; 
+                ORD_UPD_REJECTED = 21; 
+                EXECUTION_REPORT2 = 22;                
+                
+                
         }
         required CommandType type = 1;
          
@@ -197,7 +204,6 @@ message OrderUpdated {
 	required string clOrdId = 2; 
 }
 
-
 message SecurityStatus {
    extend BaseMessage {
     	required SecurityStatus cmd = 115;
@@ -213,3 +219,40 @@ message OrderRejected {
 	required string clOrdId = 2;
 	required string reason = 3;  
 }
+
+
+message OrderUpdateSubmitted {
+	extend BaseMessage {
+    	required OrderUpdateSubmitted cmd = 117;
+    }
+    required string clOrdId = 2;
+}
+
+message OrderCancelSubmitted {
+	extend BaseMessage {
+    	required OrderCancelSubmitted cmd = 118;
+    }
+    required string clOrdId = 2;
+}
+
+message OrderUpdateRejected {
+	extend BaseMessage {
+    	required OrderUpdateRejected cmd = 119;
+    }
+    required string clOrdId = 2;
+}
+
+message ExecutionReport2 {
+    extend BaseMessage {
+    	required ExecutionReport2 cmd = 120;
+    }
+	required string clOrdId = 1;  
+	required string execId = 2; 
+	required string side = 3;
+	required double price = 6;
+	required string tdiId = 7;
+	required int64 transactTime = 8;
+	required double qty = 13;
+}
+
+
