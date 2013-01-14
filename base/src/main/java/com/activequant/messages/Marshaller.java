@@ -11,6 +11,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * Marshaller for MDS messages. 
+ * TODO: fix the functionality clash between this and the message factory. 
+ * 
  * @author GhostRider
  *
  */
