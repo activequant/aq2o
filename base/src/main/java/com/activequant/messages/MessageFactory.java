@@ -1,6 +1,17 @@
 package com.activequant.messages;
 
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
+import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
+import com.activequant.domainmodel.trade.event.OrderCancellationRejectedEvent;
+import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
+import com.activequant.domainmodel.trade.event.OrderEvent;
+import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.domainmodel.trade.event.OrderRejectedEvent;
+import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
+import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
+import com.activequant.domainmodel.trade.event.OrderUpdateRejectedEvent;
+import com.activequant.domainmodel.trade.event.OrderUpdateSubmittedEvent;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.messages.AQMessages.BaseMessage;
 
@@ -55,6 +66,44 @@ public class MessageFactory {
 		return wrap(BaseMessage.CommandType.LOGIN, AQMessages.Login.cmd, l);
 	}
 
+	public BaseMessage convert(OrderEvent oe) {
+		// have to convert all possible order event types
+		BaseMessage ret = null;
+		if (oe instanceof OrderSubmittedEvent) {
+			ret = orderSubmitted(oe.getRefOrderId());
+		} else if (oe instanceof OrderUpdateSubmittedEvent) {
+			ret = orderUpdateSubmitted(oe.getRefOrderId());
+		} else if (oe instanceof OrderCancelSubmittedEvent) {
+			ret = orderCancelSubmitted(oe.getRefOrderId());
+		} else if (oe instanceof OrderAcceptedEvent) {
+			ret = orderAccepted(oe.getRefOrderId());
+		} else if (oe instanceof OrderUpdateRejectedEvent) {
+			ret = orderUpdateRejected(oe.getRefOrderId());
+		} else if (oe instanceof OrderCancellationRejectedEvent) {
+			OrderCancellationRejectedEvent ocre = (OrderCancellationRejectedEvent) oe;
+			ret = OrderCancelRejected(ocre.getOptionalInstId(),
+					ocre.getRefOrderId(), ocre.getRefOrderId(), "",
+					ocre.getReason(), ocre.getReason(), ocre.getReason(),
+					ocre.getReason());
+		} else if (oe instanceof OrderRejectedEvent) {
+			OrderRejectedEvent ore = (OrderRejectedEvent) oe;
+			ret = orderRejected(ore.getRefOrderId(),
+					((OrderRejectedEvent) oe).getReason());
+		} else if (oe instanceof OrderReplacedEvent) {
+			ret = orderUpdated(oe.getRefOrderId());
+		} else if (oe instanceof OrderCancelledEvent) {
+			ret = orderCancelled(oe.getRefOrderId());
+		} else if (oe instanceof OrderFillEvent) {
+			OrderFillEvent ofe = (OrderFillEvent) oe;
+			ret = executionReport2(ofe.getRefOrderId(), ofe.getExecId(),
+					ofe.getSide(), ofe.getFillPrice(), ofe.getOptionalInstId(),
+					ofe.getTimeStamp().getNanoseconds(), ofe.getFillAmount());
+		}
+
+		// return it.
+		return ret;
+	}
+
 	public BaseMessage OrderCancelRequest(String requestId,
 			String originalClientOrderId, String symbol, OrderSide side,
 			Double orderQty) {
@@ -65,6 +114,13 @@ public class MessageFactory {
 				.setTradInstId(symbol).setSide(s).build();
 		return wrap(BaseMessage.CommandType.ORD_CNCL_REQ,
 				AQMessages.OrderCancelRequest.cmd, l);
+	}
+
+	public BaseMessage orderUpdateRejected(String refOrderId) {
+		AQMessages.OrderUpdateRejected l = AQMessages.OrderUpdateRejected
+				.newBuilder().setClOrdId(refOrderId).build();
+		return wrap(BaseMessage.CommandType.ORD_UPD_REJECTED,
+				AQMessages.OrderUpdateRejected.cmd, l);
 	}
 
 	public BaseMessage OrderCancelRejected(String tradInstId, String clOrdId,
@@ -107,6 +163,26 @@ public class MessageFactory {
 		//
 		return wrap(BaseMessage.CommandType.ORD_SUBMITTED,
 				AQMessages.OrderSubmitted.cmd, l);
+	}
+
+	//
+	public BaseMessage orderUpdateSubmitted(String clOrdId) {
+		//
+		AQMessages.OrderUpdateSubmitted l = AQMessages.OrderUpdateSubmitted
+				.newBuilder().setClOrdId(clOrdId).build();
+		//
+		return wrap(BaseMessage.CommandType.ORD_UPDATE_SUBMITTED,
+				AQMessages.OrderUpdateSubmitted.cmd, l);
+	}
+
+	//
+	public BaseMessage orderCancelSubmitted(String clOrdId) {
+		//
+		AQMessages.OrderCancelSubmitted l = AQMessages.OrderCancelSubmitted
+				.newBuilder().setClOrdId(clOrdId).build();
+		//
+		return wrap(BaseMessage.CommandType.ORD_CANCEL_SUBMITTED,
+				AQMessages.OrderCancelSubmitted.cmd, l);
 	}
 
 	//
@@ -232,6 +308,20 @@ public class MessageFactory {
 
 		return wrap(BaseMessage.CommandType.EXECUTION_REPORT,
 				AQMessages.ExecutionReport.cmd, n);
+
+	}
+
+	public BaseMessage executionReport2(String clOrdId, String execId,
+			String side, double price, String tradInstId, long transactTime,
+			double qty) {
+
+		AQMessages.ExecutionReport2 n = AQMessages.ExecutionReport2
+				.newBuilder().setClOrdId(clOrdId).setExecId(execId)
+				.setSide(side).setPrice(price).setTdiId(tradInstId)
+				.setTransactTime(transactTime).setQty(qty).build();
+
+		return wrap(BaseMessage.CommandType.EXECUTION_REPORT2,
+				AQMessages.ExecutionReport2.cmd, n);
 
 	}
 }

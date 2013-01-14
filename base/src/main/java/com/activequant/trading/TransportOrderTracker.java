@@ -196,7 +196,7 @@ public class TransportOrderTracker implements IOrderTracker {
 	 * There is no queue of order updates, just ONE pending order update plus one next order update. 
 	 * 
 	 * Meaning, if you update a hundred times, but the first order update is not through yet while you update 100 times, 98 of those
-	 * updates are dropped and only the last update will go through. 
+	 * updates are dropped and only the last update will go through. (good for HFT)
 	 * 
 	 */
 	public void update(Order o) {

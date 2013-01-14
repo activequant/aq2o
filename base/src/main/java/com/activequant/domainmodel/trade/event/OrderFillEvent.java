@@ -6,6 +6,15 @@ public class OrderFillEvent extends OrderEvent {
 	private double fillPrice;
 	private String side; 
 	private double leftQuantity; 
+	private String execId; 
+
+	public String getExecId() {
+		return execId;
+	}
+
+	public void setExecId(String execId) {
+		this.execId = execId;
+	}
 
 	public OrderFillEvent(){
 		super(OrderFillEvent.class.getCanonicalName());
