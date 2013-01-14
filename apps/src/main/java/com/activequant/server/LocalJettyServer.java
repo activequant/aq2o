@@ -56,7 +56,7 @@ public class LocalJettyServer {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		LocalJettyServer s = new LocalJettyServer(44444, "localhost", "2181", "./webapp");
+		LocalJettyServer s = new LocalJettyServer(44444, "localhost", "2181", "../webapp");
 		s.start();
 	}
 

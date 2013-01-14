@@ -51,6 +51,7 @@ public class RandomMarketDataGenerator extends ComponentBase {
 			public void run() {
 				while (true) {
 					try {
+						log.info("Sleeping for " + delayBetweenSendingInMS);
 						Thread.sleep(delayBetweenSendingInMS);
 						for (int i = 0; i < maxInstruments; i++) {
 
@@ -72,6 +73,7 @@ public class RandomMarketDataGenerator extends ComponentBase {
 
 						}
 						textLine.send("TEST".getBytes());
+						log.info("Sent.");
 						// System.out.println("Sent.");
 					} catch (Exception ex) {
 						ex.printStackTrace();
