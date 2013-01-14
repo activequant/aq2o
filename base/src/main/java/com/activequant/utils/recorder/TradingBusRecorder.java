@@ -70,7 +70,7 @@ public class TradingBusRecorder {
 	}
 
 	private void subscribe() throws IOException, TransportException {
-		log.info("Subscribing to all order events on event bus.");
+		log.info("Subscribing to all order events on the TRAD_DATA bus.");
 		transFac.getReceiver(ETransportType.TRAD_DATA,"").getRawEvent()
 				.addEventListener(new IEventListener<byte[]>() {
 					@Override

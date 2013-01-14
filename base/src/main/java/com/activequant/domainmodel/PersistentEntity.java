@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
 
 import com.activequant.domainmodel.annotations.Property;
 
@@ -19,7 +18,6 @@ public abstract class PersistentEntity {
     private long creationTime = System.currentTimeMillis();
     private long deletionTime = 0L;
     private long snapshotTime = 0L;
-    private static Logger log = Logger.getLogger(PersistentEntity.class);
     private Map<String, Object> underlyingMap = new HashMap<String, Object>();
 
     public PersistentEntity() {
@@ -122,7 +120,7 @@ public abstract class PersistentEntity {
                         }
                     } catch (Exception ex) {
                         // drop the value.
-                        log.warn("Could not set " + m.getName().substring(3) + " for value :" + value);                        
+                    //    log.warn("Could not set " + m.getName().substring(3) + " for value :" + value);                        
                     }
                 }
             } else if (m.getName().startsWith("set")) {
@@ -174,7 +172,7 @@ public abstract class PersistentEntity {
                     m.invoke(this, new Object[] { obj });
                 } catch (Exception ex) {
                     // drop the value.
-                    log.warn("Could not set " + m.getName().substring(3) + " for value :" + entry.getValue());
+                    // log.warn("Could not set " + m.getName().substring(3) + " for value :" + entry.getValue());
                     ex.printStackTrace();
                 }
             }

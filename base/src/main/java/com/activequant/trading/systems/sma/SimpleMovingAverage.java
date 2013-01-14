@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.script.ScriptException;
 
-import org.joda.time.DateTime;
-
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeStamp;
