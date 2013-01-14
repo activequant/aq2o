@@ -182,9 +182,8 @@ public class MDSRecorder extends ComponentBase {
 
 		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
 		IArchiveFactory archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
+		System.out.println("ARCH FAC: " + archiveFactory);
 		ITransportFactory transFac = appContext.getBean("jmsTransport", ITransportFactory.class);
-		
-		
 		new MDSRecorder(transFac, archiveFactory, idf, args[1]);
 	}
 
