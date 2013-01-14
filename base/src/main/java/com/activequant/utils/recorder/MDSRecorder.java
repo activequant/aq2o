@@ -41,8 +41,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  */
 public class MDSRecorder extends ComponentBase {
 
-	private IArchiveFactory archiveFactory;
-	private ITransportFactory transFac;
+	
 	private Logger log = Logger.getLogger(MDSRecorder.class);
 	final Timer t = new Timer(true);
 	final long collectionPhase = 5000l;
