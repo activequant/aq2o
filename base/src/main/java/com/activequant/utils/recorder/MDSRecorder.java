@@ -110,7 +110,7 @@ public class MDSRecorder extends ComponentBase {
 	public MDSRecorder(ITransportFactory transFac, IArchiveFactory archFac, IDaoFactory daoFac, String mdiFile) throws Exception {
 		super("MDSRecorder", transFac);
 
-		rawWriter = archiveFactory.getWriter(TimeFrame.RAW);
+		rawWriter = archFac.getWriter(TimeFrame.RAW);
 
 		subscribe(mdiFile);
 		t.schedule(
@@ -181,10 +181,10 @@ public class MDSRecorder extends ComponentBase {
 				new String[] { args[0] });
 
 		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		IArchiveFactory archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
-		System.out.println("ARCH FAC: " + archiveFactory);
+		IArchiveFactory af = (IArchiveFactory) appContext.getBean("archiveFactory");
+		System.out.println("ARCH FAC: " + af);
 		ITransportFactory transFac = appContext.getBean("jmsTransport", ITransportFactory.class);
-		new MDSRecorder(transFac, archiveFactory, idf, args[1]);
+		new MDSRecorder(transFac, af, idf, args[1]);
 	}
 
 	@Override
