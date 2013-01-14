@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.activequant.component.ComponentBase;
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.exceptions.TransportException;
@@ -38,7 +39,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * @author GhostRider
  * 
  */
-public class MDSRecorder {
+public class MDSRecorder extends ComponentBase {
 
 	private IArchiveFactory archiveFactory;
 	private ITransportFactory transFac;
@@ -106,19 +107,11 @@ public class MDSRecorder {
 
 	}
 
-	public MDSRecorder(String springFile, String mdiFile) throws IOException,
-			TransportException {
+	public MDSRecorder(ITransportFactory transFac, IArchiveFactory archFac, IDaoFactory daoFac, String mdiFile) throws Exception {
+		super("MDSRecorder", transFac);
 
-		ApplicationContext appContext = new ClassPathXmlApplicationContext(
-				new String[] { springFile });
-
-		log.info("Starting up and fetching idf");
-		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
-		log.info("Archive fetched.");
 		rawWriter = archiveFactory.getWriter(TimeFrame.RAW);
-		transFac = appContext.getBean("jmsTransport", ITransportFactory.class);
-		log.info("Transport initialized.");
+
 		subscribe(mdiFile);
 		t.schedule(
 				new InternalTimerTask(),
@@ -131,7 +124,6 @@ public class MDSRecorder {
 		snmpReporter = new SNMPReporter(InetAddress.getLocalHost()
 				.getHostAddress(), 65001);
 		snmpReporter.registerOID("MDSEVENTS", "1.3.6.1.1.0", ValueMode.VALUE);
-
 	}
 
 	private void subscribe(String mdiFile) throws IOException,
@@ -160,7 +152,7 @@ public class MDSRecorder {
 			transFac.getReceiver(ETransportType.MARKET_DATA, s).getRawEvent()
 					.addEventListener(new IEventListener<byte[]>() {
 						@Override
-						public void eventFired(byte[] event) {							
+						public void eventFired(byte[] event) {
 							BaseMessage bm;
 							try {
 								bm = marshaller.demarshall(event);
@@ -175,30 +167,31 @@ public class MDSRecorder {
 							}
 						}
 					});
-			//
-			//
-			// transFac.getReceiver(ETransportType.MARKET_DATA,
-			// s).getMsgRecEvent().addEventListener(new
-			// IEventListener<PersistentEntity>() {
-			// @Override
-			// public void eventFired(PersistentEntity event) {
-			// System.out.print(".");
-			// if(event instanceof MarketDataSnapshot){
-			// collectionList.add((MarketDataSnapshot)event);
-			// }
-			// }
-			// });
 		}
 	}
 
 	/**
 	 * @param args
-	 * @throws IOException
-	 * @throws TransportException
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException,
-			TransportException {
-		new MDSRecorder(args[0], args[1]);
+	public static void main(String[] args) throws Exception {
+		
+
+		ApplicationContext appContext = new ClassPathXmlApplicationContext(
+				new String[] { args[0] });
+
+		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+		IArchiveFactory archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
+		ITransportFactory transFac = appContext.getBean("jmsTransport", ITransportFactory.class);
+		
+		
+		new MDSRecorder(transFac, archiveFactory, idf, args[1]);
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return "MDSRecorder records market data snapshots. ";
 	}
 
 }
