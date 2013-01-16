@@ -155,14 +155,17 @@ public class MDSRecorder extends ComponentBase {
 							BaseMessage bm;
 							try {
 								bm = marshaller.demarshall(event);
+								if(log.isDebugEnabled())
+									log.debug("Event type: " + bm.getType());
 								if (bm.getType().equals(CommandType.MDS)) {
 									MarketDataSnapshot mds = marshaller
 											.demarshall(((AQMessages.MarketDataSnapshot) bm
 													.getExtension(AQMessages.MarketDataSnapshot.cmd)));
 									collectionList.add(mds);
 								}
-							} catch (InvalidProtocolBufferException e) {
+							} catch (Exception e) {
 								e.printStackTrace();
+								log.warn("Exception: ", e);
 							}
 						}
 					});
