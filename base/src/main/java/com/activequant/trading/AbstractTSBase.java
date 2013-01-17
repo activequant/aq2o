@@ -39,6 +39,10 @@ import com.activequant.interfaces.aqviz.IVisualTable;
 import com.activequant.interfaces.trading.IRiskCalculator;
 import com.activequant.interfaces.trading.ITradingSystem;
 import com.activequant.interfaces.utils.IEventListener;
+import com.activequant.messages.AQMessages;
+import com.activequant.messages.Marshaller;
+import com.activequant.messages.AQMessages.BaseMessage;
+import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.trading.datamodel.AccountTable;
 import com.activequant.trading.datamodel.AuditLogTable;
 import com.activequant.trading.datamodel.ExecutionsTable;
@@ -82,29 +86,53 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private long currentSlot = 0L;
 	private IVisualTable instViz, quoteViz, execViz, orderViz, posViz,
 			auditViz, accountViz;
-	protected boolean isRunning = false; 
+	protected boolean isRunning = false;
 
 	@Override
 	public void start() throws Exception {
-		isRunning = true; 
+		isRunning = true;
 	}
 
 	@Override
 	public void stop() throws Exception {
-		isRunning = false; 
+		isRunning = false;
 
 	}
 
-
-	public boolean isRunning(){
-		return isRunning; 
+	public boolean isRunning() {
+		return isRunning;
 	}
-	
+
 	// an internal listener.
 	protected IEventListener<PersistentEntity> internalListener = new IEventListener<PersistentEntity>() {
 		@Override
 		public void eventFired(PersistentEntity arg0) {
 			process((StreamEvent) arg0);
+		}
+	};
+
+	private Marshaller marshaller = new Marshaller();
+
+	// an internal listener.
+	// wrong place, but ok. 
+	protected IEventListener<byte[]> rawListener = new IEventListener<byte[]>() {
+		@Override
+		public void eventFired(byte[] event) {
+			BaseMessage bm;
+			try {
+				bm = marshaller.demarshall(event);
+				if (log.isDebugEnabled())
+					log.debug("Event type: " + bm.getType());
+				if (bm.getType().equals(CommandType.MDS)) {
+					MarketDataSnapshot mds = marshaller
+							.demarshall(((AQMessages.MarketDataSnapshot) bm
+									.getExtension(AQMessages.MarketDataSnapshot.cmd)));
+					process(mds);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.warn("Exception: ", e);
+			}
 		}
 	};
 
@@ -148,6 +176,12 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		env.getTransportFactory()
 				.getReceiver(ETransportType.MARKET_DATA, mdi.getId())
 				.getMsgRecEvent().addEventListener(internalListener);
+
+		// also add a raw message transcoder.
+		env.getTransportFactory()
+				.getReceiver(ETransportType.MARKET_DATA, mdi.getId())
+				.getRawEvent().addEventListener(rawListener);
+
 	}
 
 	protected void subscribe(TradeableInstrument tdi) throws TransportException {
@@ -196,8 +230,11 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			TransportException {
 		// set up the instrument table and subscribe to one instrument.
 		MarketDataInstrument mdi = env.getDaoFactory().mdiDao().load(mdiId);
+		log.info("Loaded MDI (" + mdiId + "): " + mdi);
+
 		TradeableInstrument tdi = env.getDaoFactory().tradeableDao()
 				.load(tdiId);
+		log.info("Loaded TDI (" + tdiId + "): " + tdi);
 
 		//
 		if (mdi == null || tdi == null) {
@@ -295,7 +332,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			execViz = hrf.getVisualTableViz("Executions", getExecutionsTable());
 			orderViz = hrf.getOrderTableViz("Working orders", getOrderTable(),
 					env.getExchange());
-			posViz = hrf.getPositionTableViz("Positions", getPositionTable(), env.getExchange());
+			posViz = hrf.getPositionTableViz("Positions", getPositionTable(),
+					env.getExchange());
 			auditViz = hrf.getAuditTableViz("Audit", getAuditLogTable());
 			accountViz = hrf.getAccountTableViz("Account information",
 					getAccountTable());
@@ -326,10 +364,11 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	}
 
 	/**
-	 * Called if there is a new stream event. This method delegates
-	 * on to specific process methods.
+	 * Called if there is a new stream event. This method delegates on to
+	 * specific process methods.
 	 * 
-	 * @param se arriving stream event.
+	 * @param se
+	 *            arriving stream event.
 	 */
 	@Override
 	public void process(StreamEvent se) {
@@ -389,7 +428,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	 */
 	public void process(OrderStreamEvent ose) {
 		Order refOrder = ose.getOe().getRefOrder();
-		if(refOrder==null){
+		if (refOrder == null) {
 			log.warn("No ref order in order stream event.");
 		}
 		if (ose.getOe() instanceof OrderFillEvent) {
@@ -442,8 +481,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		if (refOrder instanceof MarketOrder) {
 			MarketOrder mo = (MarketOrder) refOrder;
 			getOrderTable().addOrder(refOrder.getOrderId(), mo.getTradInstId(),
-					"MKT", mo.getOrderSide().toString(), Double.POSITIVE_INFINITY,
-					mo.getQuantity(), mo.getQuantity() - mo.getOpenQuantity());
+					"MKT", mo.getOrderSide().toString(),
+					Double.POSITIVE_INFINITY, mo.getQuantity(),
+					mo.getQuantity() - mo.getOpenQuantity());
 		} else if (refOrder instanceof LimitOrder) {
 			LimitOrder lo = (LimitOrder) refOrder;
 			getOrderTable().addOrder(refOrder.getOrderId(), lo.getTradInstId(),
@@ -459,13 +499,14 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	}
 
 	/**
-	 * Market Data Snapshots arrive here. At the moment, this updates only the qoute table. 
-	 * It should also update some sort of a DOM. 
+	 * Market Data Snapshots arrive here. At the moment, this updates only the
+	 * qoute table. It should also update some sort of a DOM.
 	 * 
 	 * @param mds
 	 */
 	public void process(MarketDataSnapshot mds) {
-		if(mds==null)return;
+		if (mds == null)
+			return;
 		// update the current mkt quotes table.
 		String mdiId = mds.getMdiId();
 		if (getInstrumentTable().containsInstrumentId(mdiId)) {
@@ -474,7 +515,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			// call by reference
 			Object[][] row = getQuoteTable().getData();
 			// update the quote table.
-			if (mds.getAskPrices() != null && mds.getAskPrices().length>0 ) {
+			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0) {
 				row[rowIndx][ASK_COL_IDX] = mds.getAskPrices()[0];
 				row[rowIndx][ASK_SIZE_COL_INDX] = mds.getAskSizes()[0];
 				// getQuoteTable().setValueAt(mds.getAskPrices()[0], rowIndx,
@@ -488,7 +529,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_COL_IDX);
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_SIZE_COL_INDX);
 			}
-			if (mds.getBidPrices() != null && mds.getBidPrices().length>0 ) {
+			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0) {
 
 				row[rowIndx][BID_COL_IDX] = mds.getBidPrices()[0];
 				row[rowIndx][BID_SIZE_COL_IDX] = mds.getBidSizes()[0];
@@ -514,7 +555,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 			//
 		} else {
-			log.info("Dropping data for unknown instrument: "+ mds.getMdiId());
+			log.info("Dropping data for unknown instrument: " + mds.getMdiId());
 		}
 	}
 
@@ -541,11 +582,13 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	}
 
 	/**
-	 * Called when a pnl change event arrived. 
+	 * Called when a pnl change event arrived.
+	 * 
 	 * @param pe
 	 */
 	public void process(PNLChangeEvent pe) {
-		int row = getInstrumentTable().getRowIndexOfByTradeId(pe.getTradInstId());
+		int row = getInstrumentTable().getRowIndexOfByTradeId(
+				pe.getTradInstId());
 		getPositionTable().setValueAt(pe.getTotalPnl(), row,
 				PositionTable.Columns.PNLATLIQUIDATION.colIdx());
 		getPositionTable().signalUpdate();
