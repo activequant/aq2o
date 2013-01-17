@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MainController {
@@ -166,14 +170,28 @@ public class MainController {
 			return sc.getComponentDescriptions().get(componentId);
 		return "N/A";
 	}
+	
+//	@RequestMapping(value = "/component2", method = RequestMethod.GET)
+//	public String component2(@RequestParam String componentId,
+//			@RequestParam String msg, 
+//		return "component";
+//	}
 
 	@RequestMapping(value = "/component", method = RequestMethod.GET)
-	public String component(@RequestParam String componentId,
-			Map<String, Object> map) {
+	public ModelAndView hello(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String componentId = request.getParameter("componentId");
+		Map<String, Object> map = new HashMap<String, Object> ();
 		map.put("description", sc.getComponentDescriptions().get(componentId));
 		map.put("id", componentId);
 		map.put("name", sc.getComponentIdToName().get(componentId));
-		return "component";
+
+		String msg = request.getParameter("msg");
+		if(msg!=null){
+			sc.sendMessage(componentId, msg);
+			map.put("msg", msg);
+		}
+		return new ModelAndView("component", map);
 	}
 
 }

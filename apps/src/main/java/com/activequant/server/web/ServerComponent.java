@@ -45,6 +45,14 @@ public class ServerComponent implements IServer {
 		componentLastSeen.put(componentId, System.currentTimeMillis());
 		componentIdToName.put(componentId, component);
 	}
+	
+	public void sendMessage(String componentId, String message){
+		try {
+			cml.customMessage(componentId, message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void statusMessage(String componentId, String statusMessage) {
