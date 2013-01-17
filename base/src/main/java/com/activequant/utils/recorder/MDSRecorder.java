@@ -49,7 +49,7 @@ public class MDSRecorder extends ComponentBase {
 	private SNMPReporter snmpReporter;
 
 	private Marshaller marshaller = new Marshaller();
-	private final IArchiveWriter rawWriter;
+	private IArchiveWriter rawWriter = null;
 
 	class InternalTimerTask extends TimerTask {
 		int counter;
@@ -60,9 +60,8 @@ public class MDSRecorder extends ComponentBase {
 			Object o = collectionList.poll();
 			counter = 0;
 			while (o != null) {
-
-				o = collectionList.poll();
 				store((MarketDataSnapshot) o);
+				o = collectionList.poll();
 			}
 			log.info("Collected " + counter + " events. ");
 			if (counter > 0) {
@@ -170,6 +169,7 @@ public class MDSRecorder extends ComponentBase {
 						}
 					});
 		}
+		br.close();
 	}
 
 	/**
@@ -191,7 +191,6 @@ public class MDSRecorder extends ComponentBase {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return "MDSRecorder records market data snapshots. ";
 	}
 
