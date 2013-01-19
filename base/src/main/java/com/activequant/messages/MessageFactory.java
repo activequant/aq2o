@@ -278,6 +278,20 @@ public class MessageFactory {
 		return wrap(BaseMessage.CommandType.ORD_CNCL_REPL_REQ,
 				AQMessages.OrderCancelReplaceRequest.cmd, n);
 	}
+	
+
+	/**
+	 * Creates a new NewOrder base message and encapsulates limit price, etc. 
+	 * Order Type ID: 1 (follows FIX conformance) . 
+	 * 
+	 * @param orderId
+	 * @param tdiId
+	 * @param quantity
+	 * @param limitPrice
+	 * @param side
+	 * @return
+	 */
+
 
 	public BaseMessage orderMktOrder(String orderId, String tdiId,
 			Double quantity, OrderSide side) {
@@ -289,6 +303,17 @@ public class MessageFactory {
 				n);
 	}
 
+	/**
+	 * Creates a new NewOrder base message and encapsulates limit price, etc. 
+	 * Order Type ID: 2 (follows FIX conformance) . 
+	 * 
+	 * @param orderId
+	 * @param tdiId
+	 * @param quantity
+	 * @param limitPrice
+	 * @param side
+	 * @return
+	 */
 	public BaseMessage orderLimitOrder(String orderId, String tdiId,
 			Double quantity, Double limitPrice, OrderSide side) {
 		int s = side.getSide();
@@ -299,6 +324,19 @@ public class MessageFactory {
 		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
 				n);
 	}
+
+
+	/**
+	 * Creates a new NewOrder base message and encapsulates limit price, etc. 
+	 * Order Type ID: 3 (follows FIX conformance) . 
+	 * 
+	 * @param orderId
+	 * @param tdiId
+	 * @param quantity
+	 * @param limitPrice
+	 * @param side
+	 * @return
+	 */
 
 	public BaseMessage orderStopOrder(String orderId, String tdiId,
 			Double quantity, Double limitPrice, OrderSide side) {
