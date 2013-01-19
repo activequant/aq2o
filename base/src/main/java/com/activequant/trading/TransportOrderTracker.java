@@ -64,7 +64,7 @@ public class TransportOrderTracker implements IOrderTracker {
 	private MessageFactory messageFactory;
 	private IPublisher transportPublisher;
 	private IReceiver transportReceiver;
-	private Marshaller marshaller;
+	private Marshaller marshaller = new Marshaller();
 
 	public TransportOrderTracker(IPublisher publisher, IReceiver receiver,
 			SingleLegOrder order) {

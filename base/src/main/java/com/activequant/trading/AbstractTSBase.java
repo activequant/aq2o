@@ -10,7 +10,6 @@ import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.Future;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
-import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.Stock;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
@@ -27,6 +26,7 @@ import com.activequant.domainmodel.streaming.Tick;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
+import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.domainmodel.trade.event.OrderRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
@@ -40,9 +40,9 @@ import com.activequant.interfaces.trading.IRiskCalculator;
 import com.activequant.interfaces.trading.ITradingSystem;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.messages.AQMessages;
-import com.activequant.messages.Marshaller;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
+import com.activequant.messages.Marshaller;
 import com.activequant.trading.datamodel.AccountTable;
 import com.activequant.trading.datamodel.AuditLogTable;
 import com.activequant.trading.datamodel.ExecutionsTable;
@@ -103,24 +103,17 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		return isRunning;
 	}
 
-	// an internal listener.
-	protected IEventListener<PersistentEntity> internalListener = new IEventListener<PersistentEntity>() {
-		@Override
-		public void eventFired(PersistentEntity arg0) {
-			process((StreamEvent) arg0);
-		}
-	};
-
 	private Marshaller marshaller = new Marshaller();
 
 	// an internal listener.
-	// wrong place, but ok. 
+	// wrong place, but ok.
 	protected IEventListener<byte[]> rawListener = new IEventListener<byte[]>() {
 		@Override
 		public void eventFired(byte[] event) {
 			BaseMessage bm;
 			try {
 				bm = marshaller.demarshall(event);
+				OrderEvent temp = null;
 				if (log.isDebugEnabled())
 					log.debug("Event type: " + bm.getType());
 				if (bm.getType().equals(CommandType.MDS)) {
@@ -128,7 +121,14 @@ public abstract class AbstractTSBase implements ITradingSystem {
 							.demarshall(((AQMessages.MarketDataSnapshot) bm
 									.getExtension(AQMessages.MarketDataSnapshot.cmd)));
 					process(mds);
+				} else
+				// really need to make a proper converter finally.
+				if (bm.getType().equals(CommandType.SERVER_TIME)) {
+
+				} else if ((temp = marshaller.demarshallOrderEvent(bm)) != null) {
+					process(temp);
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.warn("Exception: ", e);
@@ -173,9 +173,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	protected void subscribe(MarketDataInstrument mdi)
 			throws TransportException {
 		log.info("Subscribing to " + mdi.getId());
-		env.getTransportFactory()
-				.getReceiver(ETransportType.MARKET_DATA, mdi.getId())
-				.getMsgRecEvent().addEventListener(internalListener);
+		// env.getTransportFactory()
+		// .getReceiver(ETransportType.MARKET_DATA, mdi.getId())
+		// .getMsgRecEvent().addEventListener(internalListener);
 
 		// also add a raw message transcoder.
 		env.getTransportFactory()
@@ -188,7 +188,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		log.info("Subscribing to " + tdi.getId());
 		env.getTransportFactory()
 				.getReceiver(ETransportType.TRAD_DATA, tdi.getId())
-				.getMsgRecEvent().addEventListener(internalListener);
+				.getRawEvent().addEventListener(rawListener);
 	}
 
 	protected void unsubscribe(MarketDataInstrument mdi)
@@ -199,8 +199,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	protected void unsubscribeMdi(String mdiId) throws TransportException {
 		log.info("Unsubscribing from " + mdiId);
 		env.getTransportFactory()
-				.getReceiver(ETransportType.MARKET_DATA, mdiId)
-				.getMsgRecEvent().removeEventListener(internalListener);
+				.getReceiver(ETransportType.MARKET_DATA, mdiId).getRawEvent()
+				.removeEventListener(rawListener);
 	}
 
 	protected void unsubscribe(TradeableInstrument tdi)
@@ -211,7 +211,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	protected void unsubscribeTdi(String tdiId) throws TransportException {
 		log.info("Unsubscribing from " + tdiId);
 		env.getTransportFactory().getReceiver(ETransportType.TRAD_DATA, tdiId)
-				.getMsgRecEvent().removeEventListener(internalListener);
+				.getRawEvent().removeEventListener(rawListener);
 	}
 
 	public void addInstrument(String mdiId) throws DaoException,
@@ -311,16 +311,16 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	public void initialize() throws Exception {
 		// subscribe to time data.
 		env.getTransportFactory().getReceiver(ETransportType.TIME.toString())
-				.getMsgRecEvent().addEventListener(internalListener);
+				.getRawEvent().addEventListener(rawListener);
 
 		// subscribe to informational events with no filter.
 		env.getTransportFactory().getReceiver(ETransportType.INFORMATIONAL, "")
-				.getMsgRecEvent().addEventListener(internalListener);
+				.getRawEvent().addEventListener(rawListener);
 
 		// subscribe to risk data with a wild card. Might bite later down.
 		env.getTransportFactory()
-				.getReceiver(ETransportType.RISK_DATA.toString())
-				.getMsgRecEvent().addEventListener(internalListener);
+				.getReceiver(ETransportType.RISK_DATA.toString()).getRawEvent()
+				.addEventListener(rawListener);
 
 		if (vizLayer) {
 			HardcoreReflectionsFactory hrf = new HardcoreReflectionsFactory();
@@ -423,6 +423,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	}
 
 	/**
+	 * Order Stream events do not interfere with order tracker events.
 	 * 
 	 * @param ose
 	 */
