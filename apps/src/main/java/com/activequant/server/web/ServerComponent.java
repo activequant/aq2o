@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.activequant.component.ComponentMessagingLayer;
 import com.activequant.component.IServer;
 import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
 
 public class ServerComponent implements IServer {
@@ -24,6 +25,10 @@ public class ServerComponent implements IServer {
 
 	@Autowired
 	private ITransportFactory transFac; 
+	
+	@Autowired
+	private IDaoFactory daoFactory;
+	
 	
 	public ServerComponent() {}
 	public void init() throws TransportException{
@@ -75,5 +80,7 @@ public class ServerComponent implements IServer {
 		log.info("Component "+ arg0 +" sent description.");
 		componentDescriptions.put(arg0, arg1);
 	}
-	
+	public IDaoFactory getDaoFactory() {
+		return daoFactory;
+	}	
 }

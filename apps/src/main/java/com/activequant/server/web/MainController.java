@@ -178,7 +178,7 @@ public class MainController {
 //	}
 
 	@RequestMapping(value = "/component", method = RequestMethod.GET)
-	public ModelAndView hello(HttpServletRequest request,
+	public ModelAndView component2(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String componentId = request.getParameter("componentId");
 		Map<String, Object> map = new HashMap<String, Object> ();
@@ -193,5 +193,27 @@ public class MainController {
 		}
 		return new ModelAndView("component", map);
 	}
+
+	@RequestMapping(value = "/instruments", method = RequestMethod.GET)
+	public ModelAndView instruments(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String searchString = request.getParameter("searchString");
+		Map<String, Object> map = new HashMap<String, Object> ();
+		if(searchString!=null)
+			map.put("searchString", searchString);
+		else
+			map.put("searchString", "%");
+		List<String> entries = new ArrayList<String>();
+		if(searchString!=null){
+			String[] ids = sc.getDaoFactory().instrumentDao().findIdsLike(searchString);
+			for(String s : ids)
+				entries.add(s);
+		}
+		
+		map.put("entries", entries);
+		// 
+		return new ModelAndView("instruments", map);
+	}
+
 
 }
