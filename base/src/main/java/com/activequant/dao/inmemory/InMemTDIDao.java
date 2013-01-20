@@ -38,6 +38,12 @@ public class InMemTDIDao extends InMemoryDao<TradeableInstrument> implements ITr
 		return null;
 	}
 
+	@Override
+	public TradeableInstrument[] findFor(Instrument instrument) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 
