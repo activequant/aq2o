@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.activequant.domainmodel.Instrument;
+import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.TradeableInstrument;
 
 @Controller
 public class MainController {
@@ -239,5 +241,92 @@ public class MainController {
 		//
 		return new ModelAndView("instrument", map);
 	}
+	
+	
+	
+
+	@RequestMapping(value = "/mdis", method = RequestMethod.GET)
+	public ModelAndView mdis(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String searchString = request.getParameter("searchString");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (searchString != null)
+			map.put("searchString", searchString);
+		else
+			map.put("searchString", "%");
+		List<String> entries = new ArrayList<String>();
+		if (searchString != null) {
+			String[] ids = sc.getDaoFactory().mdiDao()
+					.findIdsLike(searchString);
+			for (String s : ids)
+				entries.add(s);
+		}
+
+		map.put("entries", entries);
+		//
+		return new ModelAndView("mdis", map);
+	}
+
+	@RequestMapping(value = "/mdi", method = RequestMethod.GET)
+	public ModelAndView mdi(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String iid = request.getParameter("mdiid");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (iid != null) {			
+			map.put("mdiid", iid);
+			MarketDataInstrument inst = sc.getDaoFactory().mdiDao().load(iid);
+			List<String> keys = new ArrayList<String>();
+			keys.addAll(inst.getUnderlyingMap().keySet());
+			Collections.sort(keys);
+			map.put("keys", keys);
+			map.put("mdi", inst.getUnderlyingMap());
+		}
+		//
+		return new ModelAndView("mdi", map);
+	}
+	
+	
+	
+
+	@RequestMapping(value = "/tdis", method = RequestMethod.GET)
+	public ModelAndView tdis(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String searchString = request.getParameter("searchString");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (searchString != null)
+			map.put("searchString", searchString);
+		else
+			map.put("searchString", "%");
+		List<String> entries = new ArrayList<String>();
+		if (searchString != null) {
+			String[] ids = sc.getDaoFactory().mdiDao()
+					.findIdsLike(searchString);
+			for (String s : ids)
+				entries.add(s);
+		}
+
+		map.put("entries", entries);
+		//
+		return new ModelAndView("tdis", map);
+	}
+
+	@RequestMapping(value = "/tdi", method = RequestMethod.GET)
+	public ModelAndView tdi(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String iid = request.getParameter("tdiid");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (iid != null) {			
+			map.put("tdiid", iid);
+			TradeableInstrument inst = sc.getDaoFactory().tradeableDao().load(iid);
+			List<String> keys = new ArrayList<String>();
+			keys.addAll(inst.getUnderlyingMap().keySet());
+			Collections.sort(keys);
+			map.put("keys", keys);
+			map.put("tdi", inst.getUnderlyingMap());
+		}
+		//
+		return new ModelAndView("tdi", map);
+	}
+	
 
 }
