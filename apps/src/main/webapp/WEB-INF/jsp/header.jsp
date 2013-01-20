@@ -69,8 +69,8 @@ body {
 							<ul class="dropdown-menu">
 
 								<li><a href="instruments">Instruments</a></li>
-								<li><a href="">Market data instruments</a></li>
-								<li><a href="">Tradeable instruments</a></li>
+								<li><a href="mdis">Market data instruments</a></li>
+								<li><a href="tdis">Tradeable instruments</a></li>
 							</ul></li>
 
 

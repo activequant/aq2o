@@ -1,7 +1,7 @@
 <%@include file="header.jsp"%>
-<h3>Instruments</h3>
+<h3>Tradeable instruments</h3>
 <p>
-	<i>Search will search through instrument key values. Use SQL like
+	<i>Search will search through TDI key values. Use SQL like
 		wild cards.</i>
 </p>
 <div class="input-append">
@@ -16,7 +16,7 @@
 <table>
 <c:forEach var="e" items="${entries}">
 	<tr>
-		<td><a href="instrument?iid=${e}">${e}</a></td>
+		<td><a href="tdi?tdiid=${e}">${e}</a></td>
 	</tr>
 </c:forEach>
 </table>
