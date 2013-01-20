@@ -27,8 +27,8 @@ public class Option extends Derivative {
 
 	@Override
 	public String getId() {
-		return "FUT." + nullSafe(getExchangeCode()) + "."
-				+ nullSafe(getShortName()) + "." + nullSafe(expiry) + "."
+		return "OPT." + nullSafe(getExchangeCode()) + "."
+				+ nullSafe(getUnderlyingId()) + "." + nullSafe(expiry) + "."
 				+ nullSafe(putOrCall) + "." + nullSafe(strike);		
 	}
 
