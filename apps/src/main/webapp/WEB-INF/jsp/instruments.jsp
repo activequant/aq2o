@@ -13,13 +13,13 @@
 	</form>
 </div>
 
-
+<table>
 <c:forEach var="e" items="${entries}">
 	<tr>
-		<td><a href="">${e}</a></td>
+		<td><a href="instrument?iid=${e}">${e}</a></td>
 	</tr>
 </c:forEach>
-
+</table>
 
 
 
