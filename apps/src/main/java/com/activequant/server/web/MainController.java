@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.activequant.domainmodel.Instrument;
 
 @Controller
 public class MainController {
@@ -170,24 +173,24 @@ public class MainController {
 			return sc.getComponentDescriptions().get(componentId);
 		return "N/A";
 	}
-	
-//	@RequestMapping(value = "/component2", method = RequestMethod.GET)
-//	public String component2(@RequestParam String componentId,
-//			@RequestParam String msg, 
-//		return "component";
-//	}
+
+	// @RequestMapping(value = "/component2", method = RequestMethod.GET)
+	// public String component2(@RequestParam String componentId,
+	// @RequestParam String msg,
+	// return "component";
+	// }
 
 	@RequestMapping(value = "/component", method = RequestMethod.GET)
 	public ModelAndView component2(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String componentId = request.getParameter("componentId");
-		Map<String, Object> map = new HashMap<String, Object> ();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("description", sc.getComponentDescriptions().get(componentId));
 		map.put("id", componentId);
 		map.put("name", sc.getComponentIdToName().get(componentId));
 
 		String msg = request.getParameter("msg");
-		if(msg!=null){
+		if (msg != null) {
 			sc.sendMessage(componentId, msg);
 			map.put("msg", msg);
 		}
@@ -198,22 +201,43 @@ public class MainController {
 	public ModelAndView instruments(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String searchString = request.getParameter("searchString");
-		Map<String, Object> map = new HashMap<String, Object> ();
-		if(searchString!=null)
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (searchString != null)
 			map.put("searchString", searchString);
 		else
 			map.put("searchString", "%");
 		List<String> entries = new ArrayList<String>();
-		if(searchString!=null){
-			String[] ids = sc.getDaoFactory().instrumentDao().findIdsLike(searchString);
-			for(String s : ids)
+		if (searchString != null) {
+			String[] ids = sc.getDaoFactory().instrumentDao()
+					.findIdsLike(searchString);
+			for (String s : ids)
 				entries.add(s);
 		}
-		
+
 		map.put("entries", entries);
-		// 
+		//
 		return new ModelAndView("instruments", map);
 	}
 
+	@RequestMapping(value = "/instrument", method = RequestMethod.GET)
+	public ModelAndView instrument(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String iid = request.getParameter("iid");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (iid != null) {			
+			map.put("iid", iid);
+			Instrument inst = sc.getDaoFactory().instrumentDao().load(iid);
+			List<String> keys = new ArrayList<String>();
+			keys.addAll(inst.getUnderlyingMap().keySet());
+			Collections.sort(keys);
+			map.put("keys", keys);
+			map.put("instrument", inst.getUnderlyingMap());
+			// load related mdis. 
+			map.put("mdis", sc.getDaoFactory().mdiDao().findFor(inst));
+			map.put("tdis", sc.getDaoFactory().tradeableDao().findFor(inst));
+		}
+		//
+		return new ModelAndView("instrument", map);
+	}
 
 }
