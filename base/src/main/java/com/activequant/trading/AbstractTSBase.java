@@ -51,6 +51,12 @@ import com.activequant.trading.datamodel.OrderTable;
 import com.activequant.trading.datamodel.PositionTable;
 import com.activequant.trading.datamodel.QuoteTable;
 
+/**
+ * Relatively smart trading system base which keeps track of various things.
+ * 
+ * @author ustaudinger
+ *
+ */
 public abstract class AbstractTSBase implements ITradingSystem {
 	// performance improvements start
 	private static final int BID_SIZE_COL_IDX = QuoteTable.Columns.BIDSIZE
@@ -126,7 +132,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				if (bm.getType().equals(CommandType.SERVER_TIME)) {
 
 				} else if ((temp = marshaller.demarshallOrderEvent(bm)) != null) {
-					process(temp);
+					OrderStreamEvent ose = new OrderStreamEvent("", temp.getTimeStamp(), temp);
+					process((StreamEvent)ose);
 				}
 
 			} catch (Exception e) {

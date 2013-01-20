@@ -13047,6 +13047,10 @@ public final class AQMessages {
     // required string clOrdId = 2;
     boolean hasClOrdId();
     String getClOrdId();
+    
+    // required string reason = 3;
+    boolean hasReason();
+    String getReason();
   }
   public static final class OrderUpdateRejected extends
       com.google.protobuf.GeneratedMessage
@@ -13109,8 +13113,41 @@ public final class AQMessages {
       }
     }
     
+    // required string reason = 3;
+    public static final int REASON_FIELD_NUMBER = 3;
+    private java.lang.Object reason_;
+    public boolean hasReason() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public String getReason() {
+      java.lang.Object ref = reason_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          reason_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getReasonBytes() {
+      java.lang.Object ref = reason_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        reason_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
       clOrdId_ = "";
+      reason_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -13118,6 +13155,10 @@ public final class AQMessages {
       if (isInitialized != -1) return isInitialized == 1;
       
       if (!hasClOrdId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasReason()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -13131,6 +13172,9 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(2, getClOrdIdBytes());
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(3, getReasonBytes());
+      }
       getUnknownFields().writeTo(output);
     }
     
@@ -13143,6 +13187,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getClOrdIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getReasonBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -13270,6 +13318,8 @@ public final class AQMessages {
         super.clear();
         clOrdId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
+        reason_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       
@@ -13312,6 +13362,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00000001;
         }
         result.clOrdId_ = clOrdId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.reason_ = reason_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -13331,12 +13385,19 @@ public final class AQMessages {
         if (other.hasClOrdId()) {
           setClOrdId(other.getClOrdId());
         }
+        if (other.hasReason()) {
+          setReason(other.getReason());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
       
       public final boolean isInitialized() {
         if (!hasClOrdId()) {
+          
+          return false;
+        }
+        if (!hasReason()) {
           
           return false;
         }
@@ -13369,6 +13430,11 @@ public final class AQMessages {
             case 18: {
               bitField0_ |= 0x00000001;
               clOrdId_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000002;
+              reason_ = input.readBytes();
               break;
             }
           }
@@ -13410,6 +13476,42 @@ public final class AQMessages {
       void setClOrdId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000001;
         clOrdId_ = value;
+        onChanged();
+      }
+      
+      // required string reason = 3;
+      private java.lang.Object reason_ = "";
+      public boolean hasReason() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public String getReason() {
+        java.lang.Object ref = reason_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          reason_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setReason(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        reason_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearReason() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        reason_ = getDefaultInstance().getReason();
+        onChanged();
+        return this;
+      }
+      void setReason(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        reason_ = value;
         onChanged();
       }
       
@@ -14549,17 +14651,18 @@ public final class AQMessages {
       "mitted\"\213\001\n\024OrderCancelSubmitted\022\017\n\007clOrd",
       "Id\030\002 \002(\t2b\n\003cmd\022%.com.activequant.messag" +
       "es.BaseMessage\030v \002(\0132..com.activequant.m" +
-      "essages.OrderCancelSubmitted\"\211\001\n\023OrderUp" +
-      "dateRejected\022\017\n\007clOrdId\030\002 \002(\t2a\n\003cmd\022%.c" +
-      "om.activequant.messages.BaseMessage\030w \002(" +
-      "\0132-.com.activequant.messages.OrderUpdate" +
-      "Rejected\"\342\001\n\020ExecutionReport2\022\017\n\007clOrdId" +
-      "\030\001 \002(\t\022\016\n\006execId\030\002 \002(\t\022\014\n\004side\030\003 \002(\t\022\r\n\005" +
-      "price\030\006 \002(\001\022\r\n\005tdiId\030\007 \002(\t\022\024\n\014transactTi" +
-      "me\030\010 \002(\003\022\013\n\003qty\030\r \002(\0012^\n\003cmd\022%.com.activ",
-      "equant.messages.BaseMessage\030x \002(\0132*.com." +
-      "activequant.messages.ExecutionReport2B&\n" +
-      "\030com.activequant.messagesB\nAQMessages"
+      "essages.OrderCancelSubmitted\"\231\001\n\023OrderUp" +
+      "dateRejected\022\017\n\007clOrdId\030\002 \002(\t\022\016\n\006reason\030" +
+      "\003 \002(\t2a\n\003cmd\022%.com.activequant.messages." +
+      "BaseMessage\030w \002(\0132-.com.activequant.mess" +
+      "ages.OrderUpdateRejected\"\342\001\n\020ExecutionRe" +
+      "port2\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006execId\030\002 \002(\t\022\014" +
+      "\n\004side\030\003 \002(\t\022\r\n\005price\030\006 \002(\001\022\r\n\005tdiId\030\007 \002" +
+      "(\t\022\024\n\014transactTime\030\010 \002(\003\022\013\n\003qty\030\r \002(\0012^\n",
+      "\003cmd\022%.com.activequant.messages.BaseMess" +
+      "age\030x \002(\0132*.com.activequant.messages.Exe" +
+      "cutionReport2B&\n\030com.activequant.message" +
+      "sB\nAQMessages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -14731,7 +14834,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_OrderUpdateRejected_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_OrderUpdateRejected_descriptor,
-              new java.lang.String[] { "ClOrdId", },
+              new java.lang.String[] { "ClOrdId", "Reason", },
               com.activequant.messages.AQMessages.OrderUpdateRejected.class,
               com.activequant.messages.AQMessages.OrderUpdateRejected.Builder.class);
           internal_static_com_activequant_messages_ExecutionReport2_descriptor =

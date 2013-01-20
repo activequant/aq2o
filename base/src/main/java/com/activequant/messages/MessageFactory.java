@@ -97,7 +97,8 @@ public class MessageFactory {
 		} else if (oe instanceof OrderAcceptedEvent) {
 			ret = orderAccepted(oe.getRefOrderId());
 		} else if (oe instanceof OrderUpdateRejectedEvent) {
-			ret = orderUpdateRejected(oe.getRefOrderId());
+			OrderUpdateRejectedEvent oure = (OrderUpdateRejectedEvent)oe; 
+			ret = orderUpdateRejected(oure.getRefOrderId(), oure.getReason());
 		} else if (oe instanceof OrderCancellationRejectedEvent) {
 			OrderCancellationRejectedEvent ocre = (OrderCancellationRejectedEvent) oe;
 			ret = OrderCancelRejected(ocre.getOptionalInstId(),
@@ -135,9 +136,9 @@ public class MessageFactory {
 				AQMessages.OrderCancelRequest.cmd, l);
 	}
 
-	public BaseMessage orderUpdateRejected(String refOrderId) {
+	public BaseMessage orderUpdateRejected(String refOrderId, String reason) {
 		AQMessages.OrderUpdateRejected l = AQMessages.OrderUpdateRejected
-				.newBuilder().setClOrdId(refOrderId).build();
+				.newBuilder().setClOrdId(refOrderId).setReason(reason).build();
 		return wrap(BaseMessage.CommandType.ORD_UPD_REJECTED,
 				AQMessages.OrderUpdateRejected.cmd, l);
 	}

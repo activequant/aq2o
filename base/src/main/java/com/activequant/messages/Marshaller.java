@@ -149,6 +149,7 @@ public class Marshaller {
 		OrderCancellationRejectedEvent ocr = new OrderCancellationRejectedEvent();
 		ocr.setRefOrderId(adm.getClOrdId());
 		ocr.setTimeStamp(new TimeStamp());
+		ocr.setReason(adm.getClxRejReason());
 		return ocr;
 	}
 
@@ -164,6 +165,7 @@ public class Marshaller {
 		OrderRejectedEvent ore = new OrderRejectedEvent();
 		ore.setRefOrderId(adm.getClOrdId());
 		ore.setTimeStamp(new TimeStamp());
+		ore.setReason(adm.getReason());
 		return ore;
 	}
 
@@ -185,7 +187,8 @@ public class Marshaller {
 			AQMessages.OrderUpdateRejected adm) {
 		OrderUpdateRejectedEvent oure = new OrderUpdateRejectedEvent();
 		oure.setRefOrderId(adm.getClOrdId());
-		oure.setTimeStamp(new TimeStamp());
+		oure.setTimeStamp(new TimeStamp());				
+		oure.setReason(adm.getReason());		
 		return oure;
 	}
 
