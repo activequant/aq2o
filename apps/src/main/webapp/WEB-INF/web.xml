@@ -54,5 +54,19 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/*</url-pattern>      <!--The url that should be protected -->
+		</web-resource-collection>
+		<auth-constraint>			
+			<role-name>user</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>     <!-- Use http basic authentication -->
+		<realm-name>ActivrQuant MASTER</realm-name>  <!-- Users are defined in this realm -->
+	</login-config>
 </web-app>
 

@@ -22,6 +22,7 @@
 	<context:component-scan base-package="com.activequant.server.web" />
 
 
+	<!-- maps view names to actual jsp files. -->
 	<bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
