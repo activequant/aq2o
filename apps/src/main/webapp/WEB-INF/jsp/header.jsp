@@ -75,6 +75,13 @@ body {
 
 
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Tools <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+
+								<li><a href="webstart">Trading GUI</a></li>
+								<li><a href="android_app">Android App</a></li>
+							</ul></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Help <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 
