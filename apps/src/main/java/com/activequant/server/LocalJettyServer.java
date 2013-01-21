@@ -98,13 +98,14 @@ public class LocalJettyServer {
 			connectors = new Connector[1];
 			connectors[0] = sc;
 			server.setConnectors(connectors);
-			
-			// let's add a default user. 
-			HashLoginService ls = new HashLoginService("ActivrQuant MASTER");
-			ls.putUser("user", Credential.getCredential("user"), new String[]{"user"});
-			server.addBean(ls);
-			
+
 		}
+
+		// let's add a default user.
+		HashLoginService ls = new HashLoginService("ActivrQuant MASTER");
+		ls.putUser("user", Credential.getCredential("user"),
+				new String[] { "user" });
+		server.addBean(ls);
 
 		// instantiate a webapp context.
 		WebAppContext wac = new WebAppContext();
@@ -120,8 +121,6 @@ public class LocalJettyServer {
 		handlers.setHandlers(new Handler[] { csvContext, wac }); // ,
 																	// resource_handler
 																	// });
-
-
 		server.setHandler(handlers);
 
 		//

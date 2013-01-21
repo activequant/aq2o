@@ -54,6 +54,16 @@ public class MainController {
 		return "about";
 	}
 
+	@RequestMapping("/webstart")
+	public String webstart(Map<String, Object> map) {
+		return "webstart";
+	}
+	
+	@RequestMapping("/android_app")
+	public String androidApp(Map<String, Object> map) {
+		return "android_app";
+	}
+	
 	@RequestMapping("/charting")
 	public String charting(Map<String, Object> map) {
 		return "charting";
