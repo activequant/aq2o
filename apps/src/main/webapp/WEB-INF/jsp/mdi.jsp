@@ -12,7 +12,8 @@
 	</c:forEach>
 
 </table>
-
-
+<p>
+<a href="data_inspector?mdiid=${mdiid}">Proceed to data inspector</a>.
+</p>
 <hr />
 <%@include file="footer.jsp"%>
