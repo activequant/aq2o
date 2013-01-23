@@ -30,6 +30,7 @@ message BaseMessage {
                 ORD_UPD_REJECTED = 21; 
                 EXECUTION_REPORT2 = 22;                
                 
+                CUST_CMD = 23; 
                 
         }
         required CommandType type = 1;
@@ -240,6 +241,7 @@ message OrderUpdateRejected {
     	required OrderUpdateRejected cmd = 119;
     }
     required string clOrdId = 2;
+    required string reason = 3;
 }
 
 message ExecutionReport2 {
@@ -255,4 +257,11 @@ message ExecutionReport2 {
 	required double qty = 13;
 }
 
+
+message CustomCommand {
+    extend BaseMessage {
+    	required CustomCommand cmd = 121;
+    }
+	required string command = 1;  
+}
 
