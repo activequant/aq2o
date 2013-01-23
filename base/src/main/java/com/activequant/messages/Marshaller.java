@@ -5,6 +5,7 @@ import java.util.List;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.AccountDataEvent;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.domainmodel.streaming.PositionEvent;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
@@ -100,6 +101,9 @@ public class Marshaller {
 		case ORD_UPDATED:
 			return demarshall((AQMessages.OrderUpdated) bm
 					.getExtension(AQMessages.OrderUpdated.cmd));
+		case EXECUTION_REPORT2:
+			return demarshall((AQMessages.ExecutionReport2) bm
+					.getExtension(AQMessages.ExecutionReport2.cmd));
 		}
 		return null;
 	}
@@ -118,7 +122,13 @@ public class Marshaller {
 
 	public OrderFillEvent demarshall(AQMessages.ExecutionReport2 adm) {
 		OrderFillEvent ofe = new OrderFillEvent();
-
+		ofe.setRefOrderId(adm.getClOrdId());
+		ofe.setExecId(adm.getExecId());
+		ofe.setFillPrice(adm.getPrice());
+		ofe.setFillAmount(adm.getQty());
+		ofe.setSide(adm.getSide());
+		ofe.setOptionalInstId(adm.getTdiId());
+		ofe.setTimeStamp(new TimeStamp(adm.getTransactTime()));
 		return ofe;
 	}
 
@@ -130,6 +140,10 @@ public class Marshaller {
 
 	}
 
+	public String demarshall(AQMessages.CustomCommand adm) {
+		return adm.getCommand();
+	}
+	
 	public OrderAcceptedEvent demarshall(AQMessages.OrderAccepted adm) {
 		OrderAcceptedEvent oae = new OrderAcceptedEvent();
 		oae.setRefOrderId(adm.getClOrdId());
@@ -187,8 +201,8 @@ public class Marshaller {
 			AQMessages.OrderUpdateRejected adm) {
 		OrderUpdateRejectedEvent oure = new OrderUpdateRejectedEvent();
 		oure.setRefOrderId(adm.getClOrdId());
-		oure.setTimeStamp(new TimeStamp());				
-		oure.setReason(adm.getReason());		
+		oure.setTimeStamp(new TimeStamp());
+		oure.setReason(adm.getReason());
 		return oure;
 	}
 
@@ -200,8 +214,9 @@ public class Marshaller {
 		return ouse;
 	}
 
-	public void demarshall(AQMessages.PositionReport adm) {
-
+	public PositionEvent demarshall(AQMessages.PositionReport adm) {
+		PositionEvent pos = new PositionEvent(adm.getTradInstId(), new TimeStamp(), adm.getEntryPrice(), adm.getQuantity());
+		return pos; 
 	}
 
 	public void demarshall(AQMessages.SecurityStatus adm) {

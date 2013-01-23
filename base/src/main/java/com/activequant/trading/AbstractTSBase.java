@@ -36,10 +36,12 @@ import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.StopOrder;
 import com.activequant.interfaces.aqviz.IVisualTable;
+import com.activequant.interfaces.trading.IOrderTracker;
 import com.activequant.interfaces.trading.IRiskCalculator;
 import com.activequant.interfaces.trading.ITradingSystem;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.messages.AQMessages;
+import com.activequant.messages.MessageFactory;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
@@ -55,7 +57,7 @@ import com.activequant.trading.datamodel.QuoteTable;
  * Relatively smart trading system base which keeps track of various things.
  * 
  * @author ustaudinger
- *
+ * 
  */
 public abstract class AbstractTSBase implements ITradingSystem {
 	// performance improvements start
@@ -132,10 +134,24 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				if (bm.getType().equals(CommandType.SERVER_TIME)) {
 
 				} else if ((temp = marshaller.demarshallOrderEvent(bm)) != null) {
-					OrderStreamEvent ose = new OrderStreamEvent("", temp.getTimeStamp(), temp);
-					process((StreamEvent)ose);
+					OrderStreamEvent ose = new OrderStreamEvent("",
+							temp.getTimeStamp(), temp);
+					// let's enrich the order stream event with our ref order.
+					String refOrderId = ose.getOe().getRefOrderId();
+					if (refOrderId != null) {
+						//
+						IOrderTracker iot = env.getExchange().getOrderTracker(
+								refOrderId);
+						if (iot != null)
+							ose.getOe().setRefOrder(iot.getOrder());
+					}
+					process((StreamEvent) ose);
+				} else if (bm.getType().equals(CommandType.POSITION_REPORT)) {
+					PositionEvent pos = marshaller
+							.demarshall(((AQMessages.PositionReport) bm
+									.getExtension(AQMessages.PositionReport.cmd)));
+					process((StreamEvent) pos);
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.warn("Exception: ", e);
@@ -297,6 +313,22 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		// subscribe to market data and to instrument data.
 		subscribe(mdi);
 		subscribe(tdi);
+		// also send a portfolio resend request.
+		requestPortfolio(tdi);
+		// also rerequest executions ... 
+		
+	}
+
+	private void requestPortfolio(TradeableInstrument tdi)
+			throws TransportException {
+		MessageFactory mf = new MessageFactory();
+		try {
+			env.getTransportFactory()
+					.getPublisher(ETransportType.TRAD_DATA, tdi.getId())
+					.send(mf.buildCustomCommand("POS " + tdi.getId()).toByteArray());
+		} catch (Exception e) {
+			throw new TransportException(e);
+		}
 	}
 
 	/**
@@ -385,8 +417,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			process((MarketDataSnapshot) se);
 		} else if (se instanceof PositionEvent) {
 			process((PositionEvent) se);
-			// log it to audit, too.
-			auditLog(se.getTimeStamp(), se.toString());
+			// not logging in to audit for now ...
+			// auditLog(se.getTimeStamp(), se.toString());
 		} else if (se instanceof OrderStreamEvent) {
 			process((OrderStreamEvent) se);
 			// log it to audit, too.
@@ -531,8 +563,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				// getQuoteTable().setValueAt(mds.getAskSizes()[0], rowIndx,
 				// ASK_SIZE_COL_INDX);
 			} else {
-				row[rowIndx][ASK_COL_IDX] = null;
-				row[rowIndx][ASK_SIZE_COL_INDX] = null;
+				row[rowIndx][ASK_COL_IDX] = "N/A";
+				row[rowIndx][ASK_SIZE_COL_INDX] = "N/A";
 
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_COL_IDX);
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_SIZE_COL_INDX);
@@ -548,8 +580,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				// BID_SIZE_COL_IDX);
 			} else {
 
-				row[rowIndx][BID_COL_IDX] = null;
-				row[rowIndx][BID_SIZE_COL_IDX] = null;
+				row[rowIndx][BID_COL_IDX] = "N/A";
+				row[rowIndx][BID_SIZE_COL_IDX] = "N/A";
 
 				// getQuoteTable().setValueAt(null, rowIndx, BID_COL_IDX);
 				// getQuoteTable().setValueAt(null, rowIndx, BID_SIZE_COL_IDX);

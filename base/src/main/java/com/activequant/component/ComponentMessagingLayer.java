@@ -22,10 +22,12 @@ public class ComponentMessagingLayer {
 	private IServer server;
 	private ComponentBase component;
 	private final Logger log = Logger.getLogger(ComponentMessagingLayer.class);
-	private final String randomId = "ID" + new Random().nextInt();
+	private final String randomId;
 
 	public ComponentMessagingLayer(ITransportFactory transFac)
 			throws TransportException {
+		// i know it's unsafe. someone make this safe (for example through bus introspection...)
+		randomId = "ID" + new Random().nextInt(Integer.MAX_VALUE);
 		this.transFac = transFac;
 		// subscribe to the control channel.
 		transFac.getReceiver(ETransportType.CONTROL.toString()).getRawEvent()

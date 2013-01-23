@@ -13,6 +13,6 @@ public class OrderCancelSubmittedEvent extends OrderTerminalEvent {
 	}
 
 	public String toString(){
-		return "Order " + super.getRefOrderId() + " cancelled: " + cancellationMessage; 
+		return "Order " + super.getRefOrderId() + " cancellation submitted."; 
 	}
 }

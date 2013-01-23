@@ -170,15 +170,16 @@ public class TransportOrderTracker implements IOrderTracker {
 		Order o = orderContainer;
 		String tradInstId = orderContainer.getTradInstId();
 		BaseMessage bm = null;
-		if (o instanceof LimitOrder) {
+		if (o instanceof MarketOrder) {
+			MarketOrder mo = (MarketOrder) o;
+			bm = messageFactory.orderMktOrder(o.getOrderId(), tradInstId,
+					mo.getQuantity(), mo.getOrderSide());
+		} else if (o instanceof LimitOrder) {
 			log.info("Submitting limit order:" + o.toString());
 			LimitOrder lo = (LimitOrder) o;
 			bm = messageFactory.orderLimitOrder(o.getOrderId(), tradInstId,
 					lo.getQuantity(), lo.getLimitPrice(), lo.getOrderSide());
-		} else if (o instanceof MarketOrder) {
-			MarketOrder mo = (MarketOrder) o;
-			bm = messageFactory.orderMktOrder(o.getOrderId(), tradInstId,
-					mo.getQuantity(), mo.getOrderSide());
+
 		} else if (o instanceof StopOrder) {
 			StopOrder so = (StopOrder) o;
 			bm = messageFactory.orderStopOrder(o.getOrderId(), tradInstId,
@@ -188,7 +189,7 @@ public class TransportOrderTracker implements IOrderTracker {
 			try {
 				transportPublisher.send(bm.toByteArray());
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.warn("Error while sending message: ", e);
 			}
 		}
 
@@ -267,7 +268,7 @@ public class TransportOrderTracker implements IOrderTracker {
 					pendingOrderContainer = (SingleLegOrder) o;
 					pendingOrderContainer.setOrderId(updateid);
 					transportPublisher.send(bm.toByteArray());
-					// finally notify the event listeners. 
+					// finally notify the event listeners.
 					fireEvent(new OrderUpdateSubmittedEvent());
 				} catch (Exception e) {
 					throw new RuntimeException(e);
@@ -350,6 +351,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		// ok, we are working out a pending cancellation.
 		cancellationPending = false;
 
+		//
 		log.info("Cancellation called for " + internalOrderId + ". "
 				+ lastState);
 		//

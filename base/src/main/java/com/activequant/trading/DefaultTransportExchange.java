@@ -78,7 +78,7 @@ public class DefaultTransportExchange implements IExchange {
 	public IOrderTracker prepareOrder(Order order) throws UnsupportedOrderType,
 			IncompleteOrderInstructions {
 		if (order.getOrderId() == null)
-			order.setOrderId(utsg.now().toString());
+			order.setOrderId("ID"+utsg.now().toString());
 
 		// generate publisher and receiver for this order tracker ...
 		//

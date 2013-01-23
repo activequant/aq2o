@@ -49,6 +49,18 @@ public class MessageFactory {
 		return wrap(BaseMessage.CommandType.SERVER_TIME,
 				AQMessages.ServerTime.cmd, l);
 	}
+	
+	/**
+	 * 
+	 * @param msg
+	 * @return
+	 */
+	public BaseMessage buildCustomCommand(String msg) {
+		AQMessages.CustomCommand l = AQMessages.CustomCommand.newBuilder()
+				.setCommand(msg).build();
+		return wrap(BaseMessage.CommandType.CUST_CMD,
+				AQMessages.CustomCommand.cmd, l);
+	}
 
 	/**
 	 * Builds a login message.
