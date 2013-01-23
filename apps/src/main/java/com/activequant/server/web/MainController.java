@@ -173,6 +173,13 @@ public class MainController {
 		return "traddata";
 	}
 
+	
+
+	@RequestMapping("/data_inspector")
+	public String csvData(Map<String, Object> map) {
+		return "data_csv";
+	}
+	
 	@RequestMapping("/documentation")
 	public String documentation(Map<String, Object> map) {
 		return "documentation_main";
