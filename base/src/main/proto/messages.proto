@@ -255,6 +255,7 @@ message ExecutionReport2 {
 	required string tdiId = 7;
 	required int64 transactTime = 8;
 	required double qty = 13;
+	required int32 resend = 14;
 }
 
 
