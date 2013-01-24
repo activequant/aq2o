@@ -315,8 +315,21 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		subscribe(tdi);
 		// also send a portfolio resend request.
 		requestPortfolio(tdi);
-		// also rerequest executions ... 
-		
+		// also rerequest executions ...
+		requestMarketQuote(mdi);
+	}
+
+	private void requestMarketQuote(MarketDataInstrument mdi)
+			throws TransportException {
+		MessageFactory mf = new MessageFactory();
+		try {
+			env.getTransportFactory()
+					.getPublisher(ETransportType.MARKET_DATA, mdi.getId()+":CONTROL")
+					.send(mf.buildCustomCommand("resend price " + mdi.getId())
+							.toByteArray());
+		} catch (Exception e) {
+			throw new TransportException(e);
+		}
 	}
 
 	private void requestPortfolio(TradeableInstrument tdi)
@@ -325,7 +338,12 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		try {
 			env.getTransportFactory()
 					.getPublisher(ETransportType.TRAD_DATA, tdi.getId())
-					.send(mf.buildCustomCommand("POS " + tdi.getId()).toByteArray());
+					.send(mf.buildCustomCommand("POS " + tdi.getId())
+							.toByteArray());
+			env.getTransportFactory()
+					.getPublisher(ETransportType.TRAD_DATA, tdi.getId())
+					.send(mf.buildCustomCommand("EXEC " + tdi.getId())
+							.toByteArray());
 		} catch (Exception e) {
 			throw new TransportException(e);
 		}
@@ -555,7 +573,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			// call by reference
 			Object[][] row = getQuoteTable().getData();
 			// update the quote table.
-			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0) {
+			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0 && !Double.isNaN(mds.getAskPrices() [0])) {
 				row[rowIndx][ASK_COL_IDX] = mds.getAskPrices()[0];
 				row[rowIndx][ASK_SIZE_COL_INDX] = mds.getAskSizes()[0];
 				// getQuoteTable().setValueAt(mds.getAskPrices()[0], rowIndx,
@@ -563,13 +581,13 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				// getQuoteTable().setValueAt(mds.getAskSizes()[0], rowIndx,
 				// ASK_SIZE_COL_INDX);
 			} else {
-				row[rowIndx][ASK_COL_IDX] = "N/A";
-				row[rowIndx][ASK_SIZE_COL_INDX] = "N/A";
+				row[rowIndx][ASK_COL_IDX] = "";
+				row[rowIndx][ASK_SIZE_COL_INDX] = "";
 
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_COL_IDX);
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_SIZE_COL_INDX);
 			}
-			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0) {
+			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0 && !Double.isNaN(mds.getBidPrices() [0])) {
 
 				row[rowIndx][BID_COL_IDX] = mds.getBidPrices()[0];
 				row[rowIndx][BID_SIZE_COL_IDX] = mds.getBidSizes()[0];
@@ -580,8 +598,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				// BID_SIZE_COL_IDX);
 			} else {
 
-				row[rowIndx][BID_COL_IDX] = "N/A";
-				row[rowIndx][BID_SIZE_COL_IDX] = "N/A";
+				row[rowIndx][BID_COL_IDX] = "";
+				row[rowIndx][BID_SIZE_COL_IDX] = "";
 
 				// getQuoteTable().setValueAt(null, rowIndx, BID_COL_IDX);
 				// getQuoteTable().setValueAt(null, rowIndx, BID_SIZE_COL_IDX);
