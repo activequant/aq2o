@@ -1,12 +1,21 @@
 package com.activequant.domainmodel.trade.event;
 
-
 public class OrderFillEvent extends OrderEvent {
 	private double fillAmount;
 	private double fillPrice;
-	private String side; 
-	private double leftQuantity; 
-	private String execId; 
+	private String side;
+	private double leftQuantity;
+	private String execId;
+
+	private int resend = 0;
+
+	public int getResend() {
+		return resend;
+	}
+
+	public void setResend(int resend) {
+		this.resend = resend;
+	}
 
 	public String getExecId() {
 		return execId;
@@ -16,10 +25,10 @@ public class OrderFillEvent extends OrderEvent {
 		this.execId = execId;
 	}
 
-	public OrderFillEvent(){
+	public OrderFillEvent() {
 		super(OrderFillEvent.class.getCanonicalName());
 	}
-	
+
 	public double getFillPrice() {
 		return fillPrice;
 	}
@@ -34,11 +43,11 @@ public class OrderFillEvent extends OrderEvent {
 
 	public void setFillAmount(double fillAmount) {
 		this.fillAmount = fillAmount;
-	} 
-	
+	}
 
-	public String toString(){
-		return "Order " + super.getRefOrderId() + " filled: " + fillAmount +"@" + fillPrice; 
+	public String toString() {
+		return "Order " + super.getRefOrderId() + " filled: " + fillAmount
+				+ "@" + fillPrice;
 	}
 
 	public String getSide() {
@@ -56,5 +65,5 @@ public class OrderFillEvent extends OrderEvent {
 	public void setLeftQuantity(double leftQuantity) {
 		this.leftQuantity = leftQuantity;
 	}
-	
+
 }

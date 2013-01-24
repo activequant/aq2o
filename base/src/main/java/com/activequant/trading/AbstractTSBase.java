@@ -1,6 +1,8 @@
 package com.activequant.trading;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -41,10 +43,10 @@ import com.activequant.interfaces.trading.IRiskCalculator;
 import com.activequant.interfaces.trading.ITradingSystem;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.messages.AQMessages;
-import com.activequant.messages.MessageFactory;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
+import com.activequant.messages.MessageFactory;
 import com.activequant.trading.datamodel.AccountTable;
 import com.activequant.trading.datamodel.AuditLogTable;
 import com.activequant.trading.datamodel.ExecutionsTable;
@@ -324,7 +326,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		MessageFactory mf = new MessageFactory();
 		try {
 			env.getTransportFactory()
-					.getPublisher(ETransportType.MARKET_DATA, mdi.getId()+":CONTROL")
+					.getPublisher(ETransportType.MARKET_DATA,
+							mdi.getId() + ":CONTROL")
 					.send(mf.buildCustomCommand("resend price " + mdi.getId())
 							.toByteArray());
 		} catch (Exception e) {
@@ -336,10 +339,10 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			throws TransportException {
 		MessageFactory mf = new MessageFactory();
 		try {
-			env.getTransportFactory()
-					.getPublisher(ETransportType.TRAD_DATA, tdi.getId())
-					.send(mf.buildCustomCommand("POS " + tdi.getId())
-							.toByteArray());
+			// env.getTransportFactory()
+			// .getPublisher(ETransportType.TRAD_DATA, tdi.getId())
+			// .send(mf.buildCustomCommand("POS " + tdi.getId())
+			// .toByteArray());
 			env.getTransportFactory()
 					.getPublisher(ETransportType.TRAD_DATA, tdi.getId())
 					.send(mf.buildCustomCommand("EXEC " + tdi.getId())
@@ -439,9 +442,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			// auditLog(se.getTimeStamp(), se.toString());
 		} else if (se instanceof OrderStreamEvent) {
 			process((OrderStreamEvent) se);
-			// log it to audit, too.
-			auditLog(se.getTimeStamp(), ((OrderStreamEvent) se).getOe()
-					.toString());
+
 		} else if (se instanceof InformationalEvent) {
 			auditLog(se.getTimeStamp(), ((InformationalEvent) se).getText());
 		} else if (se instanceof AccountDataEvent) {
@@ -479,6 +480,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		getAccountTable().signalUpdate();
 	}
 
+	private List<String> seenExecutions = new ArrayList<String>();
+
 	/**
 	 * Order Stream events do not interfere with order tracker events.
 	 * 
@@ -492,26 +495,43 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		if (ose.getOe() instanceof OrderFillEvent) {
 			// add an execution.
 			OrderFillEvent ofe = (OrderFillEvent) ose.getOe();
-			getExecutionsTable().addExecution(
-					ofe.getRefOrderId(),
-					ofe.getTimeStamp(),
-					ofe.getOptionalInstId(),
-					ofe.getSide().startsWith("B") ? OrderSide.BUY.name()
-							: OrderSide.SELL.name(), ofe.getFillPrice(),
-					ofe.getFillAmount());
-			// also signal the execution to the risk calculator.
-			riskCalculator.execution(ofe.getTimeStamp(),
-					ofe.getOptionalInstId(),
-					ofe.getFillPrice(),
-					// B nasty one. might bite later down.
-					(ofe.getSide().startsWith("B") ? 1.0 : -1.0)
-							* ofe.getFillAmount());
-
 			//
-			if (ofe.getLeftQuantity() == 0) {
-				getOrderTable().delOrder(ofe.getRefOrderId());
-			} else {
-				addOrSetOrderTable(refOrder);
+			String execId = ofe.getExecId();
+			boolean seen = false;
+			for (String s : seenExecutions) {
+				if (s.equals(execId)) {
+					seen = true;
+					break;
+				}
+			}
+			if (!seen) {
+				seenExecutions.add(execId);
+				//
+				getExecutionsTable().addExecution(
+						ofe.getRefOrderId(),
+						ofe.getExecId(),
+						ofe.getTimeStamp(),
+						ofe.getOptionalInstId(),
+						ofe.getSide().startsWith("B") ? OrderSide.BUY.name()
+								: OrderSide.SELL.name(), ofe.getFillPrice(),
+						ofe.getFillAmount());
+				if (ofe.getResend() == 0) {
+					// also signal the execution to the risk calculator.
+					riskCalculator.execution(ofe.getTimeStamp(),
+							ofe.getOptionalInstId(),
+							ofe.getFillPrice(),
+							// B nasty one. might bite later down.
+							(ofe.getSide().startsWith("B") ? 1.0 : -1.0)
+									* ofe.getFillAmount());
+					//
+					if (ofe.getLeftQuantity() == 0) {
+						getOrderTable().delOrder(ofe.getRefOrderId());
+					} else {
+						addOrSetOrderTable(refOrder);
+					}
+				}
+				// log it to audit, too.
+				auditLog(ofe.getTimeStamp(), ofe.toString());
 			}
 			getExecutionsTable().signalUpdate();
 			getOrderTable().signalUpdate();
@@ -519,12 +539,16 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				|| (ose.getOe() instanceof OrderReplacedEvent)) {
 			// add it to our orders table.
 			addOrSetOrderTable(refOrder);
+			// log it to audit, too.
+			auditLog(ose.getTimeStamp(), ose.getOe().toString());
 		} else if (ose.getOe() instanceof OrderRejectedEvent) {
 			getOrderTable().delOrder(ose.getOe().getRefOrderId());
 			getOrderTable().signalUpdate();
+			auditLog(ose.getTimeStamp(), ose.getOe().toString());
 		} else if (ose.getOe() instanceof OrderCancelledEvent) {
 			getOrderTable().delOrder(ose.getOe().getRefOrderId());
 			getOrderTable().signalUpdate();
+			auditLog(ose.getTimeStamp(), ose.getOe().toString());
 		}
 	}
 
@@ -573,7 +597,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			// call by reference
 			Object[][] row = getQuoteTable().getData();
 			// update the quote table.
-			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0 && !Double.isNaN(mds.getAskPrices() [0])) {
+			if (mds.getAskPrices() != null && mds.getAskPrices().length > 0
+					&& !Double.isNaN(mds.getAskPrices()[0])) {
 				row[rowIndx][ASK_COL_IDX] = mds.getAskPrices()[0];
 				row[rowIndx][ASK_SIZE_COL_INDX] = mds.getAskSizes()[0];
 				// getQuoteTable().setValueAt(mds.getAskPrices()[0], rowIndx,
@@ -587,7 +612,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_COL_IDX);
 				// getQuoteTable().setValueAt(null, rowIndx, ASK_SIZE_COL_INDX);
 			}
-			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0 && !Double.isNaN(mds.getBidPrices() [0])) {
+			if (mds.getBidPrices() != null && mds.getBidPrices().length > 0
+					&& !Double.isNaN(mds.getBidPrices()[0])) {
 
 				row[rowIndx][BID_COL_IDX] = mds.getBidPrices()[0];
 				row[rowIndx][BID_SIZE_COL_IDX] = mds.getBidSizes()[0];

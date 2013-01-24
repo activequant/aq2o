@@ -14,11 +14,12 @@ public class ExecutionsTable extends AQTableDataBase {
 	
 	public enum Columns{		
 		ORDERID(0),
-		TIMESTAMP(1),
-		INSTRUMENTID(2),		
-		SIDE(3), 
-		PRICE(4),
-		QUANTITY(5);
+		EXECID(1),
+		TIMESTAMP(2),
+		INSTRUMENTID(3),		
+		SIDE(4), 
+		PRICE(5),
+		QUANTITY(6);
 		// 
 		int colIdx;		
 		private Columns(int pos){
@@ -51,11 +52,12 @@ public class ExecutionsTable extends AQTableDataBase {
 		}
 	}
 	
-	public void addExecution(String orderId, TimeStamp ts, String instrumentId, String side, double price, double quantity){		
+	public void addExecution(String orderId, String execId, TimeStamp ts, String instrumentId, String side, double price, double quantity){		
 		// convert data to list. 
 		List<Object[]> l = c(data);		
 		Object[] row = new Object[header.length];
 		row[Columns.ORDERID.colIdx] = orderId; 
+		row[Columns.EXECID.colIdx] = execId; 
 		row[Columns.TIMESTAMP.colIdx] = sdf.format(ts.getCalendar().getTime());
 		row[Columns.INSTRUMENTID.colIdx] = instrumentId;
 		row[Columns.SIDE.colIdx] = side;
