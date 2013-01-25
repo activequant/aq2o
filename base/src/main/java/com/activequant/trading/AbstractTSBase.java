@@ -482,19 +482,14 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	private List<String> seenExecutions = new ArrayList<String>();
 
-	/**
-	 * Order Stream events do not interfere with order tracker events.
-	 * 
-	 * @param ose
-	 */
-	public void process(OrderStreamEvent ose) {
-		Order refOrder = ose.getOe().getRefOrder();
-		if (refOrder == null) {
-			log.warn("No ref order in order stream event.");
-		}
-		if (ose.getOe() instanceof OrderFillEvent) {
+	
+	
+	public void processOrderEvent(OrderEvent oe) {
+		Order refOrder = oe.getRefOrder();
+
+		if (oe instanceof OrderFillEvent) {
 			// add an execution.
-			OrderFillEvent ofe = (OrderFillEvent) ose.getOe();
+			OrderFillEvent ofe = (OrderFillEvent) oe;
 			//
 			String execId = ofe.getExecId();
 			boolean seen = false;
@@ -535,21 +530,37 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			}
 			getExecutionsTable().signalUpdate();
 			getOrderTable().signalUpdate();
-		} else if ((ose.getOe() instanceof OrderAcceptedEvent)
-				|| (ose.getOe() instanceof OrderReplacedEvent)) {
+		} else if ((oe instanceof OrderAcceptedEvent)
+				|| (oe instanceof OrderReplacedEvent)) {
 			// add it to our orders table.
 			addOrSetOrderTable(refOrder);
 			// log it to audit, too.
-			auditLog(ose.getTimeStamp(), ose.getOe().toString());
-		} else if (ose.getOe() instanceof OrderRejectedEvent) {
-			getOrderTable().delOrder(ose.getOe().getRefOrderId());
+			auditLog(oe.getTimeStamp(), oe.toString());
+		} else if (oe instanceof OrderRejectedEvent) {
+			getOrderTable().delOrder(oe.getRefOrderId());
 			getOrderTable().signalUpdate();
-			auditLog(ose.getTimeStamp(), ose.getOe().toString());
-		} else if (ose.getOe() instanceof OrderCancelledEvent) {
-			getOrderTable().delOrder(ose.getOe().getRefOrderId());
+			auditLog(oe.getTimeStamp(), oe.toString());
+		} else if (oe instanceof OrderCancelledEvent) {
+			getOrderTable().delOrder(oe.getRefOrderId());
 			getOrderTable().signalUpdate();
-			auditLog(ose.getTimeStamp(), ose.getOe().toString());
+			auditLog(oe.getTimeStamp(), oe.toString());
 		}
+	}
+
+	/**
+	 * Order Stream events do not interfere with order tracker events.
+	 * 
+	 * @param ose
+	 */
+	public void process(OrderStreamEvent ose) {
+		Order refOrder = ose.getOe().getRefOrder();
+		if (refOrder == null) {
+			log.warn("No ref order in order stream event.");
+		}
+
+		OrderEvent oe = ose.getOe();
+		processOrderEvent(oe);
+
 	}
 
 	/**
@@ -635,7 +646,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			getQuoteTable().signalUpdate();
 
 			// recalculate the current position values.
-			riskCalculator.pricesUpdated(rowIndx);
+			//riskCalculator.pricesUpdated(rowIndx);
 
 			//
 		} else {

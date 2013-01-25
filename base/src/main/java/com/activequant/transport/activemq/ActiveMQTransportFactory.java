@@ -117,7 +117,7 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 				MessageConsumer consumer = session.createConsumer(topic,
 						"channelId='" + originalDestination + "'");
 				JMSReceiver j = new JMSReceiver();
-				consumer.setMessageListener(j);
+				consumer.setMessageListener(j);				
 				receiverMap.put(originalDestination, j);
 				if (log.isDebugEnabled())
 					log.debug("Added receiver for " + originalDestination);
@@ -140,8 +140,7 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 		createReceiver(destination);
 		return receiverMap.get(destination);
 	}
-	
-	
+
 	public synchronized IPublisher getPublisher(ETransportType transType,
 			Instrument instrument) throws TransportException {
 		String destination = transType.toString() + "." + instrument.getId();

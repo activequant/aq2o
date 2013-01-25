@@ -30,8 +30,6 @@ public class MarketDataFeedAdapter {
 			BaseMessage bm;
 			try {
 				bm = marshaller.demarshall(event);
-				if (log.isDebugEnabled())
-					log.debug("Event type: " + bm.getType());
 				if (bm.getType().equals(CommandType.MDS)) {
 					MarketDataSnapshot mds = marshaller
 							.demarshall(((AQMessages.MarketDataSnapshot) bm

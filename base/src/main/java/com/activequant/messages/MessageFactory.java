@@ -368,6 +368,7 @@ public class MessageFactory {
 			double cumQty, double leavesQty, double avgPx, String ordType,
 			String text, String comment) {
 
+		// 
 		AQMessages.ExecutionReport n = AQMessages.ExecutionReport.newBuilder()
 				.setClOrdId(clOrdId).setExecId(execId).setSide(side)
 				.setCurrency(currency).setOrderQty(orderQty).setPrice(price)
@@ -376,6 +377,7 @@ public class MessageFactory {
 				.setOrdStatus(ordStatus).setCumQty(cumQty).setAvgPx(avgPx)
 				.setOrdType(ordType).setText(text).setComment(comment).build();
 
+		//
 		return wrap(BaseMessage.CommandType.EXECUTION_REPORT,
 				AQMessages.ExecutionReport.cmd, n);
 

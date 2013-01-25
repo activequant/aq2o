@@ -2,8 +2,6 @@ package com.activequant.trading;
 
 import org.apache.log4j.Logger;
 
-import com.activequant.domainmodel.orderbook.MarketOpen;
-import com.activequant.domainmodel.streaming.OrderStreamEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancellationRejectedEvent;
@@ -81,6 +79,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		});
 
 		this.orderContainer = order;
+		order.setOpenQuantity(order.getQuantity());
 		messageFactory = new MessageFactory();
 		internalOrderId = order.getOrderId();
 		originalOrderId = order.getOrderId();
@@ -403,6 +402,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		AQMessages.BaseMessage bm;
 		try {
 			bm = marshaller.demarshall(rawMessage);
+			//System.out.println(bm);
 			switch (bm.getType()) {
 			case SECURITY_STATUS: {
 				AQMessages.SecurityStatus os = ((AQMessages.SecurityStatus) bm
@@ -429,12 +429,27 @@ public class TransportOrderTracker implements IOrderTracker {
 						.getExtension(AQMessages.OrderCancelled.cmd));
 				handle(oc);
 				break;
-			case ORD_CNCL_REJ:
+			case ORD_CNCL_REJ: {
 				log.info("Order cancellation rejected.");
 				AQMessages.OrderCancelReject ocr = ((AQMessages.OrderCancelReject) bm
 						.getExtension(AQMessages.OrderCancelReject.cmd));
 				handle(ocr);
 				break;
+			}
+			case ORD_UPD_REJECTED: {
+				log.info("Order update rejected.");
+				AQMessages.OrderUpdateRejected ocr = ((AQMessages.OrderUpdateRejected) bm
+						.getExtension(AQMessages.OrderUpdateRejected.cmd));
+				handle(ocr);
+				break;
+			}
+			case ORD_UPDATE_SUBMITTED: {
+				log.info("Order update submitted.");
+				AQMessages.OrderUpdateSubmitted ocr = ((AQMessages.OrderUpdateSubmitted) bm
+						.getExtension(AQMessages.OrderUpdateSubmitted.cmd));
+				handle(ocr);
+				break;
+			}
 			case ORD_UPDATED:
 				log.info("Order updated.");
 				AQMessages.OrderUpdated ou = ((AQMessages.OrderUpdated) bm
@@ -448,9 +463,9 @@ public class TransportOrderTracker implements IOrderTracker {
 						.getExtension(AQMessages.OrderRejected.cmd));
 				handle(or);
 				break;
-			case EXECUTION_REPORT:
-				AQMessages.ExecutionReport er = ((AQMessages.ExecutionReport) bm
-						.getExtension(AQMessages.ExecutionReport.cmd));
+			case EXECUTION_REPORT2:
+				AQMessages.ExecutionReport2 er = ((AQMessages.ExecutionReport2) bm
+						.getExtension(AQMessages.ExecutionReport2.cmd));
 				handle(er);
 				break;
 			}
@@ -515,6 +530,19 @@ public class TransportOrderTracker implements IOrderTracker {
 		}
 	}
 
+	private void handle(AQMessages.OrderUpdateRejected oa) {
+
+		String orderId = oa.getClOrdId();
+		if (orderId.equals(originalOrderId)) {
+			log.info("Order accepted: " + oa.getClOrdId());
+			OrderUpdateRejectedEvent oae = new OrderUpdateRejectedEvent();
+			oae.setRefOrderId(oa.getClOrdId());
+			oae.setRefOrder(getOrder());
+			oae.setReason(oa.getReason());
+			fireEvent(oae);
+		}
+	}
+
 	/**
 	 * 
 	 * Translates wire execution reports to internal OrderFillEvents.
@@ -522,7 +550,7 @@ public class TransportOrderTracker implements IOrderTracker {
 	 * @param er
 	 */
 
-	private void handle(AQMessages.ExecutionReport er) {
+	private void handle(AQMessages.ExecutionReport2 er) {
 
 		String orderId = er.getClOrdId();
 
@@ -535,19 +563,16 @@ public class TransportOrderTracker implements IOrderTracker {
 			log.info("Execution report: " + er.getClOrdId());
 
 			OrderFillEvent ofe = new OrderFillEvent();
-			double leftQuantity = er.getLeavesQty();
-			ofe.setLeftQuantity(leftQuantity);
 
-			Double cumQty = er.getCumQty();
-			Double avgPx = er.getAvgPx();
+			Double cumQty = er.getQty();
+			Double avgPx = er.getPrice();
 
-			String side = er.getSide() == '2' ? "S" : "B";
+			String side = er.getSide();
 			ofe.setSide(side);
 
 			ofe.setFillPrice(er.getPrice());
 			ofe.setFillAmount(cumQty);
-			ofe.setLeftQuantity(er.getLeavesQty());
-			ofe.setOptionalInstId(er.getTradInstId());
+			ofe.setOptionalInstId(er.getTdiId());
 			ofe.setRefOrderId(orderId);
 			ofe.setRefOrder(getOrder());
 			fireEvent(ofe);
@@ -611,6 +636,23 @@ public class TransportOrderTracker implements IOrderTracker {
 		}
 	}
 
+	private void handle(AQMessages.OrderUpdateSubmitted ocr) {
+		String orderId = ocr.getClOrdId();
+		if (orderId.startsWith("UPDT:")) {
+			// alright, let's split it.
+			orderId = orderId.split(":")[1];
+		}
+		if (orderId.equals(originalOrderId)) {
+			//
+			OrderUpdateSubmittedEvent oce = new OrderUpdateSubmittedEvent();
+			oce.setRefOrderId(orderId);
+			oce.setRefOrder(getOrder());
+			fireEvent(oce);
+		}
+	}
+
+	
+	
 	public boolean isCancellationPending() {
 		return cancellationPending;
 	}
