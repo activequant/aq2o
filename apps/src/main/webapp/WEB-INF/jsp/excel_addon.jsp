@@ -2,7 +2,7 @@
 
 <h1>Excel add-on</h1>
 <p>
-To be written. 
+To be documented. There's already an Excel Add-On, but it's not yet documented. 
 </p>
  
 <hr/>

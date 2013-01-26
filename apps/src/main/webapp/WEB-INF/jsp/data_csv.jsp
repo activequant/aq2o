@@ -1,8 +1,10 @@
 <%@include file="header.jsp"%>
 
+<h3>Time series inspector</h3>
+<p>Use this form to parametrize a request to this server's CSV interface. </p>
 <p>
 	<i>Start date and end date must be in format YYYYMMDD. Typical
-		fields are BID, ASK, OPEN, etc.</i>
+		fields are BID, ASK, OPEN, etc. Typical frequencies are RAW, EOD, HOURS_1, MINUTES_1. </i>
 </p>
 
 <div class="input">
