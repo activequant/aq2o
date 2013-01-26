@@ -6,24 +6,28 @@
 </p>
 
 <div class="input">
-	<form>
+	<form action="csv/">
 		<table>
 			<tr>
-				<td>MDI ID</td>
-				<td><input type="text" name="mdiid" value="${mdiid}" /></td>
+				<td>Series ID</td>
+				<td><input type="text" name="SERIESID" value="${mdiid}" /></td>
+			</tr>
+			<tr>
+				<td>Frequency</td>
+				<td><input type="text" name="FREQ" value="${freq}" /></td>
 			</tr>
 			<tr>
 				<td>Field</td>
-				<td><input type="text" name="field" value="${field}" /></td>
+				<td><input type="text" name="FIELD" value="${field}" /></td>
 			</tr>
 			<tr>
 				<td>Start date</td>
-				<td><input type="text" name="startdate" value="${startdate}" /></td>
+				<td><input type="text" name="STARTDATE" value="${startdate}" /></td>
 			</tr>
 
 			<tr>
 				<td>End date</td>
-				<td><input type="text" name="enddate" value="${enddate}" /></td>
+				<td><input type="text" name="ENDDATE" value="${enddate}" /></td>
 			</tr>
 			<tr>
 				<td></td>

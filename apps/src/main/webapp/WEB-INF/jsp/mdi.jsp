@@ -13,7 +13,7 @@
 
 </table>
 <p>
-<a href="data_inspector?mdiid=${mdiid}">=&gt; Historical data</a>.
+<a href="data_inspector?seriesid=${mdiid}&freq=RAW">=&gt; Historical data</a>.
 </p>
 <hr />
 <%@include file="footer.jsp"%>
