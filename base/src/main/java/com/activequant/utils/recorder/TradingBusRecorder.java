@@ -10,16 +10,21 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.activequant.domainmodel.ETransportType;
+import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.dao.IOrderEventDao;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
+import com.activequant.messages.AQMessages.BaseMessage;
+import com.activequant.messages.Marshaller;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
- * A recorder that records order events that come in over the trading bus. 
- * In the near future, this might record more than just order events. 
+ * A recorder that records order events that come in over the trading bus. In
+ * the near future, this might record more than just order events.
  * 
  * @author GhostRider
  * 
@@ -30,22 +35,29 @@ public class TradingBusRecorder {
 	private Logger log = Logger.getLogger(TradingBusRecorder.class);
 	final Timer t = new Timer(true);
 	final long collectionPhase = 5000l;
-	private final ConcurrentLinkedQueue<MarketDataSnapshot> collectionList = new ConcurrentLinkedQueue<MarketDataSnapshot>();
+	private final ConcurrentLinkedQueue<OrderEvent> collectionList = new ConcurrentLinkedQueue<OrderEvent>();
 	private IOrderEventDao orderEventDao;
-	
+
 	class InternalTimerTask extends TimerTask {
 		int counter;
 
 		@Override
 		public void run() {
 
-			Object o = collectionList.poll();
+			OrderEvent o = collectionList.poll();
 			counter = 0;
 			while (o != null) {
-
+				//
 				o = collectionList.poll();
-				counter++;
 
+				// let's store it ...
+				try {
+					orderEventDao.create(o);
+				} catch (DaoException e) {
+					log.error(o.toString()+ " was not stored: ", e);
+				}
+				//
+				counter++;
 			}
 			log.info("Collected " + counter + " events. ");
 			t.schedule(new InternalTimerTask(),
@@ -69,19 +81,25 @@ public class TradingBusRecorder {
 				(collectionPhase - System.currentTimeMillis() % collectionPhase));
 	}
 
+	private Marshaller marshaller = new Marshaller();
+
 	private void subscribe() throws IOException, TransportException {
 		log.info("Subscribing to all order events on the TRAD_DATA bus.");
-		transFac.getReceiver(ETransportType.TRAD_DATA,"").getRawEvent()
+		transFac.getReceiver(ETransportType.TRAD_DATA, "").getRawEvent()
 				.addEventListener(new IEventListener<byte[]>() {
 					@Override
 					public void eventFired(byte[] event) {
-						
-						// check if we can deserialize it.
-						
-						
-						// once done, push it to our queue. 
-						
-						
+
+						BaseMessage bm;
+						try {
+							bm = marshaller.demarshall(event);
+							OrderEvent o = marshaller.demarshallOrderEvent(bm);
+							if(o!=null)
+								collectionList.add(o);
+						} catch (InvalidProtocolBufferException e) {
+							e.printStackTrace();
+						}
+
 					}
 				});
 	}
