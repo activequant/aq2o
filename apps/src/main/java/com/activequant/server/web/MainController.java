@@ -204,6 +204,12 @@ public class MainController {
 	public String documentation(Map<String, Object> map) {
 		return "documentation_main";
 	}
+	
+	@RequestMapping("/excel_addon")
+	public String excelAddon(Map<String, Object> map) {
+		return "excel_addon";
+	}
+
 
 	@RequestMapping(value = "/component/description", method = RequestMethod.GET)
 	public @ResponseBody
