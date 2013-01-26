@@ -2,7 +2,7 @@
 <h3>Tradeable instruments</h3>
 <p>
 	<i>Search will search through TDI key values. Use SQL like
-		wild cards.</i>
+		wild cards. Examples: TT.SFE.%, TT.CME.%</i>
 </p>
 <div class="input-append">
 	<form>

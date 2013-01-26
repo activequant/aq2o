@@ -2,7 +2,7 @@
 <h3>Instruments</h3>
 <p>
 	<i>Search will search through instrument key values. Use SQL like
-		wild cards.</i>
+		wild cards. Examples: FUT.SFE.%, FUT.CME.%, OPT.SFE.%</i>
 </p>
 <div class="input-append">
 	<form>
