@@ -185,6 +185,17 @@ public class MainController {
 		map.put("startdate", request.getParameter("startdate"));
 		map.put("enddate", request.getParameter("enddate"));
 		map.put("freq", request.getParameter("freq"));
+		
+		if(request.getParameter("field")==null)
+			map.put("field", "BID");
+		if(request.getParameter("startdate")==null)
+			map.put("startdate", "20120101");
+		if(request.getParameter("enddate")==null)
+			map.put("enddate", "20131231");
+		if(request.getParameter("freq")==null)
+			map.put("freq", "RAW");
+		
+		
 		return new ModelAndView("data_csv", map);
 	}
 	
