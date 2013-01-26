@@ -10,7 +10,7 @@
 		<table>
 			<tr>
 				<td>Series ID</td>
-				<td><input type="text" name="SERIESID" value="${mdiid}" /></td>
+				<td><input type="text" name="SERIESID" value="${seriesid}" /></td>
 			</tr>
 			<tr>
 				<td>Frequency</td>

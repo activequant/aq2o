@@ -55,14 +55,13 @@ body {
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li><a href="/">Home</a></li>
-						<li><a href="charting">Charting</a></li>
+
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Administration <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="server">Server</a></li>
 								<li><a href="components">Components</a></li>
 							</ul></li>
-
 
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Instruments <b class="caret"></b></a>
@@ -73,6 +72,7 @@ body {
 								<li><a href="tdis">Tradeable instruments</a></li>
 							</ul></li>
 
+						<li><a href="data_inspector">Time series</a></li>
 
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Tools <b class="caret"></b></a>
@@ -80,6 +80,7 @@ body {
 
 								<li><a href="webstart">Trading GUI</a></li>
 								<li><a href="android_app">Android App</a></li>
+								<li><a href="excel_addon">Excel Add-On</a></li>
 							</ul></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Help <b class="caret"></b></a>
