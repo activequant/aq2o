@@ -199,7 +199,6 @@ public class MainController {
 		return new ModelAndView("data_csv", map);
 	}
 	
-	
 	@RequestMapping("/documentation")
 	public String documentation(Map<String, Object> map) {
 		return "documentation_main";
