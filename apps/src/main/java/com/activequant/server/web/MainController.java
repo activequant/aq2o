@@ -176,9 +176,18 @@ public class MainController {
 	
 
 	@RequestMapping("/data_inspector")
-	public String csvData(Map<String, Object> map) {
-		return "data_csv";
+	public ModelAndView data_csv(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String componentId = request.getParameter("componentId");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("seriesid", request.getParameter("seriesid"));
+		map.put("field", request.getParameter("field"));
+		map.put("startdate", request.getParameter("startdate"));
+		map.put("enddate", request.getParameter("enddate"));
+		map.put("freq", request.getParameter("freq"));
+		return new ModelAndView("data_csv", map);
 	}
+	
 	
 	@RequestMapping("/documentation")
 	public String documentation(Map<String, Object> map) {
