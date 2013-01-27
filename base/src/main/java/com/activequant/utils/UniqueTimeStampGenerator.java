@@ -28,6 +28,7 @@ public class UniqueTimeStampGenerator {
 	
 	private long lastMillis = 0L;
 	private long nanos      = 0;
+	private static UniqueTimeStampGenerator instance = null;  
 
 	public TimeStamp now(){
 		return generate(new Date());
@@ -57,4 +58,10 @@ public class UniqueTimeStampGenerator {
 		return new TimeStamp(lastMillis * AMBIGUATION_UNITS_IN_MILLIS + nanos); // disambiguate
 	}
 
+	public static UniqueTimeStampGenerator getInstance(){
+		if(instance==null)
+			instance = new UniqueTimeStampGenerator();
+		return instance; 
+	}
+	
 }

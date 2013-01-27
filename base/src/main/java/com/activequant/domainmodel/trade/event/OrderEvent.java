@@ -24,12 +24,6 @@ public abstract class OrderEvent extends StreamEvent {
 		return ETransportType.TRAD_DATA;
 	}
 
-	@Override
-	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public String getRefOrderId() {
 		return refOrderId;
 	}

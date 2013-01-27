@@ -1,5 +1,7 @@
 package com.activequant.domainmodel.trade.event;
 
+import com.activequant.utils.UniqueTimeStampGenerator;
+
 public class OrderFillEvent extends OrderEvent {
 	private double fillAmount;
 	private double fillPrice;
@@ -8,6 +10,16 @@ public class OrderFillEvent extends OrderEvent {
 	private String execId;
 
 	private int resend = 0;
+
+	public OrderFillEvent() {
+		super(OrderFillEvent.class.getCanonicalName());
+		setTimeStamp(UniqueTimeStampGenerator.getInstance().now());
+	}
+
+	@Override
+	public String getId() {
+		return "OFE." + nullSafe(getTimeStamp());
+	}
 
 	public int getResend() {
 		return resend;
@@ -25,9 +37,7 @@ public class OrderFillEvent extends OrderEvent {
 		this.execId = execId;
 	}
 
-	public OrderFillEvent() {
-		super(OrderFillEvent.class.getCanonicalName());
-	}
+	
 
 	public double getFillPrice() {
 		return fillPrice;

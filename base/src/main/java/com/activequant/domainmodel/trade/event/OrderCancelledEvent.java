@@ -1,9 +1,22 @@
 package com.activequant.domainmodel.trade.event;
 
+import com.activequant.utils.UniqueTimeStampGenerator;
+
 
 public class OrderCancelledEvent extends OrderTerminalEvent {
 	private String cancellationMessage;
 
+	public OrderCancelledEvent(){
+		super(OrderCancelledEvent.class);
+		setTimeStamp(UniqueTimeStampGenerator.getInstance().now());
+	}
+	@Override
+	public String getId() {
+		return "OCE."+nullSafe(getTimeStamp());
+	}
+	
+	
+	
 	public String getCancellationMessage() {
 		return cancellationMessage;
 	}
