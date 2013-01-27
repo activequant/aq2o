@@ -32,6 +32,7 @@ import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.domainmodel.trade.event.OrderRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
+import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.MarketOrder;
 import com.activequant.domainmodel.trade.order.Order;
@@ -530,6 +531,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			}
 			getExecutionsTable().signalUpdate();
 			getOrderTable().signalUpdate();
+		}else if(oe instanceof OrderSubmittedEvent ){
+			auditLog(oe.getTimeStamp(), oe.toString());
 		} else if ((oe instanceof OrderAcceptedEvent)
 				|| (oe instanceof OrderReplacedEvent)) {
 			// add it to our orders table.

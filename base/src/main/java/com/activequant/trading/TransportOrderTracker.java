@@ -2,6 +2,7 @@ package com.activequant.trading;
 
 import org.apache.log4j.Logger;
 
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancellationRejectedEvent;
@@ -191,8 +192,10 @@ public class TransportOrderTracker implements IOrderTracker {
 				log.warn("Error while sending message: ", e);
 			}
 		}
-
-		fireEvent(new OrderSubmittedEvent());
+		OrderSubmittedEvent ose = new OrderSubmittedEvent();
+		ose.setTimeStamp(new TimeStamp());
+		// 
+		fireEvent(ose);
 
 	}
 
@@ -494,6 +497,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		// let's check if this order event is for us.
 		if (ordId.equals(this.originalOrderId)) {
 			OrderSubmittedEvent oae = new OrderSubmittedEvent();
+			oae.setTimeStamp(new TimeStamp());
 			oae.setRefOrderId(ordId);
 			oae.setRefOrder(this.getOrder());
 			fireEvent(oae);
@@ -511,6 +515,8 @@ public class TransportOrderTracker implements IOrderTracker {
 			// ok, it's for us.
 			log.info("Order rejected: " + or.getClOrdId());
 			OrderRejectedEvent oae = new OrderRejectedEvent();
+			oae.setTimeStamp(new TimeStamp());
+
 			oae.setRefOrderId(orderId);
 			oae.setRefOrder(getOrder());
 			oae.setReason(or.getReason());
@@ -524,6 +530,8 @@ public class TransportOrderTracker implements IOrderTracker {
 		if (orderId.equals(originalOrderId)) {
 			log.info("Order accepted: " + oa.getClOrdId());
 			OrderAcceptedEvent oae = new OrderAcceptedEvent();
+			oae.setTimeStamp(new TimeStamp());
+
 			oae.setRefOrderId(oa.getClOrdId());
 			oae.setRefOrder(getOrder());
 			fireEvent(oae);
@@ -536,6 +544,8 @@ public class TransportOrderTracker implements IOrderTracker {
 		if (orderId.equals(originalOrderId)) {
 			log.info("Order accepted: " + oa.getClOrdId());
 			OrderUpdateRejectedEvent oae = new OrderUpdateRejectedEvent();
+			oae.setTimeStamp(new TimeStamp());
+
 			oae.setRefOrderId(oa.getClOrdId());
 			oae.setRefOrder(getOrder());
 			oae.setReason(oa.getReason());
@@ -569,6 +579,7 @@ public class TransportOrderTracker implements IOrderTracker {
 
 			String side = er.getSide();
 			ofe.setSide(side);
+			ofe.setTimeStamp(new TimeStamp());
 
 			ofe.setFillPrice(er.getPrice());
 			ofe.setFillAmount(cumQty);
@@ -593,6 +604,8 @@ public class TransportOrderTracker implements IOrderTracker {
 			log.info("Cancel received for " + orderId);
 			//
 			OrderCancelledEvent oce = new OrderCancelledEvent();
+			oce.setTimeStamp(new TimeStamp());
+
 			oce.setRefOrderId(orderId);
 			oce.setRefOrder(getOrder());
 			fireEvent(oce);
@@ -611,6 +624,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		if (orderId.equals(originalOrderId)) {
 			//
 			OrderReplacedEvent ore = new OrderReplacedEvent();
+			ore.setTimeStamp(new TimeStamp());
 			ore.setRefOrderId(orderId);
 			ore.setRefOrder(getPendingOrder());
 			fireEvent(ore);
@@ -629,6 +643,7 @@ public class TransportOrderTracker implements IOrderTracker {
 			//
 			log.info("Order cancellation rejected of " + ocr.getClOrdId());
 			OrderCancellationRejectedEvent oce = new OrderCancellationRejectedEvent();
+			oce.setTimeStamp(new TimeStamp());
 			oce.setReason(ocr.getClxRejReason());
 			oce.setRefOrderId(orderId);
 			oce.setRefOrder(getOrder());
@@ -645,6 +660,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		if (orderId.equals(originalOrderId)) {
 			//
 			OrderUpdateSubmittedEvent oce = new OrderUpdateSubmittedEvent();
+			oce.setTimeStamp(new TimeStamp());
 			oce.setRefOrderId(orderId);
 			oce.setRefOrder(getOrder());
 			fireEvent(oce);

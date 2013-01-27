@@ -111,13 +111,20 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 			destination = destination.substring(0, 4); // +
 														// (destination.hashCode()
 														// % 5);
+
+		//
 		if (!receiverMap.containsKey(originalDestination)) {
 			try {
 				Destination topic = session.createTopic(destination);
-				MessageConsumer consumer = session.createConsumer(topic,
-						"channelId='" + originalDestination + "'");
+				MessageConsumer consumer = null;
+				if (originalDestination.endsWith(".*")) {
+					consumer = session.createConsumer(topic);
+				} else {
+					consumer = session.createConsumer(topic, "channelId='"
+							+ originalDestination + "'");
+				}
 				JMSReceiver j = new JMSReceiver();
-				consumer.setMessageListener(j);				
+				consumer.setMessageListener(j);
 				receiverMap.put(originalDestination, j);
 				if (log.isDebugEnabled())
 					log.debug("Added receiver for " + originalDestination);

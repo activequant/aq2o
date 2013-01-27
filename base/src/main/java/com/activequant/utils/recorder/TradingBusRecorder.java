@@ -29,7 +29,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * @author GhostRider
  * 
  */
-public class TradingBusRecorder extends ComponentBase {	
+public class TradingBusRecorder extends ComponentBase {
 
 	private final ITransportFactory transFac;
 	private final Logger log = Logger.getLogger(TradingBusRecorder.class);
@@ -54,7 +54,7 @@ public class TradingBusRecorder extends ComponentBase {
 				try {
 					orderEventDao.create(o);
 				} catch (DaoException e) {
-					log.error(o.toString()+ " was not stored: ", e);
+					log.error(o.toString() + " was not stored: ", e);
 				}
 				//
 				counter++;
@@ -66,9 +66,10 @@ public class TradingBusRecorder extends ComponentBase {
 		}
 	}
 
-	public TradingBusRecorder(IDaoFactory daoF, ITransportFactory transFac) throws Exception {
+	public TradingBusRecorder(IDaoFactory daoF, ITransportFactory transFac)
+			throws Exception {
 		super("TradingBusRecorder", transFac);
-		this.transFac = transFac; 
+		this.transFac = transFac;
 		this.orderEventDao = daoF.orderEventDao();
 		log.info("Transport initialized.");
 		subscribe();
@@ -90,7 +91,7 @@ public class TradingBusRecorder extends ComponentBase {
 						try {
 							bm = marshaller.demarshall(event);
 							OrderEvent o = marshaller.demarshallOrderEvent(bm);
-							if(o!=null)
+							if (o != null)
 								collectionList.add(o);
 						} catch (InvalidProtocolBufferException e) {
 							e.printStackTrace();
@@ -102,14 +103,15 @@ public class TradingBusRecorder extends ComponentBase {
 
 	/**
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(
 				new String[] { args[0] });
 		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		ITransportFactory transFac = appContext.getBean("jmsTransport", ITransportFactory.class);		
-		new TradingBusRecorder(idf,transFac);
+		ITransportFactory transFac = appContext.getBean("transportFactory",
+				ITransportFactory.class);
+		new TradingBusRecorder(idf, transFac);
 	}
 
 	@Override
