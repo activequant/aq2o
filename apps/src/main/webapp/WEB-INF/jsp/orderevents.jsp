@@ -12,7 +12,7 @@
 	</form>
 </div>
 <table>
-<c:forEach var="e" items="${orderevents}">
+<c:forEach var="e" items="${eventIds}">
 	<tr>
 		<td><a href="orderevent?id=${e}">${e}</a></td>
 	</tr>
