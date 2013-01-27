@@ -3,7 +3,7 @@ package com.activequant.domainmodel;
 import com.activequant.domainmodel.annotations.Property;
 
 /**
- * key for this is an aim hedge instrument ID. This table is populated from
+ * key for this is an instrument ID. This table is populated from
  * connectivity drivers.
  * 
  * @author GhostRider
