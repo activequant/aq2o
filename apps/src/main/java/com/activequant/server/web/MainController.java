@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
 
 @Controller
@@ -370,5 +371,27 @@ public class MainController {
 		return new ModelAndView("tdi", map);
 	}
 	
+	
+	@RequestMapping(value = "/orderevents", method = RequestMethod.GET)
+	public ModelAndView orderEvents(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String date = request.getParameter("date");
+		if(date!=null){
+			// ok, we have a date, let's fetch all order events for this date. 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			Date d1 = sdf.parse(date+"000000");
+			Date d2 = sdf.parse(date+"235959");
+			
+			// 
+			String[] ids = sc.getDaoFactory().orderEventDao().findIDsWhereCreationDateBetween(new TimeStamp(d1), new TimeStamp(d2));
+			map.put("eventIds", ids);
+			map.put("date", date);
+			// 
+		}
+		
+		return new ModelAndView("orderevents", map);
+	}
+	 
 
 }
