@@ -1,4 +1,5 @@
 <%@include file="header.jsp"%>
+
 <h3>Instruments</h3>
 <p>
 	<i>Search will search through instrument key values. Use SQL like
