@@ -29,6 +29,7 @@ import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
+import com.activequant.domainmodel.trade.event.OrderEvent;
 
 @Controller
 public class MainController {
@@ -372,6 +373,7 @@ public class MainController {
 	}
 	
 	
+	
 	@RequestMapping(value = "/orderevents", method = RequestMethod.GET)
 	public ModelAndView orderEvents(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -381,8 +383,7 @@ public class MainController {
 			// ok, we have a date, let's fetch all order events for this date. 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 			Date d1 = sdf.parse(date+"000000");
-			Date d2 = sdf.parse(date+"235959");
-			
+			Date d2 = sdf.parse(date+"235959");			
 			// 
 			String[] ids = sc.getDaoFactory().orderEventDao().findIDsWhereCreationDateBetween(new TimeStamp(d1), new TimeStamp(d2));
 			map.put("eventIds", ids);
@@ -393,5 +394,25 @@ public class MainController {
 		return new ModelAndView("orderevents", map);
 	}
 	 
-
+	@RequestMapping(value = "/orderevent", method = RequestMethod.GET)
+	public ModelAndView orderEvent(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String id = request.getParameter("id");
+		if(id!=null){
+		
+			OrderEvent oe = sc.getDaoFactory().orderEventDao().load(id);		
+			List<String> keys = new ArrayList<String>();
+			keys.addAll(oe.getUnderlyingMap().keySet());
+			Collections.sort(keys);
+			map.put("keys", keys);
+			map.put("event", oe.getUnderlyingMap());			
+			// 
+		}
+		
+		return new ModelAndView("orderevent", map);
+	}
+	
+	
+	
 }
