@@ -105,6 +105,7 @@ public class Marshaller {
 			return demarshall((AQMessages.ExecutionReport2) bm
 					.getExtension(AQMessages.ExecutionReport2.cmd));
 		}
+		// nothing ... 
 		return null;
 	}
 

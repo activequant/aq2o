@@ -29,7 +29,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * @author GhostRider
  * 
  */
-public class TradingBusRecorder {
+public class TradingBusRecorder {	
 
 	private ITransportFactory transFac;
 	private Logger log = Logger.getLogger(TradingBusRecorder.class);
@@ -85,7 +85,7 @@ public class TradingBusRecorder {
 
 	private void subscribe() throws IOException, TransportException {
 		log.info("Subscribing to all order events on the TRAD_DATA bus.");
-		transFac.getReceiver(ETransportType.TRAD_DATA, "").getRawEvent()
+		transFac.getReceiver(ETransportType.TRAD_DATA, "*").getRawEvent()
 				.addEventListener(new IEventListener<byte[]>() {
 					@Override
 					public void eventFired(byte[] event) {
