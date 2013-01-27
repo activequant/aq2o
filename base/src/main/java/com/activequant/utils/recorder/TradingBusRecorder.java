@@ -47,10 +47,6 @@ public class TradingBusRecorder extends ComponentBase {
 			OrderEvent o = collectionList.poll();
 			counter = 0;
 			while (o != null) {
-				//
-				o = collectionList.poll();
-
-				// let's store it ...
 				try {
 					orderEventDao.create(o);
 				} catch (DaoException e) {
@@ -58,6 +54,7 @@ public class TradingBusRecorder extends ComponentBase {
 				}
 				//
 				counter++;
+				o = collectionList.poll();
 			}
 			log.info("Collected " + counter + " events. ");
 			t.schedule(new InternalTimerTask(),
@@ -109,7 +106,8 @@ public class TradingBusRecorder extends ComponentBase {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(
 				new String[] { args[0] });
 		IDaoFactory idf = (IDaoFactory) appContext.getBean(IDaoFactory.class);
-		ITransportFactory transFac = appContext.getBean(ITransportFactory.class);
+		ITransportFactory transFac = appContext
+				.getBean(ITransportFactory.class);
 		new TradingBusRecorder(idf, transFac);
 	}
 
