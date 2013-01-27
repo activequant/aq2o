@@ -1,5 +1,6 @@
 package com.activequant.domainmodel.trade.event;
 
+import com.activequant.domainmodel.annotations.Property;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
 public class OrderFillEvent extends OrderEvent {
@@ -20,7 +21,7 @@ public class OrderFillEvent extends OrderEvent {
 	public String getId() {
 		return "OFE." + nullSafe(getTimeStamp());
 	}
-
+	@Property
 	public int getResend() {
 		return resend;
 	}
@@ -28,7 +29,7 @@ public class OrderFillEvent extends OrderEvent {
 	public void setResend(int resend) {
 		this.resend = resend;
 	}
-
+	@Property
 	public String getExecId() {
 		return execId;
 	}
@@ -38,7 +39,7 @@ public class OrderFillEvent extends OrderEvent {
 	}
 
 	
-
+	@Property
 	public double getFillPrice() {
 		return fillPrice;
 	}
@@ -46,7 +47,7 @@ public class OrderFillEvent extends OrderEvent {
 	public void setFillPrice(double fillPrice) {
 		this.fillPrice = fillPrice;
 	}
-
+	@Property
 	public double getFillAmount() {
 		return fillAmount;
 	}
@@ -59,7 +60,7 @@ public class OrderFillEvent extends OrderEvent {
 		return "Order " + super.getRefOrderId() + " filled: " + fillAmount
 				+ "@" + fillPrice;
 	}
-
+	@Property
 	public String getSide() {
 		return side;
 	}
@@ -67,7 +68,7 @@ public class OrderFillEvent extends OrderEvent {
 	public void setSide(String side) {
 		this.side = side;
 	}
-
+	@Property
 	public double getLeftQuantity() {
 		return leftQuantity;
 	}

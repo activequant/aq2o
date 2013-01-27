@@ -1,5 +1,6 @@
 package com.activequant.domainmodel.trade.event;
 
+import com.activequant.domainmodel.annotations.Property;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
 
@@ -16,7 +17,7 @@ public class OrderCancelledEvent extends OrderTerminalEvent {
 	}
 	
 	
-	
+	@Property
 	public String getCancellationMessage() {
 		return cancellationMessage;
 	}

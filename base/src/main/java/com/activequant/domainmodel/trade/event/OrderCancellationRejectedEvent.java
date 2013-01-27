@@ -1,5 +1,6 @@
 package com.activequant.domainmodel.trade.event;
 
+import com.activequant.domainmodel.annotations.Property;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
 public class OrderCancellationRejectedEvent extends OrderEvent {
@@ -15,6 +16,7 @@ public class OrderCancellationRejectedEvent extends OrderEvent {
 		return "OCRE." + nullSafe(getTimeStamp());
 	}
 
+	@Property
 	public String getReason() {
 		return reason;
 	}
