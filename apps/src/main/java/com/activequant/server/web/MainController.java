@@ -406,7 +406,8 @@ public class MainController {
 			keys.addAll(oe.getUnderlyingMap().keySet());
 			Collections.sort(keys);
 			map.put("keys", keys);
-			map.put("event", oe.getUnderlyingMap());			
+			map.put("event", oe.getUnderlyingMap());	
+			map.put("id", id);
 			// 
 		}
 		
