@@ -108,9 +108,8 @@ public class TradingBusRecorder extends ComponentBase {
 	public static void main(String[] args) throws Exception {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(
 				new String[] { args[0] });
-		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		ITransportFactory transFac = appContext.getBean("transportFactory",
-				ITransportFactory.class);
+		IDaoFactory idf = (IDaoFactory) appContext.getBean(IDaoFactory.class);
+		ITransportFactory transFac = appContext.getBean(ITransportFactory.class);
 		new TradingBusRecorder(idf, transFac);
 	}
 
