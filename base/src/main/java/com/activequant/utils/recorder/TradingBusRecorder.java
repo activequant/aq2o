@@ -9,10 +9,10 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.activequant.component.ComponentBase;
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.domainmodel.exceptions.TransportException;
-import com.activequant.domainmodel.streaming.MarketDataSnapshot;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.dao.IOrderEventDao;
@@ -29,14 +29,14 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * @author GhostRider
  * 
  */
-public class TradingBusRecorder {	
+public class TradingBusRecorder extends ComponentBase {	
 
-	private ITransportFactory transFac;
-	private Logger log = Logger.getLogger(TradingBusRecorder.class);
-	final Timer t = new Timer(true);
-	final long collectionPhase = 5000l;
+	private final ITransportFactory transFac;
+	private final Logger log = Logger.getLogger(TradingBusRecorder.class);
+	private final Timer t = new Timer(true);
+	private final long collectionPhase = 5000l;
 	private final ConcurrentLinkedQueue<OrderEvent> collectionList = new ConcurrentLinkedQueue<OrderEvent>();
-	private IOrderEventDao orderEventDao;
+	private final IOrderEventDao orderEventDao;
 
 	class InternalTimerTask extends TimerTask {
 		int counter;
@@ -66,14 +66,10 @@ public class TradingBusRecorder {
 		}
 	}
 
-	public TradingBusRecorder(String springFile) throws IOException,
-			TransportException {
-		ApplicationContext appContext = new ClassPathXmlApplicationContext(
-				new String[] { springFile });
-		log.info("Starting up and fetching idf");
-		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		orderEventDao = idf.orderEventDao();
-		transFac = appContext.getBean("jmsTransport", ITransportFactory.class);
+	public TradingBusRecorder(IDaoFactory daoF, ITransportFactory transFac) throws Exception {
+		super("TradingBusRecorder", transFac);
+		this.transFac = transFac; 
+		this.orderEventDao = daoF.orderEventDao();
 		log.info("Transport initialized.");
 		subscribe();
 		t.schedule(
@@ -106,12 +102,19 @@ public class TradingBusRecorder {
 
 	/**
 	 * @param args
-	 * @throws IOException
-	 * @throws TransportException
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException,
-			TransportException {
-		new TradingBusRecorder(args[0]);
+	public static void main(String[] args) throws Exception {
+		ApplicationContext appContext = new ClassPathXmlApplicationContext(
+				new String[] { args[0] });
+		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+		ITransportFactory transFac = appContext.getBean("jmsTransport", ITransportFactory.class);		
+		new TradingBusRecorder(idf,transFac);
+	}
+
+	@Override
+	public String getDescription() {
+		return "Records all order events to persistence layer. Writes in five second intervals. No supported commands. ";
 	}
 
 }
