@@ -14,7 +14,7 @@
 <table>
 <c:forEach var="e" items="${orderevents}">
 	<tr>
-		<td><a href="orderevent?oeid=${e}">${e}</a></td>
+		<td><a href="orderevent?id=${e}">${e}</a></td>
 	</tr>
 </c:forEach>
 </table>

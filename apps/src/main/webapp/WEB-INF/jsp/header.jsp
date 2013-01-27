@@ -73,6 +73,12 @@ body {
 							</ul></li>
 
 						<li><a href="data_inspector">Time series</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Trading <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="orderevents">Order events</a></li>
+							</ul></li>
+
 
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Tools <b class="caret"></b></a>
