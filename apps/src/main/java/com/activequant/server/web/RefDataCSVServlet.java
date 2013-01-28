@@ -65,7 +65,7 @@ public class RefDataCSVServlet extends HttpServlet {
 					m = daoFac.tradeableDao().load(id).getUnderlyingMap();
 				}
 				//
-				if (field == null) {
+				if (field != null) {
 					// fetch all.
 					if (m.containsKey(field)) {
 						resultMap.put(field, m.get(field));
