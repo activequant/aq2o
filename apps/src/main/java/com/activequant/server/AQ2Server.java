@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.server.components.RandomMarketDataGenerator;
 
@@ -65,7 +66,8 @@ public final class AQ2Server {
 		Properties properties = new Properties();
 		properties.load(new FileInputStream("aq2server.properties"));
 		log.info("Loaded.");
-
+		ApplicationContext appContext = new ClassPathXmlApplicationContext(
+				new String[] { "fwspring.xml" });
 		// track back for statistical reasons.
 		if (isFalse(properties, "skipTrackback")) {
 			try {
@@ -98,8 +100,7 @@ public final class AQ2Server {
 		}
 		if (isTrue(properties, "startRandDatGen")) {
 			log.info("Starting random market data generator....");
-			ApplicationContext appContext = new ClassPathXmlApplicationContext(
-					new String[] { "fwspring.xml" });
+			
 			System.out.println("Starting up and fetching idf");
 			ITransportFactory transFac = appContext
 					.getBean(ITransportFactory.class);
@@ -141,13 +142,15 @@ public final class AQ2Server {
 						properties.getProperty("jetty.ssl.keystoreLcation"),
 						properties.getProperty("jetty.ssl.keystorePassword"),
 						properties.getProperty("jetty.ssl.keyPassword"),
-						properties.getProperty("jetty.ssl.certAlias")).start();
+						properties.getProperty("jetty.ssl.certAlias"), appContext
+						.getBean(IDaoFactory.class)).start();
 			} else
 				new LocalJettyServer(Integer.parseInt(properties
 						.getProperty("jetty.port")), properties.getProperty(
 						"zookeeper.host", null), properties.getProperty(
 						"zookeeper.port", "2181"), properties.getProperty(
-						"jetty.webapp.folder", "../webapp")).start();
+						"jetty.webapp.folder", "../webapp"), appContext
+						.getBean(IDaoFactory.class)).start();
 			log.info("Starting Jetty succeeded.");
 		} else {
 			log.info("Not starting JETTY server, as it has been disabled.");

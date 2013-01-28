@@ -19,7 +19,9 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.activequant.archive.hbase.HBaseArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveFactory;
+import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.server.web.CSVServlet;
+import com.activequant.server.web.RefDataCSVServlet;
 
 /**
  * The local jetty server provides REST like functionality.
@@ -31,6 +33,7 @@ public class LocalJettyServer {
 
 	private int port;
 	private IArchiveFactory archFactory;
+	private IDaoFactory daoFactory; 
 	private Logger log = Logger.getLogger(LocalJettyServer.class);
 	// the actual jetty server instance.
 	private Server server;
@@ -44,26 +47,35 @@ public class LocalJettyServer {
 	public LocalJettyServer(int port, String zookeeper, String zookeeperPort,
 			String webappFolder, String sslKeyStoreLocation,
 			String sslKeyStorePassword, String sslKeyPassword,
-			String sslCertName) {
+			String sslCertName, IDaoFactory daoFactory) {
 		this.sslKeyStoreLocation = sslKeyStoreLocation;
 		this.sslKeyStorePassword = sslKeyStorePassword;
 		this.sslKeyPassword = sslKeyPassword;
 		this.sslCertName = sslCertName;
+		this.port = port;
+		this.webappFolder = webappFolder;
+		this.daoFactory = daoFactory; 
+		if (zookeeper != null) {
+			archFactory = new HBaseArchiveFactory(zookeeper,
+					Integer.parseInt(zookeeperPort));
+		}
 
 	}
 
 	public LocalJettyServer(int port, String zookeeper, String zookeeperPort,
-			String webappFolder) {
+			String webappFolder, IDaoFactory daoFactory) {
 		this.port = port;
 		this.webappFolder = webappFolder;
+		this.daoFactory = daoFactory; 
 		if (zookeeper != null) {
 			archFactory = new HBaseArchiveFactory(zookeeper,
 					Integer.parseInt(zookeeperPort));
 		}
 	}
 
-	public LocalJettyServer(int port) {
+	public LocalJettyServer(int port, IDaoFactory daoFactory) {
 		this.port = port;
+		this.daoFactory = daoFactory; 
 	}
 
 	/**
@@ -75,7 +87,7 @@ public class LocalJettyServer {
 	 */
 	public static void main(String[] args) throws Exception {
 		LocalJettyServer s = new LocalJettyServer(44444, "localhost", "2181",
-				"../webapp");
+				"../webapp",null);
 		s.start();
 	}
 
@@ -116,9 +128,13 @@ public class LocalJettyServer {
 				"/csv", true, false);
 		csvContext.addServlet(new ServletHolder(new CSVServlet(archFactory)),
 				"/");
+		ServletContextHandler refDataContext = new ServletContextHandler(server,
+				"/refdata", true, false);
+		refDataContext.addServlet(new ServletHolder(new RefDataCSVServlet(daoFactory)),
+				"/");
 		// register all handlers.
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { csvContext, wac }); // ,
+		handlers.setHandlers(new Handler[] { csvContext, refDataContext, wac }); // ,
 																	// resource_handler
 																	// });
 		server.setHandler(handlers);
