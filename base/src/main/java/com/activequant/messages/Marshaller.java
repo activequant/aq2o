@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.AccountDataEvent;
+import com.activequant.domainmodel.streaming.InformationalEvent;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
 import com.activequant.domainmodel.streaming.PositionEvent;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
@@ -18,6 +19,11 @@ import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
 import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.event.OrderUpdateRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderUpdateSubmittedEvent;
+import com.activequant.domainmodel.trade.order.LimitOrder;
+import com.activequant.domainmodel.trade.order.MarketOrder;
+import com.activequant.domainmodel.trade.order.OrderSide;
+import com.activequant.domainmodel.trade.order.SingleLegOrder;
+import com.activequant.domainmodel.trade.order.StopOrder;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.utils.ArrayUtils;
 import com.google.protobuf.ExtensionRegistry;
@@ -105,7 +111,7 @@ public class Marshaller {
 			return demarshall((AQMessages.ExecutionReport2) bm
 					.getExtension(AQMessages.ExecutionReport2.cmd));
 		}
-		// nothing ... 
+		// nothing ...
 		return null;
 	}
 
@@ -145,7 +151,7 @@ public class Marshaller {
 	public String demarshall(AQMessages.CustomCommand adm) {
 		return adm.getCommand();
 	}
-	
+
 	public OrderAcceptedEvent demarshall(AQMessages.OrderAccepted adm) {
 		OrderAcceptedEvent oae = new OrderAcceptedEvent();
 		oae.setRefOrderId(adm.getClOrdId());
@@ -208,6 +214,57 @@ public class Marshaller {
 		return oure;
 	}
 
+	public SingleLegOrder demarshall(AQMessages.NewOrder newOrder) {
+
+		Double limitPrice = null;
+		Double stopPrice = null;
+
+		SingleLegOrder slo = null;
+		switch (newOrder.getOrdType()) {
+		case 1: {
+			// market order ...
+			slo = new MarketOrder();
+			slo.setOrderId(newOrder.getClOrdId());
+			slo.setTradInstId(newOrder.getTradInstId());
+			slo.setOrderSide(newOrder.getSide() == 1 ? OrderSide.BUY
+					: OrderSide.SELL);
+			slo.setQuantity(newOrder.getOrderQty());
+			slo.setOpenQuantity(newOrder.getOrderQty());
+			break;
+		}
+		case 2: {
+			// limit order ...
+
+			slo = new LimitOrder();
+			slo.setOrderId(newOrder.getClOrdId());
+			slo.setTradInstId(newOrder.getTradInstId());
+			slo.setOrderSide(newOrder.getSide() == 1 ? OrderSide.BUY
+					: OrderSide.SELL);
+			slo.setQuantity(newOrder.getOrderQty());
+			slo.setOpenQuantity(newOrder.getOrderQty());
+			((LimitOrder) slo).setLimitPrice(newOrder.getPrice());
+			break;
+		}
+		case 3: {
+			// stop order ...
+
+			slo = new StopOrder();
+			slo.setOrderId(newOrder.getClOrdId());
+			slo.setTradInstId(newOrder.getTradInstId());
+			slo.setOrderSide(newOrder.getSide() == 1 ? OrderSide.BUY
+					: OrderSide.SELL);
+			slo.setQuantity(newOrder.getOrderQty());
+			slo.setOpenQuantity(newOrder.getOrderQty());
+			((StopOrder) slo).setStopPrice(newOrder.getPrice());
+			break;
+		}
+		default: {
+			break;
+		}
+		}
+		return slo; 
+	}
+
 	public OrderUpdateSubmittedEvent demarshall(
 			AQMessages.OrderUpdateSubmitted adm) {
 		OrderUpdateSubmittedEvent ouse = new OrderUpdateSubmittedEvent();
@@ -217,12 +274,19 @@ public class Marshaller {
 	}
 
 	public PositionEvent demarshall(AQMessages.PositionReport adm) {
-		PositionEvent pos = new PositionEvent(adm.getTradInstId(), new TimeStamp(), adm.getEntryPrice(), adm.getQuantity());
-		return pos; 
+		PositionEvent pos = new PositionEvent(adm.getTradInstId(),
+				new TimeStamp(), adm.getEntryPrice(), adm.getQuantity());
+		return pos;
 	}
 
 	public void demarshall(AQMessages.SecurityStatus adm) {
 
+	}
+
+	public InformationalEvent demarshall(AQMessages.InfoEvent adm) {
+		InformationalEvent ie = new InformationalEvent(new TimeStamp(
+				adm.getTimestamp()), adm.getMessage());
+		return ie;
 	}
 
 	public MarketDataSnapshot demarshall(AQMessages.MarketDataSnapshot mdsm) {

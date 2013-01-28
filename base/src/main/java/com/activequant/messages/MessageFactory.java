@@ -49,7 +49,7 @@ public class MessageFactory {
 		return wrap(BaseMessage.CommandType.SERVER_TIME,
 				AQMessages.ServerTime.cmd, l);
 	}
-	
+
 	/**
 	 * 
 	 * @param msg
@@ -79,9 +79,8 @@ public class MessageFactory {
 		return wrap(BaseMessage.CommandType.LOGIN, AQMessages.Login.cmd, l);
 	}
 
-	
 	/**
-	 * converts a position report to google protocol buffers. 
+	 * converts a position report to google protocol buffers.
 	 * 
 	 * @param pe
 	 * @return
@@ -109,7 +108,7 @@ public class MessageFactory {
 		} else if (oe instanceof OrderAcceptedEvent) {
 			ret = orderAccepted(oe.getRefOrderId());
 		} else if (oe instanceof OrderUpdateRejectedEvent) {
-			OrderUpdateRejectedEvent oure = (OrderUpdateRejectedEvent)oe; 
+			OrderUpdateRejectedEvent oure = (OrderUpdateRejectedEvent) oe;
 			ret = orderUpdateRejected(oure.getRefOrderId(), oure.getReason());
 		} else if (oe instanceof OrderCancellationRejectedEvent) {
 			OrderCancellationRejectedEvent ocre = (OrderCancellationRejectedEvent) oe;
@@ -129,7 +128,8 @@ public class MessageFactory {
 			OrderFillEvent ofe = (OrderFillEvent) oe;
 			ret = executionReport2(ofe.getRefOrderId(), ofe.getExecId(),
 					ofe.getSide(), ofe.getFillPrice(), ofe.getOptionalInstId(),
-					ofe.getTimeStamp().getNanoseconds(), ofe.getFillAmount(), ofe.getLeftQuantity(), ofe.getResend());
+					ofe.getTimeStamp().getNanoseconds(), ofe.getFillAmount(),
+					ofe.getLeftQuantity(), ofe.getResend());
 		}
 
 		// return it.
@@ -291,11 +291,10 @@ public class MessageFactory {
 		return wrap(BaseMessage.CommandType.ORD_CNCL_REPL_REQ,
 				AQMessages.OrderCancelReplaceRequest.cmd, n);
 	}
-	
 
 	/**
-	 * Creates a new NewOrder base message and encapsulates limit price, etc. 
-	 * Order Type ID: 1 (follows FIX conformance) . 
+	 * Creates a new NewOrder base message and encapsulates limit price, etc.
+	 * Order Type ID: 1 (follows FIX conformance) .
 	 * 
 	 * @param orderId
 	 * @param tdiId
@@ -304,21 +303,19 @@ public class MessageFactory {
 	 * @param side
 	 * @return
 	 */
-
-
 	public BaseMessage orderMktOrder(String orderId, String tdiId,
-			Double quantity, OrderSide side) {
+			Double quantity, OrderSide side, int resend) {
 		int s = side.getSide();
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
 				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
-				.setSide(s).setOrdType(1).build();
+				.setSide(s).setOrdType(1).setResend(resend).build();
 		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
 				n);
 	}
 
 	/**
-	 * Creates a new NewOrder base message and encapsulates limit price, etc. 
-	 * Order Type ID: 2 (follows FIX conformance) . 
+	 * Creates a new NewOrder base message and encapsulates limit price, etc.
+	 * Order Type ID: 2 (follows FIX conformance) .
 	 * 
 	 * @param orderId
 	 * @param tdiId
@@ -328,20 +325,20 @@ public class MessageFactory {
 	 * @return
 	 */
 	public BaseMessage orderLimitOrder(String orderId, String tdiId,
-			Double quantity, Double limitPrice, OrderSide side) {
+			Double quantity, Double limitPrice, OrderSide side, int resend) {
 		int s = side.getSide();
 
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
 				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
-				.setSide(s).setPrice(limitPrice).setOrdType(2).build();
+				.setSide(s).setPrice(limitPrice).setOrdType(2)
+				.setResend(resend).build();
 		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
 				n);
 	}
 
-
 	/**
-	 * Creates a new NewOrder base message and encapsulates limit price, etc. 
-	 * Order Type ID: 3 (follows FIX conformance) . 
+	 * Creates a new NewOrder base message and encapsulates limit price, etc.
+	 * Order Type ID: 3 (follows FIX conformance) .
 	 * 
 	 * @param orderId
 	 * @param tdiId
@@ -352,12 +349,13 @@ public class MessageFactory {
 	 */
 
 	public BaseMessage orderStopOrder(String orderId, String tdiId,
-			Double quantity, Double limitPrice, OrderSide side) {
+			Double quantity, Double limitPrice, OrderSide side, int resend) {
 		int s = side.getSide();
 
 		AQMessages.NewOrder n = AQMessages.NewOrder.newBuilder()
 				.setClOrdId(orderId).setOrderQty(quantity).setTradInstId(tdiId)
-				.setSide(s).setOrdType(3).setPrice(limitPrice).build();
+				.setSide(s).setOrdType(3).setPrice(limitPrice)
+				.setResend(resend).build();
 		return wrap(BaseMessage.CommandType.NEW_ORDER, AQMessages.NewOrder.cmd,
 				n);
 	}
@@ -368,7 +366,7 @@ public class MessageFactory {
 			double cumQty, double leavesQty, double avgPx, String ordType,
 			String text, String comment) {
 
-		// 
+		//
 		AQMessages.ExecutionReport n = AQMessages.ExecutionReport.newBuilder()
 				.setClOrdId(clOrdId).setExecId(execId).setSide(side)
 				.setCurrency(currency).setOrderQty(orderQty).setPrice(price)
@@ -387,14 +385,23 @@ public class MessageFactory {
 			String side, double price, String tradInstId, long transactTime,
 			double qty, double leftQuantity, int resend) {
 
-		
 		AQMessages.ExecutionReport2 n = AQMessages.ExecutionReport2
 				.newBuilder().setClOrdId(clOrdId).setExecId(execId)
 				.setSide(side).setPrice(price).setTdiId(tradInstId)
-				.setTransactTime(transactTime).setQty(qty).setQuantityLeft(leftQuantity).setResend(resend).build();
+				.setTransactTime(transactTime).setQty(qty)
+				.setQuantityLeft(leftQuantity).setResend(resend).build();
 
 		return wrap(BaseMessage.CommandType.EXECUTION_REPORT2,
 				AQMessages.ExecutionReport2.cmd, n);
 
 	}
+
+	public BaseMessage infoEvent(TimeStamp ts, String event) {
+		AQMessages.InfoEvent n = AQMessages.InfoEvent.newBuilder()
+				.setTimestamp(ts.getNanoseconds()).setMessage(event).build();
+
+		return wrap(BaseMessage.CommandType.INFO_EVENT,
+				AQMessages.InfoEvent.cmd, n);
+	}
+
 }

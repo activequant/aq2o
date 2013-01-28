@@ -38,6 +38,7 @@ import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.MarketOrder;
 import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.domainmodel.trade.order.OrderSide;
+import com.activequant.domainmodel.trade.order.SingleLegOrder;
 import com.activequant.domainmodel.trade.order.StopOrder;
 import com.activequant.interfaces.aqviz.IVisualTable;
 import com.activequant.interfaces.trading.IOrderTracker;
@@ -126,8 +127,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			try {
 				bm = marshaller.demarshall(event);
 				OrderEvent temp = null;
-//				if (log.isDebugEnabled())
-//					log.debug("Event type: " + bm.getType());
+				// if (log.isDebugEnabled())
+				// log.debug("Event type: " + bm.getType());
 				if (bm.getType().equals(CommandType.MDS)) {
 					MarketDataSnapshot mds = marshaller
 							.demarshall(((AQMessages.MarketDataSnapshot) bm
@@ -146,9 +147,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 						//
 						IOrderTracker iot = env.getExchange().getOrderTracker(
 								refOrderId);
-						if (iot != null)
-						{
-							// we have an order tracker ... so let the order tracker handle this. 
+						if (iot != null) {
+							// we have an order tracker ... so let the order
+							// tracker handle this.
 							// ose.getOe().setRefOrder(iot.getOrder());
 							return;
 						}
@@ -159,6 +160,25 @@ public abstract class AbstractTSBase implements ITradingSystem {
 							.demarshall(((AQMessages.PositionReport) bm
 									.getExtension(AQMessages.PositionReport.cmd)));
 					process((StreamEvent) pos);
+				} else if (bm.getType().equals(CommandType.INFO_EVENT)) {
+					InformationalEvent ie = marshaller
+							.demarshall(((AQMessages.InfoEvent) bm
+									.getExtension(AQMessages.InfoEvent.cmd)));
+					process((StreamEvent) ie);
+				} else if (bm.getType().equals(CommandType.NEW_ORDER)) {
+					if (((AQMessages.NewOrder) bm
+							.getExtension(AQMessages.NewOrder.cmd)).getResend() == 1) {
+						// ok, let's add it.
+
+						AQMessages.NewOrder no = (AQMessages.NewOrder) bm
+								.getExtension(AQMessages.NewOrder.cmd);
+						//
+
+						SingleLegOrder slo = marshaller.demarshall(no);
+						addOrSetOrderTable(slo);
+
+						// ok, order being resent.
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -488,8 +508,6 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	private List<String> seenExecutions = new ArrayList<String>();
 
-	
-	
 	public void processOrderEvent(OrderEvent oe) {
 		Order refOrder = oe.getRefOrder();
 
@@ -498,7 +516,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			OrderFillEvent ofe = (OrderFillEvent) oe;
 			//
 			String execId = ofe.getExecId();
-			if(execId==null) {
+			if (execId == null) {
 				return;
 			}
 			boolean seen = false;
@@ -521,18 +539,18 @@ public abstract class AbstractTSBase implements ITradingSystem {
 						ofe.getFillAmount());
 				if (ofe.getResend() == 0) {
 					// also signal the execution to the risk calculator.
-//					riskCalculator.execution(ofe.getTimeStamp(),
-//							ofe.getOptionalInstId(),
-//							ofe.getFillPrice(),
-//							// B nasty one. might bite later down.
-//							(ofe.getSide().startsWith("B") ? 1.0 : -1.0)
-//									* ofe.getFillAmount());
+					// riskCalculator.execution(ofe.getTimeStamp(),
+					// ofe.getOptionalInstId(),
+					// ofe.getFillPrice(),
+					// // B nasty one. might bite later down.
+					// (ofe.getSide().startsWith("B") ? 1.0 : -1.0)
+					// * ofe.getFillAmount());
 					//
 					if (ofe.getLeftQuantity() == 0) {
 						getOrderTable().delOrder(ofe.getRefOrderId());
 					} else {
-						// let's also update the ref order ... 
-						
+						// let's also update the ref order ...
+
 						addOrSetOrderTable(refOrder);
 					}
 				}
@@ -541,7 +559,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			}
 			getExecutionsTable().signalUpdate();
 			getOrderTable().signalUpdate();
-		}else if(oe instanceof OrderSubmittedEvent ){
+		} else if (oe instanceof OrderSubmittedEvent) {
 			auditLog(oe.getTimeStamp(), oe.toString());
 		} else if ((oe instanceof OrderAcceptedEvent)
 				|| (oe instanceof OrderReplacedEvent)) {
@@ -557,8 +575,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			getOrderTable().delOrder(oe.getRefOrderId());
 			getOrderTable().signalUpdate();
 			auditLog(oe.getTimeStamp(), oe.toString());
-		}
-		else if(oe instanceof OrderUpdateRejectedEvent){
+		} else if (oe instanceof OrderUpdateRejectedEvent) {
 			auditLog(oe.getTimeStamp(), oe.toString());
 		}
 	}
@@ -662,7 +679,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			getQuoteTable().signalUpdate();
 
 			// recalculate the current position values.
-			//riskCalculator.pricesUpdated(rowIndx);
+			// riskCalculator.pricesUpdated(rowIndx);
 
 			//
 		} else {

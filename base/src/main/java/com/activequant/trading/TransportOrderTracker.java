@@ -173,17 +173,17 @@ public class TransportOrderTracker implements IOrderTracker {
 		if (o instanceof MarketOrder) {
 			MarketOrder mo = (MarketOrder) o;
 			bm = messageFactory.orderMktOrder(o.getOrderId(), tradInstId,
-					mo.getQuantity(), mo.getOrderSide());
+					mo.getQuantity(), mo.getOrderSide(), 0);
 		} else if (o instanceof LimitOrder) {
 			log.info("Submitting limit order:" + o.toString());
 			LimitOrder lo = (LimitOrder) o;
 			bm = messageFactory.orderLimitOrder(o.getOrderId(), tradInstId,
-					lo.getQuantity(), lo.getLimitPrice(), lo.getOrderSide());
+					lo.getQuantity(), lo.getLimitPrice(), lo.getOrderSide(), 0);
 
 		} else if (o instanceof StopOrder) {
 			StopOrder so = (StopOrder) o;
 			bm = messageFactory.orderStopOrder(o.getOrderId(), tradInstId,
-					so.getQuantity(), so.getStopPrice(), so.getOrderSide());
+					so.getQuantity(), so.getStopPrice(), so.getOrderSide(), 0);
 		}
 		if (bm != null) {
 			try {
@@ -194,7 +194,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		}
 		OrderSubmittedEvent ose = new OrderSubmittedEvent();
 		ose.setTimeStamp(new TimeStamp());
-		// 
+		//
 		fireEvent(ose);
 
 	}
@@ -288,9 +288,8 @@ public class TransportOrderTracker implements IOrderTracker {
 			// fully done.
 			workingState = false;
 			terminalState = true;
-		}
-		else{
-			// let's update the open quantity ... 
+		} else {
+			// let's update the open quantity ...
 			SingleLegOrder slo = this.orderContainer;
 			slo.setOpenQuantity(oe.getLeftQuantity());
 		}
@@ -409,7 +408,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		AQMessages.BaseMessage bm;
 		try {
 			bm = marshaller.demarshall(rawMessage);
-			//System.out.println(bm);
+			// System.out.println(bm);
 			switch (bm.getType()) {
 			case SECURITY_STATUS: {
 				AQMessages.SecurityStatus os = ((AQMessages.SecurityStatus) bm
@@ -671,8 +670,6 @@ public class TransportOrderTracker implements IOrderTracker {
 		}
 	}
 
-	
-	
 	public boolean isCancellationPending() {
 		return cancellationPending;
 	}
