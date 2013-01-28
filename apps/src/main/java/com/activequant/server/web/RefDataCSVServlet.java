@@ -50,7 +50,7 @@ public class RefDataCSVServlet extends HttpServlet {
 					field = ((String[]) paramMap.get("FIELD"))[0];
 				String type = ((String[]) paramMap.get("TYPE"))[0];
 				String id = ((String[]) paramMap.get("ID"))[0];
-				Map<String, Object> resultMap = new TreeMap<String, Object>();
+				Map<String, Object> resultMap = new HashMap<String, Object>();
 				Map<String, Object> m = new HashMap<String, Object>();
 				//
 				if (type.equals("INSTRUMENT")) {
