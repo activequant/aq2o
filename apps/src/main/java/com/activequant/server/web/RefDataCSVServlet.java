@@ -21,7 +21,7 @@ import com.activequant.interfaces.dao.IDaoFactory;
 /**
  * 
  * @author GhostRider
- *
+ * 
  */
 public class RefDataCSVServlet extends HttpServlet {
 	/**
@@ -35,9 +35,8 @@ public class RefDataCSVServlet extends HttpServlet {
 		this.daoFac = daoFac;
 	}
 
-	private String instructions = "You need to specify TYPE, ID, and optionally FIELD. " +
-			"";
-
+	private String instructions = "You need to specify TYPE, ID, and optionally FIELD. "
+			+ "";
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -46,58 +45,57 @@ public class RefDataCSVServlet extends HttpServlet {
 		try {
 
 			if (paramMap.containsKey("TYPE") && paramMap.containsKey("ID")) {
-				String field = (String) paramMap.get("FIELD");
-				String type = (String) paramMap.get("TYPE");
-				String id = (String) paramMap.get("ID");
+				String field = null;
+				if (paramMap.containsKey("FIELD"))
+					field = ((String[]) paramMap.get("FIELD"))[0];
+				String type = ((String[]) paramMap.get("TYPE"))[0];
+				String id = ((String[]) paramMap.get("ID"))[0];
 				Map<String, Object> resultMap = new TreeMap<String, Object>();
 				Map<String, Object> m = new HashMap<String, Object>();
 				//
 				if (type.equals("INSTRUMENT")) {
 					// let's fetch the instrument.
-					m = daoFac.instrumentDao().load(id)
-							.getUnderlyingMap();
+					m = daoFac.instrumentDao().load(id).getUnderlyingMap();
 					//
 				} else if (type.equals("MDI")) {
 					// let's fetch the mdi
-					m = daoFac.mdiDao().load(id)
-							.getUnderlyingMap();
+					m = daoFac.mdiDao().load(id).getUnderlyingMap();
 				} else if (type.equals("TDI")) {
 					// let's fetch the tdi
-					m = daoFac.tradeableDao().load(id)
-							.getUnderlyingMap();										
+					m = daoFac.tradeableDao().load(id).getUnderlyingMap();
 				}
 				//
 				if (field == null) {
 					// fetch all.
-					if(m.containsKey(field)){
+					if (m.containsKey(field)) {
 						resultMap.put(field, m.get(field));
-					}
-					else{
+					} else {
 						resultMap.put(field, "N/A");
 					}
-				}
-				else{
+				} else {
 					resultMap.putAll(m);
 				}
-				// let's dump the result map. 
+				// let's dump the result map.
 				List<String> keys = new ArrayList<String>();
 				keys.addAll(resultMap.keySet());
 				Collections.sort(keys);
-				response.print(id+"\n");
-				for(String key : keys){
+				response.print(id + "\n");
+				for (String key : keys) {
 					response.print(key);
 					response.print("=");
 					response.print(resultMap.get(key));
 					response.print("\n");
 				}
 				response.flush();
-				
+
 			} else {
 				response.print(instructions);
 				response.flush();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			response.print(ex);
+			response.flush();
 		}
 	}
 }
