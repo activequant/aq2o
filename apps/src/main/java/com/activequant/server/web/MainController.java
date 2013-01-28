@@ -31,6 +31,11 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 @Controller
 public class MainController {
 
