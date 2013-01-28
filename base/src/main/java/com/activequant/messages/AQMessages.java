@@ -13574,6 +13574,10 @@ public final class AQMessages {
     // required int32 resend = 14;
     boolean hasResend();
     int getResend();
+    
+    // required double quantityLeft = 15;
+    boolean hasQuantityLeft();
+    double getQuantityLeft();
   }
   public static final class ExecutionReport2 extends
       com.google.protobuf.GeneratedMessage
@@ -13772,6 +13776,16 @@ public final class AQMessages {
       return resend_;
     }
     
+    // required double quantityLeft = 15;
+    public static final int QUANTITYLEFT_FIELD_NUMBER = 15;
+    private double quantityLeft_;
+    public boolean hasQuantityLeft() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    public double getQuantityLeft() {
+      return quantityLeft_;
+    }
+    
     private void initFields() {
       clOrdId_ = "";
       execId_ = "";
@@ -13781,6 +13795,7 @@ public final class AQMessages {
       transactTime_ = 0L;
       qty_ = 0D;
       resend_ = 0;
+      quantityLeft_ = 0D;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -13819,6 +13834,10 @@ public final class AQMessages {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasQuantityLeft()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -13849,6 +13868,9 @@ public final class AQMessages {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeInt32(14, resend_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeDouble(15, quantityLeft_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -13890,6 +13912,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(14, resend_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(15, quantityLeft_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14031,6 +14057,8 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000040);
         resend_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
+        quantityLeft_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       
@@ -14101,6 +14129,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00000080;
         }
         result.resend_ = resend_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.quantityLeft_ = quantityLeft_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14141,6 +14173,9 @@ public final class AQMessages {
         if (other.hasResend()) {
           setResend(other.getResend());
         }
+        if (other.hasQuantityLeft()) {
+          setQuantityLeft(other.getQuantityLeft());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -14175,6 +14210,10 @@ public final class AQMessages {
           return false;
         }
         if (!hasResend()) {
+          
+          return false;
+        }
+        if (!hasQuantityLeft()) {
           
           return false;
         }
@@ -14242,6 +14281,11 @@ public final class AQMessages {
             case 112: {
               bitField0_ |= 0x00000080;
               resend_ = input.readInt32();
+              break;
+            }
+            case 121: {
+              bitField0_ |= 0x00000100;
+              quantityLeft_ = input.readDouble();
               break;
             }
           }
@@ -14474,6 +14518,27 @@ public final class AQMessages {
       public Builder clearResend() {
         bitField0_ = (bitField0_ & ~0x00000080);
         resend_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required double quantityLeft = 15;
+      private double quantityLeft_ ;
+      public boolean hasQuantityLeft() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      public double getQuantityLeft() {
+        return quantityLeft_;
+      }
+      public Builder setQuantityLeft(double value) {
+        bitField0_ |= 0x00000100;
+        quantityLeft_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearQuantityLeft() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        quantityLeft_ = 0D;
         onChanged();
         return this;
       }
@@ -15122,18 +15187,18 @@ public final class AQMessages {
       "ed\"\231\001\n\023OrderUpdateRejected\022\017\n\007clOrdId\030\002 " +
       "\002(\t\022\016\n\006reason\030\003 \002(\t2a\n\003cmd\022%.com.activeq" +
       "uant.messages.BaseMessage\030w \002(\0132-.com.ac" +
-      "tivequant.messages.OrderUpdateRejected\"\362" +
-      "\001\n\020ExecutionReport2\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006" +
+      "tivequant.messages.OrderUpdateRejected\"\210" +
+      "\002\n\020ExecutionReport2\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006" +
       "execId\030\002 \002(\t\022\014\n\004side\030\003 \002(\t\022\r\n\005price\030\006 \002(" +
       "\001\022\r\n\005tdiId\030\007 \002(\t\022\024\n\014transactTime\030\010 \002(\003\022\013",
-      "\n\003qty\030\r \002(\001\022\016\n\006resend\030\016 \002(\0052^\n\003cmd\022%.com" +
-      ".activequant.messages.BaseMessage\030x \002(\0132" +
-      "*.com.activequant.messages.ExecutionRepo" +
-      "rt2\"}\n\rCustomCommand\022\017\n\007command\030\001 \002(\t2[\n" +
-      "\003cmd\022%.com.activequant.messages.BaseMess" +
-      "age\030y \002(\0132\'.com.activequant.messages.Cus" +
-      "tomCommandB&\n\030com.activequant.messagesB\n" +
-      "AQMessages"
+      "\n\003qty\030\r \002(\001\022\016\n\006resend\030\016 \002(\005\022\024\n\014quantityL" +
+      "eft\030\017 \002(\0012^\n\003cmd\022%.com.activequant.messa" +
+      "ges.BaseMessage\030x \002(\0132*.com.activequant." +
+      "messages.ExecutionReport2\"}\n\rCustomComma" +
+      "nd\022\017\n\007command\030\001 \002(\t2[\n\003cmd\022%.com.activeq" +
+      "uant.messages.BaseMessage\030y \002(\0132\'.com.ac" +
+      "tivequant.messages.CustomCommandB&\n\030com." +
+      "activequant.messagesB\nAQMessages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -15313,7 +15378,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_ExecutionReport2_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_ExecutionReport2_descriptor,
-              new java.lang.String[] { "ClOrdId", "ExecId", "Side", "Price", "TdiId", "TransactTime", "Qty", "Resend", },
+              new java.lang.String[] { "ClOrdId", "ExecId", "Side", "Price", "TdiId", "TransactTime", "Qty", "Resend", "QuantityLeft", },
               com.activequant.messages.AQMessages.ExecutionReport2.class,
               com.activequant.messages.AQMessages.ExecutionReport2.Builder.class);
           internal_static_com_activequant_messages_CustomCommand_descriptor =

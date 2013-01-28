@@ -288,7 +288,11 @@ public class TransportOrderTracker implements IOrderTracker {
 			// fully done.
 			workingState = false;
 			terminalState = true;
-
+		}
+		else{
+			// let's update the open quantity ... 
+			SingleLegOrder slo = this.orderContainer;
+			slo.setOpenQuantity(oe.getLeftQuantity());
 		}
 	}
 
@@ -542,10 +546,9 @@ public class TransportOrderTracker implements IOrderTracker {
 
 		String orderId = oa.getClOrdId();
 		if (orderId.equals(originalOrderId)) {
-			log.info("Order accepted: " + oa.getClOrdId());
+			log.info("Order update rejected: " + oa.getClOrdId());
 			OrderUpdateRejectedEvent oae = new OrderUpdateRejectedEvent();
 			oae.setTimeStamp(new TimeStamp());
-
 			oae.setRefOrderId(oa.getClOrdId());
 			oae.setRefOrder(getOrder());
 			oae.setReason(oa.getReason());
@@ -580,12 +583,13 @@ public class TransportOrderTracker implements IOrderTracker {
 			String side = er.getSide();
 			ofe.setSide(side);
 			ofe.setTimeStamp(new TimeStamp());
-
+			ofe.setLeftQuantity(er.getQuantityLeft());
 			ofe.setFillPrice(er.getPrice());
 			ofe.setFillAmount(cumQty);
 			ofe.setOptionalInstId(er.getTdiId());
 			ofe.setRefOrderId(orderId);
 			ofe.setRefOrder(getOrder());
+			ofe.setExecId(er.getExecId());
 			fireEvent(ofe);
 
 		}

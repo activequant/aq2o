@@ -129,7 +129,7 @@ public class MessageFactory {
 			OrderFillEvent ofe = (OrderFillEvent) oe;
 			ret = executionReport2(ofe.getRefOrderId(), ofe.getExecId(),
 					ofe.getSide(), ofe.getFillPrice(), ofe.getOptionalInstId(),
-					ofe.getTimeStamp().getNanoseconds(), ofe.getFillAmount(), ofe.getResend());
+					ofe.getTimeStamp().getNanoseconds(), ofe.getFillAmount(), ofe.getLeftQuantity(), ofe.getResend());
 		}
 
 		// return it.
@@ -385,13 +385,13 @@ public class MessageFactory {
 
 	public BaseMessage executionReport2(String clOrdId, String execId,
 			String side, double price, String tradInstId, long transactTime,
-			double qty, int resend) {
+			double qty, double leftQuantity, int resend) {
 
 		
 		AQMessages.ExecutionReport2 n = AQMessages.ExecutionReport2
 				.newBuilder().setClOrdId(clOrdId).setExecId(execId)
 				.setSide(side).setPrice(price).setTdiId(tradInstId)
-				.setTransactTime(transactTime).setQty(qty).setResend(resend).build();
+				.setTransactTime(transactTime).setQty(qty).setQuantityLeft(leftQuantity).setResend(resend).build();
 
 		return wrap(BaseMessage.CommandType.EXECUTION_REPORT2,
 				AQMessages.ExecutionReport2.cmd, n);

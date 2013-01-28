@@ -129,6 +129,7 @@ public class Marshaller {
 		ofe.setFillAmount(adm.getQty());
 		ofe.setSide(adm.getSide());
 		ofe.setOptionalInstId(adm.getTdiId());
+		ofe.setLeftQuantity(adm.getQuantityLeft());
 		ofe.setTimeStamp(new TimeStamp(adm.getTransactTime()));
 		return ofe;
 	}

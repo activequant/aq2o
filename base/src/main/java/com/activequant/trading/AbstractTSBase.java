@@ -33,6 +33,7 @@ import com.activequant.domainmodel.trade.event.OrderFillEvent;
 import com.activequant.domainmodel.trade.event.OrderRejectedEvent;
 import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
 import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
+import com.activequant.domainmodel.trade.event.OrderUpdateRejectedEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.MarketOrder;
 import com.activequant.domainmodel.trade.order.Order;
@@ -125,8 +126,8 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			try {
 				bm = marshaller.demarshall(event);
 				OrderEvent temp = null;
-				if (log.isDebugEnabled())
-					log.debug("Event type: " + bm.getType());
+//				if (log.isDebugEnabled())
+//					log.debug("Event type: " + bm.getType());
 				if (bm.getType().equals(CommandType.MDS)) {
 					MarketDataSnapshot mds = marshaller
 							.demarshall(((AQMessages.MarketDataSnapshot) bm
@@ -146,7 +147,11 @@ public abstract class AbstractTSBase implements ITradingSystem {
 						IOrderTracker iot = env.getExchange().getOrderTracker(
 								refOrderId);
 						if (iot != null)
-							ose.getOe().setRefOrder(iot.getOrder());
+						{
+							// we have an order tracker ... so let the order tracker handle this. 
+							// ose.getOe().setRefOrder(iot.getOrder());
+							return;
+						}
 					}
 					process((StreamEvent) ose);
 				} else if (bm.getType().equals(CommandType.POSITION_REPORT)) {
@@ -493,6 +498,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 			OrderFillEvent ofe = (OrderFillEvent) oe;
 			//
 			String execId = ofe.getExecId();
+			if(execId==null) {
+				return;
+			}
 			boolean seen = false;
 			for (String s : seenExecutions) {
 				if (s.equals(execId)) {
@@ -513,16 +521,18 @@ public abstract class AbstractTSBase implements ITradingSystem {
 						ofe.getFillAmount());
 				if (ofe.getResend() == 0) {
 					// also signal the execution to the risk calculator.
-					riskCalculator.execution(ofe.getTimeStamp(),
-							ofe.getOptionalInstId(),
-							ofe.getFillPrice(),
-							// B nasty one. might bite later down.
-							(ofe.getSide().startsWith("B") ? 1.0 : -1.0)
-									* ofe.getFillAmount());
+//					riskCalculator.execution(ofe.getTimeStamp(),
+//							ofe.getOptionalInstId(),
+//							ofe.getFillPrice(),
+//							// B nasty one. might bite later down.
+//							(ofe.getSide().startsWith("B") ? 1.0 : -1.0)
+//									* ofe.getFillAmount());
 					//
 					if (ofe.getLeftQuantity() == 0) {
 						getOrderTable().delOrder(ofe.getRefOrderId());
 					} else {
+						// let's also update the ref order ... 
+						
 						addOrSetOrderTable(refOrder);
 					}
 				}
@@ -546,6 +556,9 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		} else if (oe instanceof OrderCancelledEvent) {
 			getOrderTable().delOrder(oe.getRefOrderId());
 			getOrderTable().signalUpdate();
+			auditLog(oe.getTimeStamp(), oe.toString());
+		}
+		else if(oe instanceof OrderUpdateRejectedEvent){
 			auditLog(oe.getTimeStamp(), oe.toString());
 		}
 	}

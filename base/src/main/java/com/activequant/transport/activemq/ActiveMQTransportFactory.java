@@ -108,11 +108,7 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 		String originalDestination = destination;
 		// reducing the amount of topics. working through selectors.
 		if (destination.length() > 5)
-			destination = destination.substring(0, 4); // +
-														// (destination.hashCode()
-														// % 5);
-
-		//
+			destination = destination.substring(0, 4); 
 		if (!receiverMap.containsKey(originalDestination)) {
 			try {
 				Destination topic = session.createTopic(destination);

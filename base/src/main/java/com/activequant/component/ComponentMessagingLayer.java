@@ -44,8 +44,8 @@ public class ComponentMessagingLayer {
 		//
 		try {
 			String s = new String(bytes);
-			if (log.isDebugEnabled())
-				log.debug("RECV:" + s);
+//			if (log.isDebugEnabled())
+//				log.debug("RECV:" + s);
 			String[] parts = s.split(";");
 			String to = parts[0];
 			String cmd = parts[1];
