@@ -408,7 +408,7 @@ public class TransportOrderTracker implements IOrderTracker {
 		AQMessages.BaseMessage bm;
 		try {
 			bm = marshaller.demarshall(rawMessage);
-			// System.out.println(bm);
+			System.out.println(bm);
 			switch (bm.getType()) {
 			case SECURITY_STATUS: {
 				AQMessages.SecurityStatus os = ((AQMessages.SecurityStatus) bm
@@ -633,7 +633,6 @@ public class TransportOrderTracker implements IOrderTracker {
 			fireEvent(ore);
 
 		}
-
 	}
 
 	private void handle(AQMessages.OrderCancelReject ocr) {
