@@ -22,6 +22,15 @@
 		<property name="password">
 			<value>${db.password}</value>
 		</property>
+		<property name="poolPingEnabled">
+			<value>true</value>
+		</property>
+		<property name="poolPingConnectionsNotUsedFor" value="5000" />
+
+		<property name="poolPingQuery">
+			<value>select 1;</value>
+		</property>
+
 	</bean>
 
 
@@ -50,13 +59,13 @@
 			<value>${hbase.zookeeper.host}</value>
 		</constructor-arg>
 	</bean>
-		
+
 	<bean id="tagDao" lazy-init="true" class="com.activequant.dao.hbase.TagDao">
 		<constructor-arg>
 			<value>${hbase.zookeeper.host}</value>
 		</constructor-arg>
 	</bean>
-	
+
 	<bean id="jmsTransport"
 		class="com.activequant.transport.activemq.ActiveMQTransportFactory"
 		lazy-init="true">
@@ -68,10 +77,8 @@
 		</constructor-arg>
 	</bean>
 
-	<!--  bean id="inmemoryTransport"
-		class="com.activequant.transport.memory.InMemoryTransportFactory"
-		lazy-init="true">
-	</bean -->
+	<!-- bean id="inmemoryTransport" class="com.activequant.transport.memory.InMemoryTransportFactory" 
+		lazy-init="true"> </bean -->
 
 
 
