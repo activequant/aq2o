@@ -9,17 +9,19 @@ import com.activequant.utils.events.Event;
 
 public class InMemoryReceiver implements IReceiver {
 
-	private Event<Map<String, Object>> rawEvent;
+	private Event<Map<String, Object>> rawMsgEvent;
+	private Event<byte[]> rawEvent;
 	private Event<PersistentEntity> event;
 	
-	InMemoryReceiver(Event<Map<String, Object>> rawEvent, Event<PersistentEntity> event){
-		this.rawEvent = rawEvent;
+	InMemoryReceiver(Event<Map<String, Object>> rawEvent, Event<byte[]> raw, Event<PersistentEntity> event){
+		this.rawMsgEvent = rawEvent;
 		this.event = event; 
+		this.rawEvent = raw; 
 	}
 	
 	@Override
 	public IEventSource<Map<String, Object>> getRawMsgRecEvent() {
-		return rawEvent;
+		return rawMsgEvent;
 	}
 	
 	@Override
@@ -28,7 +30,7 @@ public class InMemoryReceiver implements IReceiver {
 	}
 
 	public IEventSource<byte[]> getRawEvent(){
-		throw new RuntimeException("Not implemented.");
+		return rawEvent;
 	}
 
 }

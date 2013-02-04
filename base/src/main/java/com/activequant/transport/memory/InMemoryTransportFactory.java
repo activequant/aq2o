@@ -18,6 +18,7 @@ public class InMemoryTransportFactory implements ITransportFactory {
 
 	private Map<String, Event<Map<String, Object>>> rawEventMap = new HashMap<String, Event<Map<String, Object>>>();
 	private Map<String, Event<PersistentEntity>> eventMap = new HashMap<String, Event<PersistentEntity>>();
+	private Map<String, Event<byte[]>> byteeventMap = new HashMap<String, Event<byte[]>>();
 	private Map<String, IPublisher> publisherMap = new HashMap<String, IPublisher>();
 	private Map<String, IReceiver> recvMap = new HashMap<String, IReceiver>();
 	private StringBuffer sb = new StringBuffer();
@@ -27,6 +28,12 @@ public class InMemoryTransportFactory implements ITransportFactory {
 		return rawEventMap.get(channelName);
 	}
 	
+	private Event<byte[]> getByteEventInstance(String channelName){
+		if(!byteeventMap.containsKey(channelName))byteeventMap.put(channelName, new Event<byte[]>());
+		return byteeventMap.get(channelName);
+	}
+	
+	
 	private Event<PersistentEntity> getEventInstance(String channelName){
 		if(!eventMap.containsKey(channelName))eventMap.put(channelName, new Event<PersistentEntity>());
 		return eventMap.get(channelName);
@@ -35,7 +42,7 @@ public class InMemoryTransportFactory implements ITransportFactory {
 	
 	private IPublisher getIPub(String channelName){
 		if(!publisherMap.containsKey(channelName)){
-			IPublisher p = new InMemoryPublisher(getRawEventInstance(channelName), getEventInstance(channelName));
+			IPublisher p = new InMemoryPublisher(getRawEventInstance(channelName), getByteEventInstance(channelName), getEventInstance(channelName));
 			publisherMap.put(channelName, p);
 		}
 		return publisherMap.get(channelName);
@@ -43,7 +50,7 @@ public class InMemoryTransportFactory implements ITransportFactory {
 	
 	private IReceiver getIRecv(String channelName){
 		if(!recvMap.containsKey(channelName)){
-			IReceiver p = new InMemoryReceiver(getRawEventInstance(channelName), getEventInstance(channelName));
+			IReceiver p = new InMemoryReceiver(getRawEventInstance(channelName), getByteEventInstance(channelName), getEventInstance(channelName));
 			recvMap.put(channelName, p);
 		}
 		return recvMap.get(channelName);

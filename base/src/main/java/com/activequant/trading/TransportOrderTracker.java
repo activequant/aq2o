@@ -284,7 +284,7 @@ public class TransportOrderTracker implements IOrderTracker {
 	}
 
 	private void fill(OrderFillEvent oe) {
-		if (oe.getLeftQuantity() == 0.0) {
+		if (oe.getLeftQuantity() == 0.0 && oe.getResend()==0) {
 			// fully done.
 			workingState = false;
 			terminalState = true;
@@ -589,6 +589,7 @@ public class TransportOrderTracker implements IOrderTracker {
 			ofe.setRefOrderId(orderId);
 			ofe.setRefOrder(getOrder());
 			ofe.setExecId(er.getExecId());
+			ofe.setResend(er.getResend());
 			fireEvent(ofe);
 
 		}

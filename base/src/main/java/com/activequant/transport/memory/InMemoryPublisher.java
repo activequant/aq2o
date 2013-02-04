@@ -12,9 +12,11 @@ public class InMemoryPublisher implements IPublisher {
 	private Event<PersistentEntity> event;
 	private Event<byte[]> byteevent;
 	
-	InMemoryPublisher(Event<Map<String, Object>> rawEvent, Event<PersistentEntity> event){
+	
+	InMemoryPublisher(Event<Map<String, Object>> rawEvent, Event<byte[]> byteevent, Event<PersistentEntity> event){
 		this.rawEvent = rawEvent; 
 		this.event = event; 
+		this.byteevent = byteevent; 
 	}
 	
 	@Override
@@ -23,7 +25,7 @@ public class InMemoryPublisher implements IPublisher {
 	}
 
 	public void send(byte[] bytes) throws Exception {
-		throw new RuntimeException("Not implemented.");
+		byteevent.fire(bytes);
 	}
 
 	@Override

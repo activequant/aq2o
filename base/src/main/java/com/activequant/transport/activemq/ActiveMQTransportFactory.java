@@ -54,6 +54,8 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 
 		connectionFactory = new ActiveMQConnectionFactory(conUrl);
 		connectionFactory.setProducerWindowSize(1024000);
+		connectionFactory.setUseAsyncSend(true);
+		connectionFactory.setOptimizeAcknowledge(true);
 		connection = connectionFactory.createTopicConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
