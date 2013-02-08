@@ -11,18 +11,14 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.domainmodel.ETransportType;
+import com.activequant.component.ComponentBase;
 import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeFrame;
-import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
-import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
 
@@ -32,7 +28,7 @@ import com.activequant.interfaces.utils.IEventListener;
  * @author GhostRider
  *
  */
-public class CandleRecorder {
+public class CandleRecorder extends ComponentBase {
 	
 	private IArchiveFactory archiveFactory;
 	private ITransportFactory  transFac;
@@ -65,33 +61,29 @@ public class CandleRecorder {
 			t.schedule(new InternalTimerTask() , (collectionPhase - System.currentTimeMillis()%collectionPhase));				
 		}
 		
-		public void store(OHLCV mds){
-			if(mds==null)return;
-			writer.write(mds.getMdiId(), mds.getTimeStamp(), "OPEN", mds.getOpen());
-			writer.write(mds.getMdiId(), mds.getTimeStamp(), "HIGH", mds.getHigh());
-			writer.write(mds.getMdiId(), mds.getTimeStamp(), "LOW", mds.getLow());
-			writer.write(mds.getMdiId(), mds.getTimeStamp(), "CLOSE", mds.getClose());
-			writer.write(mds.getMdiId(), mds.getTimeStamp(), "VOLUME", mds.getVolume());				
+		public void store(OHLCV o){
+			if(o==null)return;
+			writer.write(o.getMdiId(), o.getTimeStamp(), "OPEN", o.getOpen());
+			writer.write(o.getMdiId(), o.getTimeStamp(), "HIGH", o.getHigh());
+			writer.write(o.getMdiId(), o.getTimeStamp(), "LOW", o.getLow());
+			writer.write(o.getMdiId(), o.getTimeStamp(), "CLOSE", o.getClose());
+			writer.write(o.getMdiId(), o.getTimeStamp(), "VOLUME", o.getVolume());				
 		}
 		
 	}
 	
-	public CandleRecorder(String springFile, String mdiFile, TimeFrame tf) throws IOException, TransportException{
-		
+	
+	public CandleRecorder(IArchiveFactory archFac, ITransportFactory transFac, TimeFrame tf, String mdiFile) throws Exception{
+		super("CandleRecorder "+tf, transFac);
 		this.tf = tf; 
-		
-		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[]{springFile});
-		System.out.println("Starting up and fetching idf");
-		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
-		archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
-		
+		this.archiveFactory = archFac; 
+		this.transFac = transFac; 
 		writer = archiveFactory.getWriter(tf);
-		transFac = appContext.getBean("jmsTransport", ITransportFactory.class);		
+		
 		subscribe(mdiFile);
 		t.schedule(new InternalTimerTask(), (collectionPhase - System.currentTimeMillis()%collectionPhase));
-		
+
 	}
-	
 	
 	private void subscribe(String mdiFile) throws IOException, TransportException{
 		
@@ -127,13 +119,10 @@ public class CandleRecorder {
 		}		
 	}
 	
-	/**
-	 * @param args
-	 * @throws IOException 
-	 * @throws TransportException 
-	 */
-	public static void main(String[] args) throws IOException, TransportException {
-		new CandleRecorder(args[0], args[1], TimeFrame.valueOf(args[2]));
+
+	@Override
+	public String getDescription() {
+		return "Candle recorder for timeframe " + tf;
 	}
 
 }
