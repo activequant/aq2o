@@ -18,12 +18,16 @@ import org.apache.log4j.Logger;
 import com.activequant.component.ComponentBase;
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.OHLCV;
-import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
+import com.activequant.messages.AQMessages;
+import com.activequant.messages.AQMessages.BaseMessage;
+import com.activequant.messages.AQMessages.BaseMessage.CommandType;
+import com.activequant.messages.Marshaller;
+import com.activequant.messages.MessageFactory;
 
 /**
  * A chandler makes candles.
@@ -37,7 +41,9 @@ public class Chandler extends ComponentBase {
 	private Logger log = Logger.getLogger(Chandler.class);
 	final Timer t = new Timer(true);
 	final int timeFrameInMs;
-	final TimeFrame tf; 
+	final TimeFrame tf;
+	private final Marshaller marshaller = new Marshaller();
+	private final MessageFactory mf = new MessageFactory();
 
 	class InternalTimerTask extends TimerTask {
 		@Override
@@ -65,8 +71,11 @@ public class Chandler extends ComponentBase {
 					System.out.println(o.getMdiId() + " - " + o.getOpen()
 							+ " - " + o.getClose());
 					try {
+						BaseMessage bm = mf.ohlc(o.getTimeStamp(), o.getMdiId(), o.getOpen(),
+								o.getHigh(), o.getLow(), o.getClose());
+
 						// let's convert that candle to a byte array.
-						transFac.getPublisher(o.getId()).send(o);
+						transFac.getPublisher(o.getId()).send(bm.toByteArray());
 					} catch (TransportException e) {
 						e.printStackTrace();
 					} catch (Exception e) {
@@ -83,7 +92,7 @@ public class Chandler extends ComponentBase {
 		this.timeFrameInMs = tf.getMinutes() * 60 * 1000;
 		System.out.println("Starting up and fetching idf");
 		this.transFac = transFac;
-		this.tf = tf; 
+		this.tf = tf;
 		subscribe(mdiFile);
 		t.schedule(new InternalTimerTask(),
 				(timeFrameInMs - System.currentTimeMillis() % timeFrameInMs));
@@ -113,17 +122,28 @@ public class Chandler extends ComponentBase {
 		}
 		for (String s : instruments) {
 			log.info("Subscribing to " + s);
-			transFac.getReceiver(ETransportType.MARKET_DATA, s)
-					.getMsgRecEvent()
-					.addEventListener(new IEventListener<PersistentEntity>() {
+			transFac.getReceiver(ETransportType.MARKET_DATA, s).getRawEvent()
+					.addEventListener(new IEventListener<byte[]>() {
 						@Override
-						public void eventFired(PersistentEntity event) {
-							if (event instanceof MarketDataSnapshot) {
-								System.out.print("*");
-								process((MarketDataSnapshot) event);
+						public void eventFired(byte[] event) {
+							BaseMessage bm;
+							try {
+								bm = marshaller.demarshall(event);
+								if (log.isDebugEnabled())
+									log.debug("Event type: " + bm.getType());
+								if (bm.getType().equals(CommandType.MDS)) {
+									MarketDataSnapshot mds = marshaller
+											.demarshall(((AQMessages.MarketDataSnapshot) bm
+													.getExtension(AQMessages.MarketDataSnapshot.cmd)));
+									process(mds);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								log.warn("Exception: ", e);
 							}
 						}
 					});
+
 		}
 	}
 
