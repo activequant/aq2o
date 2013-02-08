@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -17,9 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.activequant.archive.TSContainer;
+import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.Tuple;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 
@@ -30,6 +32,7 @@ public class CSVServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private IArchiveFactory archFac;
 	private Logger log = Logger.getLogger(CSVServlet.class);
+	private DecimalFormat dcf = new DecimalFormat("#.################");
 
 	public CSVServlet(IArchiveFactory archFac) {
 		this.archFac = archFac;
@@ -80,23 +83,50 @@ public class CSVServlet extends HttpServlet {
 				start = new TimeStamp(sdf.parse(sd));
 				int maxRows = 1000000;
 				TimeStamp end = new TimeStamp(sdf.parse(ed));
-				TSContainer container = archFac.getReader(tf).getTimeSeries(
-						mdiId, field, start, end);
+				
 				response.getWriter().print(
 						"TimeStampNanos,DateTime," + field + "\n");
-				for (int i = 0; i < container.timeStamps.length; i++) {
-					// limiting to 1million rows.
-					if (i >= maxRows)
-						break;
-					response.getWriter().print(container.timeStamps[i]);
+				
+				String[] fields = field.split(",");
+				
+				MultiValueTimeSeriesIterator mvtsi = archFac.getReader(tf).getMultiValueStream(mdiId, start, end);
+				int i=0;
+				while(mvtsi.hasNext()){
+					Tuple<TimeStamp, Map<String, Double>> values = mvtsi.next();
+					// String[] p = l.split(",");
+					
+					// check if our map contains some of our requested fields. 
+					
+					boolean found = false; 
+					for(String f : fields){
+						if(values.getB().containsKey(f))found = true; 
+					}
+					if(!found)
+						continue;
+					
+					response.getWriter().print(values.getA());
 					response.getWriter().print(",");
 					response.getWriter().print(
-							container.timeStamps[i].getCalendar().getTime());
+							values.getA().getCalendar().getTime());
 					response.getWriter().print(",");
-					response.getWriter().print(container.values[i]);
+					// now, let's dump all values. 
+					for(int j = 0; j<fields.length;j++){
+						
+						Double val = values.getB().get(fields[j]);
+						if(val!=null){
+							response.getWriter().print(dcf.format(val));	
+						}
+						if(j!=(fields.length-1))
+							response.getWriter().print(",");					
+					}
 					response.getWriter().println();
 					response.getWriter().flush();
-				}
+					
+					i++;
+					if (i >= maxRows)
+						break;
+					
+				}							
 			} catch (ParseException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
