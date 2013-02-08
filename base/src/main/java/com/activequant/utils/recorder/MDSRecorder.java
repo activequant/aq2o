@@ -67,7 +67,7 @@ public class MDSRecorder extends ComponentBase {
 			if (counter > 0) {
 				try {
 					rawWriter.commit();
-					log.info("Committed.");
+					log.info("Committed " + counter);
 					// snmpReporter.addValue("MDSEVENTS", counter);
 				} catch (Exception e) {
 					e.printStackTrace();
