@@ -92,7 +92,7 @@ public class MDSRecorder extends ComponentBase {
 						bestBidQ);
 				if (log.isDebugEnabled())
 					log.debug("Wrote " + seriesId + ", " + mds.getTimeStamp()
-							+ ", " + bestBidPx);
+							+ ", " + bestBidPx +", "+ bestBidQ);
 			}
 			if (mds.getAskSizes() != null && mds.getAskSizes().length > 0) {
 				double bestAskPx = mds.getAskPrices()[0];
@@ -100,6 +100,10 @@ public class MDSRecorder extends ComponentBase {
 				rawWriter.write(seriesId, mds.getTimeStamp(), "ASK", bestAskPx);
 				rawWriter.write(seriesId, mds.getTimeStamp(), "ASKQUANTITY",
 						bestAskQ);
+				
+				if (log.isDebugEnabled())
+					log.debug("Wrote " + seriesId + ", " + mds.getTimeStamp()
+							+ ", " + bestAskPx +", "+ bestAskQ);
 			}
 		}
 
