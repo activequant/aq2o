@@ -75,8 +75,7 @@ public class CandleRecorder extends ComponentBase {
 			writer.write(o.getMdiId(), o.getTimeStamp(), "HIGH", o.getHigh());
 			writer.write(o.getMdiId(), o.getTimeStamp(), "LOW", o.getLow());
 			writer.write(o.getMdiId(), o.getTimeStamp(), "CLOSE", o.getClose());
-			writer.write(o.getMdiId(), o.getTimeStamp(), "VOLUME",
-					o.getVolume());
+			if(o.getVolume()!=null)writer.write(o.getMdiId(), o.getTimeStamp(), "VOLUME",o.getVolume());
 		}
 
 	}
