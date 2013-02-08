@@ -30,6 +30,8 @@ public final class AQMessages {
     registry.add(com.activequant.messages.AQMessages.ExecutionReport2.cmd);
     registry.add(com.activequant.messages.AQMessages.CustomCommand.cmd);
     registry.add(com.activequant.messages.AQMessages.InfoEvent.cmd);
+    registry.add(com.activequant.messages.AQMessages.OHLC.cmd);
+    registry.add(com.activequant.messages.AQMessages.Tick.cmd);
   }
   public interface BaseMessageOrBuilder extends
       com.google.protobuf.GeneratedMessage.
@@ -93,6 +95,8 @@ public final class AQMessages {
       EXECUTION_REPORT2(21, 22),
       CUST_CMD(22, 23),
       INFO_EVENT(23, 24),
+      OHLC(24, 25),
+      TICK(25, 26),
       ;
       
       public static final int VERSION_VALUE = 1;
@@ -119,6 +123,8 @@ public final class AQMessages {
       public static final int EXECUTION_REPORT2_VALUE = 22;
       public static final int CUST_CMD_VALUE = 23;
       public static final int INFO_EVENT_VALUE = 24;
+      public static final int OHLC_VALUE = 25;
+      public static final int TICK_VALUE = 26;
       
       
       public final int getNumber() { return value; }
@@ -149,6 +155,8 @@ public final class AQMessages {
           case 22: return EXECUTION_REPORT2;
           case 23: return CUST_CMD;
           case 24: return INFO_EVENT;
+          case 25: return OHLC;
+          case 26: return TICK;
           default: return null;
         }
       }
@@ -179,7 +187,7 @@ public final class AQMessages {
       }
       
       private static final CommandType[] VALUES = {
-        VERSION, LOGIN, SERVER_TIME, LOGIN_RESPONSE, MDS, ACCT_DATA, POSITION_REPORT, EXECUTION_REPORT, ORD_CNCL_REQ, ORD_CNCL_REJ, ORD_CNCL_REPL_REQ, NEW_ORDER, ORD_SUBMITTED, ORD_ACCPTD, ORD_CANCELLED, ORD_UPDATED, SECURITY_STATUS, ORD_REJ, ORD_UPDATE_SUBMITTED, ORD_CANCEL_SUBMITTED, ORD_UPD_REJECTED, EXECUTION_REPORT2, CUST_CMD, INFO_EVENT, 
+        VERSION, LOGIN, SERVER_TIME, LOGIN_RESPONSE, MDS, ACCT_DATA, POSITION_REPORT, EXECUTION_REPORT, ORD_CNCL_REQ, ORD_CNCL_REJ, ORD_CNCL_REPL_REQ, NEW_ORDER, ORD_SUBMITTED, ORD_ACCPTD, ORD_CANCELLED, ORD_UPDATED, SECURITY_STATUS, ORD_REJ, ORD_UPDATE_SUBMITTED, ORD_CANCEL_SUBMITTED, ORD_UPD_REJECTED, EXECUTION_REPORT2, CUST_CMD, INFO_EVENT, OHLC, TICK, 
       };
       
       public static CommandType valueOf(
@@ -15484,6 +15492,1434 @@ public final class AQMessages {
           com.activequant.messages.AQMessages.InfoEvent.getDefaultInstance());
   }
   
+  public interface OHLCOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required int64 timestamp = 1;
+    boolean hasTimestamp();
+    long getTimestamp();
+    
+    // required string mdiId = 2;
+    boolean hasMdiId();
+    String getMdiId();
+    
+    // required double open = 3;
+    boolean hasOpen();
+    double getOpen();
+    
+    // required double high = 4;
+    boolean hasHigh();
+    double getHigh();
+    
+    // required double low = 5;
+    boolean hasLow();
+    double getLow();
+    
+    // required double close = 6;
+    boolean hasClose();
+    double getClose();
+    
+    // optional double volume = 7;
+    boolean hasVolume();
+    double getVolume();
+  }
+  public static final class OHLC extends
+      com.google.protobuf.GeneratedMessage
+      implements OHLCOrBuilder {
+    // Use OHLC.newBuilder() to construct.
+    private OHLC(Builder builder) {
+      super(builder);
+    }
+    private OHLC(boolean noInit) {}
+    
+    private static final OHLC defaultInstance;
+    public static OHLC getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public OHLC getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_OHLC_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_OHLC_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required int64 timestamp = 1;
+    public static final int TIMESTAMP_FIELD_NUMBER = 1;
+    private long timestamp_;
+    public boolean hasTimestamp() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public long getTimestamp() {
+      return timestamp_;
+    }
+    
+    // required string mdiId = 2;
+    public static final int MDIID_FIELD_NUMBER = 2;
+    private java.lang.Object mdiId_;
+    public boolean hasMdiId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public String getMdiId() {
+      java.lang.Object ref = mdiId_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          mdiId_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getMdiIdBytes() {
+      java.lang.Object ref = mdiId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        mdiId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required double open = 3;
+    public static final int OPEN_FIELD_NUMBER = 3;
+    private double open_;
+    public boolean hasOpen() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public double getOpen() {
+      return open_;
+    }
+    
+    // required double high = 4;
+    public static final int HIGH_FIELD_NUMBER = 4;
+    private double high_;
+    public boolean hasHigh() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public double getHigh() {
+      return high_;
+    }
+    
+    // required double low = 5;
+    public static final int LOW_FIELD_NUMBER = 5;
+    private double low_;
+    public boolean hasLow() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public double getLow() {
+      return low_;
+    }
+    
+    // required double close = 6;
+    public static final int CLOSE_FIELD_NUMBER = 6;
+    private double close_;
+    public boolean hasClose() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    public double getClose() {
+      return close_;
+    }
+    
+    // optional double volume = 7;
+    public static final int VOLUME_FIELD_NUMBER = 7;
+    private double volume_;
+    public boolean hasVolume() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    public double getVolume() {
+      return volume_;
+    }
+    
+    private void initFields() {
+      timestamp_ = 0L;
+      mdiId_ = "";
+      open_ = 0D;
+      high_ = 0D;
+      low_ = 0D;
+      close_ = 0D;
+      volume_ = 0D;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasTimestamp()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMdiId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasOpen()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasHigh()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLow()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasClose()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt64(1, timestamp_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMdiIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeDouble(3, open_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeDouble(4, high_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeDouble(5, low_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeDouble(6, close_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeDouble(7, volume_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, timestamp_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getMdiIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(3, open_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(4, high_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(5, low_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(6, close_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(7, volume_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.OHLC parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.activequant.messages.AQMessages.OHLC prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.activequant.messages.AQMessages.OHLCOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_OHLC_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_OHLC_fieldAccessorTable;
+      }
+      
+      // Construct using com.activequant.messages.AQMessages.OHLC.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        timestamp_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mdiId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        open_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        high_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        low_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        close_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        volume_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.activequant.messages.AQMessages.OHLC.getDescriptor();
+      }
+      
+      public com.activequant.messages.AQMessages.OHLC getDefaultInstanceForType() {
+        return com.activequant.messages.AQMessages.OHLC.getDefaultInstance();
+      }
+      
+      public com.activequant.messages.AQMessages.OHLC build() {
+        com.activequant.messages.AQMessages.OHLC result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.activequant.messages.AQMessages.OHLC buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.activequant.messages.AQMessages.OHLC result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.activequant.messages.AQMessages.OHLC buildPartial() {
+        com.activequant.messages.AQMessages.OHLC result = new com.activequant.messages.AQMessages.OHLC(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.timestamp_ = timestamp_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.mdiId_ = mdiId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.open_ = open_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.high_ = high_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.low_ = low_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.close_ = close_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.volume_ = volume_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.activequant.messages.AQMessages.OHLC) {
+          return mergeFrom((com.activequant.messages.AQMessages.OHLC)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.activequant.messages.AQMessages.OHLC other) {
+        if (other == com.activequant.messages.AQMessages.OHLC.getDefaultInstance()) return this;
+        if (other.hasTimestamp()) {
+          setTimestamp(other.getTimestamp());
+        }
+        if (other.hasMdiId()) {
+          setMdiId(other.getMdiId());
+        }
+        if (other.hasOpen()) {
+          setOpen(other.getOpen());
+        }
+        if (other.hasHigh()) {
+          setHigh(other.getHigh());
+        }
+        if (other.hasLow()) {
+          setLow(other.getLow());
+        }
+        if (other.hasClose()) {
+          setClose(other.getClose());
+        }
+        if (other.hasVolume()) {
+          setVolume(other.getVolume());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasTimestamp()) {
+          
+          return false;
+        }
+        if (!hasMdiId()) {
+          
+          return false;
+        }
+        if (!hasOpen()) {
+          
+          return false;
+        }
+        if (!hasHigh()) {
+          
+          return false;
+        }
+        if (!hasLow()) {
+          
+          return false;
+        }
+        if (!hasClose()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              timestamp_ = input.readInt64();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              mdiId_ = input.readBytes();
+              break;
+            }
+            case 25: {
+              bitField0_ |= 0x00000004;
+              open_ = input.readDouble();
+              break;
+            }
+            case 33: {
+              bitField0_ |= 0x00000008;
+              high_ = input.readDouble();
+              break;
+            }
+            case 41: {
+              bitField0_ |= 0x00000010;
+              low_ = input.readDouble();
+              break;
+            }
+            case 49: {
+              bitField0_ |= 0x00000020;
+              close_ = input.readDouble();
+              break;
+            }
+            case 57: {
+              bitField0_ |= 0x00000040;
+              volume_ = input.readDouble();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required int64 timestamp = 1;
+      private long timestamp_ ;
+      public boolean hasTimestamp() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public long getTimestamp() {
+        return timestamp_;
+      }
+      public Builder setTimestamp(long value) {
+        bitField0_ |= 0x00000001;
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearTimestamp() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        timestamp_ = 0L;
+        onChanged();
+        return this;
+      }
+      
+      // required string mdiId = 2;
+      private java.lang.Object mdiId_ = "";
+      public boolean hasMdiId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public String getMdiId() {
+        java.lang.Object ref = mdiId_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          mdiId_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setMdiId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        mdiId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearMdiId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        mdiId_ = getDefaultInstance().getMdiId();
+        onChanged();
+        return this;
+      }
+      void setMdiId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        mdiId_ = value;
+        onChanged();
+      }
+      
+      // required double open = 3;
+      private double open_ ;
+      public boolean hasOpen() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public double getOpen() {
+        return open_;
+      }
+      public Builder setOpen(double value) {
+        bitField0_ |= 0x00000004;
+        open_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearOpen() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        open_ = 0D;
+        onChanged();
+        return this;
+      }
+      
+      // required double high = 4;
+      private double high_ ;
+      public boolean hasHigh() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public double getHigh() {
+        return high_;
+      }
+      public Builder setHigh(double value) {
+        bitField0_ |= 0x00000008;
+        high_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearHigh() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        high_ = 0D;
+        onChanged();
+        return this;
+      }
+      
+      // required double low = 5;
+      private double low_ ;
+      public boolean hasLow() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public double getLow() {
+        return low_;
+      }
+      public Builder setLow(double value) {
+        bitField0_ |= 0x00000010;
+        low_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearLow() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        low_ = 0D;
+        onChanged();
+        return this;
+      }
+      
+      // required double close = 6;
+      private double close_ ;
+      public boolean hasClose() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      public double getClose() {
+        return close_;
+      }
+      public Builder setClose(double value) {
+        bitField0_ |= 0x00000020;
+        close_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearClose() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        close_ = 0D;
+        onChanged();
+        return this;
+      }
+      
+      // optional double volume = 7;
+      private double volume_ ;
+      public boolean hasVolume() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      public double getVolume() {
+        return volume_;
+      }
+      public Builder setVolume(double value) {
+        bitField0_ |= 0x00000040;
+        volume_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearVolume() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        volume_ = 0D;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:com.activequant.messages.OHLC)
+    }
+    
+    static {
+      defaultInstance = new OHLC(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:com.activequant.messages.OHLC)
+    public static final int CMD_FIELD_NUMBER = 123;
+    public static final
+      com.google.protobuf.GeneratedMessage.GeneratedExtension<
+        com.activequant.messages.AQMessages.BaseMessage,
+        com.activequant.messages.AQMessages.OHLC> cmd = com.google.protobuf.GeneratedMessage
+            .newMessageScopedGeneratedExtension(
+          com.activequant.messages.AQMessages.OHLC.getDefaultInstance(),
+          0,
+          com.activequant.messages.AQMessages.OHLC.class,
+          com.activequant.messages.AQMessages.OHLC.getDefaultInstance());
+  }
+  
+  public interface TickOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required int64 timestamp = 1;
+    boolean hasTimestamp();
+    long getTimestamp();
+    
+    // required string mdiId = 2;
+    boolean hasMdiId();
+    String getMdiId();
+    
+    // required double price = 3;
+    boolean hasPrice();
+    double getPrice();
+    
+    // required double quantity = 4;
+    boolean hasQuantity();
+    double getQuantity();
+    
+    // required int32 tickDirection = 5;
+    boolean hasTickDirection();
+    int getTickDirection();
+  }
+  public static final class Tick extends
+      com.google.protobuf.GeneratedMessage
+      implements TickOrBuilder {
+    // Use Tick.newBuilder() to construct.
+    private Tick(Builder builder) {
+      super(builder);
+    }
+    private Tick(boolean noInit) {}
+    
+    private static final Tick defaultInstance;
+    public static Tick getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public Tick getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_Tick_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_Tick_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required int64 timestamp = 1;
+    public static final int TIMESTAMP_FIELD_NUMBER = 1;
+    private long timestamp_;
+    public boolean hasTimestamp() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public long getTimestamp() {
+      return timestamp_;
+    }
+    
+    // required string mdiId = 2;
+    public static final int MDIID_FIELD_NUMBER = 2;
+    private java.lang.Object mdiId_;
+    public boolean hasMdiId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public String getMdiId() {
+      java.lang.Object ref = mdiId_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          mdiId_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getMdiIdBytes() {
+      java.lang.Object ref = mdiId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        mdiId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required double price = 3;
+    public static final int PRICE_FIELD_NUMBER = 3;
+    private double price_;
+    public boolean hasPrice() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public double getPrice() {
+      return price_;
+    }
+    
+    // required double quantity = 4;
+    public static final int QUANTITY_FIELD_NUMBER = 4;
+    private double quantity_;
+    public boolean hasQuantity() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public double getQuantity() {
+      return quantity_;
+    }
+    
+    // required int32 tickDirection = 5;
+    public static final int TICKDIRECTION_FIELD_NUMBER = 5;
+    private int tickDirection_;
+    public boolean hasTickDirection() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public int getTickDirection() {
+      return tickDirection_;
+    }
+    
+    private void initFields() {
+      timestamp_ = 0L;
+      mdiId_ = "";
+      price_ = 0D;
+      quantity_ = 0D;
+      tickDirection_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasTimestamp()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMdiId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPrice()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasQuantity()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTickDirection()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt64(1, timestamp_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMdiIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeDouble(3, price_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeDouble(4, quantity_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(5, tickDirection_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, timestamp_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getMdiIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(3, price_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(4, quantity_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, tickDirection_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.activequant.messages.AQMessages.Tick parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.Tick parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.Tick parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.Tick parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.Tick parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.Tick parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.Tick parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.activequant.messages.AQMessages.Tick parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.activequant.messages.AQMessages.Tick parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.activequant.messages.AQMessages.Tick parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.activequant.messages.AQMessages.Tick prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.activequant.messages.AQMessages.TickOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_Tick_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.activequant.messages.AQMessages.internal_static_com_activequant_messages_Tick_fieldAccessorTable;
+      }
+      
+      // Construct using com.activequant.messages.AQMessages.Tick.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        timestamp_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mdiId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        price_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        quantity_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        tickDirection_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.activequant.messages.AQMessages.Tick.getDescriptor();
+      }
+      
+      public com.activequant.messages.AQMessages.Tick getDefaultInstanceForType() {
+        return com.activequant.messages.AQMessages.Tick.getDefaultInstance();
+      }
+      
+      public com.activequant.messages.AQMessages.Tick build() {
+        com.activequant.messages.AQMessages.Tick result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.activequant.messages.AQMessages.Tick buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.activequant.messages.AQMessages.Tick result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.activequant.messages.AQMessages.Tick buildPartial() {
+        com.activequant.messages.AQMessages.Tick result = new com.activequant.messages.AQMessages.Tick(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.timestamp_ = timestamp_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.mdiId_ = mdiId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.price_ = price_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.quantity_ = quantity_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.tickDirection_ = tickDirection_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.activequant.messages.AQMessages.Tick) {
+          return mergeFrom((com.activequant.messages.AQMessages.Tick)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.activequant.messages.AQMessages.Tick other) {
+        if (other == com.activequant.messages.AQMessages.Tick.getDefaultInstance()) return this;
+        if (other.hasTimestamp()) {
+          setTimestamp(other.getTimestamp());
+        }
+        if (other.hasMdiId()) {
+          setMdiId(other.getMdiId());
+        }
+        if (other.hasPrice()) {
+          setPrice(other.getPrice());
+        }
+        if (other.hasQuantity()) {
+          setQuantity(other.getQuantity());
+        }
+        if (other.hasTickDirection()) {
+          setTickDirection(other.getTickDirection());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasTimestamp()) {
+          
+          return false;
+        }
+        if (!hasMdiId()) {
+          
+          return false;
+        }
+        if (!hasPrice()) {
+          
+          return false;
+        }
+        if (!hasQuantity()) {
+          
+          return false;
+        }
+        if (!hasTickDirection()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              timestamp_ = input.readInt64();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              mdiId_ = input.readBytes();
+              break;
+            }
+            case 25: {
+              bitField0_ |= 0x00000004;
+              price_ = input.readDouble();
+              break;
+            }
+            case 33: {
+              bitField0_ |= 0x00000008;
+              quantity_ = input.readDouble();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              tickDirection_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required int64 timestamp = 1;
+      private long timestamp_ ;
+      public boolean hasTimestamp() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public long getTimestamp() {
+        return timestamp_;
+      }
+      public Builder setTimestamp(long value) {
+        bitField0_ |= 0x00000001;
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearTimestamp() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        timestamp_ = 0L;
+        onChanged();
+        return this;
+      }
+      
+      // required string mdiId = 2;
+      private java.lang.Object mdiId_ = "";
+      public boolean hasMdiId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public String getMdiId() {
+        java.lang.Object ref = mdiId_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          mdiId_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setMdiId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        mdiId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearMdiId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        mdiId_ = getDefaultInstance().getMdiId();
+        onChanged();
+        return this;
+      }
+      void setMdiId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        mdiId_ = value;
+        onChanged();
+      }
+      
+      // required double price = 3;
+      private double price_ ;
+      public boolean hasPrice() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public double getPrice() {
+        return price_;
+      }
+      public Builder setPrice(double value) {
+        bitField0_ |= 0x00000004;
+        price_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearPrice() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        price_ = 0D;
+        onChanged();
+        return this;
+      }
+      
+      // required double quantity = 4;
+      private double quantity_ ;
+      public boolean hasQuantity() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public double getQuantity() {
+        return quantity_;
+      }
+      public Builder setQuantity(double value) {
+        bitField0_ |= 0x00000008;
+        quantity_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearQuantity() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        quantity_ = 0D;
+        onChanged();
+        return this;
+      }
+      
+      // required int32 tickDirection = 5;
+      private int tickDirection_ ;
+      public boolean hasTickDirection() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public int getTickDirection() {
+        return tickDirection_;
+      }
+      public Builder setTickDirection(int value) {
+        bitField0_ |= 0x00000010;
+        tickDirection_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearTickDirection() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        tickDirection_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:com.activequant.messages.Tick)
+    }
+    
+    static {
+      defaultInstance = new Tick(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:com.activequant.messages.Tick)
+    public static final int CMD_FIELD_NUMBER = 124;
+    public static final
+      com.google.protobuf.GeneratedMessage.GeneratedExtension<
+        com.activequant.messages.AQMessages.BaseMessage,
+        com.activequant.messages.AQMessages.Tick> cmd = com.google.protobuf.GeneratedMessage
+            .newMessageScopedGeneratedExtension(
+          com.activequant.messages.AQMessages.Tick.getDefaultInstance(),
+          0,
+          com.activequant.messages.AQMessages.Tick.class,
+          com.activequant.messages.AQMessages.Tick.getDefaultInstance());
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_com_activequant_messages_BaseMessage_descriptor;
   private static
@@ -15604,6 +17040,16 @@ public final class AQMessages {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_activequant_messages_InfoEvent_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_activequant_messages_OHLC_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_activequant_messages_OHLC_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_activequant_messages_Tick_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_activequant_messages_Tick_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -15614,9 +17060,9 @@ public final class AQMessages {
   static {
     java.lang.String[] descriptorData = {
       "\n\035src/main/proto/messages.proto\022\030com.act" +
-      "ivequant.messages\"\232\004\n\013BaseMessage\022?\n\004typ" +
+      "ivequant.messages\"\256\004\n\013BaseMessage\022?\n\004typ" +
       "e\030\001 \002(\01621.com.activequant.messages.BaseM" +
-      "essage.CommandType\"\277\003\n\013CommandType\022\013\n\007VE" +
+      "essage.CommandType\"\323\003\n\013CommandType\022\013\n\007VE" +
       "RSION\020\001\022\t\n\005LOGIN\020\002\022\017\n\013SERVER_TIME\020\003\022\022\n\016L" +
       "OGIN_RESPONSE\020\004\022\007\n\003MDS\020\005\022\r\n\tACCT_DATA\020\006\022" +
       "\023\n\017POSITION_REPORT\020\007\022\024\n\020EXECUTION_REPORT" +
@@ -15627,115 +17073,125 @@ public final class AQMessages {
       "STATUS\020\021\022\013\n\007ORD_REJ\020\022\022\030\n\024ORD_UPDATE_SUBM" +
       "ITTED\020\023\022\030\n\024ORD_CANCEL_SUBMITTED\020\024\022\024\n\020ORD" +
       "_UPD_REJECTED\020\025\022\025\n\021EXECUTION_REPORT2\020\026\022\014" +
-      "\n\010CUST_CMD\020\027\022\016\n\nINFO_EVENT\020\030*\010\010d\020\200\200\200\200\002\"\223" +
-      "\001\n\005Login\022\016\n\006userId\030\001 \002(\t\022\020\n\010password\030\002 \002" +
-      "(\t\022\023\n\013sessionType\030\003 \002(\t2S\n\003cmd\022%.com.act" +
-      "ivequant.messages.BaseMessage\030d \002(\0132\037.co" +
-      "m.activequant.messages.Login\"y\n\nServerTi" +
-      "me\022\021\n\ttimestamp\030\001 \002(\0032X\n\003cmd\022%.com.activ",
-      "equant.messages.BaseMessage\030e \002(\0132$.com." +
-      "activequant.messages.ServerTime\"|\n\rLogin" +
-      "Response\022\016\n\006status\030\001 \002(\t2[\n\003cmd\022%.com.ac" +
-      "tivequant.messages.BaseMessage\030f \002(\0132\'.c" +
-      "om.activequant.messages.LoginResponse\"\322\001" +
-      "\n\022MarketDataSnapshot\022\021\n\ttimestamp\030\001 \002(\003\022" +
-      "\r\n\005bidPx\030\002 \003(\001\022\r\n\005askPx\030\003 \003(\001\022\014\n\004bidQ\030\004 " +
-      "\003(\001\022\014\n\004askQ\030\005 \003(\001\022\r\n\005mdiId\030\006 \002(\t2`\n\003cmd\022" +
-      "%.com.activequant.messages.BaseMessage\030g" +
-      " \002(\0132,.com.activequant.messages.MarketDa",
-      "taSnapshot\"\223\001\n\022AccountDataMessage\022\014\n\004typ" +
-      "e\030\001 \002(\t\022\r\n\005value\030\002 \002(\t2`\n\003cmd\022%.com.acti" +
-      "vequant.messages.BaseMessage\030h \002(\0132,.com" +
-      ".activequant.messages.AccountDataMessage" +
-      "\"\272\001\n\016PositionReport\022\020\n\010openDate\030\001 \002(\t\022\022\n" +
-      "\nentryPrice\030\002 \002(\001\022\020\n\010quantity\030\003 \002(\001\022\022\n\nt" +
-      "radInstId\030\004 \002(\t2\\\n\003cmd\022%.com.activequant" +
-      ".messages.BaseMessage\030i \002(\0132(.com.active" +
-      "quant.messages.PositionReport\"\224\003\n\017Execut" +
-      "ionReport\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006execId\030\002 \002",
-      "(\t\022\014\n\004side\030\003 \002(\005\022\020\n\010currency\030\004 \002(\t\022\020\n\010or" +
-      "derQty\030\005 \002(\001\022\r\n\005price\030\006 \002(\001\022\022\n\ntradInstI" +
-      "d\030\007 \002(\t\022\024\n\014transactTime\030\010 \002(\t\022\017\n\007orderId" +
-      "\030\t \002(\t\022\020\n\010execType\030\n \002(\005\022\021\n\tordStatus\030\013 " +
-      "\002(\005\022\016\n\006cumQty\030\014 \002(\001\022\021\n\tleavesQty\030\r \002(\001\022\r" +
-      "\n\005avgPx\030\016 \002(\001\022\017\n\007ordType\030\020 \002(\t\022\014\n\004text\030\021" +
-      " \001(\t\022\017\n\007comment\030\023 \001(\t2]\n\003cmd\022%.com.activ" +
-      "equant.messages.BaseMessage\030j \002(\0132).com." +
-      "activequant.messages.ExecutionReport\"\341\001\n" +
-      "\022OrderCancelRequest\022\023\n\013orgCldOrdId\030\001 \002(\t",
-      "\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\ntradInstId\030\003 \002(\t\022\014\n" +
-      "\004side\030\004 \002(\005\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007comment" +
-      "\030\023 \001(\t2`\n\003cmd\022%.com.activequant.messages" +
-      ".BaseMessage\030k \002(\0132,.com.activequant.mes" +
-      "sages.OrderCancelRequest\"\217\002\n\021OrderCancel" +
-      "Reject\022\022\n\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030\002 " +
-      "\002(\t\022\022\n\norgClOrdId\030\003 \002(\t\022\021\n\tordStatus\030\004 \002" +
-      "(\t\022\030\n\020CxlRejResponseTo\030\005 \002(\t\022\024\n\014clxRejRe" +
-      "ason\030\006 \001(\t\022\014\n\004text\030\007 \001(\t\022\017\n\007comment\030\023 \001(" +
-      "\t2_\n\003cmd\022%.com.activequant.messages.Base",
-      "Message\030l \002(\0132+.com.activequant.messages" +
-      ".OrderCancelReject\"\271\002\n\031OrderCancelReplac" +
-      "eRequest\022\022\n\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030" +
-      "\002 \002(\t\022\022\n\norgClOrdId\030\003 \002(\t\022\014\n\004side\030\004 \002(\005\022" +
-      "\024\n\014transactTime\030\005 \002(\t\022\020\n\010orderQty\030\006 \002(\001\022" +
-      "\017\n\007ordType\030\007 \002(\005\022\r\n\005price\030\010 \002(\001\022\023\n\013timeI" +
-      "nForce\030\t \002(\005\022\017\n\007comment\030\023 \001(\t2g\n\003cmd\022%.c" +
-      "om.activequant.messages.BaseMessage\030m \002(" +
-      "\01323.com.activequant.messages.OrderCancel" +
-      "ReplaceRequest\"\247\002\n\010NewOrder\022\022\n\ntradInstI",
-      "d\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\norgClOrdId\030\003" +
-      " \001(\t\022\014\n\004side\030\004 \002(\005\022\024\n\014transactTime\030\005 \001(\t" +
-      "\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007ordType\030\007 \002(\005\022\r\n\005p" +
-      "rice\030\010 \001(\001\022\023\n\013timeInForce\030\t \001(\005\022\017\n\007comme" +
-      "nt\030\023 \001(\t\022\016\n\006resend\030\024 \002(\0052V\n\003cmd\022%.com.ac" +
-      "tivequant.messages.BaseMessage\030n \002(\0132\".c" +
-      "om.activequant.messages.NewOrder\"\177\n\016Orde" +
-      "rSubmitted\022\017\n\007clOrdId\030\002 \002(\t2\\\n\003cmd\022%.com" +
-      ".activequant.messages.BaseMessage\030o \002(\0132" +
-      "(.com.activequant.messages.OrderSubmitte",
-      "d\"}\n\rOrderAccepted\022\017\n\007clOrdId\030\002 \002(\t2[\n\003c" +
+      "\n\010CUST_CMD\020\027\022\016\n\nINFO_EVENT\020\030\022\010\n\004OHLC\020\031\022\010" +
+      "\n\004TICK\020\032*\010\010d\020\200\200\200\200\002\"\223\001\n\005Login\022\016\n\006userId\030\001" +
+      " \002(\t\022\020\n\010password\030\002 \002(\t\022\023\n\013sessionType\030\003 " +
+      "\002(\t2S\n\003cmd\022%.com.activequant.messages.Ba" +
+      "seMessage\030d \002(\0132\037.com.activequant.messag" +
+      "es.Login\"y\n\nServerTime\022\021\n\ttimestamp\030\001 \002(",
+      "\0032X\n\003cmd\022%.com.activequant.messages.Base" +
+      "Message\030e \002(\0132$.com.activequant.messages" +
+      ".ServerTime\"|\n\rLoginResponse\022\016\n\006status\030\001" +
+      " \002(\t2[\n\003cmd\022%.com.activequant.messages.B" +
+      "aseMessage\030f \002(\0132\'.com.activequant.messa" +
+      "ges.LoginResponse\"\322\001\n\022MarketDataSnapshot" +
+      "\022\021\n\ttimestamp\030\001 \002(\003\022\r\n\005bidPx\030\002 \003(\001\022\r\n\005as" +
+      "kPx\030\003 \003(\001\022\014\n\004bidQ\030\004 \003(\001\022\014\n\004askQ\030\005 \003(\001\022\r\n" +
+      "\005mdiId\030\006 \002(\t2`\n\003cmd\022%.com.activequant.me" +
+      "ssages.BaseMessage\030g \002(\0132,.com.activequa",
+      "nt.messages.MarketDataSnapshot\"\223\001\n\022Accou" +
+      "ntDataMessage\022\014\n\004type\030\001 \002(\t\022\r\n\005value\030\002 \002" +
+      "(\t2`\n\003cmd\022%.com.activequant.messages.Bas" +
+      "eMessage\030h \002(\0132,.com.activequant.message" +
+      "s.AccountDataMessage\"\272\001\n\016PositionReport\022" +
+      "\020\n\010openDate\030\001 \002(\t\022\022\n\nentryPrice\030\002 \002(\001\022\020\n" +
+      "\010quantity\030\003 \002(\001\022\022\n\ntradInstId\030\004 \002(\t2\\\n\003c" +
       "md\022%.com.activequant.messages.BaseMessag" +
-      "e\030p \002(\0132\'.com.activequant.messages.Order" +
-      "Accepted\"\177\n\016OrderCancelled\022\017\n\007clOrdId\030\002 " +
-      "\002(\t2\\\n\003cmd\022%.com.activequant.messages.Ba" +
-      "seMessage\030q \002(\0132(.com.activequant.messag" +
-      "es.OrderCancelled\"{\n\014OrderUpdated\022\017\n\007clO" +
-      "rdId\030\002 \002(\t2Z\n\003cmd\022%.com.activequant.mess" +
-      "ages.BaseMessage\030r \002(\0132&.com.activequant" +
-      ".messages.OrderUpdated\"\215\001\n\016SecurityStatu",
-      "s\022\r\n\005tdiId\030\002 \002(\t\022\016\n\006status\030\003 \002(\t2\\\n\003cmd\022" +
-      "%.com.activequant.messages.BaseMessage\030s" +
-      " \002(\0132(.com.activequant.messages.Security" +
-      "Status\"\215\001\n\rOrderRejected\022\017\n\007clOrdId\030\002 \002(" +
-      "\t\022\016\n\006reason\030\003 \002(\t2[\n\003cmd\022%.com.activequa" +
-      "nt.messages.BaseMessage\030t \002(\0132\'.com.acti" +
-      "vequant.messages.OrderRejected\"\213\001\n\024Order" +
-      "UpdateSubmitted\022\017\n\007clOrdId\030\002 \002(\t2b\n\003cmd\022" +
-      "%.com.activequant.messages.BaseMessage\030u" +
-      " \002(\0132..com.activequant.messages.OrderUpd",
-      "ateSubmitted\"\213\001\n\024OrderCancelSubmitted\022\017\n" +
-      "\007clOrdId\030\002 \002(\t2b\n\003cmd\022%.com.activequant." +
-      "messages.BaseMessage\030v \002(\0132..com.activeq" +
-      "uant.messages.OrderCancelSubmitted\"\231\001\n\023O" +
-      "rderUpdateRejected\022\017\n\007clOrdId\030\002 \002(\t\022\016\n\006r" +
-      "eason\030\003 \002(\t2a\n\003cmd\022%.com.activequant.mes" +
-      "sages.BaseMessage\030w \002(\0132-.com.activequan" +
-      "t.messages.OrderUpdateRejected\"\210\002\n\020Execu" +
-      "tionReport2\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006execId\030\002" +
-      " \002(\t\022\014\n\004side\030\003 \002(\t\022\r\n\005price\030\006 \002(\001\022\r\n\005tdi",
-      "Id\030\007 \002(\t\022\024\n\014transactTime\030\010 \002(\003\022\013\n\003qty\030\r " +
-      "\002(\001\022\016\n\006resend\030\016 \002(\005\022\024\n\014quantityLeft\030\017 \002(" +
-      "\0012^\n\003cmd\022%.com.activequant.messages.Base" +
-      "Message\030x \002(\0132*.com.activequant.messages" +
-      ".ExecutionReport2\"}\n\rCustomCommand\022\017\n\007co" +
-      "mmand\030\001 \002(\t2[\n\003cmd\022%.com.activequant.mes" +
-      "sages.BaseMessage\030y \002(\0132\'.com.activequan" +
-      "t.messages.CustomCommand\"\210\001\n\tInfoEvent\022\017" +
-      "\n\007message\030\001 \002(\t\022\021\n\ttimestamp\030\002 \002(\0032W\n\003cm" +
-      "d\022%.com.activequant.messages.BaseMessage",
-      "\030z \002(\0132#.com.activequant.messages.InfoEv" +
-      "entB&\n\030com.activequant.messagesB\nAQMessa" +
-      "ges"
+      "e\030i \002(\0132(.com.activequant.messages.Posit" +
+      "ionReport\"\224\003\n\017ExecutionReport\022\017\n\007clOrdId",
+      "\030\001 \002(\t\022\016\n\006execId\030\002 \002(\t\022\014\n\004side\030\003 \002(\005\022\020\n\010" +
+      "currency\030\004 \002(\t\022\020\n\010orderQty\030\005 \002(\001\022\r\n\005pric" +
+      "e\030\006 \002(\001\022\022\n\ntradInstId\030\007 \002(\t\022\024\n\014transactT" +
+      "ime\030\010 \002(\t\022\017\n\007orderId\030\t \002(\t\022\020\n\010execType\030\n" +
+      " \002(\005\022\021\n\tordStatus\030\013 \002(\005\022\016\n\006cumQty\030\014 \002(\001\022" +
+      "\021\n\tleavesQty\030\r \002(\001\022\r\n\005avgPx\030\016 \002(\001\022\017\n\007ord" +
+      "Type\030\020 \002(\t\022\014\n\004text\030\021 \001(\t\022\017\n\007comment\030\023 \001(" +
+      "\t2]\n\003cmd\022%.com.activequant.messages.Base" +
+      "Message\030j \002(\0132).com.activequant.messages" +
+      ".ExecutionReport\"\341\001\n\022OrderCancelRequest\022",
+      "\023\n\013orgCldOrdId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n" +
+      "\ntradInstId\030\003 \002(\t\022\014\n\004side\030\004 \002(\005\022\020\n\010order" +
+      "Qty\030\006 \002(\001\022\017\n\007comment\030\023 \001(\t2`\n\003cmd\022%.com." +
+      "activequant.messages.BaseMessage\030k \002(\0132," +
+      ".com.activequant.messages.OrderCancelReq" +
+      "uest\"\217\002\n\021OrderCancelReject\022\022\n\ntradInstId" +
+      "\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\norgClOrdId\030\003 " +
+      "\002(\t\022\021\n\tordStatus\030\004 \002(\t\022\030\n\020CxlRejResponse" +
+      "To\030\005 \002(\t\022\024\n\014clxRejReason\030\006 \001(\t\022\014\n\004text\030\007" +
+      " \001(\t\022\017\n\007comment\030\023 \001(\t2_\n\003cmd\022%.com.activ",
+      "equant.messages.BaseMessage\030l \002(\0132+.com." +
+      "activequant.messages.OrderCancelReject\"\271" +
+      "\002\n\031OrderCancelReplaceRequest\022\022\n\ntradInst" +
+      "Id\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\norgClOrdId\030" +
+      "\003 \002(\t\022\014\n\004side\030\004 \002(\005\022\024\n\014transactTime\030\005 \002(" +
+      "\t\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007ordType\030\007 \002(\005\022\r\n\005" +
+      "price\030\010 \002(\001\022\023\n\013timeInForce\030\t \002(\005\022\017\n\007comm" +
+      "ent\030\023 \001(\t2g\n\003cmd\022%.com.activequant.messa" +
+      "ges.BaseMessage\030m \002(\01323.com.activequant." +
+      "messages.OrderCancelReplaceRequest\"\247\002\n\010N",
+      "ewOrder\022\022\n\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030\002" +
+      " \002(\t\022\022\n\norgClOrdId\030\003 \001(\t\022\014\n\004side\030\004 \002(\005\022\024" +
+      "\n\014transactTime\030\005 \001(\t\022\020\n\010orderQty\030\006 \002(\001\022\017" +
+      "\n\007ordType\030\007 \002(\005\022\r\n\005price\030\010 \001(\001\022\023\n\013timeIn" +
+      "Force\030\t \001(\005\022\017\n\007comment\030\023 \001(\t\022\016\n\006resend\030\024" +
+      " \002(\0052V\n\003cmd\022%.com.activequant.messages.B" +
+      "aseMessage\030n \002(\0132\".com.activequant.messa" +
+      "ges.NewOrder\"\177\n\016OrderSubmitted\022\017\n\007clOrdI" +
+      "d\030\002 \002(\t2\\\n\003cmd\022%.com.activequant.message" +
+      "s.BaseMessage\030o \002(\0132(.com.activequant.me",
+      "ssages.OrderSubmitted\"}\n\rOrderAccepted\022\017" +
+      "\n\007clOrdId\030\002 \002(\t2[\n\003cmd\022%.com.activequant" +
+      ".messages.BaseMessage\030p \002(\0132\'.com.active" +
+      "quant.messages.OrderAccepted\"\177\n\016OrderCan" +
+      "celled\022\017\n\007clOrdId\030\002 \002(\t2\\\n\003cmd\022%.com.act" +
+      "ivequant.messages.BaseMessage\030q \002(\0132(.co" +
+      "m.activequant.messages.OrderCancelled\"{\n" +
+      "\014OrderUpdated\022\017\n\007clOrdId\030\002 \002(\t2Z\n\003cmd\022%." +
+      "com.activequant.messages.BaseMessage\030r \002" +
+      "(\0132&.com.activequant.messages.OrderUpdat",
+      "ed\"\215\001\n\016SecurityStatus\022\r\n\005tdiId\030\002 \002(\t\022\016\n\006" +
+      "status\030\003 \002(\t2\\\n\003cmd\022%.com.activequant.me" +
+      "ssages.BaseMessage\030s \002(\0132(.com.activequa" +
+      "nt.messages.SecurityStatus\"\215\001\n\rOrderReje" +
+      "cted\022\017\n\007clOrdId\030\002 \002(\t\022\016\n\006reason\030\003 \002(\t2[\n" +
+      "\003cmd\022%.com.activequant.messages.BaseMess" +
+      "age\030t \002(\0132\'.com.activequant.messages.Ord" +
+      "erRejected\"\213\001\n\024OrderUpdateSubmitted\022\017\n\007c" +
+      "lOrdId\030\002 \002(\t2b\n\003cmd\022%.com.activequant.me" +
+      "ssages.BaseMessage\030u \002(\0132..com.activequa",
+      "nt.messages.OrderUpdateSubmitted\"\213\001\n\024Ord" +
+      "erCancelSubmitted\022\017\n\007clOrdId\030\002 \002(\t2b\n\003cm" +
+      "d\022%.com.activequant.messages.BaseMessage" +
+      "\030v \002(\0132..com.activequant.messages.OrderC" +
+      "ancelSubmitted\"\231\001\n\023OrderUpdateRejected\022\017" +
+      "\n\007clOrdId\030\002 \002(\t\022\016\n\006reason\030\003 \002(\t2a\n\003cmd\022%" +
+      ".com.activequant.messages.BaseMessage\030w " +
+      "\002(\0132-.com.activequant.messages.OrderUpda" +
+      "teRejected\"\210\002\n\020ExecutionReport2\022\017\n\007clOrd" +
+      "Id\030\001 \002(\t\022\016\n\006execId\030\002 \002(\t\022\014\n\004side\030\003 \002(\t\022\r",
+      "\n\005price\030\006 \002(\001\022\r\n\005tdiId\030\007 \002(\t\022\024\n\014transact" +
+      "Time\030\010 \002(\003\022\013\n\003qty\030\r \002(\001\022\016\n\006resend\030\016 \002(\005\022" +
+      "\024\n\014quantityLeft\030\017 \002(\0012^\n\003cmd\022%.com.activ" +
+      "equant.messages.BaseMessage\030x \002(\0132*.com." +
+      "activequant.messages.ExecutionReport2\"}\n" +
+      "\rCustomCommand\022\017\n\007command\030\001 \002(\t2[\n\003cmd\022%" +
+      ".com.activequant.messages.BaseMessage\030y " +
+      "\002(\0132\'.com.activequant.messages.CustomCom" +
+      "mand\"\210\001\n\tInfoEvent\022\017\n\007message\030\001 \002(\t\022\021\n\tt" +
+      "imestamp\030\002 \002(\0032W\n\003cmd\022%.com.activequant.",
+      "messages.BaseMessage\030z \002(\0132#.com.activeq" +
+      "uant.messages.InfoEvent\"\304\001\n\004OHLC\022\021\n\ttime" +
+      "stamp\030\001 \002(\003\022\r\n\005mdiId\030\002 \002(\t\022\014\n\004open\030\003 \002(\001" +
+      "\022\014\n\004high\030\004 \002(\001\022\013\n\003low\030\005 \002(\001\022\r\n\005close\030\006 \002" +
+      "(\001\022\016\n\006volume\030\007 \001(\0012R\n\003cmd\022%.com.activequ" +
+      "ant.messages.BaseMessage\030{ \002(\0132\036.com.act" +
+      "ivequant.messages.OHLC\"\264\001\n\004Tick\022\021\n\ttimes" +
+      "tamp\030\001 \002(\003\022\r\n\005mdiId\030\002 \002(\t\022\r\n\005price\030\003 \002(\001" +
+      "\022\020\n\010quantity\030\004 \002(\001\022\025\n\rtickDirection\030\005 \002(" +
+      "\0052R\n\003cmd\022%.com.activequant.messages.Base",
+      "Message\030| \002(\0132\036.com.activequant.messages" +
+      ".TickB&\n\030com.activequant.messagesB\nAQMes" +
+      "sages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -15934,6 +17390,22 @@ public final class AQMessages {
               new java.lang.String[] { "Message", "Timestamp", },
               com.activequant.messages.AQMessages.InfoEvent.class,
               com.activequant.messages.AQMessages.InfoEvent.Builder.class);
+          internal_static_com_activequant_messages_OHLC_descriptor =
+            getDescriptor().getMessageTypes().get(24);
+          internal_static_com_activequant_messages_OHLC_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_activequant_messages_OHLC_descriptor,
+              new java.lang.String[] { "Timestamp", "MdiId", "Open", "High", "Low", "Close", "Volume", },
+              com.activequant.messages.AQMessages.OHLC.class,
+              com.activequant.messages.AQMessages.OHLC.Builder.class);
+          internal_static_com_activequant_messages_Tick_descriptor =
+            getDescriptor().getMessageTypes().get(25);
+          internal_static_com_activequant_messages_Tick_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_activequant_messages_Tick_descriptor,
+              new java.lang.String[] { "Timestamp", "MdiId", "Price", "Quantity", "TickDirection", },
+              com.activequant.messages.AQMessages.Tick.class,
+              com.activequant.messages.AQMessages.Tick.Builder.class);
           return null;
         }
       };

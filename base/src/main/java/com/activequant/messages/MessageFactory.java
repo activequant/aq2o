@@ -404,4 +404,23 @@ public class MessageFactory {
 				AQMessages.InfoEvent.cmd, n);
 	}
 
+
+	public BaseMessage tick(TimeStamp ts, String mdiId, double price, double quantity, int tickDirection) {
+		AQMessages.Tick n = AQMessages.Tick.newBuilder()
+				.setTimestamp(ts.getNanoseconds()).setMdiId(mdiId).
+				setPrice(price).setQuantity(quantity).setTickDirection(tickDirection).build();
+
+		return wrap(BaseMessage.CommandType.TICK,
+				AQMessages.Tick.cmd, n);
+	}
+	
+	public BaseMessage ohlc(TimeStamp ts, String mdiId, double open, double high, double low, double close) {
+		AQMessages.OHLC n = AQMessages.OHLC.newBuilder()
+				.setTimestamp(ts.getNanoseconds()).setMdiId(mdiId).
+				setOpen(open).setHigh(high).setLow(low).setClose(close).build();
+
+		return wrap(BaseMessage.CommandType.OHLC,
+				AQMessages.OHLC.cmd, n);
+	}
+	
 }
