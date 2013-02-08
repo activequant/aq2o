@@ -86,6 +86,7 @@ public class CSVServlet extends HttpServlet {
 				
 				response.getWriter().print(
 						"TimeStampNanos,DateTime," + field + "\n");
+				response.getWriter().flush(); 
 				
 				String[] fields = field.split(",");
 				
@@ -135,8 +136,7 @@ public class CSVServlet extends HttpServlet {
 		}
 		else{
 			response.getWriter().print(instructions);
-			response.getWriter().flush();
-			
+			response.getWriter().flush();			
 		}
 	}
 
