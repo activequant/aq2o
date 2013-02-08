@@ -2,6 +2,7 @@ package com.activequant.messages;
 
 import java.util.List;
 
+import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.AccountDataEvent;
 import com.activequant.domainmodel.streaming.InformationalEvent;
@@ -289,6 +290,19 @@ public class Marshaller {
 		return ie;
 	}
 
+	
+	public OHLCV demarshall(AQMessages.OHLC adm) {
+		OHLCV ie = new OHLCV();
+		ie.setOpen(adm.getOpen());
+		ie.setClose(adm.getClose());
+		ie.setHigh(adm.getHigh());
+		ie.setLow(adm.getLow());
+		ie.setTimeStamp(new TimeStamp(adm.getTimestamp()));
+		ie.setMdiId(adm.getMdiId());
+		return ie;
+	}
+
+	
 	public MarketDataSnapshot demarshall(AQMessages.MarketDataSnapshot mdsm) {
 		MarketDataSnapshot mds = new MarketDataSnapshot();
 		mds.setMdiId(mdsm.getMdiId());
