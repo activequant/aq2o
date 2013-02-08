@@ -15,7 +15,7 @@ import com.activequant.transport.activemq.ActiveMQTransportFactory;
 
 public class CallMarketMakingExample extends ComponentBase {
 
-	private String quotee = "TT.SFE.APG3.SFE_AP";
+	private String quotee = "TT.SFE.APU3.SFE_AP";
 	private String[] quotees = new String[] {"TT.SFE.APH324000C.SFE_AP",
 			"TT.SFE.APH324250C.SFE_AP",
 			"TT.SFE.APH324500C.SFE_AP",
@@ -47,25 +47,7 @@ public class CallMarketMakingExample extends ComponentBase {
 			"TT.SFE.APH331000C.SFE_AP",
 			"TT.SFE.APH331250C.SFE_AP",
 			"TT.SFE.APH331500C.SFE_AP",
-			"TT.SFE.APH331750C.SFE_AP",
-			"TT.SFE.APH332000C.SFE_AP",
-			"TT.SFE.APH332250C.SFE_AP",
-			"TT.SFE.APH332500C.SFE_AP",
-			"TT.SFE.APH332750C.SFE_AP",
-			"TT.SFE.APH333000C.SFE_AP",
-			"TT.SFE.APH333250C.SFE_AP",
-			"TT.SFE.APH333500C.SFE_AP",
-			"TT.SFE.APH333750C.SFE_AP",
-			"TT.SFE.APH334000C.SFE_AP",
-			"TT.SFE.APH334250C.SFE_AP",
-			"TT.SFE.APH334500C.SFE_AP",
-			"TT.SFE.APH334750C.SFE_AP",
-			"TT.SFE.APH335000C.SFE_AP",
-			"TT.SFE.APH335250C.SFE_AP",
-			"TT.SFE.APH335500C.SFE_AP",
-			"TT.SFE.APH335750C.SFE_AP",
-			"TT.SFE.APH336000C.SFE_AP",
-			"TT.SFE.APH336250C.SFE_AP"
+			"TT.SFE.APH331750C.SFE_AP"
 	
 	
 	};

@@ -35,10 +35,6 @@ public class MarketDataFeedAdapter {
 							.demarshall(((AQMessages.MarketDataSnapshot) bm
 									.getExtension(AQMessages.MarketDataSnapshot.cmd)));
 					processMarketDataSnapshot(mds);
-				} else
-				// really need to make a proper converter finally.
-				if (bm.getType().equals(CommandType.SERVER_TIME)) {
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

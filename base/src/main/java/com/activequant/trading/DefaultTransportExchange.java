@@ -51,6 +51,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * ITransportFactory to work properly. This transport exchange must be injected
  * into a trading system environment.
  * 
+ * TODOs: this exchange should also fetch a list of open orders from somewhere (to be discussed) 
  * 
  * @author GhostRider
  * 
