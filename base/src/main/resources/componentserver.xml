@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<import resource="fwspring.xml" />
+
+	<!-- put components that you want to have instantiated in here. -->
+
+	<bean id="compExample" class="com.activequant.component.examples.ComponentSample"
+		autowire="constructor" />
+
+	<bean id="mdsRecorder" class="com.activequant.utils.recorder.MDSRecorder"
+		autowire="constructor">
+		<constructor-arg index="3">
+			<value>mdis.csv</value>
+		</constructor-arg>
+	</bean>
+		
+	<bean id="tradeEventRecorder" class="com.activequant.utils.recorder.TradingBusRecorder"
+		autowire="constructor">		
+	</bean>
+
+	<bean id="candleMaker1" class="com.activequant.utils.recorder.Chandler"
+		autowire="constructor">
+		<constructor-arg index="1">
+			<value>mdis.csv</value>
+		</constructor-arg>
+		<!-- let's also add a time frame definition. -->
+		<constructor-arg index="2">
+			<value>HOURS_1</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="candleRecorder1" class="com.activequant.utils.recorder.CandleRecorder"
+		autowire="constructor">
+		<!-- let's also add a time frame definition. -->
+		<constructor-arg index="2">
+			<value>HOURS_1</value>
+		</constructor-arg>
+		<!-- -->
+		<constructor-arg index="3">
+			<value>mdis.csv</value>
+		</constructor-arg>
+	</bean>
+
+
+
+</beans>
