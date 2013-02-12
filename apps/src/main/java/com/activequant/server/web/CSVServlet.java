@@ -118,7 +118,7 @@ public class CSVServlet extends HttpServlet {
 						Double val = values.getB().get(fields[j]);
 						if (val != null) {
 							// mind, this is just a symptom. 
-							if (val != Double.NaN) {
+							if (!val.equals(Double.NaN)) {
 								response.getWriter().print(dcf.format(val));
 							}
 						}
