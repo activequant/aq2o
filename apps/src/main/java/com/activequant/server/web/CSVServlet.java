@@ -73,6 +73,7 @@ public class CSVServlet extends HttpServlet {
 			String mdiId = ((String[]) paramMap.get("SERIESID"))[0];
 			String field = ((String[]) paramMap.get("FIELD"))[0];
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmss");
 			String sd = ((String[]) paramMap.get("STARTDATE"))[0];
 			String ed = ((String[]) paramMap.get("ENDDATE"))[0];
 
@@ -81,9 +82,17 @@ public class CSVServlet extends HttpServlet {
 
 			TimeStamp start;
 			try {
-				start = new TimeStamp(sdf.parse(sd));
+				if(sd.length()==8)
+					start = new TimeStamp(sdf.parse(sd));
+				else
+					start = new TimeStamp(sdf2.parse(sd));
 				int maxRows = 1000000;
-				TimeStamp end = new TimeStamp(sdf.parse(ed));
+				TimeStamp end; 
+				if(ed.length()==8)
+					end = new TimeStamp(sdf.parse(ed));
+				else
+					end = new TimeStamp(sdf2.parse(ed));
+				
 
 				response.getWriter().print(
 						"TimeStampNanos,DateTime," + field + "\n");
