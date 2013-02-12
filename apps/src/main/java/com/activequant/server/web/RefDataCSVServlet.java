@@ -7,14 +7,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
 
 import com.activequant.interfaces.dao.IDaoFactory;
 
@@ -29,7 +26,6 @@ public class RefDataCSVServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private IDaoFactory daoFac;
-	private Logger log = Logger.getLogger(RefDataCSVServlet.class);
 
 	public RefDataCSVServlet(IDaoFactory daoFac) {
 		this.daoFac = daoFac;
@@ -40,7 +36,7 @@ public class RefDataCSVServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Map paramMap = req.getParameterMap();
+		Map<?, ?> paramMap = req.getParameterMap();
 		PrintWriter response = resp.getWriter();
 		try {
 
