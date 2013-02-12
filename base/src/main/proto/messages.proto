@@ -31,6 +31,10 @@ message BaseMessage {
                 EXECUTION_REPORT2 = 22;                
                 
                 CUST_CMD = 23; 
+                INFO_EVENT = 24; 
+                
+                OHLC = 25; 
+                TICK = 26; 
                 
         }
         required CommandType type = 1;
@@ -72,6 +76,8 @@ message MarketDataSnapshot {
 	repeated double askQ = 5;   
 	required string mdiId = 6; 
 }
+
+
 
 message AccountDataMessage {
     extend BaseMessage {
@@ -173,6 +179,7 @@ message NewOrder {
 	optional double price = 8;
 	optional int32 timeInForce = 9;
 	optional string comment = 19;
+	required int32 resend = 20; 
 	
 }
 
@@ -256,6 +263,7 @@ message ExecutionReport2 {
 	required int64 transactTime = 8;
 	required double qty = 13;
 	required int32 resend = 14;
+	required double quantityLeft = 15;
 }
 
 
@@ -266,3 +274,38 @@ message CustomCommand {
 	required string command = 1;  
 }
 
+
+message InfoEvent {
+    extend BaseMessage {
+    	required InfoEvent cmd = 122;
+    }
+	required string message = 1;
+	required int64 timestamp = 2;
+}
+
+
+message OHLC {
+	extend BaseMessage {
+    	required OHLC cmd = 123;
+    }
+	required int64 timestamp = 1;
+	required string mdiId = 2; 
+	required double open = 3;
+	required double high = 4; 
+	required double low = 5; 
+	required double close = 6;
+	optional double volume = 7; 
+	
+}
+		
+message Tick {
+	extend BaseMessage {
+    	required Tick cmd = 124;
+    }
+	required int64 timestamp = 1;
+	required string mdiId = 2; 
+	required double price = 3;
+	required double quantity = 4; 
+	required int32 tickDirection = 5; 
+}
+		

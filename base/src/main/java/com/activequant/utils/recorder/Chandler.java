@@ -67,10 +67,10 @@ public class Chandler extends ComponentBase {
 
 		public void process(List<OHLCV> candleList) {
 			for (OHLCV o : candleList) {
-				if (o.getOpen() != null) {
+				if (o.getOpen() != null && o.getOpen()!=Double.NaN) {
 					System.out.println(o.getMdiId() + " - " + o.getOpen()
 							+ " - " + o.getClose());
-					try {
+					try {						
 						BaseMessage bm = mf.ohlc(o.getTimeStamp(), o.getMdiId(), o.getOpen(),
 								o.getHigh(), o.getLow(), o.getClose());
 
