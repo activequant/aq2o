@@ -67,7 +67,7 @@ public class Chandler extends ComponentBase {
 
 		public void process(List<OHLCV> candleList) {
 			for (OHLCV o : candleList) {
-				if (o.getOpen() != null && o.getOpen()!=Double.NaN) {
+				if (o.getOpen() != null && !o.getOpen().equals(Double.NaN)) {
 					System.out.println(o.getMdiId() + " - " + o.getOpen()
 							+ " - " + o.getClose());
 					try {						

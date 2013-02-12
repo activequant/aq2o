@@ -71,7 +71,9 @@ public class CandleRecorder extends ComponentBase {
 		public void store(OHLCV o) {
 			if (o == null)
 				return;
-			if(o.getOpen() == Double.NaN || o.getHigh()==Double.NaN || o.getLow() == Double.NaN || o.getClose()==Double.NaN)
+			if(o.getOpen().equals(Double.NaN) || o.getHigh().equals(Double.NaN) ||
+					o.getLow().equals(Double.NaN) 
+					|| o.getClose().equals(Double.NaN))
 				return; 
 			writer.write(o.getMdiId(), o.getTimeStamp(), "OPEN", o.getOpen());
 			writer.write(o.getMdiId(), o.getTimeStamp(), "HIGH", o.getHigh());
