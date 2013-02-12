@@ -55,7 +55,7 @@ public final class AQ2Server {
 		Thread.sleep(3000);
 	}
 
-	public AQ2Server() throws Exception {
+	public AQ2Server(String springfile) throws Exception {
 		printBanner();
 		log.info("Loading aq2server.properties from classpath.");
 		log.info("Telling Java to prefer IPV4 ...");
@@ -67,15 +67,22 @@ public final class AQ2Server {
 		properties.load(new FileInputStream("aq2server.properties"));
 		log.info("Loaded.");
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(
-				new String[] { "fwspring.xml" });
+				new String[] { springfile });
 		// track back for statistical reasons.
 		if (isFalse(properties, "skipTrackback")) {
-			try {
-				URL u = new URL("http://www.zugtrader.com/thanks.html");
-				u.openStream();
-			} catch (RuntimeException ex) {
-			} catch (Exception ex) {
-			}
+			Runnable r = new Runnable() {
+				public void run() {
+					try {
+
+						URL u = new URL("http://www.zugtrader.com/thanks.html");
+						u.openStream();
+					} catch (RuntimeException ex) {
+					} catch (Exception ex) {
+					}
+				}
+			};
+			Thread t = new Thread(r);
+			t.start();
 		}
 
 		// changed start order, as the DAO layer could require a running HSQLDB.
@@ -100,7 +107,7 @@ public final class AQ2Server {
 		}
 		if (isTrue(properties, "startRandDatGen")) {
 			log.info("Starting random market data generator....");
-			
+
 			System.out.println("Starting up and fetching idf");
 			ITransportFactory transFac = appContext
 					.getBean(ITransportFactory.class);
@@ -142,15 +149,15 @@ public final class AQ2Server {
 						properties.getProperty("jetty.ssl.keystoreLcation"),
 						properties.getProperty("jetty.ssl.keystorePassword"),
 						properties.getProperty("jetty.ssl.keyPassword"),
-						properties.getProperty("jetty.ssl.certAlias"), appContext
-						.getBean(IDaoFactory.class)).start();
+						properties.getProperty("jetty.ssl.certAlias"),
+						appContext.getBean(IDaoFactory.class)).start();
 			} else
 				new LocalJettyServer(Integer.parseInt(properties
 						.getProperty("jetty.port")), properties.getProperty(
 						"zookeeper.host", null), properties.getProperty(
 						"zookeeper.port", "2181"), properties.getProperty(
-						"jetty.webapp.folder", "../webapp"), appContext
-						.getBean(IDaoFactory.class)).start();
+						"jetty.webapp.folder", "../webapp"),
+						appContext.getBean(IDaoFactory.class)).start();
 			log.info("Starting Jetty succeeded.");
 		} else {
 			log.info("Not starting JETTY server, as it has been disabled.");
@@ -181,7 +188,12 @@ public final class AQ2Server {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		new AQ2Server();
+		String springFile = "fwspring.xml";
+		// 
+		if(args.length>0)
+			springFile = args[1];
+		// 
+		new AQ2Server(springFile);
 	}
 
 	public LocalSoapServer getSoapServer() {

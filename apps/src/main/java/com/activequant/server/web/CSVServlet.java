@@ -32,33 +32,34 @@ public class CSVServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private IArchiveFactory archFac;
 	private Logger log = Logger.getLogger(CSVServlet.class);
-	private DecimalFormat dcf = new DecimalFormat("#.################");
+	private DecimalFormat dcf = new DecimalFormat("#.###########");
 
 	public CSVServlet(IArchiveFactory archFac) {
 		this.archFac = archFac;
 
 	}
+
 	private String instructions = "You need to specify: SERIESID, FREQ, FIELD, STARTDATE, ENDDATE. Example:http://localhost:44444/csv/?SERIESID=BBGT_IRZ10 Comdty&FREQ=EOD&FIELD=PX_SETTLE&STARTDATE=20010101&ENDDATE=20120301";
 
-	private void dumpSampleData(HttpServletResponse response) throws IOException{
-		response.getWriter().println(
-				"TimeStampNanos,DateTime,RAND");
-		for(long i=0;i<1000;i++){
-			Date d = new Date(i*10000000);
-			String line = d.getTime()+","+d+","+Math.random();
+	private void dumpSampleData(HttpServletResponse response)
+			throws IOException {
+		response.getWriter().println("TimeStampNanos,DateTime,RAND");
+		for (long i = 0; i < 1000; i++) {
+			Date d = new Date(i * 10000000);
+			String line = d.getTime() + "," + d + "," + Math.random();
 			response.getWriter().println(line);
-			response.getWriter().flush();		
-		}		
+			response.getWriter().flush();
+		}
 	}
-	
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if(req.getRequestURI().endsWith("sampledata")){
+		if (req.getRequestURI().endsWith("sampledata")) {
 			dumpSampleData(response);
 			return;
 		}
-		
+
 		@SuppressWarnings("rawtypes")
 		Map paramMap = req.getParameterMap();
 		if (paramMap.containsKey("SERIESID") && paramMap.containsKey("FREQ")
@@ -83,60 +84,63 @@ public class CSVServlet extends HttpServlet {
 				start = new TimeStamp(sdf.parse(sd));
 				int maxRows = 1000000;
 				TimeStamp end = new TimeStamp(sdf.parse(ed));
-				
+
 				response.getWriter().print(
 						"TimeStampNanos,DateTime," + field + "\n");
-				response.getWriter().flush(); 
-				
+				response.getWriter().flush();
+
 				String[] fields = field.split(",");
-				
-				MultiValueTimeSeriesIterator mvtsi = archFac.getReader(tf).getMultiValueStream(mdiId, start, end);
-				int i=0;
-				while(mvtsi.hasNext()){
+
+				MultiValueTimeSeriesIterator mvtsi = archFac.getReader(tf)
+						.getMultiValueStream(mdiId, start, end);
+				int i = 0;
+				while (mvtsi.hasNext()) {
 					Tuple<TimeStamp, Map<String, Double>> values = mvtsi.next();
 					// String[] p = l.split(",");
-					
-					// check if our map contains some of our requested fields. 
-					
-					boolean found = false; 
-					for(String f : fields){
-						if(values.getB().containsKey(f))found = true; 
+
+					// check if our map contains some of our requested fields.
+
+					boolean found = false;
+					for (String f : fields) {
+						if (values.getB().containsKey(f))
+							found = true;
 					}
-					if(!found)
+					if (!found)
 						continue;
-					
+
 					response.getWriter().print(values.getA());
 					response.getWriter().print(",");
 					response.getWriter().print(
 							values.getA().getCalendar().getTime());
 					response.getWriter().print(",");
-					// now, let's dump all values. 
-					for(int j = 0; j<fields.length;j++){
-						
+					// now, let's dump all values.
+					for (int j = 0; j < fields.length; j++) {
 						Double val = values.getB().get(fields[j]);
-						if(val!=null){
-							response.getWriter().print(dcf.format(val));	
+						if (val != null) {
+							// mind, this is just a symptom. 
+							if (val != Double.NaN) {
+								response.getWriter().print(dcf.format(val));
+							}
 						}
-						if(j!=(fields.length-1))
-							response.getWriter().print(",");					
+						if (j != (fields.length - 1))
+							response.getWriter().print(",");
 					}
 					response.getWriter().println();
 					response.getWriter().flush();
-					
+
 					i++;
 					if (i >= maxRows)
 						break;
-					
-				}							
+
+				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		else{
+		} else {
 			response.getWriter().print(instructions);
-			response.getWriter().flush();			
+			response.getWriter().flush();
 		}
 	}
 
