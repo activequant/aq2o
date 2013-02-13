@@ -3,8 +3,10 @@ package com.activequant.trading;
 import org.apache.log4j.Logger;
 
 import com.activequant.domainmodel.ETransportType;
+import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.interfaces.transport.IReceiver;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.messages.AQMessages;
@@ -43,6 +45,16 @@ public class MarketDataFeedAdapter {
 		}
 	};
 
+	// 
+	private IEventListener<PersistentEntity> persListener = new IEventListener<PersistentEntity>(){
+		@Override
+		public void eventFired(PersistentEntity event) {
+			if(event instanceof MarketDataSnapshot)
+				processMarketDataSnapshot((MarketDataSnapshot)event);
+		}
+		
+	};
+	
 	/**
 	 * override this in your class.
 	 * 
@@ -69,8 +81,11 @@ public class MarketDataFeedAdapter {
 	 * @throws TransportException 
 	 */
 	public void start() throws TransportException {
-		transFac.getReceiver(ETransportType.MARKET_DATA, mdi).getRawEvent()
+		IReceiver r = transFac.getReceiver(ETransportType.MARKET_DATA, mdi);
+		r.getRawEvent()
 				.addEventListener(rawListener);
+		// let's also add an old-format event listener.
+		r.getMsgRecEvent().addEventListener(persListener);
 	}
 
 }
