@@ -108,20 +108,20 @@ public class PerformanceMeasure {
 		//
 		for (int h = 0; h < 1000; h++) {
 			long total = 0L;
-			MarketDataSnapshot mds = new MarketDataSnapshot();
-			mds.setMdiId("TT.SFE.XTH3M3.SFE_XT");
-			
-			mds.setTimeStamp(new TimeStamp());
-			mds.setBidPrices(new double[] { 1.0 });
-			mds.setAskPrices(new double[] { 1.0 });
-			mds.setBidSizes(new double[] { 1.0 });
-			mds.setAskSizes(new double[] { 1.0 });
-			
-			
-			
 			for (int i = 0; i < 1000; i++) {
 				long l1 = System.nanoTime();
+				MarketDataSnapshot mds = new MarketDataSnapshot();
+				mds.setMdiId("TT.SFE.XTH3M3.SFE_XT");
 				
+				mds.setTimeStamp(new TimeStamp());
+				mds.setBidPrices(new double[] { Math.random() });
+				mds.setAskPrices(new double[] { Math.random() });
+				mds.setBidSizes(new double[] { Math.random() });
+				mds.setAskSizes(new double[] {Math.random() });
+				
+				
+				
+					
 				byte[] b = m.marshall(mds);
 				BaseMessage bm = m.demarshall(b);
 			
@@ -130,12 +130,14 @@ public class PerformanceMeasure {
 					MarketDataSnapshot mds2 = m
 							.demarshall(((AQMessages.MarketDataSnapshot) bm
 									.getExtension(AQMessages.MarketDataSnapshot.cmd)));
+
 					// done ...
 					long l2 = System.nanoTime();
 					total += (l2 - l1);
-							
+					
 				}
 
+						
 			}
 			System.out.println("TOTAL: " + total +" ns for 1000 serializations and deserializations. This is " + (total / 1000L) + " ns per market data snapshot. ");
 		}
