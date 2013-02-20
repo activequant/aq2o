@@ -406,6 +406,22 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 	</bean>
 	
 	
+	<bean id="genMapper22" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		lazy-init="true">
+		<property name="mapperInterface"
+			value="com.activequant.dao.mybatis.mapper.GenericRowMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="basicMacroEventDao" class="com.activequant.dao.mybatis.BasicMacroEventDao"
+		lazy-init="true">
+		<constructor-arg>
+			<ref bean="genMapper22"></ref>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="sqlSessionFactory" />
+		</constructor-arg>
+	</bean>
 	
 	
 
@@ -483,6 +499,9 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 		</constructor-arg>
 		<constructor-arg index="21">
 			<ref bean="subClearerAccountSnapDao" />
+		</constructor-arg>		
+		<constructor-arg index="22">
+			<ref bean="basicMacroEventDao" />
 		</constructor-arg>		
 	</bean>
 
