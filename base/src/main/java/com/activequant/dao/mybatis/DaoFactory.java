@@ -1,9 +1,8 @@
 package com.activequant.dao.mybatis;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.activequant.interfaces.dao.IAccountDao;
 import com.activequant.interfaces.dao.IAdjustedSeriesDateEntryDao;
+import com.activequant.interfaces.dao.IBasicMacroEventDao;
 import com.activequant.interfaces.dao.IClearedTradeDao;
 import com.activequant.interfaces.dao.IClearerAccountSnapDao;
 import com.activequant.interfaces.dao.ICountryDao;
@@ -58,6 +57,7 @@ public class DaoFactory implements IDaoFactory {
 	private final IPortfolioSnapDao portfolioSnapDao;	
 	private final ISubClearerAccountDao subClearerAccountDao;	
 	private final ISubClearerAccountSnapDao subClearerAccountSnapDao; 
+	private final IBasicMacroEventDao macroEventDao; 
 	
     
     
@@ -68,8 +68,8 @@ public class DaoFactory implements IDaoFactory {
             IPerformanceReportDao perfReportDao, IReportDao reportDao, IOrderEventDao orderEventDao, 
             IOrderFillDao orderFillDao, IPandSDao pAndSDao, IAccountDao accountDao, IClearedTradeDao clearedTradeDao,
             IClearerAccountSnapDao clearerAccountSnapDao, IPNLDao pnlDao, IPortfolioSnapDao portfolioSnapDao,
-            ISubClearerAccountDao subClearerAccountDao, ISubClearerAccountSnapDao subClearerAccountSnapDao
-    		) {
+            ISubClearerAccountDao subClearerAccountDao, ISubClearerAccountSnapDao subClearerAccountSnapDao,
+    		IBasicMacroEventDao macroEventdao) {
         this.countryDao = countryDao;
         this.regionDao = regionDao;
         this.instrumentDao = instrDao;
@@ -93,6 +93,7 @@ public class DaoFactory implements IDaoFactory {
         this.portfolioSnapDao = portfolioSnapDao; 
         this.subClearerAccountDao = subClearerAccountDao;
         this.subClearerAccountSnapDao = subClearerAccountSnapDao; 
+        this.macroEventDao = macroEventdao; 
     }
 
     public ICountryDao countryDao() {
@@ -185,5 +186,10 @@ public class DaoFactory implements IDaoFactory {
 
 	public ISubClearerAccountSnapDao subClearerAccountSnapDao() {
 		return subClearerAccountSnapDao;
+	}
+
+	@Override
+	public IBasicMacroEventDao basicMacroEventDao() {
+		return macroEventDao;
 	}
 }

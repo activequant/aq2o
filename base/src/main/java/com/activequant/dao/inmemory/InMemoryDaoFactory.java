@@ -3,6 +3,7 @@ package com.activequant.dao.inmemory;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.interfaces.dao.IAccountDao;
 import com.activequant.interfaces.dao.IAdjustedSeriesDateEntryDao;
+import com.activequant.interfaces.dao.IBasicMacroEventDao;
 import com.activequant.interfaces.dao.IClearedTradeDao;
 import com.activequant.interfaces.dao.IClearerAccountSnapDao;
 import com.activequant.interfaces.dao.ICountryDao;
@@ -150,6 +151,12 @@ public class InMemoryDaoFactory implements IDaoFactory {
 
 	@Override
 	public ISubClearerAccountSnapDao subClearerAccountSnapDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IBasicMacroEventDao basicMacroEventDao() {
 		// TODO Auto-generated method stub
 		return null;
 	}

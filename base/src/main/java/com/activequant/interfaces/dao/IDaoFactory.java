@@ -45,5 +45,7 @@ public interface IDaoFactory {
 	public ISubClearerAccountDao subClearerAccountDao();
 
 	public ISubClearerAccountSnapDao subClearerAccountSnapDao();
+	
+	public IBasicMacroEventDao basicMacroEventDao();
 
 }

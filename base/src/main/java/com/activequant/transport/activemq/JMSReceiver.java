@@ -25,6 +25,7 @@ import com.activequant.utils.MapToString;
 import com.activequant.utils.events.Event;
 
 class JMSReceiver implements IReceiver, MessageListener {
+	// 
 	JSONParser parser = new JSONParser();
 
 	JMSReceiver() {
