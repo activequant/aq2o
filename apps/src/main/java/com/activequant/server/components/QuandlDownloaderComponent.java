@@ -23,9 +23,13 @@ import com.activequant.transport.activemq.ActiveMQTransportFactory;
 public class QuandlDownloaderComponent extends ComponentBase {
 
 	public static void main(String[] args) throws Exception {
-		ITransportFactory t = new ActiveMQTransportFactory("localhost", 61616);
-		IArchiveFactory a = new HBaseArchiveFactory("localhost");
-		new QuandlDownloaderComponent(t, a);
+		String s = "aabcd;;abcd"; 
+		String[] t = s.split(";");
+		for(String u : t)
+			System.out.println(u+" "+ u.length());
+//		ITransportFactory t = new ActiveMQTransportFactory("localhost", 61616);
+//		IArchiveFactory a = new HBaseArchiveFactory("localhost");
+//		new QuandlDownloaderComponent(t, a);
 	}
 
 	public QuandlDownloaderComponent(ITransportFactory transFac,

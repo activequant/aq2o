@@ -8,6 +8,7 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.master.HMaster;
 import org.apache.hadoop.hbase.regionserver.HRegionServer;
+import org.apache.hadoop.hbase.replication.ReplicationPeer;
 import org.apache.hadoop.hbase.zookeeper.MiniZooKeeperCluster;
 import org.apache.log4j.Logger;
 
@@ -65,6 +66,9 @@ public class LocalHBaseCluster {
 		log.info("Starting regionserver.");
 		HRegionServer hrs = new HRegionServer(config);
 		HRegionServer.startRegionServer(hrs);
+		// 
+		
+		// 
 	}
 
 	public static void main(String[] args) throws Exception {

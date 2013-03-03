@@ -31,7 +31,7 @@ public class RefDataCSVServlet extends HttpServlet {
 		this.daoFac = daoFac;
 	}
 
-	private String instructions = "You need to specify TYPE, ID, and optionally FIELD. "
+	private String instructions = "You need to specify TYPE, ID, and optionally FIELD. Types may be: INSTRUMENT, MDI, TDI, GENERIC "
 			+ "";
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -60,6 +60,12 @@ public class RefDataCSVServlet extends HttpServlet {
 					// let's fetch the tdi
 					m = daoFac.tradeableDao().load(id).getUnderlyingMap();
 				}
+				else if(type.equals("GENERIC")){
+				}
+				// TODO: support for generic. 
+				
+				
+				
 				//
 				if (field != null) {
 					// fetch all.

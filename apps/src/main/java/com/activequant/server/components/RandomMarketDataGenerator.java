@@ -2,17 +2,13 @@ package com.activequant.server.components;
 
 import java.util.List;
 
-import org.snmp4j.agent.mo.snmp.SNMPv2MIB.SysOREntry;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.activequant.component.ComponentBase;
 import com.activequant.domainmodel.ETransportType;
-import com.activequant.domainmodel.exceptions.TransportException;
+import com.activequant.domainmodel.TimeStamp;
 import com.activequant.interfaces.transport.IPublisher;
 import com.activequant.interfaces.transport.ITransportFactory;
-import com.activequant.messages.AQMessages;
 import com.activequant.messages.Marshaller;
+import com.activequant.messages.MessageFactory;
 import com.activequant.utils.ArrayUtils;
 
 /**
@@ -27,8 +23,10 @@ public class RandomMarketDataGenerator extends ComponentBase {
 	int delayBetweenSendingInMS = 5000;
 	IPublisher[] publishers;
 	IPublisher textLine;
+	IPublisher valueSet ; 
 	ITransportFactory transFac;
 	Marshaller m = new Marshaller();
+	MessageFactory mf = new MessageFactory();
 
 	public RandomMarketDataGenerator(ITransportFactory transFac)
 			throws Exception {
@@ -38,14 +36,16 @@ public class RandomMarketDataGenerator extends ComponentBase {
 				"MAX_INSTRUMENTS", "100"));
 		//
 		delayBetweenSendingInMS = Integer.parseInt(System.getProperties()
-				.getProperty("SEND_DELAY", "2500"));
+				.getProperty("SEND_DELAY", "5000"));
 
 		publishers = new IPublisher[maxInstruments];
 		for (int i = 0; i < maxInstruments; i++) {
 			publishers[i] = transFac.getPublisher(ETransportType.MARKET_DATA,
 					"INST" + i);
 		}
+		// 
 		textLine = transFac.getPublisher("TEXTCHANNEL");
+		valueSet = transFac.getPublisher(ETransportType.STATE, "ID1");
 
 		Runnable r = new Runnable() {
 			public void run() {
@@ -73,6 +73,7 @@ public class RandomMarketDataGenerator extends ComponentBase {
 
 						}
 						textLine.send("TEST".getBytes());
+						valueSet.send(mf.valueSet(new TimeStamp(), "TYPE", "ID", "FIELD", "VALUE"+Math.random()).toByteArray());
 						log.info("Sent.");
 						// System.out.println("Sent.");
 					} catch (Exception ex) {

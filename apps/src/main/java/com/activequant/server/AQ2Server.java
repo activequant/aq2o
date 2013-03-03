@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -12,6 +14,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.server.components.RandomMarketDataGenerator;
+import com.activequant.server.components.ReplicatorSlaveComponent;
+import com.activequant.server.components.SessionTrackerComponent;
 
 public final class AQ2Server {
 
@@ -68,6 +72,7 @@ public final class AQ2Server {
 		log.info("Loaded.");
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(
 				new String[] { springfile });
+
 		// track back for statistical reasons.
 		if (isFalse(properties, "skipTrackback")) {
 			Runnable r = new Runnable() {
@@ -105,17 +110,7 @@ public final class AQ2Server {
 		} else {
 			log.info("Not starting JMS server, as it has been disabled.");
 		}
-		if (isTrue(properties, "startRandDatGen")) {
-			log.info("Starting random market data generator....");
 
-			System.out.println("Starting up and fetching idf");
-			ITransportFactory transFac = appContext
-					.getBean(ITransportFactory.class);
-			new RandomMarketDataGenerator(transFac);
-			log.info("Random market data generator started.");
-		} else {
-			log.info("Not starting random market data generator, as it has been disabled.");
-		}
 		if (isTrue(properties, "hsqldb.start")) {
 			log.info("Starting HSQLDB ....");
 			new LocalHSQLDBServer().start(Integer.parseInt(properties
@@ -150,17 +145,42 @@ public final class AQ2Server {
 						properties.getProperty("jetty.ssl.keystorePassword"),
 						properties.getProperty("jetty.ssl.keyPassword"),
 						properties.getProperty("jetty.ssl.certAlias"),
-						appContext.getBean(IDaoFactory.class)).start();
+						appContext.getBean(IDaoFactory.class),
+						appContext.getBean(DataSource.class)).start();
 			} else
 				new LocalJettyServer(Integer.parseInt(properties
 						.getProperty("jetty.port")), properties.getProperty(
 						"zookeeper.host", null), properties.getProperty(
 						"zookeeper.port", "2181"), properties.getProperty(
 						"jetty.webapp.folder", "../webapp"),
-						appContext.getBean(IDaoFactory.class)).start();
+						appContext.getBean(IDaoFactory.class),
+						appContext.getBean(DataSource.class)
+
+				).start();
 			log.info("Starting Jetty succeeded.");
 		} else {
 			log.info("Not starting JETTY server, as it has been disabled.");
+		}
+
+		// start the session tracker.
+		ITransportFactory transFac = appContext
+				.getBean(ITransportFactory.class);
+		new SessionTrackerComponent(transFac);
+
+
+		if (isTrue(properties, "startRandDatGen")) {
+			log.info("Starting random market data generator....");
+
+			System.out.println("Starting up and fetching idf");
+			new RandomMarketDataGenerator(transFac);
+			log.info("Random market data generator started.");
+		} else {
+			log.info("Not starting random market data generator, as it has been disabled.");
+		}
+		// 
+		if (isTrue(properties, "replicationSlave.start")) {
+			String replicationHost = properties.getProperty("replicationSlave.master");
+			new ReplicatorSlaveComponent(transFac, replicationHost, appContext.getBean(DataSource.class));
 		}
 
 		//
@@ -189,10 +209,10 @@ public final class AQ2Server {
 	 */
 	public static void main(String[] args) throws Exception {
 		String springFile = "fwspring.xml";
-		// 
-		if(args.length>0)
+		//
+		if (args.length > 0)
 			springFile = args[1];
-		// 
+		//
 		new AQ2Server(springFile);
 	}
 

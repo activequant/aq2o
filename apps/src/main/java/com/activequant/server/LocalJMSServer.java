@@ -9,7 +9,7 @@ public class LocalJMSServer {
         broker = new BrokerService();
         broker.setUseJmx(false);        
         broker.addConnector("tcp://" + hostname + ":" + port);     
-        broker.addConnector("stomp://"+hostname+":"+(port+2));
+        broker.addConnector("stomp://"+hostname+":"+(port+2));        
         broker.start();
     }
     
