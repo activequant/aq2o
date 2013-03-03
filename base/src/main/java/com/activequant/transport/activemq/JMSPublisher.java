@@ -1,16 +1,14 @@
 package com.activequant.transport.activemq;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.jms.BytesMessage;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.jms.BytesMessage;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -37,41 +35,35 @@ class JMSPublisher implements IPublisher {
 	}
 
 	public void send(Map<String, Object> message) throws Exception {
-				
-		
+
 		Map<String, Object> mmap = new HashMap<String, Object>();
 		Iterator<Entry<String, Object>> eit = message.entrySet().iterator();
-		
-		while(eit.hasNext()){
+
+		while (eit.hasNext()) {
 			Entry<String, Object> e = eit.next();
 			String key = e.getKey();
 			Object val = e.getValue();
-			if(val==null)continue;
-			if(!val.getClass().isArray()){
+			if (val == null)
+				continue;
+			if (!val.getClass().isArray()) {
 				mmap.put(key, val);
-			}
-			else{
+			} else {
 				String simpleName = val.getClass().getSimpleName();
-				if(simpleName.startsWith("double"))
-				{
+				if (simpleName.startsWith("double")) {
 					JSONArray l = new JSONArray();
-					for(double d: (double[])val){
+					for (double d : (double[]) val) {
 						l.add(d);
 					}
 					mmap.put(key, l);
-				}
-				else if(simpleName.startsWith("long"))
-				{
+				} else if (simpleName.startsWith("long")) {
 					JSONArray l = new JSONArray();
-					for(long d: (long[])val){
+					for (long d : (long[]) val) {
 						l.add(d);
 					}
 					mmap.put(key, l);
-				}
-				else if(simpleName.startsWith("String"))
-				{
+				} else if (simpleName.startsWith("String")) {
 					JSONArray l = new JSONArray();
-					for(String d: (String[])val){
+					for (String d : (String[]) val) {
 						l.add(d);
 					}
 					mmap.put(key, l);
@@ -84,7 +76,7 @@ class JMSPublisher implements IPublisher {
 			log.debug("[channelId=" + channelId + "] message: " + text);
 		TextMessage tm = session.createTextMessage(text);
 		tm.setStringProperty("channelId", channelId);
-		
+
 		producer.send(tm);
 	}
 
@@ -97,7 +89,7 @@ class JMSPublisher implements IPublisher {
 
 		BytesMessage bm = session.createBytesMessage();
 		bm.writeBytes(bytes);
-                bm.setStringProperty("channelId", channelId);
+		bm.setStringProperty("channelId", channelId);
 		producer.send(bm);
 	}
 

@@ -32,20 +32,22 @@ public interface IDaoFactory {
 
 	IPandSDao pAndSDao();
 
-	public IAccountDao accountDao();
+	IAccountDao accountDao();
 
-	public IClearedTradeDao clearedTradeDao();
+	IClearedTradeDao clearedTradeDao();
 
-	public IClearerAccountSnapDao clearerAccountSnapDao();
+	IClearerAccountSnapDao clearerAccountSnapDao();
 
-	public IPNLDao pnlDao();
+	IPNLDao pnlDao();
 
-	public IPortfolioSnapDao portfolioSnapDao();
+	IPortfolioSnapDao portfolioSnapDao();
 
-	public ISubClearerAccountDao subClearerAccountDao();
+	ISubClearerAccountDao subClearerAccountDao();
 
-	public ISubClearerAccountSnapDao subClearerAccountSnapDao();
+	ISubClearerAccountSnapDao subClearerAccountSnapDao();
 	
-	public IBasicMacroEventDao basicMacroEventDao();
+	IBasicMacroEventDao basicMacroEventDao();
+	
+	IGenericEntityDao genericEntityDao();
 
 }

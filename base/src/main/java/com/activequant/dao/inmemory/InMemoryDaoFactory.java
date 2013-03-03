@@ -8,6 +8,7 @@ import com.activequant.interfaces.dao.IClearedTradeDao;
 import com.activequant.interfaces.dao.IClearerAccountSnapDao;
 import com.activequant.interfaces.dao.ICountryDao;
 import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IGenericEntityDao;
 import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.dao.IOrderEventDao;
@@ -158,6 +159,11 @@ public class InMemoryDaoFactory implements IDaoFactory {
 	@Override
 	public IBasicMacroEventDao basicMacroEventDao() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IGenericEntityDao genericEntityDao() {
 		return null;
 	}
 

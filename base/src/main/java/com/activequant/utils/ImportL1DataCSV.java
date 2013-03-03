@@ -21,7 +21,6 @@ import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IDaoFactory;
-import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.worker.Worker;
@@ -32,7 +31,6 @@ public class ImportL1DataCSV {
     private final ApplicationContext appContext;
     private final IDaoFactory idf;
     private final IMarketDataInstrumentDao mdiDao;
-    private final IInstrumentDao idao;
     private LinkedBlockingQueue<String> fileNameQueue = new LinkedBlockingQueue<String>();
     private String mdProvider;
     private IArchiveFactory archiveFactory;
@@ -44,7 +42,7 @@ public class ImportL1DataCSV {
         appContext = new ClassPathXmlApplicationContext(springInitFile);
         idf = (IDaoFactory) appContext.getBean("ibatisDao");
         mdiDao = idf.mdiDao();
-        idao = idf.instrumentDao();
+        idf.instrumentDao();
         archiveFactory = appContext.getBean("archiveFactory",
                 IArchiveFactory.class);
         this.timeFrame = inTimeFrame;
@@ -120,7 +118,6 @@ public class ImportL1DataCSV {
                 String mdprovider) throws Exception {
             System.out.println("Importing " + fileName + " / " + mdprovider
                     + " / " + providerspecificid);
-            final Date8Time6Parser d8t6p = new Date8Time6Parser();
             MarketDataInstrument tempMdi = mdiDao.findByProvId(mdprovider,
                     providerspecificid);
             if (tempMdi == null) {
@@ -162,7 +159,7 @@ public class ImportL1DataCSV {
 
                             if(key.equals("SIDE")) { 
                                 int side = OrderSide.valueOf(entry.getValue()).getSide();
-                                String id = mdi.getId();
+                                mdi.getId();
                                 iaw.write(mdi.getId(), ts, key,
                                     Double.valueOf(side)); 
                                 continue;

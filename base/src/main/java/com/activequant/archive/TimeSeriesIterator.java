@@ -8,7 +8,7 @@ import com.activequant.domainmodel.Tuple;
 
 /**
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
 public abstract class TimeSeriesIterator implements Iterator<Tuple<TimeStamp, Double>>{

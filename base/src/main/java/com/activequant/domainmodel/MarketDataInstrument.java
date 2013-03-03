@@ -14,7 +14,7 @@ public class MarketDataInstrument extends PersistentEntity {
     private String instrumentId, mdProvider, providerSpecificId;
     private double lastHistFetchTime = 0.0;
     private double scalingFactor = 1.0;
-
+    
     public MarketDataInstrument(String className){
     	super(className);
     }

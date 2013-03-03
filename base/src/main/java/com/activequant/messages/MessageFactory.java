@@ -423,4 +423,13 @@ public class MessageFactory {
 				AQMessages.OHLC.cmd, n);
 	}
 	
+	public BaseMessage valueSet(TimeStamp ts, String type, String id, String field, String value) {
+		AQMessages.ValueSet n = AQMessages.ValueSet.newBuilder()
+				.setTimestamp(ts.getNanoseconds()).setTimestamp(ts.getNanoseconds()).
+				setType(type).setId(id).setField(field).setValue(value).build();
+
+		return wrap(BaseMessage.CommandType.VALUESET,
+				AQMessages.ValueSet.cmd, n);
+	}
+	
 }

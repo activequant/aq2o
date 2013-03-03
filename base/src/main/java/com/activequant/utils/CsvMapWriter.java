@@ -16,7 +16,7 @@ import java.util.Map.Entry;
  * 
  */
 public class CsvMapWriter {
-	private String[] headerNames = new String[] { "KEY", "VALUE" };
+	// private String[] headerNames = new String[] { "KEY", "VALUE" };
 	private DecimalFormat dcf = new DecimalFormat("####################.##");
 	
 	/**

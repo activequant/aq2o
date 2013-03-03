@@ -9,7 +9,7 @@ import com.activequant.domainmodel.Tuple;
 
 /**
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
 public abstract class MultiValueTimeSeriesIterator implements Iterator<Tuple<TimeStamp, Map<String, Double>>>{

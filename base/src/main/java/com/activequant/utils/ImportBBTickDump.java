@@ -19,7 +19,6 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IDaoFactory;
-import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.worker.Worker;
@@ -27,7 +26,7 @@ import com.activequant.utils.worker.WorkerThread;
 
 /**
  * 
- * @author anon.
+ * @author GhostRider.
  * 
  */
 public class ImportBBTickDump {
@@ -35,7 +34,6 @@ public class ImportBBTickDump {
     private final ApplicationContext appContext;
     private final IDaoFactory idf;
     private final IMarketDataInstrumentDao mdiDao;
-    private final IInstrumentDao idao;
     private LinkedBlockingQueue<String> fileNameQueue = new LinkedBlockingQueue<String>();
     private String mdProvider;
     private IArchiveFactory archiveFactory;
@@ -46,7 +44,7 @@ public class ImportBBTickDump {
         appContext = new ClassPathXmlApplicationContext(springInitFile);
         idf = (IDaoFactory) appContext.getBean("ibatisDao");
         mdiDao = idf.mdiDao();
-        idao = idf.instrumentDao();
+        idf.instrumentDao();
         archiveFactory = appContext.getBean("archiveFactory", IArchiveFactory.class);
         this.timeFrame = inTimeFrame;
         // will recurse into directory.

@@ -3,9 +3,6 @@ package com.activequant.utils;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemManager;
-import org.apache.commons.vfs.VFS;
 import org.renjin.eval.Context;
 import org.renjin.script.RenjinScriptEngineFactory;
 import org.renjin.sexp.DoubleVector;

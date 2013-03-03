@@ -87,7 +87,7 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 	private void createPublisher(String destination) throws TransportException {
 		String originalDestination = destination;
 		// reducing the amount of topics. working through selectors.
-		if (destination.length() > 5)
+		if (destination.length() >= 5)
 			destination = destination.substring(0, 4); // +
 														// (destination.hashCode()
 														// % 5);
@@ -109,7 +109,7 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 	private void createReceiver(String destination) throws TransportException {
 		String originalDestination = destination;
 		// reducing the amount of topics. working through selectors.
-		if (destination.length() > 5)
+		if (destination.length() >= 5)
 			destination = destination.substring(0, 4); 
 		if (!receiverMap.containsKey(originalDestination)) {
 			try {

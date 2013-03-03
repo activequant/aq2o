@@ -6,7 +6,6 @@ import java.util.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
@@ -17,10 +16,9 @@ import com.activequant.interfaces.archive.IArchiveReader;
 /**
  * Exports market data from the archive.
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
-// WORK IN PROGRESS.
 public class ExportMarketDataCSV {
 
     private final ApplicationContext appContext;
@@ -44,7 +42,7 @@ public class ExportMarketDataCSV {
         IArchiveReader iar = archiveFactory.getReader(inTimeFrame);
 
         for (String value : fields) {
-            TSContainer container = iar.getTimeSeries(mdiId, value, startTS, stopTS);
+            // TSContainer container = iar.getTimeSeries(mdiId, value, startTS, stopTS);
             TimeSeriesIterator iterator = iar.getTimeSeriesStream(mdiId, value, startTS, stopTS);
             while (iterator.hasNext()) {
                 Tuple<TimeStamp, Double> val = iterator.next();

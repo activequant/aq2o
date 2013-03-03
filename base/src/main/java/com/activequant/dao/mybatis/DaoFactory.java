@@ -7,6 +7,7 @@ import com.activequant.interfaces.dao.IClearedTradeDao;
 import com.activequant.interfaces.dao.IClearerAccountSnapDao;
 import com.activequant.interfaces.dao.ICountryDao;
 import com.activequant.interfaces.dao.IDaoFactory;
+import com.activequant.interfaces.dao.IGenericEntityDao;
 import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.dao.IOrderEventDao;
@@ -57,9 +58,8 @@ public class DaoFactory implements IDaoFactory {
 	private final IPortfolioSnapDao portfolioSnapDao;	
 	private final ISubClearerAccountDao subClearerAccountDao;	
 	private final ISubClearerAccountSnapDao subClearerAccountSnapDao; 
-	private final IBasicMacroEventDao macroEventDao; 
-	
-    
+	private final IBasicMacroEventDao macroEventDao; 	
+    private final IGenericEntityDao genericEntityDao; 
     
     // 
     public DaoFactory(ICountryDao countryDao, IRegionDao regionDao, IInstrumentDao instrDao, IVenueDao venueDao,
@@ -69,7 +69,7 @@ public class DaoFactory implements IDaoFactory {
             IOrderFillDao orderFillDao, IPandSDao pAndSDao, IAccountDao accountDao, IClearedTradeDao clearedTradeDao,
             IClearerAccountSnapDao clearerAccountSnapDao, IPNLDao pnlDao, IPortfolioSnapDao portfolioSnapDao,
             ISubClearerAccountDao subClearerAccountDao, ISubClearerAccountSnapDao subClearerAccountSnapDao,
-    		IBasicMacroEventDao macroEventdao) {
+    		IBasicMacroEventDao macroEventdao, IGenericEntityDao genericEntityDao) {
         this.countryDao = countryDao;
         this.regionDao = regionDao;
         this.instrumentDao = instrDao;
@@ -94,6 +94,7 @@ public class DaoFactory implements IDaoFactory {
         this.subClearerAccountDao = subClearerAccountDao;
         this.subClearerAccountSnapDao = subClearerAccountSnapDao; 
         this.macroEventDao = macroEventdao; 
+        this.genericEntityDao = genericEntityDao; 
     }
 
     public ICountryDao countryDao() {
@@ -192,4 +193,9 @@ public class DaoFactory implements IDaoFactory {
 	public IBasicMacroEventDao basicMacroEventDao() {
 		return macroEventDao;
 	}
+
+	public IGenericEntityDao genericEntityDao(){
+		return genericEntityDao;
+	}
+
 }

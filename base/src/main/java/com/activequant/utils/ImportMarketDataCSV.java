@@ -20,7 +20,6 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IDaoFactory;
-import com.activequant.interfaces.dao.IInstrumentDao;
 import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.worker.Worker;
@@ -48,20 +47,17 @@ public class ImportMarketDataCSV {
 	private final ApplicationContext appContext;
 	private final IDaoFactory idf;
 	private final IMarketDataInstrumentDao mdiDao;
-	private final IInstrumentDao idao;
 	private LinkedBlockingQueue<String> fileNameQueue = new LinkedBlockingQueue<String>();
 	private String mdProvider;
 	private IArchiveFactory archiveFactory;
 	private TimeFrame timeFrame;
-	private boolean rewriteFilenameForBB = true; 
-
 	public ImportMarketDataCSV(String directory, final String mdprovider,
 			String springInitFile, TimeFrame inTimeFrame) throws Exception {
 
 		appContext = new ClassPathXmlApplicationContext(springInitFile);
 		idf = (IDaoFactory) appContext.getBean("ibatisDao");
 		mdiDao = idf.mdiDao();
-		idao = idf.instrumentDao();
+		idf.instrumentDao();
 		archiveFactory = appContext.getBean("archiveFactory",
 				IArchiveFactory.class);
 		this.timeFrame = inTimeFrame;
@@ -139,7 +135,6 @@ public class ImportMarketDataCSV {
 				String mdprovider) throws Exception {
 			System.out.println("Importing " + fileName + " / " + mdprovider
 					+ " / " + providerspecificid);
-			final Date8Time6Parser d8t6p = new Date8Time6Parser();
 			MarketDataInstrument tempMdi = mdiDao.findByProvId(mdprovider,
 					providerspecificid);
 			if (tempMdi == null) {

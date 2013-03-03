@@ -17,6 +17,8 @@ public interface IArchiveWriter {
 
     /**
      * Can be an expensive call, handle with care.
+     * All client code must call commit() to signal that data is complete and should be written
+     * to the underlying storage mechanism. 
      * 
      * @throws IOException
      */

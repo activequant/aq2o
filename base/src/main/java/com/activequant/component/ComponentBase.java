@@ -1,5 +1,11 @@
 package com.activequant.component;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,6 +27,7 @@ public abstract class ComponentBase {
 	protected final ComponentMessagingLayer compML; 
 	protected final Logger log = Logger.getLogger(ComponentBase.class);
 	private final String name; 
+	protected final Properties properties = new Properties ();
 
 	public ComponentBase(String name, ITransportFactory transFac) throws Exception {
 		this.transFac = transFac;
@@ -41,7 +48,22 @@ public abstract class ComponentBase {
 			}
 		}, 10 * 1000, 10 * 1000);
 		heartbeat();
+		// 
+		if(new File(name+".properties").exists())
+			properties.load(new FileInputStream(name+".properties"));
+		// 
 		sendStatus("Constructed.");
+		
+	}
+
+	protected void storeProperties(){
+		try {
+			properties.store(new FileOutputStream(name+".properties"), "GhostRider.");
+		} catch (FileNotFoundException e) {
+			log.warn("Storing properties failed. ", e);
+		} catch (IOException e) {
+			log.warn("Storing properties failed. ", e);
+		} 
 	}
 
 	public String getName(){return name;}
@@ -69,7 +91,7 @@ public abstract class ComponentBase {
 	}
 
 	/**
-	 * method that gets called when a so-called custom message hsa been sent to this component.  
+	 * method that gets called when a so-called custom message has been sent to this component.  
 	 * 
 	 * @param customMessage
 	 */

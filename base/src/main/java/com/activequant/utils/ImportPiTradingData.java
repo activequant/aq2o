@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.regex.Pattern;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

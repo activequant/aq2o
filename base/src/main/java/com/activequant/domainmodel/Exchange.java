@@ -6,7 +6,7 @@ import com.activequant.domainmodel.annotations.Property;
  * Holds all parameters for an exchange.
  * 
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
 public class Exchange extends Venue {

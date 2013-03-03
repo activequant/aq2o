@@ -7,11 +7,6 @@ import com.activequant.domainmodel.streaming.MarketDataSnapshot;
 public class QuoteSheet {
 	
 	private Map<String, MarketDataSnapshot> map = new HashMap<String, MarketDataSnapshot>();
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	// 
 	
 	public MarketDataSnapshot getMDS(String instId){
