@@ -36,6 +36,8 @@ message BaseMessage {
                 OHLC = 25; 
                 TICK = 26; 
                 
+                VALUESET = 27; 
+                
         }
         required CommandType type = 1;
          
@@ -307,5 +309,17 @@ message Tick {
 	required double price = 3;
 	required double quantity = 4; 
 	required int32 tickDirection = 5; 
+}
+		
+
+message ValueSet {
+	extend BaseMessage {
+    	required ValueSet cmd = 125;
+    }
+	required int64 timestamp = 1;
+	required string type = 2;
+	required string id = 3; 
+	required string field = 4; 
+	required string value = 5;  	
 }
 		
