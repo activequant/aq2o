@@ -126,6 +126,7 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 		new ReplicatorSlaveComponent(t, "localhost", null);
 	}
 
+	// 
 	public void customMessage(String message) {
 		if (message.equals("REPLICATE")) {
 			new ReplicationTask().run();
