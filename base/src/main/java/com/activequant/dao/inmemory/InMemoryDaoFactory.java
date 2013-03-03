@@ -1,6 +1,5 @@
 package com.activequant.dao.inmemory;
 
-import com.activequant.domainmodel.Instrument;
 import com.activequant.interfaces.dao.IAccountDao;
 import com.activequant.interfaces.dao.IAdjustedSeriesDateEntryDao;
 import com.activequant.interfaces.dao.IBasicMacroEventDao;

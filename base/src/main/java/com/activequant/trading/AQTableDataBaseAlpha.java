@@ -1,12 +1,9 @@
 package com.activequant.trading;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Timer;
 
-import com.activequant.domainmodel.Tuple;
 import com.activequant.trading.datamodel.AQTableDataBase;
 
 public abstract class AQTableDataBaseAlpha extends AQTableDataBase {

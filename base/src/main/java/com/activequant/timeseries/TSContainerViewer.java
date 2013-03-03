@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.activequant.timeseries.TSContainer2;
 import com.activequant.trading.datamodel.AQTableDataBase;
 
 /**

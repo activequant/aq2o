@@ -14,16 +14,15 @@ import org.apache.log4j.Logger;
 
 import com.activequant.component.ComponentBase;
 import com.activequant.domainmodel.OHLCV;
-import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
+import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
-import com.activequant.messages.AQMessages;
 import com.activequant.messages.Marshaller;
 
 /**

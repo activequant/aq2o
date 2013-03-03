@@ -9,8 +9,6 @@ import com.activequant.backtesting.OrderEventListener;
 import com.activequant.timeseries.DoubleColumn;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TSContainerMethods;
-import java.lang.Double;
-import org.apache.commons.lang.ArrayUtils;
 
 /**
  * deprecated right from the start. Will become a persistent entity soon.

@@ -3,13 +3,8 @@ package com.activequant.backtesting.reporting;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
-import com.activequant.domainmodel.OHLCV;
-import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;

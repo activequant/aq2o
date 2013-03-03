@@ -3,19 +3,14 @@ package com.activequant.backtesting;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.Tuple;
 import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
-import com.activequant.interfaces.utils.IEventListener;
-import com.activequant.utils.CsvMapReader;
 
 /**
  * Execting header and then date, open, high, low, close

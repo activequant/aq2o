@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.activequant.dao.mybatis.GenericMapperDao;
 import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;

@@ -3,43 +3,23 @@ package com.activequant.trading;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.jfree.util.Log;
-
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.exceptions.IncompleteOrderInstructions;
 import com.activequant.domainmodel.exceptions.NoSuchOrderBook;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.domainmodel.exceptions.UnsupportedOrderType;
-import com.activequant.domainmodel.orderbook.MarketOpen;
 import com.activequant.domainmodel.orderbook.MarketState;
-import com.activequant.domainmodel.streaming.InformationalEvent;
 import com.activequant.domainmodel.streaming.OrderStreamEvent;
 import com.activequant.domainmodel.streaming.StreamEvent;
-import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
-import com.activequant.domainmodel.trade.event.OrderCancellationRejectedEvent;
-import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
-import com.activequant.domainmodel.trade.event.OrderFillEvent;
-import com.activequant.domainmodel.trade.event.OrderRejectedEvent;
-import com.activequant.domainmodel.trade.event.OrderReplacedEvent;
-import com.activequant.domainmodel.trade.event.OrderSubmittedEvent;
 import com.activequant.domainmodel.trade.order.Order;
-import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
 import com.activequant.interfaces.trading.IExchange;
 import com.activequant.interfaces.trading.IOrderTracker;
-import com.activequant.interfaces.transport.IPublisher;
-import com.activequant.interfaces.transport.IReceiver;
 import com.activequant.interfaces.transport.ITransportFactory;
-import com.activequant.interfaces.utils.IEventListener;
-import com.activequant.messages.AQMessages;
-import com.activequant.messages.AQMessages.OrderRejected;
-import com.activequant.messages.Marshaller;
 import com.activequant.trading.virtual.LimitOrderBook;
 import com.activequant.utils.UniqueTimeStampGenerator;
 import com.activequant.utils.events.Event;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * This transport exchange acts as an injectable exchange, based on a transport

@@ -2,9 +2,7 @@ package com.activequant.utils.recorder;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,7 +10,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
@@ -21,17 +18,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.domainmodel.OHLCV;
-import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
-import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveReader;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
-import com.activequant.interfaces.utils.IEventListener;
 
 /**
  * Rechandler recreates the OHLCV bars for a specific day, for a specific time

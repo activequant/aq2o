@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -30,8 +29,6 @@ import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
 import com.activequant.utils.snmp.SNMPReporter;
-import com.activequant.utils.snmp.SNMPReporter.ValueMode;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * A market data snapshot recorder.

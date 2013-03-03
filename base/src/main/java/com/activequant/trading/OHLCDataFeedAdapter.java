@@ -2,7 +2,6 @@ package com.activequant.trading;
 
 import org.apache.log4j.Logger;
 
-import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.OHLCV;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeFrame;
