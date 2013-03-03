@@ -309,11 +309,11 @@
 									<zipfileset dir="src/main/webapp" includes="**"
 										prefix="aq2o/webapp" />
 								</zip>
-								<echo message="Zipped. Pushing to SF" />
+								<!-- echo message="Zipped. Pushing to SF" />
 								<exec executable="scp" output="scpROOT.dir">
 									<arg
 										line=" -v target/${project.build.finalName}-bundle.zip ustaudinger@activequant.com:/var/server.activequant.com/downloads" />
-								</exec>
+								</exec -->
 								<echo message="Done" />
 
 
@@ -401,12 +401,9 @@
 			<artifactId>jetty-io</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlets</artifactId>
-			<version>${jetty.version}</version>
-		</dependency> -->
-	
+		<!-- <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-servlets</artifactId> 
+			<version>${jetty.version}</version> </dependency> -->
+
 
 
 		<!-- JSP and JSTL SUPPORT -->
@@ -466,9 +463,19 @@
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-log4j12</artifactId>
 				</exclusion>
-				
-				
+				<exclusion>
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+				</exclusion>
+
+
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.oval</groupId>
@@ -481,7 +488,7 @@
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jboss.netty</groupId>
 			<artifactId>netty</artifactId>
@@ -523,8 +530,11 @@
 			<artifactId>xstream</artifactId>
 			<version>1.4.3</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-client</artifactId>
+			<version>3.1.3</version>
+		</dependency>
 
 	</dependencies>
 
