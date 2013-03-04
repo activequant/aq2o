@@ -51,7 +51,7 @@ public class RefDataCSVServlet extends HttpServlet {
 				//
 				if (type.equals("INSTRUMENT")) {
 					// let's fetch the instrument.
-					m = daoFac.instrumentDao().load(id).getUnderlyingMap();
+					m = daoFac.instrumentDao().loadRaw(id);  					 
 					//
 				} else if (type.equals("MDI")) {
 					// let's fetch the mdi

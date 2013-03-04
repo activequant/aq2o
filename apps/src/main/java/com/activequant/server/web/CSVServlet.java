@@ -4,12 +4,16 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.zip.DeflaterOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +40,6 @@ public class CSVServlet extends HttpServlet {
 
 	public CSVServlet(IArchiveFactory archFac) {
 		this.archFac = archFac;
-
 	}
 
 	private String instructions = "You need to specify: SERIESID, FREQ, FIELD, STARTDATE, ENDDATE. Example:http://localhost:44444/csv/?SERIESID=BBGT_IRZ10 Comdty&FREQ=EOD&FIELD=PX_SETTLE&STARTDATE=20010101&ENDDATE=20120301";
@@ -52,6 +55,42 @@ public class CSVServlet extends HttpServlet {
 		}
 	}
 
+	private void dumpRaw(HttpServletRequest req, HttpServletResponse response)
+			throws Exception {
+		@SuppressWarnings("rawtypes")
+		Map paramMap = req.getParameterMap();
+		TimeStamp end = new TimeStamp();
+		TimeStamp start = new TimeStamp(Long.parseLong((String)paramMap.get("START")));
+		// let's create an inflater ...
+		OutputStream out = new DeflaterOutputStream(response.getOutputStream());
+		String timeFrame = ((String[]) paramMap.get("FREQ"))[0];
+		TimeFrame tf = TimeFrame.valueOf(timeFrame);
+		String seriesId = ((String[]) paramMap.get("SERIESID"))[0];
+		MultiValueTimeSeriesIterator mvtsi = archFac.getReader(tf)
+				.getMultiValueStream(seriesId, start, end);
+		//
+		while (mvtsi.hasNext()) {
+			Tuple<TimeStamp, Map<String, Double>> values = mvtsi.next();
+			// let's dump all values.
+			StringBuffer sb = new StringBuffer();
+			sb.append(values.getA().getNanoseconds() + ";");
+			Iterator<Entry<String, Double>> iterator = values.getB().entrySet()
+					.iterator();
+			while(iterator.hasNext()){
+				Entry<String,Double> entry = iterator.next(); 
+				if(entry.getValue()!=null && entry.getKey()!=null){
+					sb.append(entry.getKey()).append("=");
+					sb.append(dcf.format(entry.getValue())).append(";");
+				}
+			}
+			sb.append("\n");
+			// 
+			out.write(sb.toString().getBytes());
+			out.flush(); 
+		}
+
+	}
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -59,10 +98,17 @@ public class CSVServlet extends HttpServlet {
 			dumpSampleData(response);
 			return;
 		}
-
+		
 		@SuppressWarnings("rawtypes")
 		Map paramMap = req.getParameterMap();
-		if (paramMap.containsKey("SERIESID") && paramMap.containsKey("FREQ")
+		// 
+		if(paramMap.containsKey("DUMP"))
+			try {
+				dumpRaw(req, response);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		else if (paramMap.containsKey("SERIESID") && paramMap.containsKey("FREQ")
 				&& paramMap.containsKey("FIELD")
 				&& paramMap.containsKey("STARTDATE")
 				&& paramMap.containsKey("ENDDATE")) {
@@ -82,17 +128,16 @@ public class CSVServlet extends HttpServlet {
 
 			TimeStamp start;
 			try {
-				if(sd.length()==8)
+				if (sd.length() == 8)
 					start = new TimeStamp(sdf.parse(sd));
 				else
 					start = new TimeStamp(sdf2.parse(sd));
 				int maxRows = 1000000;
-				TimeStamp end; 
-				if(ed.length()==8)
+				TimeStamp end;
+				if (ed.length() == 8)
 					end = new TimeStamp(sdf.parse(ed));
 				else
 					end = new TimeStamp(sdf2.parse(ed));
-				
 
 				response.getWriter().print(
 						"TimeStampNanos,DateTime," + field + "\n");
@@ -105,10 +150,6 @@ public class CSVServlet extends HttpServlet {
 				int i = 0;
 				while (mvtsi.hasNext()) {
 					Tuple<TimeStamp, Map<String, Double>> values = mvtsi.next();
-					// String[] p = l.split(",");
-
-					// check if our map contains some of our requested fields.
-
 					boolean found = false;
 					for (String f : fields) {
 						if (values.getB().containsKey(f))
@@ -126,7 +167,7 @@ public class CSVServlet extends HttpServlet {
 					for (int j = 0; j < fields.length; j++) {
 						Double val = values.getB().get(fields[j]);
 						if (val != null) {
-							// mind, this is just a symptom. 
+							// mind, this is just a symptom.
 							if (!val.equals(Double.NaN)) {
 								response.getWriter().print(dcf.format(val));
 							}
@@ -136,7 +177,7 @@ public class CSVServlet extends HttpServlet {
 					}
 					response.getWriter().println();
 					response.getWriter().flush();
-
+					// 
 					i++;
 					if (i >= maxRows)
 						break;
