@@ -60,9 +60,9 @@ public class CSVServlet extends HttpServlet {
 		@SuppressWarnings("rawtypes")
 		Map paramMap = req.getParameterMap();
 		TimeStamp end = new TimeStamp();
-		TimeStamp start = new TimeStamp(Long.parseLong((String)paramMap.get("START")));
-		// let's create an inflater ...
-		OutputStream out = new DeflaterOutputStream(response.getOutputStream());
+		TimeStamp start = new TimeStamp(Long.parseLong(((String[])paramMap.get("START"))[0]));
+		// let's create an inflater ... new DeflaterOutputStream
+		OutputStream out = (response.getOutputStream());
 		String timeFrame = ((String[]) paramMap.get("FREQ"))[0];
 		TimeFrame tf = TimeFrame.valueOf(timeFrame);
 		String seriesId = ((String[]) paramMap.get("SERIESID"))[0];
