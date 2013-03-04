@@ -33,6 +33,12 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
         return mdis.toArray(new MarketDataInstrument[] {});
     }
 
+    public List<String> findIdsFor(String instrumentId){
+    	List<String> ids = mapper.findByString(tableName, "INSTRUMENTID", instrumentId);
+    	return ids; 
+    }
+    
+    
     public MarketDataInstrument[] findForProvider(String providerId) {
         List<String> ids = mapper.findByString(tableName, "mdProvider".toUpperCase(), providerId);
         List<MarketDataInstrument> mdis = new ArrayList<MarketDataInstrument>();

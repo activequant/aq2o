@@ -1,7 +1,11 @@
 package com.activequant.dao.inmemory;
 
+import java.util.List;
+import java.util.Map;
+
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.Tuple;
 import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.interfaces.dao.IEntityDao;
 
@@ -104,6 +108,12 @@ public class InMemoryDao<T extends PersistentEntity> implements IEntityDao<T> {
 
 	@Override
 	public String[] findIDsWhereCreationDateBetween(TimeStamp startTs, TimeStamp endTs) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public  Map<String, Object> loadRaw(String key) {
 		// TODO Auto-generated method stub
 		return null;
 	}

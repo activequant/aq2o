@@ -1,5 +1,7 @@
 package com.activequant.dao.inmemory;
 
+import java.util.List;
+
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TradeableInstrument;
 import com.activequant.domainmodel.exceptions.DaoException;
@@ -39,6 +41,12 @@ public class InMemTDIDao extends InMemoryDao<TradeableInstrument> implements ITr
 
 	@Override
 	public TradeableInstrument[] findFor(Instrument instrument) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> findIdsFor(String instrumentId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

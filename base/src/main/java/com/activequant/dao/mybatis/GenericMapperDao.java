@@ -16,12 +16,13 @@ import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.GenericRow;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.Tuple;
 import com.activequant.domainmodel.exceptions.DaoException;
 
 /**
  * 
  * @author ustaudinger
- *
+ * 
  * @param <T>
  */
 public class GenericMapperDao<T extends PersistentEntity> {
@@ -32,7 +33,9 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	private Class<? extends PersistentEntity> clazz;
 	private SqlSessionFactory sqlSessionFactory;
 
-	public GenericMapperDao(SqlSessionFactory sqlSessionFactory, GenericRowMapper mapper, Class<? extends PersistentEntity> clazz, String table) {
+	public GenericMapperDao(SqlSessionFactory sqlSessionFactory,
+			GenericRowMapper mapper, Class<? extends PersistentEntity> clazz,
+			String table) {
 		log.info("Initializing GenericDao for table " + table);
 		this.tableName = table;
 		this.sqlSessionFactory = sqlSessionFactory;
@@ -41,15 +44,15 @@ public class GenericMapperDao<T extends PersistentEntity> {
 		// don't know how to check with ibatis if a table exists - at least not
 		// in an easy w.
 		// this one is easier, dirty and safe.
-//		SqlSession sqlSession = sqlSessionFactory.openSession();		
-//		sqlSession.select("SHOW INDEX FROM " + table, new ResultHandler(){
-//			@Override
-//			public void handleResult(ResultContext arg0) {
-//				System.out.println(arg0);
-//			}});
-//		sqlSession.close();
+		// SqlSession sqlSession = sqlSessionFactory.openSession();
+		// sqlSession.select("SHOW INDEX FROM " + table, new ResultHandler(){
+		// @Override
+		// public void handleResult(ResultContext arg0) {
+		// System.out.println(arg0);
+		// }});
+		// sqlSession.close();
 		try {
-			mapper.init(table);		
+			mapper.init(table);
 			mapper.genIndex1(table);
 			mapper.genIndex2(table);
 			mapper.genIndex3(table);
@@ -60,8 +63,26 @@ public class GenericMapperDao<T extends PersistentEntity> {
 			mapper.genIndex8(table);
 			mapper.genKey9(table);
 		} catch (Exception ex) {
-			log.info("Error creating table, possibly it exists already. "+ ex.getStackTrace()[0]);
+			log.info("Error creating table, possibly it exists already. "
+					+ ex.getStackTrace()[0]);
 		}
+	}
+
+	
+	public Map<String, Object> loadRaw(String primaryKey) {
+		List<GenericRow> rows = mapper.load(tableName, primaryKey);
+		// to be offloaded to a generic class.
+		Map<String, Object> map = new HashMap<String, Object>();
+		for (GenericRow row : rows) {
+			String fieldName = row.getFieldName();
+			if (row.getDoubleVal() != null)
+				map.put(fieldName, row.getDoubleVal());
+			else if (row.getLongVal() != null)
+				map.put(fieldName, row.getLongVal());
+			else if (row.getStringVal() != null)
+				map.put(fieldName, row.getStringVal());
+		}
+		return map; 
 	}
 
 	//
@@ -118,19 +139,20 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	public synchronized void delete(T t) {
 		mapper.delete(tableName, t.getId());
 	}
-	
+
 	public synchronized void deleteById(String id) {
 		mapper.delete(tableName, id);
 	}
 
-	
 	public synchronized void update(T t) {
 		this.delete(t);
 		this.create(t);
 	}
 
-	public String[] findIDsWhereCreationDateBetween(TimeStamp startTs, TimeStamp endTs) {
-		List<String> ids = mapper.findIDsBetween(tableName, startTs.getMilliseconds(), endTs.getMilliseconds());
+	public String[] findIDsWhereCreationDateBetween(TimeStamp startTs,
+			TimeStamp endTs) {
+		List<String> ids = mapper.findIDsBetween(tableName,
+				startTs.getMilliseconds(), endTs.getMilliseconds());
 		return ids.toArray(new String[] {});
 
 	}
@@ -145,25 +167,28 @@ public class GenericMapperDao<T extends PersistentEntity> {
 		List<String> iids = mapper.loadKeyList(tableName);
 		return iids.toArray(new String[] {});
 	}
-	
-	
-	
-	public String[] findIdsLike(String pattern) throws DaoException
-	{
-		List<String> ret = mapper.findIdsLike(tableName, pattern, Integer.MAX_VALUE);
-		return ret.toArray(new String[]{});
+
+	public String[] findIdsLike(String pattern) throws DaoException {
+		List<String> ret = mapper.findIdsLike(tableName, pattern,
+				Integer.MAX_VALUE);
+		return ret.toArray(new String[] {});
 	}
 
-	private GenericRow genRow(long createdTimeStamp, String id, String key, Object value) {
+	private GenericRow genRow(long createdTimeStamp, String id, String key,
+			Object value) {
 		GenericRow gr = null;
 		if (value instanceof Double) {
-			gr = new GenericRow(createdTimeStamp, id, key, null, (Double) value, null);
+			gr = new GenericRow(createdTimeStamp, id, key, null,
+					(Double) value, null);
 		} else if (value instanceof String) {
-			gr = new GenericRow(createdTimeStamp, id, key, null, null, (String) value);
+			gr = new GenericRow(createdTimeStamp, id, key, null, null,
+					(String) value);
 		} else if (value instanceof Integer) {
-			gr = new GenericRow(createdTimeStamp, id, key, ((Integer) value).longValue(), null, null);
+			gr = new GenericRow(createdTimeStamp, id, key,
+					((Integer) value).longValue(), null, null);
 		} else if (value instanceof Long) {
-			gr = new GenericRow(createdTimeStamp, id, key, (Long) value, null, null);
+			gr = new GenericRow(createdTimeStamp, id, key, (Long) value, null,
+					null);
 		}
 		return gr;
 	}
@@ -188,7 +213,8 @@ public class GenericMapperDao<T extends PersistentEntity> {
 				int totalLength = array.length;
 				for (int i = 0; i < totalLength; i++) {
 					String fieldName = "[" + key + ";" + i + ";" + totalLength;
-					GenericRow temp = genRow(createdTimeStamp, t.getId(), fieldName, array[i]);
+					GenericRow temp = genRow(createdTimeStamp, t.getId(),
+							fieldName, array[i]);
 					ret.add(temp);
 					added = true;
 				}
@@ -205,7 +231,8 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	}
 
 	public void create(T t) {
-		SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+		SqlSession sqlSession = sqlSessionFactory
+				.openSession(ExecutorType.BATCH);
 		try {
 			List<GenericRow> rows = createGenRows(t);
 			for (GenericRow row : rows) {
@@ -224,12 +251,15 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	}
 
 	public String[] findIDsWhereLongValGreater(String fieldName, long sValue) {
-		List<String> ret = mapper.findIDsWhereLongValGreater(tableName, fieldName, sValue);
+		List<String> ret = mapper.findIDsWhereLongValGreater(tableName,
+				fieldName, sValue);
 		return ret.toArray(new String[] {});
 	}
 
-	public String[] findIDsWhereLongValBetween(String fieldName, long minValue, long maxValue) {
-		List<String> ret = mapper.findIDsWhereLongValBetween(tableName, fieldName, minValue, maxValue);
+	public String[] findIDsWhereLongValBetween(String fieldName, long minValue,
+			long maxValue) {
+		List<String> ret = mapper.findIDsWhereLongValBetween(tableName,
+				fieldName, minValue, maxValue);
 		return ret.toArray(new String[] {});
 	}
 
@@ -249,7 +279,8 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	}
 
 	public String[] findIDsLike(String idsLikeString, int resultAmount) {
-		List<String> ret = mapper.findIdsLike(tableName, idsLikeString, resultAmount);
+		List<String> ret = mapper.findIdsLike(tableName, idsLikeString,
+				resultAmount);
 		return ret.toArray(new String[] {});
 	}
 
@@ -284,14 +315,17 @@ public class GenericMapperDao<T extends PersistentEntity> {
 		return ret.toArray(new Double[] {});
 	}
 
-	public List<String> findIDsBetweenCreationTime(String parameter, String value,
-			Long fromTimeStampInMs, Long toMs) {
-		List<String> ids = mapper.findIDsBetweenCreationTime(tableName, parameter, value, fromTimeStampInMs, toMs);
+	public List<String> findIDsBetweenCreationTime(String parameter,
+			String value, Long fromTimeStampInMs, Long toMs) {
+		List<String> ids = mapper.findIDsBetweenCreationTime(tableName,
+				parameter, value, fromTimeStampInMs, toMs);
 		return ids;
 	}
 
-	public String findLastIdBeforeCreationTime(String parameter, String value, Long timeStampInMs) {
-		return mapper.findLastIdBeforeCreationTime(tableName, parameter, value, timeStampInMs);
+	public String findLastIdBeforeCreationTime(String parameter, String value,
+			Long timeStampInMs) {
+		return mapper.findLastIdBeforeCreationTime(tableName, parameter, value,
+				timeStampInMs);
 	}
 
 }

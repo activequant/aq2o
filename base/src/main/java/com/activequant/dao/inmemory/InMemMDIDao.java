@@ -1,5 +1,7 @@
 package com.activequant.dao.inmemory;
 
+import java.util.List;
+
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.exceptions.DaoException;
@@ -68,6 +70,12 @@ public class InMemMDIDao extends InMemoryDao<MarketDataInstrument> implements IM
 
 	@Override
 	public MarketDataInstrument[] findForProvider(String providerId, int startIndex, int maxAmount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> findIdsFor(String instrumentId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,5 +1,7 @@
 package com.activequant.interfaces.dao;
 
+import java.util.List;
+
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.MarketDataInstrument;
 
@@ -21,6 +23,8 @@ public interface IMarketDataInstrumentDao extends IEntityDao<MarketDataInstrumen
     
 
     MarketDataInstrument[] findFor(Instrument instrument);
+    
+    List<String> findIdsFor(String instrumentId); 
     
     /**
      * 

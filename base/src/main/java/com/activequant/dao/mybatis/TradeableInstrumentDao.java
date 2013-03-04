@@ -33,6 +33,12 @@ public class TradeableInstrumentDao extends GenericMapperDao<TradeableInstrument
     }
     
     
+    public List<String> findIdsFor(String instrumentId){
+    	List<String> ids = mapper.findByString(tableName, "INSTRUMENTID", instrumentId);
+    	return ids; 
+    }
+    
+    
     public TradeableInstrument findFor(String providerId, Instrument instrument) {
         // dirty. would have to use a field mapper table to ensure that
         // INSTRUMENTID is always the same as in MarketDataInstrument.
