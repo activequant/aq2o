@@ -11,10 +11,12 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.InflaterInputStream;
 
 import javax.sql.DataSource;
 
 import com.activequant.component.ComponentBase;
+import com.activequant.domainmodel.TimeFrame;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.transport.activemq.ActiveMQTransportFactory;
 
@@ -31,8 +33,44 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 	private String targetTables = "Instrument,MarketDataInstrument,TradeableInstrument";
 	private DataSource ds = null;
 	private static boolean running = false;
+	private static boolean running2 = false;
+
 
 	//
+	
+	class ReplicationTask2 extends TimerTask {
+		public void run() {
+			if (running2)
+				return;
+			running2 = true;
+			// 
+			String seriesId = "CNX.MDI.EUR/USD"; 
+			try {
+				URL u = new URL("http://" + replicationMaster
+						+ "/csv/?DUMP=1&SERIESID=" + seriesId + "&FREQ="
+						+ TimeFrame.MINUTES_1);
+				// open the buffered reader.
+				BufferedReader br2 = new BufferedReader(
+						new InputStreamReader(new InflaterInputStream(u.openStream())));
+				//
+				String inputLine;
+				StringBuffer sb = new StringBuffer();
+				while ((inputLine = br2.readLine()) != null) {
+					// ok, we got a line.
+					if (inputLine.length() > 0) {
+						System.out.println(inputLine); 
+						
+					}
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			// 			
+			running2 = false; 
+		}
+	}
 
 	class ReplicationTask extends TimerTask {
 		public void run() {
@@ -147,6 +185,8 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 		//
 		Timer timer = new Timer();
 		timer.schedule(new ReplicationTask(), 0, 10 * 60 * 1000);
+		Timer timer2 = new Timer();
+		timer2.schedule(new ReplicationTask2(), 1 * 60 * 1000, 10 * 60 * 1000);
 
 		//
 	}
