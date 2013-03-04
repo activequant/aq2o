@@ -18,7 +18,7 @@
 <table>
 	<c:forEach var="e" items="${mdis}">
 		<tr>
-			<td><a href="mdi?mdiid=${e.id}">${e.id}</a></td>
+			<td><a href="mdi?mdiid=${e}">${e}</a></td>
 		</tr>
 	</c:forEach>
 </table>
@@ -29,7 +29,7 @@
 <table>
 	<c:forEach var="e" items="${tdis}">
 		<tr>
-			<td><a href="tdi?tdiid=${e.id}">${e.id}</a></td>
+			<td><a href="tdi?tdiid=${e}">${e}</a></td>
 		</tr>
 	</c:forEach>
 </table>
