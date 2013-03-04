@@ -28,7 +28,7 @@
 		<property name="poolPingConnectionsNotUsedFor" value="5000" />
 
 		<property name="poolPingQuery">
-			<value>select 1;</value>
+			<value>select 1</value>
 		</property>
 
 	</bean>
