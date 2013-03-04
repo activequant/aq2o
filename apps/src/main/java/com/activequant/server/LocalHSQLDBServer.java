@@ -8,7 +8,7 @@ public class LocalHSQLDBServer {
     public void start(int port) throws Exception {
         HsqlProperties p = new HsqlProperties();
         // hsqldb/data ... could wite in some authentication provider. 
-        p.setProperty("server.database.0", "file:.;user=aq2o;password=aq2o");
+        p.setProperty("server.database.0", "file:./aq2odb;user=aq2o;password=aq2o;hsqldb.write_delay=false");
         p.setProperty("server.dbname.0", "aq2o");
         p.setProperty("server.port", ""+port);
         Server server = new Server();

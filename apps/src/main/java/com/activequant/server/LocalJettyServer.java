@@ -164,7 +164,7 @@ public class LocalJettyServer {
 
 		//
 		server.start();
-		server.join();
+		// server.join();
 	}
 
 }

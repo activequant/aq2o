@@ -277,15 +277,15 @@ public class MainController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (iid != null) {			
 			map.put("iid", iid);
-			Instrument inst = sc.getDaoFactory().instrumentDao().load(iid);
+			Map<String, Object> objMap = sc.getDaoFactory().instrumentDao().loadRaw(iid);
 			List<String> keys = new ArrayList<String>();
-			keys.addAll(inst.getUnderlyingMap().keySet());
+			keys.addAll(objMap.keySet());
 			Collections.sort(keys);
 			map.put("keys", keys);
-			map.put("instrument", inst.getUnderlyingMap());
+			map.put("instrument", objMap);
 			// load related mdis. 
-			map.put("mdis", sc.getDaoFactory().mdiDao().findFor(inst));
-			map.put("tdis", sc.getDaoFactory().tradeableDao().findFor(inst));
+			map.put("mdis", sc.getDaoFactory().mdiDao().findIdsFor(iid));
+			map.put("tdis", sc.getDaoFactory().tradeableDao().findIdsFor(iid));
 		}
 		//
 		return new ModelAndView("instrument", map);
@@ -323,12 +323,12 @@ public class MainController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (iid != null) {			
 			map.put("mdiid", iid);
-			MarketDataInstrument inst = sc.getDaoFactory().mdiDao().load(iid);
+			Map<String, Object> objMap = sc.getDaoFactory().mdiDao().loadRaw(iid);
 			List<String> keys = new ArrayList<String>();
-			keys.addAll(inst.getUnderlyingMap().keySet());
+			keys.addAll(objMap.keySet());
 			Collections.sort(keys);
 			map.put("keys", keys);
-			map.put("mdi", inst.getUnderlyingMap());
+			map.put("mdi", objMap);
 		}
 		//
 		return new ModelAndView("mdi", map);
@@ -366,12 +366,12 @@ public class MainController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (iid != null) {			
 			map.put("tdiid", iid);
-			TradeableInstrument inst = sc.getDaoFactory().tradeableDao().load(iid);
+			Map<String, Object> objMap = sc.getDaoFactory().tradeableDao().loadRaw(iid);
 			List<String> keys = new ArrayList<String>();
-			keys.addAll(inst.getUnderlyingMap().keySet());
+			keys.addAll(objMap.keySet());
 			Collections.sort(keys);
 			map.put("keys", keys);
-			map.put("tdi", inst.getUnderlyingMap());
+			map.put("tdi", objMap);
 		}
 		//
 		return new ModelAndView("tdi", map);
@@ -406,12 +406,12 @@ public class MainController {
 		String id = request.getParameter("id");
 		if(id!=null){
 		
-			OrderEvent oe = sc.getDaoFactory().orderEventDao().load(id);		
+			Map<String, Object> objMap = sc.getDaoFactory().orderEventDao().loadRaw(id);		
 			List<String> keys = new ArrayList<String>();
-			keys.addAll(oe.getUnderlyingMap().keySet());
+			keys.addAll(objMap.keySet());
 			Collections.sort(keys);
 			map.put("keys", keys);
-			map.put("event", oe.getUnderlyingMap());	
+			map.put("event", objMap);	
 			map.put("id", id);
 			// 
 		}

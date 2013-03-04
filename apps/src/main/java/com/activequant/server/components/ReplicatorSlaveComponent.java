@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
@@ -45,12 +46,16 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 
 				// let's build a url connection and read and write while we go.
 				Long lastDump = Long.parseLong(properties.getProperty(s, "0"));
+				Statement statement = null;
+				Connection con = null; 
 				try {
-					Statement statement = ds.getConnection().createStatement();
+					con = ds.getConnection();
 
+					statement = con.createStatement();					
 					URL u = new URL("http://" + replicationMaster
 							+ "/datadump/?TABLEDUMP=" + s + "&CREATED="
 							+ lastDump);
+					// 
 					// open the buffered reader.
 					BufferedReader br2 = new BufferedReader(
 							new InputStreamReader(u.openStream()));
@@ -61,37 +66,43 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 						// ok, we got a line.
 						if (inputLine.length() > 0) {
 							// ...
-							String[] parts = inputLine.split("-;-");
+							String[] parts1 = inputLine.split("-;-");
+							String[] parts = new String[6]; 
+							for(int i=0;i<parts1.length;i++)
+								parts[i] = parts1[i]; 
 							String keyVal = parts[0];
 							String created = parts[1];
 							String fieldName = parts[2];
 							String stringVal = parts[3];
-							if (parts[3].length() == 0)
+							if (parts[3]!=null && parts[3].length() == 0)
 								stringVal = null;
 							String longVal = parts[4];
-							if (parts[4].length() == 0)
+							if (parts[4]!=null && parts[4].length() == 0)
 								longVal = null;
 							String doubleVal = parts[5];
-							if (parts[5].length() == 0)
+							if (parts[5]!=null && parts[5].length() == 0)
 								doubleVal = null;
 							// ...
 							String query1 = "DELETE FROM " + s
-									+ " WHERE keyVal=\"" + keyVal
-									+ "\" and fieldName=\"" + fieldName + "\";";
-							statement.execute(query1);
-							String query2 = "INSERT INTO " + s + " VALUES (\""
-									+ keyVal + "\", " + created + ", \""
-									+ fieldName + "\", " + " \"" + stringVal != null ? stringVal
-									: "NULL" + "\", " + longVal != null ? longVal
-											: "NULL" + "," + doubleVal != null ? doubleVal
-													: "NULL" + ");";
-							statement.execute(query2);
+									+ " WHERE keyVal='" + keyVal
+									+ "' and fieldName='" + fieldName + "';";
+							System.out.println(query1);
+							statement.executeUpdate(query1);
+							String query2 = "INSERT INTO " + s + " (keyVal, created, fieldName, stringVal, longVal, doubleVal) VALUES ('"
+									+ keyVal + "', " + created + ", '"
+									+ fieldName + "', " + " '" + (stringVal != null ? stringVal
+									: "NULL") + "', " + (longVal != null ? longVal
+											: "NULL") + "," + (doubleVal != null ? doubleVal
+													: "NULL") + ");";
+							System.out.println(query2);
+							statement.executeUpdate(query2);
+							con.commit();
 
 						}
 					}
 					br2.close();
 					properties.put(s, "" + now);
-					statement.close();
+					
 					storeProperties();
 					//
 				} catch (MalformedURLException e) {
@@ -101,10 +112,30 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
+				catch(Exception ex){
+					ex.printStackTrace();
+				}
+				finally{
+					if(con!=null)
+						try {
+							con.commit();
+							con.close();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+
+					if(statement!=null)
+						try {
+							statement.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+				}
 
 				//
-				running = false;
+
 			}
+			running = false;
 		}
 	}
 
