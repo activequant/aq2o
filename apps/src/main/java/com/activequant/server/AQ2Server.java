@@ -11,8 +11,10 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.server.components.QuandlDownloaderComponent;
 import com.activequant.server.components.RandomMarketDataGenerator;
 import com.activequant.server.components.ReplicatorSlaveComponent;
 import com.activequant.server.components.SessionTrackerComponent;
@@ -78,7 +80,6 @@ public final class AQ2Server {
 			Runnable r = new Runnable() {
 				public void run() {
 					try {
-
 						URL u = new URL("http://www.zugtrader.com/thanks.html");
 						u.openStream();
 					} catch (RuntimeException ex) {
@@ -167,7 +168,6 @@ public final class AQ2Server {
 				.getBean(ITransportFactory.class);
 		new SessionTrackerComponent(transFac);
 
-
 		if (isTrue(properties, "startRandDatGen")) {
 			log.info("Starting random market data generator....");
 
@@ -177,10 +177,18 @@ public final class AQ2Server {
 		} else {
 			log.info("Not starting random market data generator, as it has been disabled.");
 		}
-		// 
+		//
 		if (isTrue(properties, "replicationSlave.start")) {
-			String replicationHost = properties.getProperty("replicationSlave.master");
-			new ReplicatorSlaveComponent(transFac, replicationHost, appContext.getBean(DataSource.class));
+			String replicationHost = properties
+					.getProperty("replicationSlave.master");
+			new ReplicatorSlaveComponent(transFac, replicationHost,
+					appContext.getBean(DataSource.class));
+		}
+
+		if (isTrue(properties, "quandlDownloader.start")) {
+			new QuandlDownloaderComponent(transFac,
+					appContext.getBean(IArchiveFactory.class),
+					appContext.getBean(IDaoFactory.class));
 		}
 
 		//
