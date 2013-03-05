@@ -184,7 +184,7 @@ public final class AQ2Server {
 			new ReplicatorSlaveComponent(transFac, replicationHost,
 					appContext.getBean(DataSource.class));
 		}
-
+		// 
 		if (isTrue(properties, "quandlDownloader.start")) {
 			new QuandlDownloaderComponent(transFac,
 					appContext.getBean(IArchiveFactory.class),

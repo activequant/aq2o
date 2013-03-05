@@ -272,7 +272,8 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 	//
 	public void customMessage(String message) {
 		if (message.equals("REPLICATE")) {
-			new ReplicationTask().run();
+			Thread t = new Thread(new ReplicationTask());
+			t.start();
 		}
 	}
 
@@ -285,7 +286,6 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 				+ ". It will replicate automatically every 10 minutes. Tables to be replicated: "
 				+ this.targetTables + ". There is a replication running: "
 				+ running;
-
 	}
 
 }

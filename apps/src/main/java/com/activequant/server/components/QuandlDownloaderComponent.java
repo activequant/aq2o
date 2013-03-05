@@ -21,6 +21,7 @@ import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
+import com.activequant.server.components.ReplicatorSlaveComponent.ReplicationTask;
 import com.activequant.transport.activemq.ActiveMQTransportFactory;
 
 /**
@@ -33,6 +34,7 @@ import com.activequant.transport.activemq.ActiveMQTransportFactory;
 public class QuandlDownloaderComponent extends ComponentBase {
 	private final IArchiveFactory a;
 	private final IDaoFactory d;
+	private static boolean running = false; 
 
 	public static void main(String[] args) throws Exception {
 
@@ -42,15 +44,23 @@ public class QuandlDownloaderComponent extends ComponentBase {
 		new QuandlDownloaderComponent(t, a, d);
 	}
 
-	private void initQuandlMdi(String mdiId) throws DaoException {
+	private MarketDataInstrument initQuandlMdi(String mdiId) throws DaoException {
 		MarketDataInstrument mdi = new MarketDataInstrument();
 		mdi.setMdProvider("QUANDL");
 		mdi.setProviderSpecificId(mdiId);
 		d.mdiDao().update(mdi);
+		return mdi;
 	}
 
 	class DownloadTask extends TimerTask {
 		public void run() {
+			log.info("Started a download task."); 
+			if(running)
+			{
+				log.info("There is already one download task running, not starting another."); 
+				return;
+			}
+			running = true; 
 			try {
 				//
 				// Runnable r = new Runnable() {
@@ -62,13 +72,16 @@ public class QuandlDownloaderComponent extends ComponentBase {
 
 				File f = new File("quandl_symbols.csv");
 				if (f.exists()) {
+					log.info("Symbols file exists.");
 					//
 					BufferedReader br = new BufferedReader(new FileReader(f));
 					String l = br.readLine();
 					while (l != null) {
+						// 
+						log.info("Fetching " + l);
 						// let's see if we have a quandl mdi already.
-						initQuandlMdi(l);
-
+						MarketDataInstrument mdi = initQuandlMdi(l);
+						
 						// example:
 						// http://www.quandl.com/api/v1/datasets/OFDP/ALUMINIUM_21.csv?
 						// http://www.quandl.com/api/v1/datasets/IMF/POILWTI_USD.csv?&auth_token=sR5ozVJPXc8drGTdra1C&trim_start=1980-01-31&trim_end=2013-01-31&sort_order=desc
@@ -86,6 +99,8 @@ public class QuandlDownloaderComponent extends ComponentBase {
 						int counter = 0;
 						int lineCount = 0;
 						while ((inputLine = br2.readLine()) != null) {
+							System.out.println(inputLine);
+
 							counter++;
 							if (counter > 100) {
 								counter = 0;
@@ -93,7 +108,6 @@ public class QuandlDownloaderComponent extends ComponentBase {
 							}
 							if (inputLine != null && lineCount == 0) {
 								//
-								System.out.println(inputLine);
 								String[] h = inputLine.split(",");
 								for (int i = 0; i < h.length; i++) {
 									if (i > 0) {
@@ -103,14 +117,13 @@ public class QuandlDownloaderComponent extends ComponentBase {
 								//
 							} else if (inputLine != null
 									&& !inputLine.startsWith("Date")) {
-								System.out.println(inputLine);
 								String[] parts = inputLine.split(",");
 								TimeStamp ts = new TimeStamp(
 										sdf.parse(parts[0]));
 								for (int i = 0; i < headers.size(); i++) {
 									Double val = Double
 											.parseDouble(parts[i + 1]);
-									iaw.write(l, ts, headers.get(i)
+									iaw.write(mdi.getId(), ts, headers.get(i)
 											.toUpperCase(), val);
 								}
 								//
@@ -120,6 +133,7 @@ public class QuandlDownloaderComponent extends ComponentBase {
 						}
 						iaw.commit();
 						br2.close();
+						log.info("Fetched " + l+".") ;
 						// now that we have all data in our string buffer, let's
 						// parse
 						// it.
@@ -131,12 +145,15 @@ public class QuandlDownloaderComponent extends ComponentBase {
 					}
 
 				}
+				else
+					log.info("quandl_symbols.csv does not exist."); 
+
 
 			} catch (Exception ex) {
-				log.warn("Download failed : " + ex); 
+				log.warn("Download failed : ", ex); 
 			}
+			running = false; 
 		}
-
 	}
 
 	public QuandlDownloaderComponent(ITransportFactory transFac,
@@ -157,14 +174,24 @@ public class QuandlDownloaderComponent extends ComponentBase {
 		// t.start();
 
 		Timer timer = new Timer();
-		timer.schedule(new DownloadTask(), 5 * 60 * 1000, 10 * 60 * 1000);
+		timer.schedule(new DownloadTask(), 5 * 60 * 1000, 6 * 60  * 60 * 1000);
 
 	}
+	
+	
+	public void customMessage(String message) {
+		log.info("Message: " + message); 
+		if (message.equals("REFETCH")) {
+			Thread t = new Thread(new DownloadTask());
+			t.start(); 
+		}
+	}
+	
 
 	@Override
 	public String getDescription() {
 		//
-		return "The Yahoo Downloader component downloads daily data from Yahoo. ";
+		return "The Quandl Downloader component downloads data from Quandl. It is running: "+ running;
 
 	}
 
