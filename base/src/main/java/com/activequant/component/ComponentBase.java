@@ -28,6 +28,7 @@ public abstract class ComponentBase {
 	protected final Logger log = Logger.getLogger(ComponentBase.class);
 	private final String name; 
 	protected final Properties properties = new Properties ();
+	protected final String propertiesFile; 
 
 	public ComponentBase(String name, ITransportFactory transFac) throws Exception {
 		this.transFac = transFac;
@@ -49,8 +50,10 @@ public abstract class ComponentBase {
 		}, 10 * 1000, 10 * 1000);
 		heartbeat();
 		// 
-		if(new File(name+".properties").exists())
-			properties.load(new FileInputStream(name+".properties"));
+		propertiesFile = (name.toLowerCase()+".properties").replaceAll(" ", "_");
+		
+		if(new File(propertiesFile).exists())
+			properties.load(new FileInputStream(propertiesFile));
 		// 
 		sendStatus("Constructed.");
 		
@@ -58,7 +61,7 @@ public abstract class ComponentBase {
 
 	protected void storeProperties(){
 		try {
-			properties.store(new FileOutputStream(name+".properties"), "GhostRider.");
+			properties.store(new FileOutputStream(propertiesFile), "GhostRider.");
 		} catch (FileNotFoundException e) {
 			log.warn("Storing properties failed. ", e);
 		} catch (IOException e) {
