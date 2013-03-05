@@ -3,6 +3,11 @@ package com.activequant.server;
 import org.hsqldb.Server;
 import org.hsqldb.persist.HsqlProperties;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class LocalHSQLDBServer {
 
     public void start(int port) throws Exception {

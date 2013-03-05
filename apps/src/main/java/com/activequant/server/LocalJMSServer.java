@@ -1,8 +1,12 @@
 package com.activequant.server;
 
 import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.proxy.ProxyConnector;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class LocalJMSServer {
     private BrokerService broker;    
     public void start(String hostname, int port) throws Exception{

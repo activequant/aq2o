@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.zip.DeflaterOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

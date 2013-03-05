@@ -25,11 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.activequant.domainmodel.Instrument;
-import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.TradeableInstrument;
-import com.activequant.domainmodel.trade.event.OrderEvent;
 
 /**
  * 

@@ -1,7 +1,6 @@
 package com.activequant.servicelayer.soap;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

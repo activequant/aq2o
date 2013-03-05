@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.zookeeper.server.SessionTracker;
 
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.server.components.SessionTrackerComponent;

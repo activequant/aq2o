@@ -17,6 +17,11 @@ import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.servicelayer.soap.MainService;
 
+/**
+ * 
+ * @author GhostRider
+ *
+ */
 public class LocalSoapServer {
 
 	private final int port;
