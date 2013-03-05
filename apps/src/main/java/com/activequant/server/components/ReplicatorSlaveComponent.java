@@ -16,7 +16,6 @@ import java.util.TimerTask;
 import javax.sql.DataSource;
 
 import com.activequant.component.ComponentBase;
-import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.transport.ITransportFactory;
@@ -33,69 +32,102 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 	//
 	private String replicationMaster = "213";
 	private String targetTables = "Instrument,MarketDataInstrument,TradeableInstrument";
+	private String instruments = "OFDP/ALUMINIUM_21";
+	private String timeFrames = "MINUTES_1,MINUTES_5,MINUTES_15,HOURS_1,HOURS_4,EOD";
 	private DataSource ds = null;
 	private static boolean running = false;
 	private static boolean running2 = false;
-	private IArchiveWriter iaw = null; 
+	private IArchiveWriter iaw = null;
 
 	//
-
 	class ReplicationTask2 extends TimerTask {
 		public void run() {
 			if (running2)
 				return;
 			running2 = true;
-			//
-			
-			
-			//
-			String seriesId = "OFDP/ALUMINIUM_21";
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-
-			try {
-				TimeStamp ts = new TimeStamp(sdf.parse("20000101"));
-				URL u = new URL("http://" + replicationMaster
-						+ "/csv/?DUMP=1&SERIESID=" + seriesId + "&FREQ="
-						+ TimeFrame.EOD + "&START=" + ts.getNanoseconds());
-				// open the buffered reader.
-				InputStreamReader isr = new InputStreamReader((u.openStream()));
-				BufferedReader br2 = new BufferedReader(isr);
-				//
-				String inputLine;
-				StringBuffer sb = new StringBuffer();
-				int counter = 0; 
-				while ((inputLine = br2.readLine()) != null) {
-					// ok, we got a line.
-					if (inputLine.length() > 0) {
-						counter ++; 
-						System.out.println(inputLine);
-						String[] parts = inputLine.split(";");
-						Long timestamp = Long.parseLong(parts[0]);
-						if (parts.length > 0) {
-							for (int i = 1; i < parts.length; i++) {
-								String[] keyVal = parts[i].split("="); 
-								String key = keyVal[0]; 
-								Double val = Double.parseDouble(keyVal[1]);
-								// 
-								if(iaw!=null){
-									iaw.write(seriesId, new TimeStamp(timestamp), key, val);
-									if(counter>100){
-										counter = 0; 
-										iaw.commit(); 								
+			String today = sdf.format(new Date());
+			//
+			// CODE START - FETCH ONE INSTRUMENT. 
+			String[] splitInsts = instruments.split(",");
+			String[] splitTimes = timeFrames.split(",");
+			for (String seriesId : splitInsts) {
+				for (String tf : splitTimes) {
+					tf = tf.trim();
+					seriesId = seriesId.trim();
+					//
+					//
+					String lastSyncKey = "LastSync."+seriesId+"."+tf; 
+					String lastSync = properties.getProperty(lastSyncKey, "20100101");
+					if(lastSync.equals(today)){
+						log.info("Not syncing " + lastSyncKey+" as lastSync was on " + lastSync); 
+						continue;						
+					}
+					else{
+						log.info("Syncing " + lastSyncKey+" as lastSync was on " + lastSync); 
+					}
+						 
+					
+					//
+					try {
+						TimeStamp ts = new TimeStamp(sdf.parse(lastSync));
+						URL u = new URL("http://" + replicationMaster
+								+ "/csv/?DUMP=1&SERIESID=" + seriesId
+								+ "&FREQ=" + tf + "&START="
+								+ ts.getNanoseconds());
+						// open the buffered reader.
+						InputStreamReader isr = new InputStreamReader(
+								(u.openStream()));
+						BufferedReader br2 = new BufferedReader(isr);
+						// 
+						String inputLine;
+						StringBuffer sb = new StringBuffer();
+						int counter = 0;
+						while ((inputLine = br2.readLine()) != null) {
+							// ok, we got a line.
+							if (inputLine.length() > 0) {
+								counter++;
+								System.out.println(inputLine);
+								String[] parts = inputLine.split(";");
+								Long timestamp = Long.parseLong(parts[0]);
+								if (parts.length > 0) {
+									for (int i = 1; i < parts.length; i++) {
+										String[] keyVal = parts[i].split("=");
+										String key = keyVal[0];
+										Double val = Double
+												.parseDouble(keyVal[1]);
+										//
+										if (iaw != null) {
+											iaw.write(seriesId, new TimeStamp(
+													timestamp), key, val);
+											if (counter > 100) {
+												counter = 0;
+												iaw.commit();
+											}
+										}
+										//
 									}
 								}
-								//
+
 							}
 						}
+						if (iaw != null)
+							iaw.commit();
+						// 
+						log.info("Synced.");
+						properties.put(lastSyncKey, today);
+						storeProperties();
 
+
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-				}
-				if(iaw!=null)
-					iaw.commit();
+					// store last sync time per instrument/timeframe combination. 					
+					// ... 
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+					// ... 
+				}
+			} 
 
 			//
 			running2 = false;
@@ -117,6 +149,8 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 				Statement statement = null;
 				Connection con = null;
 				try {
+					if(ds==null)
+						return; 
 					con = ds.getConnection();
 
 					statement = con.createStatement();
@@ -215,11 +249,16 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 		super("Replicator Slave", transFac);
 		this.replicationMaster = replicationMaster;
 		this.ds = ds;
+
+		targetTables = super.properties.getProperty("targetTables",
+				targetTables);
+		timeFrames = super.properties.getProperty("timeFrames", timeFrames);
+		instruments = super.properties.getProperty("instruments", instruments);
 		//
 		Timer timer = new Timer();
 		timer.schedule(new ReplicationTask(), 0, 10 * 60 * 1000);
 		Timer timer2 = new Timer();
-		timer2.schedule(new ReplicationTask2(), 0 * 60 * 1000, 10 * 60 * 1000);
+		timer2.schedule(new ReplicationTask2(), 0 * 60 * 1000, 2 * 60 * 1000);
 
 		//
 	}
