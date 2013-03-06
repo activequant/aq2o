@@ -2,7 +2,7 @@
 
 <h1>Excel add-on</h1>
 <p>
-To be documented. There's already an Excel Add-On, but it's not yet documented. 
+Please download the AQExcel plugin from <a href="https://www.dropbox.com/s/eipan2864z3vk6j/aqexcel.xll?m">HERE</a>.  
 </p>
  
 <hr/>
