@@ -1,6 +1,5 @@
 package com.activequant.timeseries;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,24 +22,6 @@ public class TSContainerViewer extends AQTableDataBase {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	private Object[][] data = new Object[][] {};
 	private String[] header = new String[] {};;
-
-	public SimpleDateFormat getSdf() {
-		return sdf;
-	}
-
-	public void setSdf(SimpleDateFormat sdf) {
-		this.sdf = sdf;
-	}
-
-	public DecimalFormat getDcf() {
-		return dcf;
-	}
-
-	public void setDcf(DecimalFormat dcf) {
-		this.dcf = dcf;
-	}
-
-	private DecimalFormat dcf = new DecimalFormat("#.########");
 
 	public void setTSContainer2(TSContainer2 container) {
 		this.container = container;
@@ -76,4 +57,12 @@ public class TSContainerViewer extends AQTableDataBase {
 		return header;
 	}
 
+
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
+	}
 }
