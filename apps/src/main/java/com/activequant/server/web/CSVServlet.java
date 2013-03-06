@@ -22,11 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.activequant.archive.MultiValueTimeSeriesIterator;
+import com.activequant.domainmodel.MarketDataInstrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
+import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
+import com.activequant.interfaces.dao.IDaoFactory;
 
 public class CSVServlet extends HttpServlet {
 	/**
@@ -34,10 +37,11 @@ public class CSVServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private IArchiveFactory archFac;
+	private IDaoFactory daoF; 
 	private Logger log = Logger.getLogger(CSVServlet.class);
 	private DecimalFormat dcf = new DecimalFormat("#.###########");
 
-	public CSVServlet(IArchiveFactory archFac) {
+	public CSVServlet(IArchiveFactory archFac, IDaoFactory daoF) {
 		this.archFac = archFac;
 	}
 
@@ -193,6 +197,28 @@ public class CSVServlet extends HttpServlet {
 		}
 	}
 
+	/**
+	 * 
+	 * @param seriesId
+	 * @throws DaoException 
+	 */
+	private void sanityCheck(String seriesId) throws DaoException{
+		String[] similarIds = daoF.mdiDao().findIdsLike(seriesId);
+		if(similarIds.length==0){
+			// create a default market data instrument. 
+			MarketDataInstrument mdi = new MarketDataInstrument();
+			int dotIndex = seriesId.indexOf("."); 
+			if(dotIndex!=-1){
+				String provider = seriesId.substring(0, dotIndex); 
+				String inst = seriesId.substring(dotIndex + 1); 
+				mdi.setMdProvider(provider); 
+				mdi.setProviderSpecificId(inst); 
+				daoF.mdiDao().update(mdi);
+			}
+			// 
+		}
+	}
+	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PrintWriter response = resp.getWriter();
@@ -209,6 +235,16 @@ public class CSVServlet extends HttpServlet {
 					.valueOf((String) paramMap.get("FREQ")));
 			if (iaw != null) {
 				String seriesId = ((String) paramMap.get("SERIESID"));
+				// let's check if we have a market data instrument for SeriesID. 
+				try {
+					sanityCheck(seriesId);
+				} catch (DaoException e) {
+					// let's ignore anything that goes wrong ... 
+					e.printStackTrace();
+				}
+				// 
+				
+				
 				String field = ((String) paramMap.get("FIELD"));
 				log.info("Storing data for " + seriesId + "/" + field + "/"
 						+ paramMap.get("FREQ"));

@@ -134,7 +134,7 @@ public class LocalJettyServer {
 		//
 		ServletContextHandler csvContext = new ServletContextHandler(server,
 				"/csv", true, false);
-		csvContext.addServlet(new ServletHolder(new CSVServlet(archFactory)),
+		csvContext.addServlet(new ServletHolder(new CSVServlet(archFactory, daoFactory)),
 				"/");
 		ServletContextHandler refDataContext = new ServletContextHandler(
 				server, "/refdata", true, false);
