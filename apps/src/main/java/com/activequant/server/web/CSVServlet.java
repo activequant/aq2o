@@ -113,38 +113,39 @@ public class CSVServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 		else if (paramMap.containsKey("DELETE")) {
-			String seriesId = null; 
-			String field = null; 
-			String freq = null; 
-			TimeStamp start = null; 		
-			TimeStamp end = null; 
-			
-			// 
-			if(paramMap.containsKey("FREQ"))
+			//
+			String seriesId = null;
+			String field = null;
+			String freq = null;
+			TimeStamp start = null;
+			TimeStamp end = null;
+			//
+			if (paramMap.containsKey("FREQ"))
 				freq = ((String[]) paramMap.get("FREQ"))[0];
-			
-			if(paramMap.containsKey("FIELD"))
+
+			if (paramMap.containsKey("FIELD"))
 				field = ((String[]) paramMap.get("FIELD"))[0];
-			
-			if(paramMap.containsKey("SERIESID"))
+
+			if (paramMap.containsKey("SERIESID"))
 				seriesId = ((String[]) paramMap.get("SERIESID"))[0];
-			
-			if(paramMap.containsKey("STARTTS"))
-				start = new TimeStamp(Long.parseLong(((String[]) paramMap.get("STARTTS"))[0]));
-			
-			if(paramMap.containsKey("ENDTS"))
-				end = new TimeStamp(Long.parseLong(((String[]) paramMap.get("ENDTTS"))[0]));
+
+			if (paramMap.containsKey("STARTTS"))
+				start = new TimeStamp(Long.parseLong(((String[]) paramMap
+						.get("STARTTS"))[0]));
+
+			if (paramMap.containsKey("ENDTS"))
+				end = new TimeStamp(Long.parseLong(((String[]) paramMap
+						.get("ENDTTS"))[0]));
 			else
 				end = new TimeStamp();
-			
-			if(seriesId!=null && freq != null && start!=null){
-				TimeFrame tf = TimeFrame.valueOf(freq); 
+
+			if (seriesId != null && freq != null && start != null) {
+				TimeFrame tf = TimeFrame.valueOf(freq);
 				IArchiveWriter writer = this.archFac.getWriter(tf);
 				//
-				if(field==null){
+				if (field == null) {
 					writer.delete(seriesId, start, end);
-				}
-				else{
+				} else {
 					writer.delete(seriesId, field, start, end);
 				}
 			}
@@ -265,15 +266,52 @@ public class CSVServlet extends HttpServlet {
 		log.info("Handling post request. ");
 		Map paramMap = req.getParameterMap();
 
+		Object seriesObject = paramMap.get("SERIESID");
+
 		@SuppressWarnings("rawtypes")
-		String s = (String) paramMap.get("SERIESID");
+		String s = ""; // (String) paramMap.get("SERIESID");
+		if (seriesObject.getClass().isArray()) {
+			s = ((String[]) seriesObject)[0];
+		} else
+			s = (String) seriesObject;
+		//
+
+		//
 		if (paramMap.containsKey("SERIESID") && paramMap.containsKey("FREQ")
 				&& paramMap.containsKey("FIELD")) {
 
-			IArchiveWriter iaw = archFac.getWriter(TimeFrame
-					.valueOf((String) paramMap.get("FREQ")));
+			
+			Object fieldObject = paramMap.get("FIELD");
+			String field = "";
+			if (fieldObject.getClass().isArray())
+				field = ((String[]) fieldObject)[0];
+			else
+				field = (String) fieldObject;
+
+			
+			
+			String timeFrame = "";
+			Object timeFrameObject = paramMap.get("FREQ");
+			if (timeFrameObject.getClass().isArray())
+				timeFrame = ((String[]) timeFrameObject)[0];
+			else
+				timeFrame = (String) timeFrameObject;
+
+			
+			String data = "";
+			Object dataObject = paramMap.get("DATA");
+			if (dataObject.getClass().isArray())
+				data = ((String[]) dataObject)[0];
+			else
+				data = (String) dataObject;
+
+
+			
+			
+			IArchiveWriter iaw = archFac
+					.getWriter(TimeFrame.valueOf(timeFrame));
 			if (iaw != null) {
-				String seriesId = ((String) paramMap.get("SERIESID"));
+				String seriesId = s;
 				// let's check if we have a market data instrument for SeriesID.
 				try {
 					sanityCheck(seriesId);
@@ -283,10 +321,11 @@ public class CSVServlet extends HttpServlet {
 				}
 				//
 
-				String field = ((String) paramMap.get("FIELD"));
+				
 				log.info("Storing data for " + seriesId + "/" + field + "/"
-						+ paramMap.get("FREQ"));
-				String data = paramMap.get("DATA").toString();
+						+ timeFrame);
+			
+				
 				BufferedReader br2 = new BufferedReader(new InputStreamReader(
 						new ByteArrayInputStream(data.getBytes())));
 				String line = br2.readLine();
