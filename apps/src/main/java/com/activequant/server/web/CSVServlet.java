@@ -37,7 +37,7 @@ public class CSVServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private IArchiveFactory archFac;
-	private IDaoFactory daoF; 
+	private IDaoFactory daoF;
 	private Logger log = Logger.getLogger(CSVServlet.class);
 	private DecimalFormat dcf = new DecimalFormat("#.###########");
 
@@ -63,7 +63,8 @@ public class CSVServlet extends HttpServlet {
 		@SuppressWarnings("rawtypes")
 		Map paramMap = req.getParameterMap();
 		TimeStamp end = new TimeStamp();
-		TimeStamp start = new TimeStamp(Long.parseLong(((String[])paramMap.get("START"))[0]));
+		TimeStamp start = new TimeStamp(Long.parseLong(((String[]) paramMap
+				.get("START"))[0]));
 		// let's create an inflater ... new DeflaterOutputStream
 		OutputStream out = (response.getOutputStream());
 		String timeFrame = ((String[]) paramMap.get("FREQ"))[0];
@@ -79,17 +80,17 @@ public class CSVServlet extends HttpServlet {
 			sb.append(values.getA().getNanoseconds() + ";");
 			Iterator<Entry<String, Double>> iterator = values.getB().entrySet()
 					.iterator();
-			while(iterator.hasNext()){
-				Entry<String,Double> entry = iterator.next(); 
-				if(entry.getValue()!=null && entry.getKey()!=null){
+			while (iterator.hasNext()) {
+				Entry<String, Double> entry = iterator.next();
+				if (entry.getValue() != null && entry.getKey() != null) {
 					sb.append(entry.getKey()).append("=");
 					sb.append(dcf.format(entry.getValue())).append(";");
 				}
 			}
 			sb.append("\n");
-			// 
+			//
 			out.write(sb.toString().getBytes());
-			out.flush(); 
+			out.flush();
 		}
 
 	}
@@ -101,17 +102,55 @@ public class CSVServlet extends HttpServlet {
 			dumpSampleData(response);
 			return;
 		}
-		
+
 		@SuppressWarnings("rawtypes")
 		Map paramMap = req.getParameterMap();
-		// 
-		if(paramMap.containsKey("DUMP"))
+		//
+		if (paramMap.containsKey("DUMP"))
 			try {
 				dumpRaw(req, response);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-		else if (paramMap.containsKey("SERIESID") && paramMap.containsKey("FREQ")
+		else if (paramMap.containsKey("DELETE")) {
+			String seriesId = null; 
+			String field = null; 
+			String freq = null; 
+			TimeStamp start = null; 		
+			TimeStamp end = null; 
+			
+			// 
+			if(paramMap.containsKey("FREQ"))
+				freq = ((String[]) paramMap.get("FREQ"))[0];
+			
+			if(paramMap.containsKey("FIELD"))
+				field = ((String[]) paramMap.get("FIELD"))[0];
+			
+			if(paramMap.containsKey("SERIESID"))
+				seriesId = ((String[]) paramMap.get("SERIESID"))[0];
+			
+			if(paramMap.containsKey("STARTTS"))
+				start = new TimeStamp(Long.parseLong(((String[]) paramMap.get("STARTTS"))[0]));
+			
+			if(paramMap.containsKey("ENDTS"))
+				end = new TimeStamp(Long.parseLong(((String[]) paramMap.get("ENDTTS"))[0]));
+			else
+				end = new TimeStamp();
+			
+			if(seriesId!=null && freq != null && start!=null){
+				TimeFrame tf = TimeFrame.valueOf(freq); 
+				IArchiveWriter writer = this.archFac.getWriter(tf);
+				//
+				if(field==null){
+					writer.delete(seriesId, start, end);
+				}
+				else{
+					writer.delete(seriesId, field, start, end);
+				}
+			}
+			// archFac.getWriter(TimeFrame.RAW).delete(arg0, arg1, arg2)
+		} else if (paramMap.containsKey("SERIESID")
+				&& paramMap.containsKey("FREQ")
 				&& paramMap.containsKey("FIELD")
 				&& paramMap.containsKey("STARTDATE")
 				&& paramMap.containsKey("ENDDATE")) {
@@ -180,7 +219,7 @@ public class CSVServlet extends HttpServlet {
 					}
 					response.getWriter().println();
 					response.getWriter().flush();
-					// 
+					//
 					i++;
 					if (i >= maxRows)
 						break;
@@ -200,25 +239,25 @@ public class CSVServlet extends HttpServlet {
 	/**
 	 * 
 	 * @param seriesId
-	 * @throws DaoException 
+	 * @throws DaoException
 	 */
-	private void sanityCheck(String seriesId) throws DaoException{
+	private void sanityCheck(String seriesId) throws DaoException {
 		String[] similarIds = daoF.mdiDao().findIdsLike(seriesId);
-		if(similarIds.length==0){
-			// create a default market data instrument. 
+		if (similarIds.length == 0) {
+			// create a default market data instrument.
 			MarketDataInstrument mdi = new MarketDataInstrument();
-			int dotIndex = seriesId.indexOf("."); 
-			if(dotIndex!=-1){
-				String provider = seriesId.substring(0, dotIndex); 
-				String inst = seriesId.substring(dotIndex + 1); 
-				mdi.setMdProvider(provider); 
-				mdi.setProviderSpecificId(inst); 
+			int dotIndex = seriesId.indexOf(".");
+			if (dotIndex != -1) {
+				String provider = seriesId.substring(0, dotIndex);
+				String inst = seriesId.substring(dotIndex + 1);
+				mdi.setMdProvider(provider);
+				mdi.setProviderSpecificId(inst);
 				daoF.mdiDao().update(mdi);
 			}
-			// 
+			//
 		}
 	}
-	
+
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PrintWriter response = resp.getWriter();
@@ -235,16 +274,15 @@ public class CSVServlet extends HttpServlet {
 					.valueOf((String) paramMap.get("FREQ")));
 			if (iaw != null) {
 				String seriesId = ((String) paramMap.get("SERIESID"));
-				// let's check if we have a market data instrument for SeriesID. 
+				// let's check if we have a market data instrument for SeriesID.
 				try {
 					sanityCheck(seriesId);
 				} catch (DaoException e) {
-					// let's ignore anything that goes wrong ... 
+					// let's ignore anything that goes wrong ...
 					e.printStackTrace();
 				}
-				// 
-				
-				
+				//
+
 				String field = ((String) paramMap.get("FIELD"));
 				log.info("Storing data for " + seriesId + "/" + field + "/"
 						+ paramMap.get("FREQ"));

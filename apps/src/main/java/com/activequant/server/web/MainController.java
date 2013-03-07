@@ -211,7 +211,10 @@ public class MainController {
 	public String excelAddon(Map<String, Object> map) {
 		return "excel_addon";
 	}
-
+	@RequestMapping("/video_chat")
+	public String videoChat(Map<String, Object> map) {
+		return "video_chat";
+	}
 
 	@RequestMapping(value = "/component/description", method = RequestMethod.GET)
 	public @ResponseBody

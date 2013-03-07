@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.activequant.component.ComponentServer;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
@@ -191,7 +192,19 @@ public final class AQ2Server {
 					appContext.getBean(IDaoFactory.class));
 		}
 
+		
+		if (isTrue(properties, "componentserver.start")) {
+			String springFile = properties
+					.getProperty("componentserver.springFile");
+			if(springFile!=null)		
+				new ComponentServer(springFile);
+			else
+				log.warn("No spring file for starting a component server found."); 
+		}
+		
 		//
+		
+		
 		while (runFlag) {
 			Thread.sleep(250);
 		}
