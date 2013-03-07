@@ -99,7 +99,7 @@ body {
 								<li><a href="http://server.activequant.com/download.html">Download
 										page</a></li>
 								<li class="divider"></li>
-								<li><a href="http://activequant.com/contact">Contact
+								<li><a href="http://www.activequant.com/index.php/contact">Contact
 										&amp; Consulting</a></li>
 
 							</ul></li>

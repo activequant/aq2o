@@ -1,8 +1,7 @@
 <%@include file="header.jsp"%>
 <h3>Documentation</h3>
 
-<h4>Components</h4>
-<p>Components extend the functionality of your server. They are easy to create. </p> 
+<p>All documentation is located in the <a href="http://developers.activequant.org:3000/projects/aq2o/wiki">ActiveQuant WIKI</a>. 
 
 <hr />
 <%@include file="footer.jsp"%>
