@@ -66,7 +66,7 @@
 
 	<login-config>
 		<auth-method>BASIC</auth-method>     <!-- Use http basic authentication -->
-		<realm-name>ActivrQuant MASTER</realm-name>  <!-- Users are defined in this realm -->
+		<realm-name>ActiveQuant MASTER</realm-name>  <!-- Users are defined in this realm -->
 	</login-config>
 </web-app>
 
