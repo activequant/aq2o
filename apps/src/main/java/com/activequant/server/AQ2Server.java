@@ -43,7 +43,7 @@ public final class AQ2Server {
 				+ " \\ \\___\\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\\\\\_\\    \\ \\_\\ \n"
 				+ "  \\/___/_/   \\/_____/   \\/_/\\/_/   \\/_/ \\/_/     \\/_/ \n"
 				+ "                                                      \n"
-				+ " __   __     ______     ______     ______   ______     ______\n"
+				+ " __    __     ______     ______     ______   ______     ______\n"
 				+ "/\\ \\-./  \\   /\\  __ \\   /\\  ___\\   /\\__  _\\ /\\  ___\\   /\\  == \\   \n"
 				+ "\\ \\ \\-./\\ \\  \\ \\  __ \\  \\ \\___  \\  \\/_/\\ \\/ \\ \\  __\\   \\ \\  __<   \n"
 				+ " \\ \\_\\ \\ \\_\\  \\ \\_\\ \\_\\  \\/\\_____\\    \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ \n"
@@ -229,7 +229,7 @@ public final class AQ2Server {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		String springFile = "fwspring.xml";
+		String springFile = "serverspring.xml";
 		//
 		if (args.length > 0)
 			springFile = args[1];

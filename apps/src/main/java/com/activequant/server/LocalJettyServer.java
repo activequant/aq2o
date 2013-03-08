@@ -113,13 +113,12 @@ public class LocalJettyServer {
 			connectors = new Connector[1];
 			connectors[0] = sc;
 			server.setConnectors(connectors);
-
 		}
 
 		// let's add a default user.
 
 		JettyWordpressLoginService j = new JettyWordpressLoginService(
-				"ActivrQuant MASTER");
+				"ActiveQuant MASTER");
 
 //		HashLoginService ls = new HashLoginService("ActivrQuant MASTER");
 //		ls.putUser("user", Credential.getCredential("user"),
@@ -148,12 +147,9 @@ public class LocalJettyServer {
 		// if we have a direct data source, add the CSV Table Dump Servlet.
 		ServletContextHandler refDumpCtxt = new ServletContextHandler(
 				server, "/datadump", true, false); 
-		if(ds!=null){
-			 
-			refDumpCtxt.addServlet(new ServletHolder(new RefDumpServlet(ds)), "/");
-				
+		if(ds!=null){			 
+			refDumpCtxt.addServlet(new ServletHolder(new RefDumpServlet(ds)), "/");				
 		}
-		
 		
 		// register all handlers.
 		HandlerList handlers = new HandlerList();

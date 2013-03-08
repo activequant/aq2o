@@ -43,6 +43,7 @@ public class CSVServlet extends HttpServlet {
 
 	public CSVServlet(IArchiveFactory archFac, IDaoFactory daoF) {
 		this.archFac = archFac;
+		this.daoF = daoF;
 	}
 
 	private String instructions = "You need to specify: SERIESID, FREQ, FIELD, STARTDATE, ENDDATE. Example:http://localhost:44444/csv/?SERIESID=BBGT_IRZ10 Comdty&FREQ=EOD&FIELD=PX_SETTLE&STARTDATE=20010101&ENDDATE=20120301";
@@ -242,7 +243,8 @@ public class CSVServlet extends HttpServlet {
 	 * @param seriesId
 	 * @throws DaoException
 	 */
-	private void sanityCheck(String seriesId) throws DaoException {
+	private void sanityCheck(String seriesId) throws Exception {
+		log.info("Checking if "+seriesId+" is already known as an MDI."); 
 		String[] similarIds = daoF.mdiDao().findIdsLike(seriesId);
 		if (similarIds.length == 0) {
 			// create a default market data instrument.
@@ -253,14 +255,21 @@ public class CSVServlet extends HttpServlet {
 				String inst = seriesId.substring(dotIndex + 1);
 				mdi.setMdProvider(provider);
 				mdi.setProviderSpecificId(inst);
+				log.info("Creating MDI: " + mdi.getId()); 
 				daoF.mdiDao().update(mdi);
 			}
-			//
+			else{
+				log.warn("Not creating MDI as provider and instrument were not contained in ID.");
+				throw new Exception("Not creating MDI as provider and instrument were not contained in ID (you need to use a '<provider>.<instrument>' notation.");
+			}
+		}
+		else{
+			log.info("All fine, known MDI. "); 
 		}
 	}
 
 	private String getPart(HttpServletRequest req, String part)
-			throws IOException, ServletException {		
+			throws IOException, ServletException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(req
 				.getPart(part).getInputStream()));
 		StringBuffer sb = new StringBuffer();
@@ -276,107 +285,115 @@ public class CSVServlet extends HttpServlet {
 	//
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		//
-		log.info("Handling post request. ");
 
-		MultipartRequest multi;
-		req.getParts();
-		req.getParameterMap();
-		String s = getPart(req, "SERIESID").trim();
-		String field = getPart(req, "FIELD").trim();
-		String timeFrame = getPart(req, "FREQ").trim();
-		String data = getPart(req, "DATA").trim();
+		try {
+			//
+			log.info("Handling post request. ");
 
-		//
-		Map paramMap = req.getParameterMap();
+			req.getParts();
+			req.getParameterMap();
+			String s = getPart(req, "SERIESID").trim();
+			String field = getPart(req, "FIELD").trim();
+			String timeFrame = getPart(req, "FREQ").trim();
+			String data = getPart(req, "DATA").trim();
+			log.info("seriesId:" + s + " // field : " + field + " // freq: "
+					+ timeFrame + " // data length: " + data.length());
 
-		//
-		//
-		// if (paramMap.containsKey("SERIESID") && paramMap.containsKey("FREQ")
-		// && paramMap.containsKey("FIELD")) {
-		//
+			//
+			Map paramMap = req.getParameterMap();
 
-		// Object seriesObject = paramMap.get("SERIESID");
-		// @SuppressWarnings("rawtypes")
-		// String s = ""; // (String) paramMap.get("SERIESID");
-		// if (seriesObject.getClass().isArray()) {
-		// s = ((String[]) seriesObject)[0];
-		// } else
-		// s = (String) seriesObject;
-		// //
-		//
-
-		// Object fieldObject = paramMap.get("FIELD");
-		// String field = "";
-		// if (fieldObject.getClass().isArray())
-		// field = ((String[]) fieldObject)[0];
-		// else
-		// field = (String) fieldObject;
-		//
-		//
-
-		// String timeFrame = "";
-		// Object timeFrameObject = paramMap.get("FREQ");
-		// if (timeFrameObject.getClass().isArray())
-		// timeFrame = ((String[]) timeFrameObject)[0];
-		// else
-		// timeFrame = (String) timeFrameObject;
-		//
-		//
-		// String data = "";
-		// Object dataObject = paramMap.get("DATA");
-		// if (dataObject.getClass().isArray())
-		// data = ((String[]) dataObject)[0];
-		// else
-		// data = (String) dataObject;
-
-		IArchiveWriter iaw = archFac.getWriter(TimeFrame.valueOf(timeFrame));
-		if (iaw != null) {
-			String seriesId = s;
-			// let's check if we have a market data instrument for SeriesID.
-			try {
-				sanityCheck(seriesId);
-			} catch (DaoException e) {
-				// let's ignore anything that goes wrong ...
-				e.printStackTrace();
-			}
+			//
+			//
+			// if (paramMap.containsKey("SERIESID") &&
+			// paramMap.containsKey("FREQ")
+			// && paramMap.containsKey("FIELD")) {
 			//
 
-			log.info("Storing data for " + seriesId + "/" + field + "/"
-					+ timeFrame);
+			// Object seriesObject = paramMap.get("SERIESID");
+			// @SuppressWarnings("rawtypes")
+			// String s = ""; // (String) paramMap.get("SERIESID");
+			// if (seriesObject.getClass().isArray()) {
+			// s = ((String[]) seriesObject)[0];
+			// } else
+			// s = (String) seriesObject;
+			// //
+			//
 
-			BufferedReader br2 = new BufferedReader(new InputStreamReader(
-					new ByteArrayInputStream(data.getBytes())));
-			String line = br2.readLine();
-			long lineCounter = 0;
-			while (line != null) {
-				try {
-					String[] parts = line.split(",");
-					if (parts.length == 2) {
-						//
-						TimeStamp ts = new TimeStamp(
-								(long) Double.parseDouble(parts[0]));
-						if (parts[1] != null && !parts[1].trim().equals("NA")) {
-							Double val = Double.parseDouble(parts[1]);
+			// Object fieldObject = paramMap.get("FIELD");
+			// String field = "";
+			// if (fieldObject.getClass().isArray())
+			// field = ((String[]) fieldObject)[0];
+			// else
+			// field = (String) fieldObject;
+			//
+			//
+
+			// String timeFrame = "";
+			// Object timeFrameObject = paramMap.get("FREQ");
+			// if (timeFrameObject.getClass().isArray())
+			// timeFrame = ((String[]) timeFrameObject)[0];
+			// else
+			// timeFrame = (String) timeFrameObject;
+			//
+			//
+			// String data = "";
+			// Object dataObject = paramMap.get("DATA");
+			// if (dataObject.getClass().isArray())
+			// data = ((String[]) dataObject)[0];
+			// else
+			// data = (String) dataObject;
+
+			sanityCheck(s);
+			
+			IArchiveWriter iaw = archFac
+					.getWriter(TimeFrame.valueOf(timeFrame));
+			if (iaw != null) {
+				String seriesId = s;
+				// let's check if we have a market data instrument for SeriesID.
+				
+				//
+
+				log.info("Storing data for " + seriesId + "/" + field + "/"
+						+ timeFrame);
+
+				BufferedReader br2 = new BufferedReader(new InputStreamReader(
+						new ByteArrayInputStream(data.getBytes())));
+				String line = br2.readLine();
+				long lineCounter = 0;
+				while (line != null) {
+					try {
+						String[] parts = line.split(",");
+						if (parts.length == 2) {
 							//
-							iaw.write(seriesId, ts, field, val);
-							log.info("Writing " + seriesId + " / " + ts + " / "
-									+ field + " /" + val);
-							lineCounter++;
+							TimeStamp ts = new TimeStamp(
+									(long) Double.parseDouble(parts[0]));
+							if (parts[1] != null
+									&& !parts[1].trim().equals("NA")) {
+								Double val = Double.parseDouble(parts[1]);
+								//
+								iaw.write(seriesId, ts, field, val);
+								log.info("Writing " + seriesId + " / " + ts
+										+ " / " + field + " /" + val);
+								lineCounter++;
+							}
 						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
-				} catch (Exception ex) {
-					ex.printStackTrace();
+					line = br2.readLine();
 				}
-				line = br2.readLine();
+				iaw.commit();
+				log.info("Committed " + lineCounter + " lines to storage. ");
+				resp.getWriter().println("Wrote " + lineCounter + " lines. ");
 			}
-			iaw.commit();
-			log.info("Committed " + lineCounter + " lines to storage. ");
-			resp.getWriter().println("Wrote " + lineCounter + " lines. ");
+			// }
+			// else{
+			//
+			// }
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			resp.getWriter().println(ex);
 		}
-		// }
-		// else{
-		//
-		// }
 	}
 }
