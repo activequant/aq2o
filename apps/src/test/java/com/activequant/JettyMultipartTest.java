@@ -1,7 +1,6 @@
 package com.activequant;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
