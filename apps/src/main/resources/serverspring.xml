@@ -9,10 +9,26 @@
          http://cxf.apache.org/jaxrs
          http://cxf.apache.org/schemas/jaxrs.xsd">
 
-	<!--  we'll just reference fwspring for now.  -->
+	<!-- we'll just reference fwspring for now. -->
 	<import resource="fwspring.xml" />
-	
-	<bean class="com.activequant.server.web.ServerComponent" init-method="init"></bean>
-	
-	
+
+
+	<bean id="tagDao" lazy-init="true" class="com.activequant.dao.hbase.TagDao">
+		<constructor-arg>
+			<value>${hbase.zookeeper.host}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="archiveFactory" lazy-init="true"
+		class="com.activequant.archive.hbase.HBaseArchiveFactory">
+		<constructor-arg>
+			<value>${hbase.zookeeper.host}</value>
+		</constructor-arg>
+	</bean>
+
+
+	<bean class="com.activequant.server.web.ServerComponent" lazy-init="true"
+		init-method="init"></bean>
+
+
 </beans>
