@@ -24,6 +24,11 @@ public interface IMarketDataInstrumentDao extends IEntityDao<MarketDataInstrumen
 
     MarketDataInstrument[] findFor(Instrument instrument);
     
+    /**
+     * returns the IDs for an instrument Id
+     * @param instrumentId
+     * @return
+     */
     List<String> findIdsFor(String instrumentId); 
     
     /**

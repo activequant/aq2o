@@ -33,6 +33,7 @@ public class MarketDataInstrumentDao extends GenericMapperDao<MarketDataInstrume
         return mdis.toArray(new MarketDataInstrument[] {});
     }
 
+ 
     public List<String> findIdsFor(String instrumentId){
     	List<String> ids = mapper.findByString(tableName, "INSTRUMENTID", instrumentId);
     	return ids; 
