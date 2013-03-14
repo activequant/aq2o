@@ -21,7 +21,6 @@ import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.Tuple;
 import com.activequant.interfaces.archive.IArchiveReader;
-import com.activequant.timeseries.TSContainer2;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
 /**
@@ -32,14 +31,14 @@ import com.activequant.utils.UniqueTimeStampGenerator;
  * Visibility on package level only is intended! compare the corresponding
  * factory class.
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
 class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 
     private UniqueTimeStampGenerator timeStampGenerator = new UniqueTimeStampGenerator();
     private Logger log = Logger.getLogger(HBaseArchiveReader.class);
-    private long slotSizeInHours = 24l; 
+    private long slotSizeInHours = 24l * 30l; // 30 days at once.  
 
     HBaseArchiveReader(final String zookeeperHost, final TimeFrame tf) throws IOException {
         super(zookeeperHost, 2181, "TSDATA_" + tf.toString());
