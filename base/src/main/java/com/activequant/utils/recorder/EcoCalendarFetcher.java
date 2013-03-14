@@ -13,6 +13,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+/**
+ * Work in progress. 
+ * 
+ * @author GhostRider
+ *
+ */
 public class EcoCalendarFetcher {
 
 	public EcoCalendarFetcher() throws IOException, URISyntaxException {

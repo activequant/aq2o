@@ -39,8 +39,8 @@ public class CSVInputStreamToOHLCIterator extends StreamEventIterator<TimeStream
 		offset = resInSeconds * 1000l * 1000l * 1000l;
 		this.in = in;
 		br = new BufferedReader(new InputStreamReader(in));
-		// header.
-		String l = br.readLine();
+		// header, we'll just skip it. 
+		br.readLine();
 
 		line = br.readLine();
 	}

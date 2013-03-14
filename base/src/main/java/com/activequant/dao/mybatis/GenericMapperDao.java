@@ -16,7 +16,6 @@ import com.activequant.dao.mybatis.mapper.GenericRowMapper;
 import com.activequant.domainmodel.GenericRow;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.Tuple;
 import com.activequant.domainmodel.exceptions.DaoException;
 
 /**

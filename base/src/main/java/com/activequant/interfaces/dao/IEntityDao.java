@@ -1,11 +1,9 @@
 package com.activequant.interfaces.dao;
 
-import java.util.List;
 import java.util.Map;
 
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.Tuple;
 import com.activequant.domainmodel.exceptions.DaoException;
 
 public interface IEntityDao<T extends PersistentEntity> {

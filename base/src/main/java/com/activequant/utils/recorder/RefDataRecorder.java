@@ -10,8 +10,6 @@ import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.interfaces.dao.IInstrumentDao;
-import com.activequant.interfaces.dao.IMarketDataInstrumentDao;
-import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 import com.activequant.interfaces.transport.IReceiver;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
@@ -27,8 +25,6 @@ public class RefDataRecorder extends ComponentBase {
 	final Timer t = new Timer(true);
 	final long collectionPhase = 5000l;
 	// 
-	private IMarketDataInstrumentDao mdiDao; 
-	private ITradeableInstrumentDao tdiDao; 
 	private IInstrumentDao iDao; 
 
 	// 

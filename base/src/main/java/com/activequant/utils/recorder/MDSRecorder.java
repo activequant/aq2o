@@ -28,7 +28,6 @@ import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
-import com.activequant.utils.snmp.SNMPReporter;
 
 /**
  * A market data snapshot recorder.
@@ -43,7 +42,7 @@ public class MDSRecorder extends ComponentBase {
 	final Timer t = new Timer(true);
 	final long collectionPhase = 5000l;
 	private final ConcurrentLinkedQueue<MarketDataSnapshot> collectionList = new ConcurrentLinkedQueue<MarketDataSnapshot>();
-	private SNMPReporter snmpReporter;
+//	private SNMPReporter snmpReporter;
 
 	private Marshaller marshaller = new Marshaller();
 	private IArchiveWriter rawWriter = null;
@@ -103,7 +102,6 @@ public class MDSRecorder extends ComponentBase {
 							+ ", " + bestAskPx +", "+ bestAskQ);
 			}
 		}
-
 	}
 
 	public MDSRecorder(ITransportFactory transFac, IArchiveFactory archFac, IDaoFactory daoFac, String mdiFile) throws Exception {
@@ -136,11 +134,11 @@ public class MDSRecorder extends ComponentBase {
 		while (l != null) {
 			if (!l.startsWith("#") && !l.isEmpty()) {
 				String symbol = l;
-				int depth = 1;
+//				int depth = 1;
 				if (l.indexOf(";") != -1) {
 					String[] s = l.split(";");
 					symbol = s[0];
-					depth = Integer.parseInt(s[1]);
+//					depth = Integer.parseInt(s[1]);
 				}
 				instruments.add(symbol);
 			}

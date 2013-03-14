@@ -10,9 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -24,8 +22,6 @@ import com.activequant.domainmodel.Tuple;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveReader;
 import com.activequant.interfaces.archive.IArchiveWriter;
-import com.activequant.interfaces.dao.IDaoFactory;
-import com.activequant.interfaces.transport.ITransportFactory;
 
 /**
  * Rechandler recreates the OHLCV bars for a specific day, for a specific time
@@ -38,12 +34,10 @@ import com.activequant.interfaces.transport.ITransportFactory;
 public class Rechandler {
 
 	private IArchiveFactory archiveFactory;
-	private ITransportFactory transFac;
-	private Logger log = Logger.getLogger(Rechandler.class);
+	
 	final Timer t = new Timer(true);
 	final long collectionPhase = 5000l;
 	private TimeFrame tf;
-	private final ConcurrentLinkedQueue<OHLCV> collectionList = new ConcurrentLinkedQueue<OHLCV>();
 	private TimeStamp startTimeStamp, endTimeStamp;
 	private final IArchiveWriter writer;
 	private final IArchiveReader reader;
@@ -60,11 +54,11 @@ public class Rechandler {
 		startTimeStamp = new TimeStamp(sdf.parse(sdf.format(cal.getTime())));
 
 		//
-		System.out.println("Processing data from " + startTimeStamp.getDate() + " to " + endTimeStamp.getDate());
+		System.out.println("Processing data from " + startTimeStamp.getCalendar().getTime() + " to " + endTimeStamp.getCalendar().getTime());
 
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[] { springFile });
 		System.out.println("Starting up and fetching idf");
-		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
+//		IDaoFactory idf = (IDaoFactory) appContext.getBean("ibatisDao");
 		archiveFactory = (IArchiveFactory) appContext.getBean("archiveFactory");
 		writer = archiveFactory.getWriter(tf);
 		reader = archiveFactory.getReader(TimeFrame.RAW);
@@ -81,11 +75,11 @@ public class Rechandler {
 		while (l != null) {
 			if (!l.startsWith("#") && !l.isEmpty()) {
 				String symbol = l;
-				int depth = 1;
+//				int depth = 1;
 				if (l.indexOf(";") != -1) {
 					String[] s = l.split(";");
 					symbol = s[0];
-					depth = Integer.parseInt(s[1]);
+//					depth = Integer.parseInt(s[1]);
 				}
 				instruments.add(symbol);
 			}
