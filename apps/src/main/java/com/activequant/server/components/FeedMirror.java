@@ -8,7 +8,7 @@ import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
 
 /**
- * sample component that creates random market data.
+ * The feed mirror subscribes to channels and relays them into another server but under the same channel name. 
  * 
  * @author GhostRider
  * 
