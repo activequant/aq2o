@@ -107,6 +107,7 @@ public class BlackScholesTest extends TestCase {
 					
 					long nanoTime = System.nanoTime();
 					// let's price our options. 
+					// this is a classical candidate for parallelization
 					for(int i=0;i<instruments;i++){
 						double strike = 10.0 + i; 
 						Double p = callPrice(sharePrice, strike, riskFreeRate, volatility, expiryInYears);
