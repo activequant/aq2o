@@ -30,6 +30,7 @@ public class UDPRelay extends ComponentBase {
 	//
 	private final String udpTargetHost;
 	private final int udpTargetPort;
+	private final int udpListenerPort; 
 	MessageFactory mf = new MessageFactory();
 
 	public UDPRelay(ITransportFactory localNode) throws Exception {
@@ -39,6 +40,21 @@ public class UDPRelay extends ComponentBase {
 				"192.168.0.177");
 		this.udpTargetPort = Integer.parseInt(super.properties.getProperty(
 				"UDP_TARGET_PORT", "54321"));
+		this.udpListenerPort = this.udpTargetPort;
+		init();
+	}
+	
+	public UDPRelay(ITransportFactory localNode, String targetHost, int targetPort, int localPort) throws Exception {
+		super("UDPRelay", localNode);
+		//
+		this.udpTargetHost = targetHost;
+		this.udpTargetPort = targetPort;			
+		this.udpListenerPort = localPort; 
+		init();
+	}
+
+	
+	private void init(){
 
 		//
 		Thread t = new Thread(new Runnable() {
@@ -65,7 +81,7 @@ public class UDPRelay extends ComponentBase {
 			try {
 				System.out.println("Starting listener thread at port "
 						+ udpTargetPort + " ...");
-				DatagramSocket serverSocket = new DatagramSocket(udpTargetPort);
+				DatagramSocket serverSocket = new DatagramSocket(udpListenerPort);
 				while (true) {
 					// read packets, we will take a maximum size of 1300.
 					byte[] buffer = new byte[6 * 200];
@@ -169,6 +185,9 @@ public class UDPRelay extends ComponentBase {
 								//
 								commandByte = 0x02;
 							}
+							else 
+								// don't handle it. 
+								return;
 							//
 							Integer id = Integer.parseInt(s);
 							//
@@ -190,8 +209,8 @@ public class UDPRelay extends ComponentBase {
 							try {
 								System.out.println("Sending " + id + " / " + v +" / field : " + field);
 								clientSocket
-										.send(new DatagramPacket(bytes,
-												bytes.length, ipAddress,
+										.send(new DatagramPacket(data,
+												data.length, ipAddress,
 												udpTargetPort));
 							} catch (IOException e) {
 								e.printStackTrace();
