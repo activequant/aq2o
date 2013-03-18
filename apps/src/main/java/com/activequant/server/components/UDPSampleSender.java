@@ -20,7 +20,6 @@ public class UDPSampleSender extends ComponentBase {
 	//
 	private final String udpTargetHost;
 	private final int udpTargetPort;
-	private String[] channels = new String[] {};
 
 	public static void main(String[] args) throws Exception {
 		new UDPSampleSender();
@@ -87,7 +86,6 @@ public class UDPSampleSender extends ComponentBase {
 			for (int i = 0; i < 200; i++) {
 				//
 				int startPos = i * 6;
-				int endPos = startPos + 6;
 				//
 				byte[] floatValue = new byte[4];
 				//

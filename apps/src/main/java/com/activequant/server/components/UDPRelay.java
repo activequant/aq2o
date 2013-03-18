@@ -30,7 +30,6 @@ public class UDPRelay extends ComponentBase {
 	//
 	private final String udpTargetHost;
 	private final int udpTargetPort;
-	private String[] channels = new String[] {};
 	MessageFactory mf = new MessageFactory();
 
 	public UDPRelay(ITransportFactory localNode) throws Exception {
@@ -89,7 +88,6 @@ public class UDPRelay extends ComponentBase {
 			for (int i = 0; i < 200; i++) {
 				//
 				int startPos = i * 6;
-				int endPos = startPos + 6;
 				//
 				byte[] floatValue = new byte[4];
 				//

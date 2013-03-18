@@ -21,7 +21,6 @@ import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.transport.ITransportFactory;
-import com.activequant.server.components.ReplicatorSlaveComponent.ReplicationTask;
 import com.activequant.transport.activemq.ActiveMQTransportFactory;
 
 /**

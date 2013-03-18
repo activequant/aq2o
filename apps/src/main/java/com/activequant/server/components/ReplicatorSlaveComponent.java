@@ -81,7 +81,6 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 						BufferedReader br2 = new BufferedReader(isr);
 						// 
 						String inputLine;
-						StringBuffer sb = new StringBuffer();
 						int counter = 0;
 						while ((inputLine = br2.readLine()) != null) {
 							// ok, we got a line.
@@ -163,7 +162,6 @@ public class ReplicatorSlaveComponent extends ComponentBase {
 							new InputStreamReader(u.openStream()));
 					//
 					String inputLine;
-					StringBuffer sb = new StringBuffer();
 					while ((inputLine = br2.readLine()) != null) {
 						// ok, we got a line.
 						if (inputLine.length() > 0) {
