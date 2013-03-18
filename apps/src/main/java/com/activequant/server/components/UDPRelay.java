@@ -30,7 +30,8 @@ public class UDPRelay extends ComponentBase {
 	//
 	private final String udpTargetHost;
 	private final int udpTargetPort;
-	private final int udpListenerPort; 
+	private final int udpListenerPort;
+	private final boolean silent = true; 
 	MessageFactory mf = new MessageFactory();
 
 	public UDPRelay(ITransportFactory localNode) throws Exception {
@@ -100,6 +101,13 @@ public class UDPRelay extends ComponentBase {
 		}
 
 		private void handlePacket(DatagramPacket packet) {
+			if(!silent){
+			System.out.println("===PacketDump======");
+			for (int i = 0; i < packet.getData().length; i++) {
+				System.out.print(packet.getData()[i] + " ");
+			}
+			System.out.println("\n=========");
+			}
 			// let's process
 			for (int i = 0; i < 200; i++) {
 				//
@@ -119,7 +127,7 @@ public class UDPRelay extends ComponentBase {
 						.order(ByteOrder.BIG_ENDIAN).getFloat();
 
 				String instId = "" + new Integer(iid);
-				System.out.println("Theoretical price for instrument id "
+				if(!silent)System.out.println("Theoretical price for instrument id "
 						+ instId + " = " + f);
 
 				//
@@ -137,11 +145,7 @@ public class UDPRelay extends ComponentBase {
 				//
 			}
 
-			System.out.println("===PacketDump======");
-			for (int i = 0; i < packet.getData().length; i++) {
-				System.out.print(packet.getData()[i] + " ");
-			}
-			System.out.println("\n=========");
+			
 		}
 	}
 
