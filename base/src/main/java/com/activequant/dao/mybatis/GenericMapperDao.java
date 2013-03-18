@@ -62,7 +62,7 @@ public class GenericMapperDao<T extends PersistentEntity> {
 			mapper.genIndex8(table);
 			mapper.genKey9(table);
 		} catch (Exception ex) {
-			log.info("Error creating table, possibly it exists already. "
+			log.debug("Error creating table, possibly it exists already. "
 					+ ex.getStackTrace()[0]);
 		}
 	}

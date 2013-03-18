@@ -54,6 +54,9 @@ public abstract class ComponentBase {
 		
 		if(new File(propertiesFile).exists())
 			properties.load(new FileInputStream(propertiesFile));
+		else
+			// let's generate an empty file. 
+			storeProperties();
 		// 
 		sendStatus("Constructed.");
 		

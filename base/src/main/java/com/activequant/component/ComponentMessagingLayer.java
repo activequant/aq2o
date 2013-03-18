@@ -26,17 +26,20 @@ public class ComponentMessagingLayer {
 
 	public ComponentMessagingLayer(ITransportFactory transFac)
 			throws TransportException {
-		// i know it's unsafe. someone make this safe (for example through bus introspection...)
+		// i know it's unsafe. someone make this safe (for example through bus
+		// introspection...)
 		randomId = "ID" + new Random().nextInt(Integer.MAX_VALUE);
 		this.transFac = transFac;
 		// subscribe to the control channel.
-		transFac.getReceiver(ETransportType.CONTROL.toString()).getRawEvent()
-				.addEventListener(new IEventListener<byte[]>() {
-					@Override
-					public void eventFired(byte[] event) {
-						process(event);
-					}
-				});
+		if (transFac != null)
+			transFac.getReceiver(ETransportType.CONTROL.toString())
+					.getRawEvent()
+					.addEventListener(new IEventListener<byte[]>() {
+						@Override
+						public void eventFired(byte[] event) {
+							process(event);
+						}
+					});
 	}
 
 	//
@@ -44,8 +47,8 @@ public class ComponentMessagingLayer {
 		//
 		try {
 			String s = new String(bytes);
-//			if (log.isDebugEnabled())
-//				log.debug("RECV:" + s);
+			// if (log.isDebugEnabled())
+			// log.debug("RECV:" + s);
 			String[] parts = s.split(";");
 			String to = parts[0];
 			String cmd = parts[1];
@@ -73,7 +76,7 @@ public class ComponentMessagingLayer {
 							// target end point. let's check the command.
 							if (cmd.equals("RD"))
 								sendDescription(component.getDescription());
-							if(cmd.equals("C"))
+							if (cmd.equals("C"))
 								component.customMessage(parts[2]);
 						}
 					}
@@ -88,46 +91,53 @@ public class ComponentMessagingLayer {
 	//
 	public void sendStatus(String message) throws TransportException, Exception {
 		String msg = "server;S;" + randomId + ";" + message;
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
-				msg.getBytes());
+		if (transFac != null)
+			transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+					msg.getBytes());
 	}
 
 	//
 	public void sendHeartbeat() throws TransportException, Exception {
 		String message = "server;H;" + randomId + ";" + component.getName();
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
-				message.getBytes());
+		if (transFac != null)
+			transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+					message.getBytes());
 	}
 
 	//
 	public void sendDescription(String description) throws TransportException,
 			Exception {
 		String message = "server;SD;" + randomId + ";" + description;
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
-				message.getBytes());
+		if (transFac != null)
+			transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+					message.getBytes());
 	}
 
 	//
 	public void requestDescription(String componentId)
 			throws TransportException, Exception {
 		String message = componentId + ";RD";
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
-				message.getBytes());
+		if (transFac != null)
+			transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+					message.getBytes());
 	}
 
-	public void customMessage(String componentId, String msg) throws TransportException, Exception{
-		String message = componentId + ";C;"+msg;
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
-				message.getBytes());
+	public void customMessage(String componentId, String msg)
+			throws TransportException, Exception {
+		String message = componentId + ";C;" + msg;
+		if (transFac != null)
+			transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+					message.getBytes());
 	}
-	
+
 	//
 	public void response(String component, String function,
 			Map<String, Object> map) throws TransportException, Exception {
 		//
 		String message = component + ";S;" + function + ";";
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
-				message.getBytes());
+		if (transFac != null)
+			transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+					message.getBytes());
 	}
 
 	//
@@ -135,8 +145,9 @@ public class ComponentMessagingLayer {
 			Map<String, Object> map) throws TransportException, Exception {
 		//
 		String message = componentId + ";G;" + function + ";";
-		transFac.getPublisher(ETransportType.CONTROL.toString()).send(
-				message.getBytes());
+		if (transFac != null)
+			transFac.getPublisher(ETransportType.CONTROL.toString()).send(
+					message.getBytes());
 	}
 
 	// ---
