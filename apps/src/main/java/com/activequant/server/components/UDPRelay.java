@@ -39,7 +39,7 @@ public class UDPRelay extends ComponentBase {
 		this.udpTargetHost = super.properties.getProperty("UDP_TARGET_HOST",
 				"192.168.0.177");
 		this.udpTargetPort = Integer.parseInt(super.properties.getProperty(
-				"UDP_TARGET_HOST", "54321"));
+				"UDP_TARGET_PORT", "54321"));
 
 		//
 		Thread t = new Thread(new Runnable() {
@@ -145,6 +145,7 @@ public class UDPRelay extends ComponentBase {
 					new IEventListener<byte[]>() {
 						@Override
 						public void eventFired(byte[] arg0) {
+							try{
 							// make a value set out of it.
 							BaseMessage bm = null; 
 							try {
@@ -189,6 +190,7 @@ public class UDPRelay extends ComponentBase {
 							data[5] = bytes[3];
 							//
 							try {
+								System.out.println("Sending " + id + " / " + v +" / field : " + field);
 								clientSocket
 										.send(new DatagramPacket(bytes,
 												bytes.length, ipAddress,
@@ -197,6 +199,8 @@ public class UDPRelay extends ComponentBase {
 								e.printStackTrace();
 							}
 							//
+							}
+							catch(Exception ex){ex.printStackTrace();}
 						}
 					});
 		}

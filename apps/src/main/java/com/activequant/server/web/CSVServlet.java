@@ -96,6 +96,17 @@ public class CSVServlet extends HttpServlet {
 
 	}
 
+	private void search(String param, HttpServletResponse response)
+			throws Exception {
+		OutputStream out = (response.getOutputStream());
+		String[] ids = this.daoF.mdiDao().findIdsLike(param);
+		for(String s: ids){
+			out.write(s.getBytes());
+			out.write("\n".getBytes());
+			out.flush();	
+		}	
+	}
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -110,6 +121,12 @@ public class CSVServlet extends HttpServlet {
 		if (paramMap.containsKey("DUMP"))
 			try {
 				dumpRaw(req, response);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		if (paramMap.containsKey("SEARCH"))
+			try {
+				search(paramMap.get("SEARCH").toString(), response);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -244,7 +261,7 @@ public class CSVServlet extends HttpServlet {
 	 * @throws DaoException
 	 */
 	private void sanityCheck(String seriesId) throws Exception {
-		log.info("Checking if "+seriesId+" is already known as an MDI."); 
+		log.info("Checking if " + seriesId + " is already known as an MDI.");
 		String[] similarIds = daoF.mdiDao().findIdsLike(seriesId);
 		if (similarIds.length == 0) {
 			// create a default market data instrument.
@@ -255,16 +272,15 @@ public class CSVServlet extends HttpServlet {
 				String inst = seriesId.substring(dotIndex + 1);
 				mdi.setMdProvider(provider);
 				mdi.setProviderSpecificId(inst);
-				log.info("Creating MDI: " + mdi.getId()); 
+				log.info("Creating MDI: " + mdi.getId());
 				daoF.mdiDao().update(mdi);
-			}
-			else{
+			} else {
 				log.warn("Not creating MDI as provider and instrument were not contained in ID.");
-				throw new Exception("Not creating MDI as provider and instrument were not contained in ID (you need to use a '<provider>.<instrument>' notation.");
+				throw new Exception(
+						"Not creating MDI as provider and instrument were not contained in ID (you need to use a '<provider>.<instrument>' notation.");
 			}
-		}
-		else{
-			log.info("All fine, known MDI. "); 
+		} else {
+			log.info("All fine, known MDI. ");
 		}
 	}
 
@@ -344,13 +360,13 @@ public class CSVServlet extends HttpServlet {
 			// data = (String) dataObject;
 
 			sanityCheck(s);
-			
+
 			IArchiveWriter iaw = archFac
 					.getWriter(TimeFrame.valueOf(timeFrame));
 			if (iaw != null) {
 				String seriesId = s;
 				// let's check if we have a market data instrument for SeriesID.
-				
+
 				//
 
 				log.info("Storing data for " + seriesId + "/" + field + "/"
