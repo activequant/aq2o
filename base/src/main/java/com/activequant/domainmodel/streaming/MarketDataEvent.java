@@ -6,7 +6,16 @@ import com.activequant.domainmodel.TimeStamp;
 public abstract class MarketDataEvent extends TimeStreamEvent {
 	
 	private String mdiId; 
+	private boolean resend = false; 
 	
+	public boolean isResend() {
+		return resend;
+	}
+
+	public void setResend(boolean resend) {
+		this.resend = resend;
+	}
+
 	public ETransportType getEventType(){return ETransportType.MARKET_DATA;}
 	
 	public MarketDataEvent(String className){

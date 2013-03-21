@@ -311,6 +311,8 @@ public class Marshaller {
 		mds.setAskPrices(ArrayUtils.toPrimArray(mdsm.getAskPxList()));
 		mds.setBidSizes(ArrayUtils.toPrimArray(mdsm.getBidQList()));
 		mds.setAskSizes(ArrayUtils.toPrimArray(mdsm.getAskQList()));
+		if(mdsm.hasResend())
+			mds.setResend(mdsm.getResend()); 
 		return mds;
 	}
 

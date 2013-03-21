@@ -159,7 +159,9 @@ public class MDSRecorder extends ComponentBase {
 									MarketDataSnapshot mds = marshaller
 											.demarshall(((AQMessages.MarketDataSnapshot) bm
 													.getExtension(AQMessages.MarketDataSnapshot.cmd)));
-									collectionList.add(mds);
+									if(!mds.isResend())
+										collectionList.add(mds);
+									// else we drop it. 
 								}
 							} catch (Exception e) {
 								e.printStackTrace();

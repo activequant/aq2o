@@ -10,6 +10,7 @@ public class MarketDataSnapshot extends MarketDataEvent {
 	private double[] bidPrices, askPrices, bidSizes, askSizes;
 	private String mdiId;
 	private String tdiId; 
+	
 
 	public MarketDataSnapshot(){
 		super(MarketDataSnapshot.class.getCanonicalName());

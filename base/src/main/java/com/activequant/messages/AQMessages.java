@@ -1924,6 +1924,10 @@ public final class AQMessages {
     // required string mdiId = 6;
     boolean hasMdiId();
     String getMdiId();
+    
+    // optional bool resend = 7;
+    boolean hasResend();
+    boolean getResend();
   }
   public static final class MarketDataSnapshot extends
       com.google.protobuf.GeneratedMessage
@@ -2052,6 +2056,16 @@ public final class AQMessages {
       }
     }
     
+    // optional bool resend = 7;
+    public static final int RESEND_FIELD_NUMBER = 7;
+    private boolean resend_;
+    public boolean hasResend() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public boolean getResend() {
+      return resend_;
+    }
+    
     private void initFields() {
       timestamp_ = 0L;
       bidPx_ = java.util.Collections.emptyList();;
@@ -2059,6 +2073,7 @@ public final class AQMessages {
       bidQ_ = java.util.Collections.emptyList();;
       askQ_ = java.util.Collections.emptyList();;
       mdiId_ = "";
+      resend_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2097,6 +2112,9 @@ public final class AQMessages {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(6, getMdiIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(7, resend_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2138,6 +2156,10 @@ public final class AQMessages {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(6, getMdiIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, resend_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2275,6 +2297,8 @@ public final class AQMessages {
         bitField0_ = (bitField0_ & ~0x00000010);
         mdiId_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
+        resend_ = false;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
       
@@ -2341,6 +2365,10 @@ public final class AQMessages {
           to_bitField0_ |= 0x00000002;
         }
         result.mdiId_ = mdiId_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.resend_ = resend_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2402,6 +2430,9 @@ public final class AQMessages {
         }
         if (other.hasMdiId()) {
           setMdiId(other.getMdiId());
+        }
+        if (other.hasResend()) {
+          setResend(other.getResend());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2506,6 +2537,11 @@ public final class AQMessages {
             case 50: {
               bitField0_ |= 0x00000020;
               mdiId_ = input.readBytes();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              resend_ = input.readBool();
               break;
             }
           }
@@ -2749,6 +2785,27 @@ public final class AQMessages {
         bitField0_ |= 0x00000020;
         mdiId_ = value;
         onChanged();
+      }
+      
+      // optional bool resend = 7;
+      private boolean resend_ ;
+      public boolean hasResend() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      public boolean getResend() {
+        return resend_;
+      }
+      public Builder setResend(boolean value) {
+        bitField0_ |= 0x00000040;
+        resend_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearResend() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        resend_ = false;
+        onChanged();
+        return this;
       }
       
       // @@protoc_insertion_point(builder_scope:com.activequant.messages.MarketDataSnapshot)
@@ -17857,118 +17914,119 @@ public final class AQMessages {
       "quant.messages.ServerTime\"|\n\rLoginRespon" +
       "se\022\016\n\006status\030\001 \002(\t2[\n\003cmd\022%.com.activequ" +
       "ant.messages.BaseMessage\030f \002(\0132\'.com.act" +
-      "ivequant.messages.LoginResponse\"\322\001\n\022Mark" +
+      "ivequant.messages.LoginResponse\"\342\001\n\022Mark" +
       "etDataSnapshot\022\021\n\ttimestamp\030\001 \002(\003\022\r\n\005bid" +
       "Px\030\002 \003(\001\022\r\n\005askPx\030\003 \003(\001\022\014\n\004bidQ\030\004 \003(\001\022\014\n" +
-      "\004askQ\030\005 \003(\001\022\r\n\005mdiId\030\006 \002(\t2`\n\003cmd\022%.com." +
-      "activequant.messages.BaseMessage\030g \002(\0132,",
-      ".com.activequant.messages.MarketDataSnap" +
-      "shot\"\223\001\n\022AccountDataMessage\022\014\n\004type\030\001 \002(" +
-      "\t\022\r\n\005value\030\002 \002(\t2`\n\003cmd\022%.com.activequan" +
-      "t.messages.BaseMessage\030h \002(\0132,.com.activ" +
-      "equant.messages.AccountDataMessage\"\272\001\n\016P" +
-      "ositionReport\022\020\n\010openDate\030\001 \002(\t\022\022\n\nentry" +
-      "Price\030\002 \002(\001\022\020\n\010quantity\030\003 \002(\001\022\022\n\ntradIns" +
-      "tId\030\004 \002(\t2\\\n\003cmd\022%.com.activequant.messa" +
-      "ges.BaseMessage\030i \002(\0132(.com.activequant." +
-      "messages.PositionReport\"\224\003\n\017ExecutionRep",
-      "ort\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006execId\030\002 \002(\t\022\014\n\004" +
-      "side\030\003 \002(\005\022\020\n\010currency\030\004 \002(\t\022\020\n\010orderQty" +
-      "\030\005 \002(\001\022\r\n\005price\030\006 \002(\001\022\022\n\ntradInstId\030\007 \002(" +
-      "\t\022\024\n\014transactTime\030\010 \002(\t\022\017\n\007orderId\030\t \002(\t" +
-      "\022\020\n\010execType\030\n \002(\005\022\021\n\tordStatus\030\013 \002(\005\022\016\n" +
-      "\006cumQty\030\014 \002(\001\022\021\n\tleavesQty\030\r \002(\001\022\r\n\005avgP" +
-      "x\030\016 \002(\001\022\017\n\007ordType\030\020 \002(\t\022\014\n\004text\030\021 \001(\t\022\017" +
-      "\n\007comment\030\023 \001(\t2]\n\003cmd\022%.com.activequant" +
-      ".messages.BaseMessage\030j \002(\0132).com.active" +
-      "quant.messages.ExecutionReport\"\341\001\n\022Order",
-      "CancelRequest\022\023\n\013orgCldOrdId\030\001 \002(\t\022\017\n\007cl" +
-      "OrdId\030\002 \002(\t\022\022\n\ntradInstId\030\003 \002(\t\022\014\n\004side\030" +
-      "\004 \002(\005\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007comment\030\023 \001(\t" +
-      "2`\n\003cmd\022%.com.activequant.messages.BaseM" +
-      "essage\030k \002(\0132,.com.activequant.messages." +
-      "OrderCancelRequest\"\217\002\n\021OrderCancelReject" +
-      "\022\022\n\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n" +
-      "\norgClOrdId\030\003 \002(\t\022\021\n\tordStatus\030\004 \002(\t\022\030\n\020" +
-      "CxlRejResponseTo\030\005 \002(\t\022\024\n\014clxRejReason\030\006" +
-      " \001(\t\022\014\n\004text\030\007 \001(\t\022\017\n\007comment\030\023 \001(\t2_\n\003c",
-      "md\022%.com.activequant.messages.BaseMessag" +
-      "e\030l \002(\0132+.com.activequant.messages.Order" +
-      "CancelReject\"\271\002\n\031OrderCancelReplaceReque" +
-      "st\022\022\n\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022" +
-      "\022\n\norgClOrdId\030\003 \002(\t\022\014\n\004side\030\004 \002(\005\022\024\n\014tra" +
-      "nsactTime\030\005 \002(\t\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007ord" +
-      "Type\030\007 \002(\005\022\r\n\005price\030\010 \002(\001\022\023\n\013timeInForce" +
-      "\030\t \002(\005\022\017\n\007comment\030\023 \001(\t2g\n\003cmd\022%.com.act" +
-      "ivequant.messages.BaseMessage\030m \002(\01323.co" +
-      "m.activequant.messages.OrderCancelReplac",
-      "eRequest\"\247\002\n\010NewOrder\022\022\n\ntradInstId\030\001 \002(" +
-      "\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\norgClOrdId\030\003 \001(\t\022\014" +
-      "\n\004side\030\004 \002(\005\022\024\n\014transactTime\030\005 \001(\t\022\020\n\010or" +
-      "derQty\030\006 \002(\001\022\017\n\007ordType\030\007 \002(\005\022\r\n\005price\030\010" +
-      " \001(\001\022\023\n\013timeInForce\030\t \001(\005\022\017\n\007comment\030\023 \001" +
-      "(\t\022\016\n\006resend\030\024 \002(\0052V\n\003cmd\022%.com.activequ" +
-      "ant.messages.BaseMessage\030n \002(\0132\".com.act" +
-      "ivequant.messages.NewOrder\"\177\n\016OrderSubmi" +
-      "tted\022\017\n\007clOrdId\030\002 \002(\t2\\\n\003cmd\022%.com.activ" +
-      "equant.messages.BaseMessage\030o \002(\0132(.com.",
-      "activequant.messages.OrderSubmitted\"}\n\rO" +
-      "rderAccepted\022\017\n\007clOrdId\030\002 \002(\t2[\n\003cmd\022%.c" +
-      "om.activequant.messages.BaseMessage\030p \002(" +
-      "\0132\'.com.activequant.messages.OrderAccept" +
-      "ed\"\177\n\016OrderCancelled\022\017\n\007clOrdId\030\002 \002(\t2\\\n" +
-      "\003cmd\022%.com.activequant.messages.BaseMess" +
-      "age\030q \002(\0132(.com.activequant.messages.Ord" +
-      "erCancelled\"{\n\014OrderUpdated\022\017\n\007clOrdId\030\002" +
-      " \002(\t2Z\n\003cmd\022%.com.activequant.messages.B" +
-      "aseMessage\030r \002(\0132&.com.activequant.messa",
-      "ges.OrderUpdated\"\215\001\n\016SecurityStatus\022\r\n\005t" +
-      "diId\030\002 \002(\t\022\016\n\006status\030\003 \002(\t2\\\n\003cmd\022%.com." +
-      "activequant.messages.BaseMessage\030s \002(\0132(" +
-      ".com.activequant.messages.SecurityStatus" +
-      "\"\215\001\n\rOrderRejected\022\017\n\007clOrdId\030\002 \002(\t\022\016\n\006r" +
-      "eason\030\003 \002(\t2[\n\003cmd\022%.com.activequant.mes" +
-      "sages.BaseMessage\030t \002(\0132\'.com.activequan" +
-      "t.messages.OrderRejected\"\213\001\n\024OrderUpdate" +
-      "Submitted\022\017\n\007clOrdId\030\002 \002(\t2b\n\003cmd\022%.com." +
-      "activequant.messages.BaseMessage\030u \002(\0132.",
-      ".com.activequant.messages.OrderUpdateSub" +
-      "mitted\"\213\001\n\024OrderCancelSubmitted\022\017\n\007clOrd" +
-      "Id\030\002 \002(\t2b\n\003cmd\022%.com.activequant.messag" +
-      "es.BaseMessage\030v \002(\0132..com.activequant.m" +
-      "essages.OrderCancelSubmitted\"\231\001\n\023OrderUp" +
-      "dateRejected\022\017\n\007clOrdId\030\002 \002(\t\022\016\n\006reason\030" +
-      "\003 \002(\t2a\n\003cmd\022%.com.activequant.messages." +
-      "BaseMessage\030w \002(\0132-.com.activequant.mess" +
-      "ages.OrderUpdateRejected\"\210\002\n\020ExecutionRe" +
-      "port2\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006execId\030\002 \002(\t\022\014",
-      "\n\004side\030\003 \002(\t\022\r\n\005price\030\006 \002(\001\022\r\n\005tdiId\030\007 \002" +
-      "(\t\022\024\n\014transactTime\030\010 \002(\003\022\013\n\003qty\030\r \002(\001\022\016\n" +
-      "\006resend\030\016 \002(\005\022\024\n\014quantityLeft\030\017 \002(\0012^\n\003c" +
-      "md\022%.com.activequant.messages.BaseMessag" +
-      "e\030x \002(\0132*.com.activequant.messages.Execu" +
-      "tionReport2\"}\n\rCustomCommand\022\017\n\007command\030" +
-      "\001 \002(\t2[\n\003cmd\022%.com.activequant.messages." +
-      "BaseMessage\030y \002(\0132\'.com.activequant.mess" +
-      "ages.CustomCommand\"\210\001\n\tInfoEvent\022\017\n\007mess" +
-      "age\030\001 \002(\t\022\021\n\ttimestamp\030\002 \002(\0032W\n\003cmd\022%.co",
-      "m.activequant.messages.BaseMessage\030z \002(\013" +
-      "2#.com.activequant.messages.InfoEvent\"\304\001" +
-      "\n\004OHLC\022\021\n\ttimestamp\030\001 \002(\003\022\r\n\005mdiId\030\002 \002(\t" +
-      "\022\014\n\004open\030\003 \002(\001\022\014\n\004high\030\004 \002(\001\022\013\n\003low\030\005 \002(" +
-      "\001\022\r\n\005close\030\006 \002(\001\022\016\n\006volume\030\007 \001(\0012R\n\003cmd\022" +
-      "%.com.activequant.messages.BaseMessage\030{" +
-      " \002(\0132\036.com.activequant.messages.OHLC\"\264\001\n" +
-      "\004Tick\022\021\n\ttimestamp\030\001 \002(\003\022\r\n\005mdiId\030\002 \002(\t\022" +
-      "\r\n\005price\030\003 \002(\001\022\020\n\010quantity\030\004 \002(\001\022\025\n\rtick" +
-      "Direction\030\005 \002(\0052R\n\003cmd\022%.com.activequant",
-      ".messages.BaseMessage\030| \002(\0132\036.com.active" +
-      "quant.messages.Tick\"\255\001\n\010ValueSet\022\021\n\ttime" +
-      "stamp\030\001 \002(\003\022\014\n\004type\030\002 \002(\t\022\n\n\002id\030\003 \002(\t\022\r\n" +
-      "\005field\030\004 \002(\t\022\r\n\005value\030\005 \002(\t2V\n\003cmd\022%.com" +
-      ".activequant.messages.BaseMessage\030} \002(\0132" +
-      "\".com.activequant.messages.ValueSetB&\n\030c" +
-      "om.activequant.messagesB\nAQMessages"
+      "\004askQ\030\005 \003(\001\022\r\n\005mdiId\030\006 \002(\t\022\016\n\006resend\030\007 \001" +
+      "(\0102`\n\003cmd\022%.com.activequant.messages.Bas",
+      "eMessage\030g \002(\0132,.com.activequant.message" +
+      "s.MarketDataSnapshot\"\223\001\n\022AccountDataMess" +
+      "age\022\014\n\004type\030\001 \002(\t\022\r\n\005value\030\002 \002(\t2`\n\003cmd\022" +
+      "%.com.activequant.messages.BaseMessage\030h" +
+      " \002(\0132,.com.activequant.messages.AccountD" +
+      "ataMessage\"\272\001\n\016PositionReport\022\020\n\010openDat" +
+      "e\030\001 \002(\t\022\022\n\nentryPrice\030\002 \002(\001\022\020\n\010quantity\030" +
+      "\003 \002(\001\022\022\n\ntradInstId\030\004 \002(\t2\\\n\003cmd\022%.com.a" +
+      "ctivequant.messages.BaseMessage\030i \002(\0132(." +
+      "com.activequant.messages.PositionReport\"",
+      "\224\003\n\017ExecutionReport\022\017\n\007clOrdId\030\001 \002(\t\022\016\n\006" +
+      "execId\030\002 \002(\t\022\014\n\004side\030\003 \002(\005\022\020\n\010currency\030\004" +
+      " \002(\t\022\020\n\010orderQty\030\005 \002(\001\022\r\n\005price\030\006 \002(\001\022\022\n" +
+      "\ntradInstId\030\007 \002(\t\022\024\n\014transactTime\030\010 \002(\t\022" +
+      "\017\n\007orderId\030\t \002(\t\022\020\n\010execType\030\n \002(\005\022\021\n\tor" +
+      "dStatus\030\013 \002(\005\022\016\n\006cumQty\030\014 \002(\001\022\021\n\tleavesQ" +
+      "ty\030\r \002(\001\022\r\n\005avgPx\030\016 \002(\001\022\017\n\007ordType\030\020 \002(\t" +
+      "\022\014\n\004text\030\021 \001(\t\022\017\n\007comment\030\023 \001(\t2]\n\003cmd\022%" +
+      ".com.activequant.messages.BaseMessage\030j " +
+      "\002(\0132).com.activequant.messages.Execution",
+      "Report\"\341\001\n\022OrderCancelRequest\022\023\n\013orgCldO" +
+      "rdId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\ntradInstI" +
+      "d\030\003 \002(\t\022\014\n\004side\030\004 \002(\005\022\020\n\010orderQty\030\006 \002(\001\022" +
+      "\017\n\007comment\030\023 \001(\t2`\n\003cmd\022%.com.activequan" +
+      "t.messages.BaseMessage\030k \002(\0132,.com.activ" +
+      "equant.messages.OrderCancelRequest\"\217\002\n\021O" +
+      "rderCancelReject\022\022\n\ntradInstId\030\001 \002(\t\022\017\n\007" +
+      "clOrdId\030\002 \002(\t\022\022\n\norgClOrdId\030\003 \002(\t\022\021\n\tord" +
+      "Status\030\004 \002(\t\022\030\n\020CxlRejResponseTo\030\005 \002(\t\022\024" +
+      "\n\014clxRejReason\030\006 \001(\t\022\014\n\004text\030\007 \001(\t\022\017\n\007co",
+      "mment\030\023 \001(\t2_\n\003cmd\022%.com.activequant.mes" +
+      "sages.BaseMessage\030l \002(\0132+.com.activequan" +
+      "t.messages.OrderCancelReject\"\271\002\n\031OrderCa" +
+      "ncelReplaceRequest\022\022\n\ntradInstId\030\001 \002(\t\022\017" +
+      "\n\007clOrdId\030\002 \002(\t\022\022\n\norgClOrdId\030\003 \002(\t\022\014\n\004s" +
+      "ide\030\004 \002(\005\022\024\n\014transactTime\030\005 \002(\t\022\020\n\010order" +
+      "Qty\030\006 \002(\001\022\017\n\007ordType\030\007 \002(\005\022\r\n\005price\030\010 \002(" +
+      "\001\022\023\n\013timeInForce\030\t \002(\005\022\017\n\007comment\030\023 \001(\t2" +
+      "g\n\003cmd\022%.com.activequant.messages.BaseMe" +
+      "ssage\030m \002(\01323.com.activequant.messages.O",
+      "rderCancelReplaceRequest\"\247\002\n\010NewOrder\022\022\n" +
+      "\ntradInstId\030\001 \002(\t\022\017\n\007clOrdId\030\002 \002(\t\022\022\n\nor" +
+      "gClOrdId\030\003 \001(\t\022\014\n\004side\030\004 \002(\005\022\024\n\014transact" +
+      "Time\030\005 \001(\t\022\020\n\010orderQty\030\006 \002(\001\022\017\n\007ordType\030" +
+      "\007 \002(\005\022\r\n\005price\030\010 \001(\001\022\023\n\013timeInForce\030\t \001(" +
+      "\005\022\017\n\007comment\030\023 \001(\t\022\016\n\006resend\030\024 \002(\0052V\n\003cm" +
+      "d\022%.com.activequant.messages.BaseMessage" +
+      "\030n \002(\0132\".com.activequant.messages.NewOrd" +
+      "er\"\177\n\016OrderSubmitted\022\017\n\007clOrdId\030\002 \002(\t2\\\n" +
+      "\003cmd\022%.com.activequant.messages.BaseMess",
+      "age\030o \002(\0132(.com.activequant.messages.Ord" +
+      "erSubmitted\"}\n\rOrderAccepted\022\017\n\007clOrdId\030" +
+      "\002 \002(\t2[\n\003cmd\022%.com.activequant.messages." +
+      "BaseMessage\030p \002(\0132\'.com.activequant.mess" +
+      "ages.OrderAccepted\"\177\n\016OrderCancelled\022\017\n\007" +
+      "clOrdId\030\002 \002(\t2\\\n\003cmd\022%.com.activequant.m" +
+      "essages.BaseMessage\030q \002(\0132(.com.activequ" +
+      "ant.messages.OrderCancelled\"{\n\014OrderUpda" +
+      "ted\022\017\n\007clOrdId\030\002 \002(\t2Z\n\003cmd\022%.com.active" +
+      "quant.messages.BaseMessage\030r \002(\0132&.com.a",
+      "ctivequant.messages.OrderUpdated\"\215\001\n\016Sec" +
+      "urityStatus\022\r\n\005tdiId\030\002 \002(\t\022\016\n\006status\030\003 \002" +
+      "(\t2\\\n\003cmd\022%.com.activequant.messages.Bas" +
+      "eMessage\030s \002(\0132(.com.activequant.message" +
+      "s.SecurityStatus\"\215\001\n\rOrderRejected\022\017\n\007cl" +
+      "OrdId\030\002 \002(\t\022\016\n\006reason\030\003 \002(\t2[\n\003cmd\022%.com" +
+      ".activequant.messages.BaseMessage\030t \002(\0132" +
+      "\'.com.activequant.messages.OrderRejected" +
+      "\"\213\001\n\024OrderUpdateSubmitted\022\017\n\007clOrdId\030\002 \002" +
+      "(\t2b\n\003cmd\022%.com.activequant.messages.Bas",
+      "eMessage\030u \002(\0132..com.activequant.message" +
+      "s.OrderUpdateSubmitted\"\213\001\n\024OrderCancelSu" +
+      "bmitted\022\017\n\007clOrdId\030\002 \002(\t2b\n\003cmd\022%.com.ac" +
+      "tivequant.messages.BaseMessage\030v \002(\0132..c" +
+      "om.activequant.messages.OrderCancelSubmi" +
+      "tted\"\231\001\n\023OrderUpdateRejected\022\017\n\007clOrdId\030" +
+      "\002 \002(\t\022\016\n\006reason\030\003 \002(\t2a\n\003cmd\022%.com.activ" +
+      "equant.messages.BaseMessage\030w \002(\0132-.com." +
+      "activequant.messages.OrderUpdateRejected" +
+      "\"\210\002\n\020ExecutionReport2\022\017\n\007clOrdId\030\001 \002(\t\022\016",
+      "\n\006execId\030\002 \002(\t\022\014\n\004side\030\003 \002(\t\022\r\n\005price\030\006 " +
+      "\002(\001\022\r\n\005tdiId\030\007 \002(\t\022\024\n\014transactTime\030\010 \002(\003" +
+      "\022\013\n\003qty\030\r \002(\001\022\016\n\006resend\030\016 \002(\005\022\024\n\014quantit" +
+      "yLeft\030\017 \002(\0012^\n\003cmd\022%.com.activequant.mes" +
+      "sages.BaseMessage\030x \002(\0132*.com.activequan" +
+      "t.messages.ExecutionReport2\"}\n\rCustomCom" +
+      "mand\022\017\n\007command\030\001 \002(\t2[\n\003cmd\022%.com.activ" +
+      "equant.messages.BaseMessage\030y \002(\0132\'.com." +
+      "activequant.messages.CustomCommand\"\210\001\n\tI" +
+      "nfoEvent\022\017\n\007message\030\001 \002(\t\022\021\n\ttimestamp\030\002",
+      " \002(\0032W\n\003cmd\022%.com.activequant.messages.B" +
+      "aseMessage\030z \002(\0132#.com.activequant.messa" +
+      "ges.InfoEvent\"\304\001\n\004OHLC\022\021\n\ttimestamp\030\001 \002(" +
+      "\003\022\r\n\005mdiId\030\002 \002(\t\022\014\n\004open\030\003 \002(\001\022\014\n\004high\030\004" +
+      " \002(\001\022\013\n\003low\030\005 \002(\001\022\r\n\005close\030\006 \002(\001\022\016\n\006volu" +
+      "me\030\007 \001(\0012R\n\003cmd\022%.com.activequant.messag" +
+      "es.BaseMessage\030{ \002(\0132\036.com.activequant.m" +
+      "essages.OHLC\"\264\001\n\004Tick\022\021\n\ttimestamp\030\001 \002(\003" +
+      "\022\r\n\005mdiId\030\002 \002(\t\022\r\n\005price\030\003 \002(\001\022\020\n\010quanti" +
+      "ty\030\004 \002(\001\022\025\n\rtickDirection\030\005 \002(\0052R\n\003cmd\022%",
+      ".com.activequant.messages.BaseMessage\030| " +
+      "\002(\0132\036.com.activequant.messages.Tick\"\255\001\n\010" +
+      "ValueSet\022\021\n\ttimestamp\030\001 \002(\003\022\014\n\004type\030\002 \002(" +
+      "\t\022\n\n\002id\030\003 \002(\t\022\r\n\005field\030\004 \002(\t\022\r\n\005value\030\005 " +
+      "\002(\t2V\n\003cmd\022%.com.activequant.messages.Ba" +
+      "seMessage\030} \002(\0132\".com.activequant.messag" +
+      "es.ValueSetB&\n\030com.activequant.messagesB" +
+      "\nAQMessages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -18012,7 +18070,7 @@ public final class AQMessages {
           internal_static_com_activequant_messages_MarketDataSnapshot_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_activequant_messages_MarketDataSnapshot_descriptor,
-              new java.lang.String[] { "Timestamp", "BidPx", "AskPx", "BidQ", "AskQ", "MdiId", },
+              new java.lang.String[] { "Timestamp", "BidPx", "AskPx", "BidQ", "AskQ", "MdiId", "Resend", },
               com.activequant.messages.AQMessages.MarketDataSnapshot.class,
               com.activequant.messages.AQMessages.MarketDataSnapshot.Builder.class);
           internal_static_com_activequant_messages_AccountDataMessage_descriptor =
