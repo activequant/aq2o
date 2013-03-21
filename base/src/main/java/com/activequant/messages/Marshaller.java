@@ -59,18 +59,24 @@ public class Marshaller {
 	 */
 	public byte[] marshallToMDS(String mdiId, List<Double> bidPrices,
 			List<Double> askPrices, List<Double> bidSizes, List<Double> askSizes) {
-		BaseMessage mdsm = mf.buildMds(mdiId, bidPrices, askPrices, bidSizes,
-				askSizes);
-		return mdsm.toByteArray();
+		return(marshallToMDS(mdiId, bidPrices, askPrices, bidSizes, askSizes, false)); 
 	}
 
+	public byte[] marshallToMDS(String mdiId, List<Double> bidPrices,
+			List<Double> askPrices, List<Double> bidSizes, List<Double> askSizes, boolean resend) {
+		BaseMessage mdsm = mf.buildMds(mdiId, bidPrices, askPrices, bidSizes,
+				askSizes, resend);
+		return mdsm.toByteArray();
+	}
+	
 	public byte[] marshall(MarketDataSnapshot mds)
 			throws InvalidProtocolBufferException {
 		BaseMessage mdsm = mf.buildMds(mds.getMdiId(),
 				ArrayUtils.toDoubleList(mds.getBidPrices()),
 				ArrayUtils.toDoubleList(mds.getAskPrices()),
 				ArrayUtils.toDoubleList(mds.getBidSizes()),
-				ArrayUtils.toDoubleList(mds.getAskSizes()));
+				ArrayUtils.toDoubleList(mds.getAskSizes()), mds.isResend());
+		
 		return mdsm.toByteArray();
 	}
 

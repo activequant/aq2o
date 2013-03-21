@@ -43,6 +43,19 @@ public class MessageFactory {
 				AQMessages.MarketDataSnapshot.cmd, m);
 	}
 
+	public BaseMessage buildMds(String mdiId, Iterable<? extends Double> bid,
+			Iterable<? extends Double> ask, Iterable<? extends Double> bidQ,
+			Iterable<? extends Double> askQ, boolean resend) {
+		AQMessages.MarketDataSnapshot m = AQMessages.MarketDataSnapshot
+				.newBuilder().setMdiId(mdiId).addAllBidPx(bid).addAllAskPx(ask)
+				.addAllBidQ(bidQ).addAllAskQ(askQ)
+				.setTimestamp(new TimeStamp().getNanoseconds()).setResend(resend).build();
+		return wrap(BaseMessage.CommandType.MDS,
+				AQMessages.MarketDataSnapshot.cmd, m);
+	}
+
+
+	
 	public BaseMessage buildServerTime(long timestamp) {
 		AQMessages.ServerTime l = AQMessages.ServerTime.newBuilder()
 				.setTimestamp(timestamp).build();
