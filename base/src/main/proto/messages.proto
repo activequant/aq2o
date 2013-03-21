@@ -76,7 +76,8 @@ message MarketDataSnapshot {
 	repeated double askPx = 3;
 	repeated double bidQ = 4;
 	repeated double askQ = 5;   
-	required string mdiId = 6; 
+	required string mdiId = 6;
+	optional bool resend = 7;  
 }
 
 
