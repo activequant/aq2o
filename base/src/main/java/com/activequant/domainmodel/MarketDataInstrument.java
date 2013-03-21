@@ -3,82 +3,111 @@ package com.activequant.domainmodel;
 import com.activequant.domainmodel.annotations.Property;
 
 /**
- * key for this is an instrument ID. This table is populated from
- * connectivity drivers.
+ * key for this is an instrument ID. This table is populated from connectivity
+ * drivers.
  * 
  * @author GhostRider
  * 
  */
 public class MarketDataInstrument extends PersistentEntity {
 
-    private String instrumentId, mdProvider, providerSpecificId;
-    private double lastHistFetchTime = 0.0;
-    private double scalingFactor = 1.0;
-    
-    public MarketDataInstrument(String className){
-    	super(className);
-    }
-    
-    public MarketDataInstrument() {
-        super(MarketDataInstrument.class.getCanonicalName());
-    }
-    
-    public MarketDataInstrument(String prov, String spec){
-    	this.mdProvider = prov; 
-    	this.providerSpecificId = spec; 
-    }
+	private String instrumentId, mdProvider, providerSpecificId;
+	private double lastHistFetchTime = 0.0;
+	private double scalingFactor = 1.0;
+	/**
+	 * must be 1 or more ...
+	 */
+	private int subscriptionDepth = 1;
+	/**
+	 * should be 0 or 1. but de facto most connectors just check for "not 0". 
+	 */
+	private int subscribed = 0;
 
-    public String getId() {
-        return nullSafe(mdProvider) + "." + nullSafe(providerSpecificId);
-    }
+	public MarketDataInstrument(String className) {
+		super(className);
+	}
 
-    @Override
-    public String toString() {
-        return nullSafe(mdProvider) + "/" + nullSafe(providerSpecificId) + "/" + nullSafe(instrumentId) + "/" + lastHistFetchTime + "/" + getSnapshotTime();
-    }
+	public MarketDataInstrument() {
+		super(MarketDataInstrument.class.getCanonicalName());
+	}
 
-    @Property
-    public String getInstrumentId() {
-        return instrumentId;
-    }
+	public MarketDataInstrument(String prov, String spec) {
+		this.mdProvider = prov;
+		this.providerSpecificId = spec;
+	}
 
-    @Property
-    public double getLastHistFetchTime() {
-        return lastHistFetchTime;
-    }
+	public String getId() {
+		return nullSafe(mdProvider) + "." + nullSafe(providerSpecificId);
+	}
 
-    @Property
-    public String getMdProvider() {
-        return mdProvider;
-    }
+	@Override
+	public String toString() {
+		return nullSafe(mdProvider) + "/" + nullSafe(providerSpecificId) + "/"
+				+ nullSafe(instrumentId) + "/" + lastHistFetchTime + "/"
+				+ getSnapshotTime();
+	}
 
-    @Property
-    public String getProviderSpecificId() {
-        return providerSpecificId;
-    }
+	@Property
+	public String getInstrumentId() {
+		return instrumentId;
+	}
 
-    public void setInstrumentId(String instrumentId) {
-        this.instrumentId = instrumentId;
-    }
+	@Property
+	public double getLastHistFetchTime() {
+		return lastHistFetchTime;
+	}
 
-    public void setLastHistFetchTime(double lastFetchTime) {
-        this.lastHistFetchTime = lastFetchTime;
-    }
+	@Property
+	public String getMdProvider() {
+		return mdProvider;
+	}
 
-    public void setMdProvider(String s) {
-        mdProvider = s;
-    }
+	@Property
+	public String getProviderSpecificId() {
+		return providerSpecificId;
+	}
 
-    public void setProviderSpecificId(String providerSpecificId) {
-        this.providerSpecificId = providerSpecificId;
-    }
+	public void setInstrumentId(String instrumentId) {
+		this.instrumentId = instrumentId;
+	}
 
-    @Property
-    public double getScalingFactor() {
-        return scalingFactor;
-    }
+	public void setLastHistFetchTime(double lastFetchTime) {
+		this.lastHistFetchTime = lastFetchTime;
+	}
 
-    public void setScalingFactor(double scalingFactor) {
-        this.scalingFactor = scalingFactor;
-    }
+	public void setMdProvider(String s) {
+		mdProvider = s;
+	}
+
+	public void setProviderSpecificId(String providerSpecificId) {
+		this.providerSpecificId = providerSpecificId;
+	}
+
+	@Property
+	public double getScalingFactor() {
+		return scalingFactor;
+	}
+
+	public void setScalingFactor(double scalingFactor) {
+		this.scalingFactor = scalingFactor;
+	}
+
+	@Property
+	public int getSubscriptionDepth() {
+		return subscriptionDepth;
+	}
+
+	public void setSubscriptionDepth(int subscriptionDepth) {
+		this.subscriptionDepth = subscriptionDepth;
+	}
+
+	@Property
+	public int getSubscribed() {
+		return subscribed;
+	}
+
+	public void setSubscribed(int subscribed) {
+		this.subscribed = subscribed;
+	}
+
 }
