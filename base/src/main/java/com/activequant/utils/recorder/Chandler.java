@@ -135,7 +135,10 @@ public class Chandler extends ComponentBase {
 									MarketDataSnapshot mds = marshaller
 											.demarshall(((AQMessages.MarketDataSnapshot) bm
 													.getExtension(AQMessages.MarketDataSnapshot.cmd)));
-									process(mds);
+									// we'll ignore resends. 
+									if(!mds.isResend())
+										process(mds);
+									
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
