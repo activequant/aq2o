@@ -6,6 +6,7 @@ import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.exceptions.TransportException;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
+import com.activequant.domainmodel.streaming.Tick;
 import com.activequant.interfaces.transport.IReceiver;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.interfaces.utils.IEventListener;
@@ -26,6 +27,9 @@ public class MarketDataFeedAdapter {
 	private final String mdi;
 	private final ITransportFactory transFac;
 
+	/**
+	 * 
+	 */
 	private IEventListener<byte[]> rawListener = new IEventListener<byte[]>() {
 		@Override
 		public void eventFired(byte[] event) {
@@ -37,6 +41,11 @@ public class MarketDataFeedAdapter {
 							.demarshall(((AQMessages.MarketDataSnapshot) bm
 									.getExtension(AQMessages.MarketDataSnapshot.cmd)));
 					processMarketDataSnapshot(mds);
+				}
+				else if(bm.getType().equals(CommandType.TICK)){
+					Tick t = marshaller.demarshall(((AQMessages.Tick) bm
+							.getExtension(AQMessages.Tick.cmd)));
+					processTick(t);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -63,6 +72,16 @@ public class MarketDataFeedAdapter {
 	public void processMarketDataSnapshot(MarketDataSnapshot mds) {
 		if (log.isDebugEnabled())
 			log.debug("Received MDS: " + mds);
+	}
+	
+	/**
+	 * override this in your class.
+	 * 
+	 * @param tick
+	 */
+	public void processTick(Tick tick){
+		if (log.isDebugEnabled())
+			log.debug("Received Tick: " + tick);
 	}
 
 	/**

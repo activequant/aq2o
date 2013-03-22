@@ -8,6 +8,7 @@ import com.activequant.domainmodel.streaming.AccountDataEvent;
 import com.activequant.domainmodel.streaming.InformationalEvent;
 import com.activequant.domainmodel.streaming.MarketDataSnapshot;
 import com.activequant.domainmodel.streaming.PositionEvent;
+import com.activequant.domainmodel.streaming.Tick;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelSubmittedEvent;
@@ -59,16 +60,18 @@ public class Marshaller {
 	 */
 	public byte[] marshallToMDS(String mdiId, List<Double> bidPrices,
 			List<Double> askPrices, List<Double> bidSizes, List<Double> askSizes) {
-		return(marshallToMDS(mdiId, bidPrices, askPrices, bidSizes, askSizes, false)); 
+		return (marshallToMDS(mdiId, bidPrices, askPrices, bidSizes, askSizes,
+				false));
 	}
 
 	public byte[] marshallToMDS(String mdiId, List<Double> bidPrices,
-			List<Double> askPrices, List<Double> bidSizes, List<Double> askSizes, boolean resend) {
+			List<Double> askPrices, List<Double> bidSizes,
+			List<Double> askSizes, boolean resend) {
 		BaseMessage mdsm = mf.buildMds(mdiId, bidPrices, askPrices, bidSizes,
 				askSizes, resend);
 		return mdsm.toByteArray();
 	}
-	
+
 	public byte[] marshall(MarketDataSnapshot mds)
 			throws InvalidProtocolBufferException {
 		BaseMessage mdsm = mf.buildMds(mds.getMdiId(),
@@ -76,7 +79,7 @@ public class Marshaller {
 				ArrayUtils.toDoubleList(mds.getAskPrices()),
 				ArrayUtils.toDoubleList(mds.getBidSizes()),
 				ArrayUtils.toDoubleList(mds.getAskSizes()), mds.isResend());
-		
+
 		return mdsm.toByteArray();
 	}
 
@@ -269,7 +272,7 @@ public class Marshaller {
 			break;
 		}
 		}
-		return slo; 
+		return slo;
 	}
 
 	public OrderUpdateSubmittedEvent demarshall(
@@ -296,7 +299,6 @@ public class Marshaller {
 		return ie;
 	}
 
-	
 	public OHLCV demarshall(AQMessages.OHLC adm) {
 		OHLCV ie = new OHLCV();
 		ie.setOpen(adm.getOpen());
@@ -308,7 +310,14 @@ public class Marshaller {
 		return ie;
 	}
 
-	
+	public Tick demarshall(AQMessages.Tick tick) {
+		Tick ret = new Tick(tick.getMdiId(),
+				new TimeStamp(tick.getTimestamp()), tick.getPrice(),
+				tick.getQuantity(), tick.getTickDirection());
+
+		return ret;
+	}
+
 	public MarketDataSnapshot demarshall(AQMessages.MarketDataSnapshot mdsm) {
 		MarketDataSnapshot mds = new MarketDataSnapshot();
 		mds.setMdiId(mdsm.getMdiId());
@@ -317,8 +326,8 @@ public class Marshaller {
 		mds.setAskPrices(ArrayUtils.toPrimArray(mdsm.getAskPxList()));
 		mds.setBidSizes(ArrayUtils.toPrimArray(mdsm.getBidQList()));
 		mds.setAskSizes(ArrayUtils.toPrimArray(mdsm.getAskQList()));
-		if(mdsm.hasResend())
-			mds.setResend(mdsm.getResend()); 
+		if (mdsm.hasResend())
+			mds.setResend(mdsm.getResend());
 		return mds;
 	}
 
