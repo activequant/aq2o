@@ -15,16 +15,18 @@
 
 <!-- Subscription specific code  -->
 <c:if test="${subscribed == 0}">
-	<!-- already subscribed .... -->
+<div class="input-append">
 	<form>
-		<input class="span2" style="width: 50px;" id="appendedInputButton"
+			<input type="hidden" name="mdi" value="${mdiid}"/>
+			<input class="span2" style="width: 50px;" id="appendedInputButton"
 			name="subscriptionDepth" type="text" value="1" />
 		<button type="submit" class="btn btn-primary" name="subscribe">Subscribe</button>
 	</form>
+</div>
 </c:if>
 <c:if test="${subscribed == 1}">
-	<!--  not subscribed yet ... -->
 	<form>
+		<input type="hidden" name="mdi" value="${mdiid}"/>
 		<button type="submit" class="btn btn-primary" name="unsubscribe">Unsubscribe</button>
 	</form>
 </c:if>
