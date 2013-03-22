@@ -27,6 +27,7 @@
 <c:if test="${subscribed == 1}">
 	<form>
 		<input type="hidden" name="mdiid" value="${mdiid}"/>
+		<input type="hidden" name="subscriptionDepth" value="0"/>
 		<button type="submit" class="btn btn-primary" name="subscribe" value="0">Unsubscribe</button>
 	</form>
 </c:if>
