@@ -116,4 +116,10 @@ public class InMemoryDao<T extends PersistentEntity> implements IEntityDao<T> {
 		return null;
 	}
 
+	@Override
+	public void storeRaw(String key, Map<String, Object> rawMap) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

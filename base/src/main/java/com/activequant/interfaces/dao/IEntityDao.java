@@ -49,6 +49,8 @@ public interface IEntityDao<T extends PersistentEntity> {
     public String[] findIDs(String key, Long lValue);
     
     public  Map<String, Object> loadRaw(String key);
+    
+    public  void storeRaw(String key, Map<String, Object> rawMap);
 
     
     public String[] findIDs(int startIndex, int endIndex);

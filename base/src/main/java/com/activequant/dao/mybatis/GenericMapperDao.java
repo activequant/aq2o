@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -82,6 +83,35 @@ public class GenericMapperDao<T extends PersistentEntity> {
 				map.put(fieldName, row.getStringVal());
 		}
 		return map; 
+	}
+	
+	
+	/**
+	 * 
+	 * @param rawMap
+	 */
+	public void storeRaw(String id, Map<String, Object> rawMap){
+		
+		List<GenericRow> rows = null;
+		Iterator<Entry<String, Object>> iterator = rawMap.entrySet().iterator();
+		long created = System.currentTimeMillis(); 
+		while(iterator.hasNext()){
+			Entry<String, Object> entry = iterator.next();
+			GenericRow gr = genRow(created, id, entry.getKey(), entry.getValue());
+			// 
+		}
+		SqlSession sqlSession = sqlSessionFactory
+				.openSession(ExecutorType.BATCH);
+		try {
+			
+			mapper.delete(tableName, id);
+			for (GenericRow row : rows) {
+				mapper.insert(tableName, row);
+			}
+			sqlSession.commit();
+		} finally {
+			sqlSession.close();
+		}
 	}
 
 	//
