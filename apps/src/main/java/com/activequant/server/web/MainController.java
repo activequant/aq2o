@@ -319,6 +319,17 @@ public class MainController {
 	public ModelAndView mdi(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String iid = request.getParameter("mdiid");
+		if(request.getParameter("subscribe")!=null)
+		{
+			int val = Integer.parseInt(request.getParameter("subscribe"));
+			int depth = Integer.parseInt(request.getParameter("subscriptionDepth"));
+			// let's update our mdi. 
+			Map<String, Object> objMap = sc.getDaoFactory().mdiDao().loadRaw(iid);
+			objMap.put("SUBSCRIBED", val);
+			objMap.put("SUBSCRIPTIONDEPTH", depth);
+			sc.getDaoFactory().mdiDao().storeRaw(iid, objMap);
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (iid != null) {			
 			map.put("mdiid", iid);
