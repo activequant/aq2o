@@ -323,8 +323,16 @@ public class MainController {
 		if (iid != null) {			
 			map.put("mdiid", iid);
 			Map<String, Object> objMap = sc.getDaoFactory().mdiDao().loadRaw(iid);
-			List<String> keys = new ArrayList<String>();
+			List<String> keys = new ArrayList<String>();			
 			keys.addAll(objMap.keySet());
+			// let's also check if we have a subscription flag .. 
+			if(objMap.containsKey("SUBSCRIBED")){
+				map.put("subscribed", objMap.get("SUBSCRIBED"));
+			}
+			else{
+				map.put("subscribed", 0);
+			}
+			
 			Collections.sort(keys);
 			map.put("keys", keys);
 			map.put("mdi", objMap);
