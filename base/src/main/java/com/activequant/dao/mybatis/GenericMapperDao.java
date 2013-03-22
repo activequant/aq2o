@@ -92,13 +92,14 @@ public class GenericMapperDao<T extends PersistentEntity> {
 	 */
 	public void storeRaw(String id, Map<String, Object> rawMap){
 		
-		List<GenericRow> rows = null;
+		List<GenericRow> rows = new ArrayList<GenericRow>();
 		Iterator<Entry<String, Object>> iterator = rawMap.entrySet().iterator();
 		long created = System.currentTimeMillis(); 
 		while(iterator.hasNext()){
 			Entry<String, Object> entry = iterator.next();
 			GenericRow gr = genRow(created, id, entry.getKey(), entry.getValue());
-			// 
+			//
+			rows.add(gr);
 		}
 		SqlSession sqlSession = sqlSessionFactory
 				.openSession(ExecutorType.BATCH);
