@@ -89,6 +89,13 @@ public class MDSRecorder extends ComponentBase {
 				if (log.isDebugEnabled())
 					log.debug("Wrote " + seriesId + ", " + mds.getTimeStamp()
 							+ ", " + bestBidPx +", "+ bestBidQ);
+				
+				// let's dump all layers available. 
+				for(int i=0;i<mds.getBidSizes().length;i++){
+					rawWriter.write(seriesId, mds.getTimeStamp(), "BID_"+i, mds.getBidPrices()[i]);
+					rawWriter.write(seriesId, mds.getTimeStamp(), "BIDQUANTITY_"+i, mds.getBidSizes()[i]);
+				}
+				// 
 			}
 			if (mds.getAskSizes() != null && mds.getAskSizes().length > 0) {
 				double bestAskPx = mds.getAskPrices()[0];
@@ -100,6 +107,13 @@ public class MDSRecorder extends ComponentBase {
 				if (log.isDebugEnabled())
 					log.debug("Wrote " + seriesId + ", " + mds.getTimeStamp()
 							+ ", " + bestAskPx +", "+ bestAskQ);
+				
+				// let's dump all layers available. 
+				for(int i=0;i<mds.getAskSizes().length;i++){
+					rawWriter.write(seriesId, mds.getTimeStamp(), "ASK_"+i, mds.getAskPrices()[i]);
+					rawWriter.write(seriesId, mds.getTimeStamp(), "ASKQUANTITY_"+i, mds.getAskSizes()[i]);
+				}
+				
 			}
 		}
 	}
