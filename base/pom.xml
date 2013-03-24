@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.activequant</groupId>
 	<artifactId>aq2o-base</artifactId>
@@ -41,6 +41,27 @@
 		<commons-logging-version>1.1.1</commons-logging-version>
 	</properties>
 
+ <reporting>
+    <plugins>
+      <plugin>
+        <groupId>net.sf.doodleproject</groupId>
+        <artifactId>doxygen-maven-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>
+    </plugins>
+  </reporting>
+
+
+ <pluginRepositories>
+    <pluginRepository>
+      <id>doodleproject-repo</id>
+      <name>DoodleProject Maven 2 Repository</name>
+      <url>http://doodleproject.sourceforge.net/maven2/release</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 	<distributionManagement>
 		<site>
 			<id>aq-framework-site</id>
@@ -68,7 +89,18 @@
 		</extensions>
 
 		<plugins>
-
+<plugin>
+  <groupId>net.sf.doodleproject</groupId>
+  <artifactId>doxygen-maven-plugin</artifactId>
+  <configuration>
+    <alphabeticalIndex>true</alphabeticalIndex>
+    <generateHtml>true</generateHtml>
+    <inputDirectory>${basedir}/src/main/java</inputDirectory>
+    <filePatterns>*.java</filePatterns>
+<executable>/usr/bin/doxygen</executable>   
+ <recursive>true</recursive>
+  </configuration>
+</plugin>
 			<!-- for compiling the proto -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
