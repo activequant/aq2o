@@ -103,8 +103,7 @@ public class GenericMapperDao<T extends PersistentEntity> {
 		}
 		SqlSession sqlSession = sqlSessionFactory
 				.openSession(ExecutorType.BATCH);
-		try {
-			
+		try {			
 			mapper.delete(tableName, id);
 			for (GenericRow row : rows) {
 				mapper.insert(tableName, row);
