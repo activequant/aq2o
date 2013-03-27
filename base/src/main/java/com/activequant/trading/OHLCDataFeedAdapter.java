@@ -15,7 +15,7 @@ import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
 
 /**
- * Convenience wrapper. 
+ * Convenience wrapper to subscribe to an OHLCDataFeedAdapter
  * 
  * @author ustaudinger
  *
@@ -27,6 +27,9 @@ public class OHLCDataFeedAdapter {
 	private final ITransportFactory transFac;
 	private final TimeFrame resolution; 
 
+	/**
+	 * Internal event listener, this one will dispatch data on. 
+	 */
 	private IEventListener<byte[]> rawListener = new IEventListener<byte[]>() {
 		@Override
 		public void eventFired(byte[] event) {
@@ -86,7 +89,7 @@ public class OHLCDataFeedAdapter {
 
 		// feels quite dirty, but ok. 
 		OHLCV o  = new OHLCV();
-		o.setResolutionInSeconds(TimeFrame.MINUTES_1.getMinutes() * 60); 
+		o.setResolutionInSeconds(resolution.getMinutes() * 60); 
 		o.setMdiId(mdi);
 		
 		IReceiver r = transFac.getReceiver(o.getId());
