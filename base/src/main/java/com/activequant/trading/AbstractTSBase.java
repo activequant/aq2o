@@ -134,7 +134,12 @@ public abstract class AbstractTSBase implements ITradingSystem {
 							.demarshall(((AQMessages.MarketDataSnapshot) bm
 									.getExtension(AQMessages.MarketDataSnapshot.cmd)));
 					process(mds);
-				} else
+				} 
+				else if(bm.getType().equals(CommandType.TICK)){			
+					Tick t = marshaller.demarshall(((AQMessages.Tick) bm.getExtension(AQMessages.Tick.cmd)));
+					process(t);
+				}
+				else
 				// really need to make a proper converter finally.
 				if (bm.getType().equals(CommandType.SERVER_TIME)) {
 
