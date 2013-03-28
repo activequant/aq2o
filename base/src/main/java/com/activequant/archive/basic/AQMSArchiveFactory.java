@@ -12,9 +12,14 @@ import com.activequant.interfaces.archive.IArchiveWriter;
  */
 public class AQMSArchiveFactory implements IArchiveFactory {
 
+	private String baseUrl;
+	public AQMSArchiveFactory(String baseUrl){
+		this.baseUrl = baseUrl; 
+	}
+	
 	@Override
 	public IArchiveReader getReader(TimeFrame tf) {
-		return null;
+		return new AQMSArchiveReader(baseUrl, tf);
 	}
 
 	@Override
