@@ -21,7 +21,7 @@ public class AQMSArchReaderTest extends TestCase {
 	}
 
 	public void testChains() throws Exception{
-		IArchiveReader r = new AQMSArchiveReader("http://27.50.89.125:44444/csv/", TimeFrame.MINUTES_15);
+		IArchiveReader r = new AQMSArchiveReader("http://xxx:44444/csv/", TimeFrame.MINUTES_15);
 		Tuple<TimeStamp, Map<String, Double>> t = r.getMultiValueStream("TT.Eurex.FGBL062013.FGBL",new TimeStamp(), new TimeStamp()).next();
 		assertNotNull(t);
 		System.out.println(t.getB());
