@@ -43,13 +43,6 @@
 		<jetty.jsp.version>9.0.0.M0</jetty.jsp.version>
 	</properties>
 
-	<distributionManagement>
-		<site>
-			<id>aq-framework-site</id>
-			<url>scp://activequant.org/var/aq2o.activequant.org</url>
-		</site>
-	</distributionManagement>
-
 
 	<build>
 		<resources>
