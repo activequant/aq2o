@@ -21,6 +21,27 @@
 		<developerConnection>scm:svn:svn://activequant.org/opt/repositories/aq2o/trunk</developerConnection>
 		<url>http://activequant.org/svn/aq2o/trunk</url>
 	</scm>
+
+        <distributionManagement>
+             <repository>
+              <uniqueVersion>false</uniqueVersion>
+              <id>aq3rdparty</id>
+              <name>AQ Repository</name>
+              <url>scp://repo/maven2</url>
+              <layout>default</layout>
+            </repository>
+            <snapshotRepository>
+              <uniqueVersion>true</uniqueVersion>
+              <id>aq3rdparty</id>
+              <name>AQ Snapshots repository</name>
+              <url>sftp://propellers.net/maven</url>
+              <layout>default</layout>
+            </snapshotRepository>
+                <site>
+                        <id>aq-framework-site</id>
+                        <url>scp://activequant.org/var/aq2o.activequant.org</url>
+                </site>
+        </distributionManagement>
 	       
 
 	<organization>
