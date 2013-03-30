@@ -42,6 +42,20 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	</properties>
 
 
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>doodleproject-repo</id>
+      <name>DoodleProject Maven 2 Repository</name>
+      <url>http://doodleproject.sourceforge.net/maven2/release</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+
+
 	<build>
 		<resources>
 			<resource>
@@ -61,18 +75,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		</extensions>
 
 		<plugins>
-<plugin>
-  <groupId>net.sf.doodleproject</groupId>
-  <artifactId>doxygen-maven-plugin</artifactId>
-  <configuration>
-    <alphabeticalIndex>true</alphabeticalIndex>
-    <generateHtml>true</generateHtml>
-    <inputDirectory>${basedir}/src/main/java</inputDirectory>
-    <filePatterns>*.java</filePatterns>
-<executable>/usr/bin/doxygen</executable>   
- <recursive>true</recursive>
-  </configuration>
-</plugin>
+	<plugin>
+	  <groupId>net.sf.doodleproject</groupId>
+	  <artifactId>doxygen-maven-plugin</artifactId>
+	  <configuration>
+	    <alphabeticalIndex>true</alphabeticalIndex>
+	    <generateHtml>true</generateHtml>
+	    <inputDirectory>${basedir}/src/main/java</inputDirectory>
+	    <filePatterns>*.java</filePatterns>
+	<executable>/usr/bin/doxygen</executable>   
+	 <recursive>true</recursive>
+	  </configuration>
+	</plugin>
 			<!-- for compiling the proto -->
 			<!-- plugin>
 				<groupId>org.apache.maven.plugins</groupId>
