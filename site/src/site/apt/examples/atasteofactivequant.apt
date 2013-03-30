@@ -55,39 +55,46 @@ ustaudinger@baikal:~/work/activequant/closedsource/charter$
 +----------+
 ustaudinger@baikal:~/work/activequant/closedsource/charter$ cat pom.xml 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.activequant</groupId>
-  <artifactId>charter</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>com.activequant</groupId>
+	<artifactId>charter</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>charter</name>
-  <url>http://maven.apache.org</url>
+	<name>charter</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<!-- the AQ2o repository on sonatype -->
+	<repositories>
+		<repository>
+			<id>sonatype</id>
+			<name>sonatype</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- THE AQ2O DEPENDENCY -->
+		<dependency>
+			<groupId>com.activequant</groupId>
+			<artifactId>aq2o-base</artifactId>
+			<version>2.2-SNAPSHOT</version>
+		</dependency>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+	</dependencies>
 
-	<!-- THE AQ2O DEPENDENCY -->
-        <dependency>
-                <groupId>com.activequant</groupId>
-                <artifactId>aq2o</artifactId>
-                <version>2.1-SNAPSHOT</version>
-        </dependency>
-
-
-  </dependencies>
 </project>
+
 ustaudinger@baikal:~/work/activequant/closedsource/charter$ 
 +----------+		 
 
@@ -105,12 +112,38 @@ ustaudinger@baikal:~/work/activequant/closedsource/charter$
 	
 	If you see some classpath errors similar to "M2_REPO/... not found", consult {{{http://maven.apache.org/guides/mini/guide-ide-eclipse.html#Maven_2_repository}the Maven help pages, section 'Maven 2 repository'}}.    
 
+* Configure your environment
+
+	Now, let's create a configuration file with our application parameters. Create in your project in src/main/resources/ a file called "framework.properties". Put into this file the following text. Note, "#" comments out a specific line. Add this folder to your project's classpath.  
+
++----------+
+#db
+#db.driver=org.gjt.mm.mysql.Driver
+#db.url=jdbc:mysql://localhost:3306/aq2o
+db.driver=org.hsqldb.jdbcDriver
+db.url=jdbc:hsqldb:hsql://localhost:1476/aq2o
+db.username=aq2o
+db.password=aq2o
+#jms
+jms.host=localhost
+jms.port=61616
+#hbase
+hbase.zookeeper.host=localhost
+#sendMail
+sendMail.host=smtphost
+sendMail.port=25
+sendMail.username=
+sendMail.password=
+sendMail.from=
++----------+	
+
+
 * Final step: add Java code 
 	
 	Now, let's create a future definition, store it and retrieve it from the database. Edit the file App.java and add the following code into the main. 
 	
 +---------+
-ApplicationContext appContext = new ClassPathXmlApplicationContext("springtest.xml");
+ApplicationContext appContext = new ClassPathXmlApplicationContext("fwspring.xml");
 IDaoFactory idf = appContext.getBean("ibatisDao", IDaoFactory.class);
 IInstrumentDao idao = idf.instrumentDao();
 

@@ -436,7 +436,19 @@ public class MainController {
 		
 		return new ModelAndView("orderevent", map);
 	}
+
 	
+	@ResponseBody
+	@RequestMapping(value = "/launch.jnlp", method = RequestMethod.GET)
+	public String jnlp(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		StringBuffer sb = new StringBuffer();
+		// let's read 
+     
+		
+		//
+		return sb.toString(); 		
+	}
 	
 	
 }

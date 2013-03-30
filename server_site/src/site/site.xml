@@ -18,6 +18,10 @@
 
 	<body>
 
+		<head>
+		  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		</head>
+	
 		<links>
 		    <item name="Our LinkedIn group" href="http://www.linkedin.com/groups/ActiveQuant-4520769"/>
 		    <item name="Our Swiss Meet-Up group" href="http://www.meetup.com/Financial-Engineering-Interest-Group-Central-Switzerland/"/>
@@ -34,7 +38,7 @@
 
 		<menu name="User guide">
 		  <item name="Installation and setup" href="setup.html"/>				
-		  <item name="Storing and retrieving data" href="getting_data_in.html"/>
+		  <item name="Interface/storing and retrieving data" href="getting_data_in.html"/>
 			
 		</menu>
 		
@@ -48,8 +52,11 @@
 		</menu>
 		
 		<menu name="Advanced documentation">
-			<item name="Configuration" href="venueconnectivity/cnx.html" />
-			<item name="Using SOAP" href="soap.html" />			
+			<item name="Configuration" href="configuration.html" />
+			<item name="SOAP/.NET and AQMS" href="soap.html" />
+			<item name="R and AQMS" href="r.html" />
+                        <item name="Python and AQMS" href="python.html" />
+			<item name="The source code" href="source_code.html" />		
 		</menu>
 	
 

@@ -13,11 +13,10 @@
 
     <!-- The body of the document contains a number of sections -->
     <section name="Welcome">
-      <!-- p><img src="./images/7732680_s2.jpg" align="right" hspace="10"/></p -->
-      <p><img src="./images/7732680_s2.jpg" align="right" hspace="10"/></p>	  
-      
-	  <p><strong>The AQ MASTER SERVER is your one-stop-shop for everything financial (and nonfinancial) data.</strong></p>
-	<p>Use to store, retrieve and real-time relay: 
+      <p><img src="./images/pitcher.png" align="right" hspace="10"/></p>
+      <p>We put YOU into the driver's seat when it comes to moving your organization forward. </p>
+      <p><strong>The AQ MASTER SERVER SOFTWARE is your one-stop-shop for everything financial (and nonfinancial) data.</strong></p>
+      <p>Use to <strong>store, retrieve and real-time relay</strong>: 
 	  <ul>
 	    <li>Instrument reference data, such as tick size, tick value, first and last trading dates</li>
 	    <li>Order fills and other order events</li>
@@ -25,51 +24,45 @@
 	    <li>Portfolio positions, not only current but also historical</li>
 	    <li>Time series data, such as NAV over time, price data, such as bid, ask, OHLC data</li>	    
 	  </ul>
-	  All out of the box. <strong>FOR FREE with full source code</strong>.	
+	  All out of the box. <strong>With full source code</strong>.	
       </p>      
-      <p><strong> Download. Unpack. Run.</strong> <i>In less than 2 minutes*. Promise.</i> <a href="./two_minutes.html"><img align="top" src="./images/watch_video.png"/></a></p>
+      <p><strong> Download. Unpack. Run.</strong></p><p><i>In less than 2 minutes*. Promise.</i></p>
+      <p> <a href="./two_minutes.html"><img align="top" src="./images/watch_video.png"/></a></p>
       <p><small>* Depending on your internet speed.</small></p>
+      <p>Use it as a central storage point and create your processes and applications to generate factsheets or risk reports! </p>
+      <p> <a href="http://aq2o.activequant.org"><img align="top" src="./images/banner.png"/></a></p>
     </section>	
     
     
-<section name="Interfacing to the server">
+<section name="">
           <p><img src="./images/aq_master_server_interfaces.png" align="left" hspace="10"/></p>
     <p>
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget urna vitae leo condimentum pellentesque in eget eros. Nullam malesuada, elit vitae mattis ultrices, neque nisl posuere nisl, in scelerisque neque augue eget neque. Praesent vitae convallis felis. Proin sit amet augue sit amet turpis eleifend fermentum vel id enim. In ultricies fermentum mi, eget porttitor urna pulvinar sed. Curabitur sem neque, tristique in viverra eu, condimentum eget lacus. In quis leo sit amet purus cursus congue non id orci. Vivamus tortor nisl, consequat quis bibendum nec, pulvinar nec elit. Cras in eros at dui gravida rutrum. Suspendisse aliquet erat eu nulla mollis eu pretium neque molestie. Maecenas vel diam eget urna dapibus vulputate ac eu ante.
-  </p>
-  <p>
-    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
-    </p>  
-     <p>
-    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
-    </p>  
-    </section>
+      The ActiveQuant Master Server puts you into the driver's seat. Where do you want to go? Where do you want to be in a month?</p>
+      
+      <p>Plenty of versatile, but easy to use interfaces, integrate the ActiveQuant Master Server into your corporate IT infrastructure. 
+      Whether big or small, your organization is going to benefit from cutting-edge technology like several other before. With a proven
+      track record of delivering working software, ActiveQuant gives you this tool to see with your own eyes, how easy it come become to 
+	store and share data within your network boundaries across a myriad of platforms, tools, operating systems and data sources. </p>
+	
+    <p> 
+	We enable you to pump in data from your own data sources, but we also offer ready-made and extensible connectors for a large variety 
+	of world-class data and service providers. We think, there is no need to tell you, how much faster you'll reach your goal. Build on this 
+	platform and benefit from decades of software engineering and financial experience. 
+      </p>
+      <p> Should you ever need custom code - not only for your ActiveQuant Master Server, do not hesitate to contact us - we are here to help!</p>
+      
+    <!-- /section>
 
     
-    <section name="Technical schema">
+    <section name="Technical schema" -->
       
         <p><img src="./images/aq_master_server.png" align="left" hspace="10"/></p>
-    <p>
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget urna vitae leo condimentum pellentesque in eget eros. Nullam malesuada, elit vitae mattis ultrices, neque nisl posuere nisl, in scelerisque neque augue eget neque. Praesent vitae convallis felis. Proin sit amet augue sit amet turpis eleifend fermentum vel id enim. In ultricies fermentum mi, eget porttitor urna pulvinar sed. Curabitur sem neque, tristique in viverra eu, condimentum eget lacus. In quis leo sit amet purus cursus congue non id orci. Vivamus tortor nisl, consequat quis bibendum nec, pulvinar nec elit. Cras in eros at dui gravida rutrum. Suspendisse aliquet erat eu nulla mollis eu pretium neque molestie. Maecenas vel diam eget urna dapibus vulputate ac eu ante.
-  </p>
-  <p>
-    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
-    </p>  
+    <!-- p>
+      Data syndication, -aggregation, -transformation: Build it with our server. 
+    </p -->  
     </section>
 
-    
-    
-    <section name="Conceptual schema">
-          <p><img src="./images/server_schematic.png" align="left" hspace="10"/></p>
-    <p>
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget urna vitae leo condimentum pellentesque in eget eros. Nullam malesuada, elit vitae mattis ultrices, neque nisl posuere nisl, in scelerisque neque augue eget neque. Praesent vitae convallis felis. Proin sit amet augue sit amet turpis eleifend fermentum vel id enim. In ultricies fermentum mi, eget porttitor urna pulvinar sed. Curabitur sem neque, tristique in viverra eu, condimentum eget lacus. In quis leo sit amet purus cursus congue non id orci. Vivamus tortor nisl, consequat quis bibendum nec, pulvinar nec elit. Cras in eros at dui gravida rutrum. Suspendisse aliquet erat eu nulla mollis eu pretium neque molestie. Maecenas vel diam eget urna dapibus vulputate ac eu ante.
-  </p>
-  <p>
-    Nunc metus velit, porttitor nec suscipit scelerisque, posuere nec eros. Maecenas dui lectus, semper eu ultrices eu, fringilla id ante. Pellentesque arcu nisi, fermentum accumsan suscipit et, ornare sed odio. Fusce et augue id felis tempus congue. Nullam fermentum, turpis a luctus ultricies, orci arcu porta nisl, in consequat nisl odio a sapien. Fusce et dui sed metus auctor congue non fringilla urna. Nulla facilisi. Maecenas a aliquam nibh.    
-    </p>  
-    </section>
-
-
+   
     
 
   </body>

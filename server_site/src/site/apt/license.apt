@@ -2,18 +2,48 @@ License
 
   ActiveQuant GmbH (AQ) grants you a limited usage right for the ActiveQuant Master Server (AQMS). 
 
-  This License Agreement covers all existing versions of AQMS. License Agreement is a legal agreement between the end-user and AQ. By installing or otherwise using AQMS, you agree to be bound by the terms of this Agreement. If you do not agree to the terms of License Agreement, you are not allowed to install or use the AQMS. 
+  This License Agreement covers all existing versions of AQMS. 
+
+  License Agreement is a legal agreement between the end-user and AQ. By installing or otherwise using AQMS, you agree to be bound by the terms of this Agreement. If you do not agree to the terms of License Agreement, you are not allowed to install or use the AQMS. 
+
 
 * General Information
 
-  AQ is the exclusive owner of all AQMS specific copyrights. The product is licensed, not sold. AQMS is protected by copyright laws and international copyright treaties.
+  AQ is the exclusive owner of all AQMS specific copyrights. 
+  The product is licensed, not sold. 
+  AQMS is protected by copyright laws and international copyright treaties.
 
   You may not reverse engineer, modify, decompile, or disassemble the binary distribution of AQMS. 
  
   Without prejudice to any other rights, AQ may terminate this License Agreement if you fail to comply with the terms and conditions of this Agreement. In such event, you must destroy all copies of AQMS and all of its component parts.
 
-  AQMS IS DISTRIBUTED "AS IS". NO WARRANTY OF ANY KIND IS EXPRESSED OR IMPLIED. YOU USE AQMS AT YOUR OWN RISK. AQ WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR MISUSING THIS SOFTWARE.
+  AQMS IS DISTRIBUTED "AS IS". 
+  NO WARRANTY OF ANY KIND IS EXPRESSED OR IMPLIED. 
+  YOU USE AQMS AT YOUR OWN RISK. AQ WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, 
+  LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR MISUSING THIS SOFTWARE.
+  
 
+* Source code specific licensing details
+
+  In addition to the above, you may download and modify the source code of the AQMS for building a PRIVATE USE version. 
+  Private use includes using the application in your private entity. It does not permit the distribution of your server derivative 
+  outside of your private enterprise. 
+
+  
+* Licensing costs 
+
+  This software is provided free-of-charge for academics and hobbyists. 
+  Professional, commercial users are bound to the following annual pricing schema. 
+
+  * Less than 100k USD profit from using AQMS and AQ: free of charge. 
+
+  * Between 100k and 1m USD profit from using AQMS and AQ: 1% of your profit per year. 
+
+  * Above 1m USD profit: flat fee of 10k USD per year. 
+  
+  We think this is fair. Should you have any comments or questions about our licensing schema, please do not hesitate to contact us. 
+
+  
    
 * Trademarks information
 

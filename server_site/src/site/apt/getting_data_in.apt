@@ -1,4 +1,4 @@
-Putting and fetching data
+Putting, fetching and relaying data
 
 
     This page presents the different means of using the server. Details are available in the <Advanced documentation> section of our site. 
@@ -13,11 +13,13 @@ Putting and fetching data
 
     AQ-Excel is a handwritten add-in for Excel. Through it, you can read and write data from and to the AQMS from within Excel. Its installation is extremely easy. Its functionality is limited to reading and writing individual fields of an atomic unit and to reading and writing timeseries data. Examples of individual fields are tick size of an instrument or the total equity in a clearing account. Examples of time series data are NAV, PX_SETTLE or BID/ASK series. 
 
-    Details about the AQ-Excel plugin are available {{{./aqexcel.html}here}}. 
+    Details about the AQ-Excel plugin will be made available soon. 
 
     * AQ-R
     
-    (Work in progress. Soon to be released.)
+    AQ-R is a GPL software, developed at {{{http://r-forge.r-project.org/projects/aqr/}the R-Forge}}. 
+
+    Usage examples can be found {{{./r.html}on our corresponding page}}. 
     
 
 * Midlevel approaches

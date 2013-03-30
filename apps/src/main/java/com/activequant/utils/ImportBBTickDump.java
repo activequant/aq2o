@@ -72,7 +72,7 @@ public class ImportBBTickDump {
 
         //
         new Thread(new WorkerThread<String>(fileNameQueue, new AnonymousWorker())).start();
-        new Thread(new WorkerThread<String>(fileNameQueue, new AnonymousWorker())).start();
+        //new Thread(new WorkerThread<String>(fileNameQueue, new AnonymousWorker())).start();
         //new Thread(new WorkerThread<String>(fileNameQueue, new AnonymousWorker())).start();
         //new Thread(new WorkerThread<String>(fileNameQueue, new AnonymousWorker())).start();
 
@@ -107,6 +107,7 @@ public class ImportBBTickDump {
 
         public void importFile(String fileName, String providerspecificid, String mdprovider) throws Exception {
             System.out.println("Importing " + fileName + " / " + mdprovider + " / " + providerspecificid);
+            providerspecificid = providerspecificid.toUpperCase();
             
             // check if we have to rewrite the provider specific id. 
             Pattern p = Pattern.compile("[A-Z][0123456789] ");
@@ -116,11 +117,13 @@ public class ImportBBTickDump {
             {
                 if(p.matcher(providerspecificid).find()){
                 	// regex pattern
-                    providerspecificid = providerspecificid.replaceAll("[A-Z]"+i+" ", "1"+i);
+                    // providerspecificid = providerspecificid.replaceAll("[A-Z]"+i+" ", "[A-Z]1"+i);
+                    System.out.println("Rewrote provider specific id to " + providerspecificid);
                 }
             }
             
             
+            // create an MDI just in case. 
             MarketDataInstrument tempMdi = mdiDao.findByProvId(mdprovider, providerspecificid);
             if (tempMdi == null) {
                 tempMdi = new MarketDataInstrument();
@@ -132,7 +135,7 @@ public class ImportBBTickDump {
             tempMdi = null;
 
             //
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss.SSS Z");
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss.SSS");
 
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
@@ -145,25 +148,34 @@ public class ImportBBTickDump {
 
                 @Override
                 public void eventFired(Map<String, String> event) {
-                    final String dateTime = event.get("TIMESTAMP");
+                    String dateTime = event.get("TIMESTAMP");
                     final String type = event.get("TYPE");
                     final String price = event.get("PRICE");
                     final String quantity = event.get("QUANTITY");
                     
                     try {
+                    	if(dateTime.length()== "2011072550247.047".length())
+                    	{
+                    		// crazy data fix. 
+                    		// 
+                    		dateTime = dateTime.substring(0, 8) + "0"+dateTime.substring(8);                    		
+                    		// 
+                    		// 
+                    	}
                         TimeStamp ts = new TimeStamp(sdf.parse(dateTime));
                         iaw.write(mdi.getId(), ts, type, Double.parseDouble(price));
-                        iaw.write(mdi.getId(), ts, type+"QUANTITY", Double.parseDouble(quantity));
+                        iaw.write(mdi.getId(), ts, type+"_Q", Double.parseDouble(quantity));
+                        
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }
-                    
                     
                     
                     if (lineCounter++ > 100) {
                         lineCounter = 0;
                         try {
                             iaw.commit();
+                            System.out.println("Comitted.");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -14,35 +14,6 @@
 		<artifactId>aq2o-trunk</artifactId>
 		<version>2.2-SNAPSHOT</version>
 	</parent>
-	<scm>
-		<connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
-		<developerConnection>scm:svn:svn://activequant.org/opt/repositories/aq2o/trunk</developerConnection>
-		<url>http://activequant.org/svn/aq2o/trunk</url>
-	</scm>
-	<licenses>
-		<license>
-			<name>Proprietary</name>
-			<url>http://aq2o.activequant.org</url>
-			<distribution>releases</distribution>
-			<comments>Free for academic and hobbyist use. Commercial use permitted under a fair use policy with licensing costs capped at 1 million trading profits generated through ActiveQuant.</comments>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<id>ustaudinger</id>
-			<name>Ulrich Staudinger</name>
-			<email>ustaudinger@activequant.com</email>
-		</developer>
-	</developers>
-	<properties>
-		<jdk.version>1.7</jdk.version>
-		<spring.version>3.0.6.RELEASE</spring.version>
-		<cxf.version>2.5.1</cxf.version>
-		<commons-logging-version>1.1.1</commons-logging-version>
-		<jetty.version>9.0.0.M0</jetty.version>
-		<jetty.jsp.version>9.0.0.M0</jetty.jsp.version>
-	</properties>
-
 
 	<build>
 		<resources>

@@ -36,9 +36,10 @@
       //]]>
       </script>
       <form action="./downloads" method="POST" onsubmit="return checkCheckBox(this)">
-      <input type="checkbox" value="0" name="agree"/> I have read and accept the <a href="./license.html">license agreement</a>. You particularly understand that you download the free development server, which helps you get up and running. 
+      <input type="checkbox" value="0" name="agree"/> I have read and accept the <a href="./license.html">license agreement</a>. 
+      You particularly understand that you download a server that is best suited for development, but in its default mode not a large scale, petabyte ready environment. 
 	
-	<br/><input type="submit" value="Download"/>
+	<br/><br/><input type="submit" value="Download"/>
 
       </form>
 

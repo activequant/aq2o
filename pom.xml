@@ -21,25 +21,37 @@
 		<developerConnection>scm:svn:svn://activequant.org/opt/repositories/aq2o/trunk</developerConnection>
 		<url>http://activequant.org/svn/aq2o/trunk</url>
 	</scm>
+        <properties>
+                <jdk.version>1.7</jdk.version>
+                <spring.version>3.0.6.RELEASE</spring.version>
+                <cxf.version>2.5.1</cxf.version>
+                <commons-logging-version>1.1.1</commons-logging-version>
+                <jetty.version>9.0.0.M0</jetty.version>
+                <jetty.jsp.version>9.0.0.M0</jetty.jsp.version>
+        </properties>
+
+
+
+
 
         <distributionManagement>
              <repository>
               <uniqueVersion>false</uniqueVersion>
-              <id>aq3rdparty</id>
+              <id>aq3rdpartydeploy</id>
               <name>AQ Repository</name>
-              <url>scp://repo/maven2</url>
+              <url>scp://activequant.org/opt/0.8-stable/public/m2/3rdparty/</url>
               <layout>default</layout>
             </repository>
             <snapshotRepository>
-              <uniqueVersion>true</uniqueVersion>
-              <id>aq3rdparty</id>
+              <uniqueVersion>false</uniqueVersion>
+              <id>aq3rdpartydeploy</id>
               <name>AQ Snapshots repository</name>
-              <url>sftp://propellers.net/maven</url>
+              <url>scp://activequant.org:/opt/0.8-stable/public/m2/3rdparty/</url>
               <layout>default</layout>
             </snapshotRepository>
                 <site>
                         <id>aq-framework-site</id>
-                        <url>scp://activequant.org/var/aq2o.activequant.org</url>
+                        <url>scp://activequant.org:/var/aq2o.activequant.org</url>
                 </site>
         </distributionManagement>
 	       
@@ -71,11 +83,6 @@
 		</developer>
 	</developers>
 	
-
-	<properties>
-		<jdk.version>1.6</jdk.version>		
-	</properties>
-
 <build>
     <plugins>
       <plugin>

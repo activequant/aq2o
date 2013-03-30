@@ -38,6 +38,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * @author GhostRider
  * 
  */
+@Deprecated
 public class Marshaller {
 	MessageFactory mf = new MessageFactory();
 
@@ -49,7 +50,7 @@ public class Marshaller {
 	}
 
 	/**
-	 * faster marshaller for MDS.
+	 * faster marshaller for MDS. Use message factory implementation instead
 	 * 
 	 * @param mdiId
 	 * @param bidPrices
@@ -58,12 +59,25 @@ public class Marshaller {
 	 * @param askSizes
 	 * @return
 	 */
+	@Deprecated
 	public byte[] marshallToMDS(String mdiId, List<Double> bidPrices,
 			List<Double> askPrices, List<Double> bidSizes, List<Double> askSizes) {
 		return (marshallToMDS(mdiId, bidPrices, askPrices, bidSizes, askSizes,
 				false));
 	}
 
+	@Deprecated
+	/**
+	 * Use message factory implementation instead. 
+	 * 
+	 * @param mdiId
+	 * @param bidPrices
+	 * @param askPrices
+	 * @param bidSizes
+	 * @param askSizes
+	 * @param resend
+	 * @return
+	 */
 	public byte[] marshallToMDS(String mdiId, List<Double> bidPrices,
 			List<Double> askPrices, List<Double> bidSizes,
 			List<Double> askSizes, boolean resend) {
