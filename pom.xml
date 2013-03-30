@@ -72,13 +72,6 @@
 	</developers>
 	
 
-	<distributionManagement>
-		<site>
-			<id>aq-framework-site</id>
-			<url>scp://activequant.org/var/aq2o.activequant.org</url>
-		</site>
-	</distributionManagement>
-
 	<properties>
 		<jdk.version>1.6</jdk.version>		
 	</properties>
