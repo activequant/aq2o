@@ -86,7 +86,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 							<tasks>
 								<mkdir dir="target/generated-sources" />
 								<exec executable="protoc" failonerror="true">
-									<arg value="--java_out=src/main/java" />
+									<arg value="- -java_out=src/main/java" />
 									<arg value="src/main/proto/messages.proto" />
 								</exec>
 							</tasks>
