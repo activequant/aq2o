@@ -84,6 +84,14 @@
 	</developers>
 	
 <build>
+<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
+
     <plugins>
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
