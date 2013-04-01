@@ -15,9 +15,9 @@ import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
 
 /**
- * Convenience wrapper to subscribe to an OHLCDataFeedAdapter
+ * Convenience wrapper to subscribe to an OHLC data feed. 
  * 
- * @author ustaudinger
+ * @author GhostRider
  *
  */
 public class OHLCDataFeedAdapter {
