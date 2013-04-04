@@ -186,12 +186,20 @@ public class Chandler extends ComponentBase {
 			System.out.print("A");
 		}
 		//
+		
+		//
 		if (bid != null && ask != null) {
 			double mid = (bid + ask) / 2.0;
 			OHLCV o = getCandle(seriesId);
 			o.update(mds.getTimeStamp(), mid);
+			// let's also pump in bid and ask, too. 
+			o.update(mds.getTimeStamp(), bid);
+			o.update(mds.getTimeStamp(), ask);			
+			o.update(mds.getTimeStamp(), mid);
+			// 
 			System.out.print("O");
 		}
+		
 	}
 
 	@Override
