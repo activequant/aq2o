@@ -1,6 +1,7 @@
 package com.activequant.archive.csv;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import com.activequant.utils.CsvMapReader;
  * Can handle only single-stream CSV files. Not multiple instruments in one
  * file.
  * 
- * @author ustaudinger
+ * @author GhostRider
  * 
  */
 public class CsvArchiveReaderFormat1 implements IArchiveReader {
@@ -130,6 +131,12 @@ public class CsvArchiveReaderFormat1 implements IArchiveReader {
 
 	public void setSdf(SimpleDateFormat sdf) {
 		this.sdf = sdf;
+	}
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.activequant.interfaces.archive;
 
+import java.io.IOException;
+
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.archive.TSContainer;
 import com.activequant.archive.TimeSeriesIterator;
@@ -19,4 +21,6 @@ public interface IArchiveReader {
     public TimeSeriesIterator getTimeSeriesStream(String streamId, String key, TimeStamp startTimeStamp, TimeStamp stopTimeStamp) throws Exception;
 
     public MultiValueTimeSeriesIterator getMultiValueStream(String streamId, TimeStamp startTimeStamp, TimeStamp stopTimeStamp) throws Exception;
+    
+    public void close() throws IOException; 
 }

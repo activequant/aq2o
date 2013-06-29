@@ -52,7 +52,6 @@ public class AQMSArchiveReader implements IArchiveReader {
 	@Override
 	public TimeSeriesIterator getTimeSeriesStream(String streamId, String key,
 			TimeStamp startTimeStamp, TimeStamp stopTimeStamp) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -123,6 +122,12 @@ public class AQMSArchiveReader implements IArchiveReader {
 		li.nextLine = firstDataLine; 
 		
 		return li;
+	}
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

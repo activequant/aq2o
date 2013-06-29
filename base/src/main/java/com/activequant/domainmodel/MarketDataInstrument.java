@@ -32,6 +32,7 @@ public class MarketDataInstrument extends PersistentEntity {
 	}
 
 	public MarketDataInstrument(String prov, String spec) {
+		super(MarketDataInstrument.class.getCanonicalName());
 		this.mdProvider = prov;
 		this.providerSpecificId = spec;
 	}

@@ -61,6 +61,35 @@ public class ActiveMQTransportFactory implements ITransportFactory {
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 	}
 
+	
+	/**
+	 * constructs an activemq transport factory that connects to a specific host
+	 * and port.
+	 * 
+	 * @param host
+	 *            JMS server host
+	 * @param port
+	 *            JMS server port.
+	 * @throws Exception
+	 */
+	public ActiveMQTransportFactory(String host, int port, String username, String password) throws Exception {
+		// failover: means that it will automatically reconnect.
+		String conUrl = "failover:tcp://" + host + ":" + port
+				+ "??wireFormat.maxInactivityDuration=0";
+		log.info("Constructing ActiveMQTransportFactory for " + conUrl);
+		// 
+		connectionFactory = new ActiveMQConnectionFactory(conUrl);
+		connectionFactory.setUserName(username);
+		connectionFactory.setPassword(password);		
+		connectionFactory.setProducerWindowSize(1024000);
+		connectionFactory.setUseAsyncSend(true);		
+		connectionFactory.setOptimizeAcknowledge(true);
+		connection = connectionFactory.createTopicConnection(username, password);
+		connection.start();
+		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+	}
+
+	
 	/**
 	 * constructs and in-memory active mq transport factory.
 	 * 

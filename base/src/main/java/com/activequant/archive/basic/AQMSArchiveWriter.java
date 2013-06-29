@@ -67,4 +67,10 @@ public class AQMSArchiveWriter implements IArchiveWriter{
 		
 	}
 
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
