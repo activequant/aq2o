@@ -17,7 +17,7 @@ import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
  * 
- * All timestamps are in UTC and in Milliseconds. Flushing needs to be done
+ * All timestamps are in UTC and in Nanoseconds. Flushing needs to be done
  * manually - no flushing will be done by the archive writer, which means that
  * all values stay in memory until flushed! Data loss is at your risk!
  * 
@@ -170,5 +170,12 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
 				scanner.close();
 		}
 	}
+	
+
+	@Override
+	public void close() throws IOException {
+		this.htable.close();
+	}
+
 
 }

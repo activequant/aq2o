@@ -233,4 +233,9 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
         };
     }
 
+
+	@Override
+	public void close() throws IOException {
+		this.htable.close();
+	}
 }
