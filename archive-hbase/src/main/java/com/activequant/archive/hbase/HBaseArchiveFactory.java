@@ -23,7 +23,7 @@ public class HBaseArchiveFactory implements IArchiveFactory {
 	private final Map<TimeFrame, IArchiveWriter> writers = new HashMap<TimeFrame, IArchiveWriter>();
 	private final String zookeeperHost;
 	private final int zookeeperPort;
-	private boolean reuseFlag;
+	private boolean reuseFlag = true;
 
 	public HBaseArchiveFactory(final String zookeeperHost) {
 		this.zookeeperHost = zookeeperHost;

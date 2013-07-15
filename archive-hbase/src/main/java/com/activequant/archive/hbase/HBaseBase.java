@@ -27,6 +27,7 @@ import com.activequant.utils.StringUtils;
  */
 class HBaseBase {
 
+	protected Configuration config = null; 
     private Logger log = Logger.getLogger(HBaseBase.class);
     protected HTable htable;
 
@@ -35,7 +36,7 @@ class HBaseBase {
     }
 
     HBaseBase(final String zookeeperQuorumHost, final int zookeeperPort, final String tableName) throws IOException {
-        Configuration config = HBaseConfiguration.create();
+        config = HBaseConfiguration.create();
         config.set("hbase.zookeeper.quorum", zookeeperQuorumHost+":"+zookeeperPort);               
         HBaseAdmin admin = new HBaseAdmin(config);
         if (!admin.tableExists(tableName.getBytes())) {
@@ -50,6 +51,7 @@ class HBaseBase {
             boolean avail = admin.isTableAvailable(tableName.getBytes());
             log.info("HTable is available: " + avail);
         }
+        admin.close();        
         htable = new HTable(config, tableName.getBytes());
         htable.setAutoFlush(false);        
         htable.setScannerCaching(1000000);

@@ -37,8 +37,8 @@
 	<properties>
 		<jdk.version>1.6</jdk.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
-		<hadoop.version>1.0.3</hadoop.version>
-		<hbase.version>0.94.0</hbase.version>
+		<hadoop.version>0.20-append-r1056497 </hadoop.version>
+		<hbase.version>0.90.5</hbase.version>
 		<cxf.version>2.5.1</cxf.version>
 		<commons-logging-version>1.1.1</commons-logging-version>
 	</properties>

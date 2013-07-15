@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.hbase.client.Delete;
+import org.apache.hadoop.hbase.client.HConnectionManager;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
@@ -175,6 +176,8 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
 	@Override
 	public void close() throws IOException {
 		this.htable.close();
+		if(config!=null)
+			HConnectionManager.deleteConnection(config,true);
 	}
 
 
