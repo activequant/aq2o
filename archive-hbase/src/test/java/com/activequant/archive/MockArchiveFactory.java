@@ -39,6 +39,12 @@ public class MockArchiveFactory implements IArchiveFactory {
                 // TODO Auto-generated method stub
                 return null;
             }
+
+			@Override
+			public void close() throws IOException {
+				// TODO Auto-generated method stub
+				
+			}
         };
     }
 
@@ -92,6 +98,12 @@ public class MockArchiveFactory implements IArchiveFactory {
 			@Override
 			public void delete(String seriesKey, TimeStamp from, TimeStamp to)
 					throws IOException {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void close() throws IOException {
 				// TODO Auto-generated method stub
 				
 			}
