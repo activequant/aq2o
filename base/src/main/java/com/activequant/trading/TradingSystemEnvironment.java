@@ -3,6 +3,7 @@ package com.activequant.trading;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.dao.IDaoFactory;
 import com.activequant.interfaces.trading.IExchange;
+import com.activequant.interfaces.trading.ITradingSystemEnvironment;
 import com.activequant.interfaces.transport.ITransportFactory;
 
 /**
@@ -11,7 +12,7 @@ import com.activequant.interfaces.transport.ITransportFactory;
  * @author GhostRider
  *
  */
-public class TradingSystemEnvironment extends ITradingSystemEnvironment {
+public class TradingSystemEnvironment implements ITradingSystemEnvironment {
 
 	private IExchange exchange;
 	private ITransportFactory transportFactory;
