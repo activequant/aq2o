@@ -50,7 +50,7 @@ public class LocalHBaseCluster {
 		log.info("Starting zookeeper.");
 		//
 		MiniZooKeeperCluster mzk = new MiniZooKeeperCluster(config);
-		mzk.setDefaultClientPort(zookeeperPort);
+		mzk.setClientPort(zookeeperPort);
 		mzk.startup(new File(dataDir));
 		
 		// config.set("hbase.master.dns.interface", "eth0");
