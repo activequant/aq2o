@@ -1,15 +1,14 @@
 This folder structure contains ActiveQuant. 
 
 
-= Licensing
+We migrated to GitHub on 1.10.2013 after hosting ActiveQuant and its predecessors for more than ten years on our own infrastructure. 
 
-A usage license is granted as outlined at http://www.activequant.org/license.html
+Please bear with us while we update all license headers, etc. in all files. 
 
+ActiveQuant in this manifestation is released under the Apache Software License. 
 
+Please fork, modify and resubmit. Stay close to us, there are MAJOR changes and improvements upcoming. Please use the issue tracker to get in touch with the development base. 
 
-= CONTACT, etc. 
-Commercial support available on request. 
-ustaudinger@activequant.com 
 
 (c) 2002-2012ff ActiveQuant GmbH
 Listed on Freshmeat.net since 2004. For real. 
