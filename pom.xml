@@ -17,9 +17,8 @@
 	
 	
 	<scm>
-		<connection>scm:svn:http://activequant.org/svn/aq2o/trunk</connection>
-		<developerConnection>scm:svn:svn://activequant.org/opt/repositories/aq2o/trunk</developerConnection>
-		<url>http://activequant.org/svn/aq2o/trunk</url>
+		<connection>scm:git:https://github.com/activequant/aq2o.git</connection>
+		<url>https://github.com/activequant/aq2o</url>
 	</scm>
         <properties>
                 <jdk.version>1.7</jdk.version>
@@ -29,10 +28,6 @@
                 <jetty.version>9.0.0.M0</jetty.version>
                 <jetty.jsp.version>9.0.0.M0</jetty.jsp.version>
         </properties>
-
-
-
-
 
         <distributionManagement>
              <repository>
@@ -49,10 +44,10 @@
               <url>scp://activequant.org:/opt/0.8-stable/public/m2/3rdparty/</url>
               <layout>default</layout>
             </snapshotRepository>
-                <site>
-                        <id>aq-framework-site</id>
-                        <url>scp://activequant.org:/var/aq2o.activequant.org</url>
-                </site>
+            <site>
+               <id>aq-framework-site</id>
+               <url>scp://activequant.org:/var/aq2o.activequant.org</url>
+            </site>
         </distributionManagement>
 	       
 
@@ -67,10 +62,7 @@
 	
 	<licenses>
 		<license>
-			<name>Proprietary</name>
-			<url>http://aq2o.activequant.org</url>
-			<distribution>releases</distribution>
-			<comments>Free for academic and hobbyist use. Commercial use permitted under a fair use policy with licensing costs capped at 1 million trading profits generated through ActiveQuant.</comments>
+			<name>Apache style</name>
 		</license>
 	</licenses>
 	
@@ -120,8 +112,6 @@
             </goals>
             <phase>site</phase>
             <configuration>
-              <!-- Specific configuration for the aggregate report -->
-              ...
             </configuration>
           </execution>
         </executions>
