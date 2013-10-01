@@ -6,7 +6,6 @@ import com.activequant.domainmodel.exceptions.NoSuchOrderBook;
 import com.activequant.domainmodel.exceptions.UnsupportedOrderType;
 import com.activequant.domainmodel.streaming.StreamEvent;
 import com.activequant.domainmodel.trade.order.Order;
-import com.activequant.trading.AbstractOrderBook;
 
 public interface IExchange {
 
@@ -22,7 +21,7 @@ public interface IExchange {
 	 */
 	public abstract IOrderTracker getOrderTracker(String orderId);
 
-	public abstract AbstractOrderBook<?> getOrderBook(String tradeableInstrumentId) throws NoSuchOrderBook;
+	public abstract IOrderBook<?> getOrderBook(String tradeableInstrumentId) throws NoSuchOrderBook;
 
 	public abstract void processStreamEvent(StreamEvent se);
 

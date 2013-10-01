@@ -1,42 +1,24 @@
 package com.activequant.domainmodel.backoffice;
 
-import net.sf.oval.constraint.NotNull;
-
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.annotations.Property;
 
 public class ClearedTrade extends PersistentEntity {
-	@NotNull
 	private String tradeableId;
-	@NotNull
 	private Double price;
-	@NotNull
 	private Long quantity;
-	@NotNull
 	private Long timeStampInNanos;
-	@NotNull
 	private String orderSide;
-	@NotNull
 	private String clearingAccountId;
-	@NotNull
 	private String status;
-	@NotNull
 	private String clearedTradeId;
-	@NotNull
 	private String clearingFeeCurrency;
-	@NotNull
 	private String exchangeFeeCurrency;
-	@NotNull
 	private String brokerFeeCurrency;
-	@NotNull
 	private Double clearingFee;
-	@NotNull
 	private Double exchangeFee;
-	@NotNull
 	private Double brokerFee;
-	@NotNull
 	private String cusip;
-	@NotNull
 	private String uniqueId;
 
 	private String subAccountId;

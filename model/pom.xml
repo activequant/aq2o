@@ -5,7 +5,7 @@
 	<artifactId>aq2o-model</artifactId>
 	<packaging>jar</packaging>
 	<version>2.2-SNAPSHOT</version>
-	<name>ActiveQuant 2.o (AQ2o) - HBASE</name>
+	<name>ActiveQuant 2.o (AQ2o) - MODEL</name>
 	<url>http://activequant.org</url>
 	<description>Security trading related source code platform</description>
 

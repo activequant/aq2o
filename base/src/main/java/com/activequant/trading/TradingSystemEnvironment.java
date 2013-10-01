@@ -11,7 +11,7 @@ import com.activequant.interfaces.transport.ITransportFactory;
  * @author GhostRider
  *
  */
-public class TradingSystemEnvironment {
+public class TradingSystemEnvironment extends ITradingSystemEnvironment {
 
 	private IExchange exchange;
 	private ITransportFactory transportFactory;

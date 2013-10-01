@@ -1,8 +1,7 @@
 package com.activequant.domainmodel;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import com.activequant.domainmodel.annotations.Property;
+import com.activequant.utils.UniqueTimeStampGenerator;
 
 /**
  * A very basic macro event class.
@@ -15,8 +14,11 @@ public class BasicMacroEvent extends PersistentEntity {
 	private long date8time6;
 	private String currency, event, importance, actual, forecast, previous;
 
+	private final long id;
 	public BasicMacroEvent() {
 		super(BasicMacroEvent.class.getCanonicalName());
+		id = UniqueTimeStampGenerator.getInstance().now().getNanoseconds();
+				
 	}
 
 	@Property
@@ -46,7 +48,7 @@ public class BasicMacroEvent extends PersistentEntity {
 
 	public String getId() {
 		// let's make a hash out of our event.
-		return DigestUtils.md5Hex(event) + "." + date8time6;
+		return  ""+id;
 	}
 
 	@Property

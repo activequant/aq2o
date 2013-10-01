@@ -7,6 +7,9 @@ import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
  * 
+ * Intentionally partially blank implementation of an Archive Factory 
+ * for interfacing with an ActiveQuant Master Server. 
+ * 
  * @author GhostRider
  *
  */

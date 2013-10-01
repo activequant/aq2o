@@ -44,9 +44,9 @@ public class HardcoreReflectionsFactory {
 			throws SecurityException, NoSuchMethodException,
 			IllegalArgumentException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		for (Class c : subTypes) {
+		for (Class<?> c : subTypes) {
 			if (c.getSimpleName().equals("VisualTable")) {
-				Constructor constr = c.getConstructor(String.class,
+				Constructor<?> constr = c.getConstructor(String.class,
 						AQTableDataBase.class);
 				return (IVisualTable) constr.newInstance(s, aqt);
 			}
@@ -60,9 +60,9 @@ public class HardcoreReflectionsFactory {
 			throws SecurityException, NoSuchMethodException,
 			IllegalArgumentException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		for (Class c : subTypes) {
+		for (Class<?> c : subTypes) {
 			if (c.getSimpleName().equals("AuditTableViz")) {
-				Constructor constr = c.getConstructor(String.class,
+				Constructor<?> constr = c.getConstructor(String.class,
 						AQTableDataBase.class);
 				return (IAuditTableViz) constr.newInstance(s, aqt);
 			}
@@ -76,9 +76,9 @@ public class HardcoreReflectionsFactory {
 			IExchange exch) throws SecurityException, NoSuchMethodException,
 			IllegalArgumentException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		for (Class c : subTypes) {
+		for (Class<?> c : subTypes) {
 			if (c.getSimpleName().equals("QuoteTableViz")) {
-				Constructor constr = c.getConstructor(String.class,
+				Constructor<?> constr = c.getConstructor(String.class,
 						AQTableDataBase.class, IExchange.class);
 				return (IQuoteTableViz) constr.newInstance(s, aqt, exch);
 			}
@@ -92,9 +92,9 @@ public class HardcoreReflectionsFactory {
 			IExchange exch) throws SecurityException, NoSuchMethodException,
 			IllegalArgumentException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		for (Class c : subTypes) {
+		for (Class<?> c : subTypes) {
 			if (c.getSimpleName().equals("OrderTableViz")) {
-				Constructor constr = c.getConstructor(String.class,
+				Constructor<?> constr = c.getConstructor(String.class,
 						AQTableDataBase.class, IExchange.class);
 				return (IOrderTableViz) constr.newInstance(s, aqt, exch);
 			}
@@ -109,9 +109,9 @@ public class HardcoreReflectionsFactory {
 			NoSuchMethodException, IllegalArgumentException,
 			InstantiationException, IllegalAccessException,
 			InvocationTargetException {
-		for (Class c : subTypes) {
+		for (Class<?> c : subTypes) {
 			if (c.getSimpleName().equals("InstrumentTableViz")) {
-				Constructor constr = c.getConstructor(String.class,
+				Constructor<?> constr = c.getConstructor(String.class,
 						AQTableDataBase.class, IExchange.class);
 				return (IInstrumentTableViz) constr.newInstance(s, aqt, exch);
 			}
@@ -125,9 +125,9 @@ public class HardcoreReflectionsFactory {
 			throws SecurityException, NoSuchMethodException,
 			IllegalArgumentException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		for (Class c : subTypes) {
+		for (Class<?> c : subTypes) {
 			if (c.getSimpleName().equals("AccountTableViz")) {
-				Constructor constr = c.getConstructor(String.class,
+				Constructor<?> constr = c.getConstructor(String.class,
 						AQTableDataBase.class);
 				return (IAccountTableViz) constr.newInstance(s, aqt);
 			}
@@ -141,9 +141,9 @@ public class HardcoreReflectionsFactory {
 			throws SecurityException, NoSuchMethodException,
 			IllegalArgumentException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		for (Class c : subTypes) {
+		for (Class<?> c : subTypes) {
 			if (c.getSimpleName().equals("PositionTableViz")) {
-				Constructor constr = c.getConstructor(String.class,
+				Constructor<?> constr = c.getConstructor(String.class,
 						AQTableDataBase.class, IExchange.class);
 				return (IPositionTableViz) constr.newInstance(s, aqt, exchange);
 			}

@@ -18,8 +18,8 @@ import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.utils.CsvMapReader;
 
 /**
- * Can handle only single-stream CSV files. Not multiple instruments in one
- * file.
+ * Can handle only single-stream CSV files. 
+ * Not multiple instruments in one file and is not time frame aware. 
  * 
  * @author GhostRider
  * 

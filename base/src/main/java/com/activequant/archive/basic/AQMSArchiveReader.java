@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 
 import com.activequant.archive.MultiValueTimeSeriesIterator;
 import com.activequant.archive.TSContainer;
@@ -21,6 +20,8 @@ import com.activequant.domainmodel.Tuple;
 import com.activequant.interfaces.archive.IArchiveReader;
 
 /**
+ * 
+ * Fetches data from an AQ Master Server
  * 
  * @author GhostRider
  * 

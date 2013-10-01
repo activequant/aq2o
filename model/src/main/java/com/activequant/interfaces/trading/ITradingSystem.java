@@ -2,7 +2,6 @@ package com.activequant.interfaces.trading;
 
 import com.activequant.domainmodel.AlgoConfig;
 import com.activequant.interfaces.streaming.IStreamEventSink;
-import com.activequant.trading.TradingSystemEnvironment;
 
 /**
  * 
@@ -17,7 +16,7 @@ public interface ITradingSystem extends IStreamEventSink {
 	 *  
 	 * @param env
 	 */
-	void environment(TradingSystemEnvironment env);
+	void environment(ITradingSystemEnvironment env);
 	
 	/**
 	 * Called after the environment has been injected. Now is the time

@@ -11,7 +11,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class ComponentServer {
 
-	// local pointer to the appcontext. Dunno why i keep it at the moment, but
+	// local pointer to the appcontext. 
+	// Dunno why i keep it at the moment, but
 	// we never know.
 	final ApplicationContext appContext;
 

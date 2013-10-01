@@ -110,6 +110,8 @@
 		</repository>
 	</repositories>
 	<dependencies>
+	
+	
 		<dependency>
 			<groupId>com.activequant</groupId>
 			<artifactId>aq2o-base</artifactId>

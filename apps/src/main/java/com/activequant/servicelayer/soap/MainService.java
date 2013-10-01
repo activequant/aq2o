@@ -22,7 +22,6 @@ import javax.xml.ws.soap.SOAPBinding;
 import org.apache.log4j.Logger;
 
 import com.activequant.archive.TSContainer;
-import com.activequant.domainmodel.BloombergMarketDataInstrument;
 import com.activequant.domainmodel.Future;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TimeFrame;
@@ -384,10 +383,10 @@ public class MainService implements IMainService {
 			//
 			//
 			if (mdiDao.findByProvId("BBGT", tradId) == null) {
-				BloombergMarketDataInstrument mdi = new BloombergMarketDataInstrument();
+				/*BloombergMarketDataInstrument mdi = new BloombergMarketDataInstrument();
 				mdi.setMdProvider("BBGT");
 				mdi.setProviderSpecificId(tradId.toUpperCase());
-				mdiDao.update(mdi);
+				mdiDao.update(mdi);*/
 			}
 
 		} catch (Exception ex) {

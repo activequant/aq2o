@@ -1,36 +1,22 @@
 package com.activequant.domainmodel.backoffice;
 
-import net.sf.oval.constraint.NotNull;
-
 import com.activequant.domainmodel.PersistentEntity;
 import com.activequant.domainmodel.annotations.Property;
 
 public class OrderFill extends PersistentEntity {
 
-	@NotNull
 	private String tradeableId;
-	@NotNull
 	private Double price;
-	@NotNull
 	private Long quantity;
-	@NotNull
 	private String brokerId;
-	@NotNull
 	private String providerId;
-	@NotNull
 	private Long timeStampInNanos;
-	@NotNull
 	private String orderSide;
-	@NotNull
 	private String providerAccountId;
-	@NotNull
 	private String brokerAccountId;
-	@NotNull
 	private String orderFillId;
-	@NotNull
 	private String orderId;
 
-	@NotNull
 	private String routeId;
 
 	public OrderFill() {

@@ -3,7 +3,6 @@ package com.activequant.domainmodel.streaming;
 import com.activequant.domainmodel.ETransportType;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.annotations.Property;
-import com.activequant.utils.ArrayUtils;
 
 public class MarketDataSnapshot extends MarketDataEvent {
 
@@ -23,8 +22,7 @@ public class MarketDataSnapshot extends MarketDataEvent {
 		this.askPrices = askPrices;
 		this.bidSizes = bidSizes;
 		this.askSizes = askSizes;
-		this.mdiId = mdiId;
-		this.tdiId = tdiId; 
+		this.mdiId = mdiId; 
 	}
 
 	/**
@@ -41,7 +39,7 @@ public class MarketDataSnapshot extends MarketDataEvent {
 	}
 	
 	public String toString(){
-		return mdiId + " - " + getTimeStamp().getDate() + " - " + ArrayUtils.toString(bidPrices) + " - " + ArrayUtils.toString(askPrices); 
+		return "MDS:" + mdiId + " - " + getTimeStamp().getCalendar().getTime(); 
 	}
 	
 	public ETransportType getEventType() {

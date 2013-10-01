@@ -8,14 +8,6 @@
 	<description>Security trading related source code platform</description>
 
 	<packaging>pom</packaging>
-	
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
-	
-	
 	<scm>
 		<connection>scm:git:https://github.com/activequant/aq2o.git</connection>
 		<url>https://github.com/activequant/aq2o</url>
@@ -124,6 +116,7 @@
 	</dependencies>
 
         <modules>
+                <module>model</module>
                 <module>base</module>
                 <module>archive-hbase</module>
                 <module>apps</module>

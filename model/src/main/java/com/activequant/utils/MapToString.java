@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 public class MapToString {
-
-	private static Logger log = Logger.getLogger(MapToString.class);
 
 	public String convert(Map<String, Object> mapIn) {
 		StringBuffer r = new StringBuffer();
@@ -38,25 +34,14 @@ public class MapToString {
 				continue;
 			String[] keyVal = s.split("=");
 			if (keyVal.length != 2) {
-				log.warn("Invalid value received: " + s);
 				continue;
 			}
 			String key = keyVal[0];
-			try {
-				ActiveQuantDataField field = ActiveQuantDataField.valueOf(key);
-				if (field != null) {
-					ret.put(key, field.getValueObject(keyVal[1]));
-				} else {
-					log.warn("No ActiveQuantDataField found for feed key >>" + key + "<<");
-				}
-			} catch (Exception ex) {
-				if (tryDouble(keyVal[1]) != null)
-					ret.put(key, tryDouble(keyVal[1]));
-				else if (tryString(keyVal[1]) != null)
-					ret.put(key, tryString(keyVal[1]));
-				else
-					log.warn("Dropping unconvertable value");
-			}
+			if (tryDouble(keyVal[1]) != null)
+				ret.put(key, tryDouble(keyVal[1]));
+			else if (tryString(keyVal[1]) != null)
+				ret.put(key, tryString(keyVal[1]));
+
 		}
 		return ret;
 

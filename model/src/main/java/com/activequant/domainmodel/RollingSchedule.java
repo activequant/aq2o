@@ -4,18 +4,16 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.springframework.dao.DataIntegrityViolationException;
-
 import com.activequant.domainmodel.exceptions.NoEntryForDate;
 
 public class RollingSchedule extends TreeMap<Long, String> {
 
     private static final long serialVersionUID = 1L;
 
-    public RollingSchedule(Long[] rollDates, String[] validInstrumentIds) {
+    public RollingSchedule(Long[] rollDates, String[] validInstrumentIds) throws Exception {
         assert (rollDates.length == validInstrumentIds.length);
         if (rollDates.length != validInstrumentIds.length) {
-            throw new DataIntegrityViolationException("Length mismatch");
+            throw new Exception("Length mismatch");
         }
         for (int i = 0; i < rollDates.length; i++) {
             if (rollDates[i] != null && validInstrumentIds[i] != null)

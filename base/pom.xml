@@ -170,6 +170,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	</repositories>
 	<dependencies>
 		<dependency>
+			<groupId>com.activequant</groupId>
+			<artifactId>aq2o-model</artifactId>
+			<version>2.2-SNAPSHOT</version>
+		</dependency>
+	
+	
+	
+		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>2.2.7</version>

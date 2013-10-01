@@ -7,7 +7,7 @@ import com.activequant.domainmodel.Tuple;
 import com.activequant.interfaces.archive.IArchiveWriter;
 
 /**
- * Will buffer all data until COMMIT is called. 
+ * Intentionally empty implementation to store data to a AQ Master Server.   
  * 
  * @author GhostRider
  *
