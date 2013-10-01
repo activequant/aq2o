@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.activequant</groupId>
+	<artifactId>aq2o-model</artifactId>
+	<packaging>jar</packaging>
+	<version>2.2-SNAPSHOT</version>
+	<name>ActiveQuant 2.o (AQ2o) - HBASE</name>
+	<url>http://activequant.org</url>
+	<description>Security trading related source code platform</description>
+
+	<parent>
+		<groupId>com.activequant</groupId>
+		<artifactId>aq2o-trunk</artifactId>
+		<version>2.2-SNAPSHOT</version>
+	</parent>
+	<developers>
+		<developer>
+			<id>ustaudinger</id>
+			<name>Ulrich Staudinger</name>
+			<email>ustaudinger@activequant.com</email>
+		</developer>
+	</developers>
+	<properties>
+		<jdk.version>1.6</jdk.version>
+		<spring.version>3.0.6.RELEASE</spring.version>
+		<hadoop.version>0.20-append-r1056497 </hadoop.version>
+		<hbase.version>0.90.5</hbase.version>
+		<cxf.version>2.5.1</cxf.version>
+		<commons-logging-version>1.1.1</commons-logging-version>
+	</properties>
+
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>framework.properties</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0-beta-9</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jalopy-maven-plugin</artifactId>
+				<version>1.0-alpha-1</version>
+			</plugin>
+
+		</plugins>
+	</build>
+	<dependencies>
+	</dependencies>
+
+	<organization>
+		<name>ActiveQuant GmbH</name>
+		<url>http://www.activequant.com</url>
+	</organization>
+</project>
