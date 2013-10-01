@@ -44,6 +44,7 @@ import com.activequant.interfaces.aqviz.IVisualTable;
 import com.activequant.interfaces.trading.IOrderTracker;
 import com.activequant.interfaces.trading.IRiskCalculator;
 import com.activequant.interfaces.trading.ITradingSystem;
+import com.activequant.interfaces.trading.ITradingSystemEnvironment;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
@@ -82,7 +83,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 	private final AuditLogTable auditLogTable = new AuditLogTable(this);
 	private final AccountTable accountTable = new AccountTable(this);
 	private final Logger log = Logger.getLogger(AbstractTSBase.class);
-	protected TradingSystemEnvironment env;
+	protected ITradingSystemEnvironment env;
 	protected TimeStamp currentTime;
 	private AlgoConfig algoConfig = new AlgoConfig();
 	protected IRiskCalculator riskCalculator = new PositionRiskCalculator(this);
@@ -192,7 +193,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 		}
 	};
 
-	public void environment(TradingSystemEnvironment env) {
+	public void environment(ITradingSystemEnvironment env) {
 		this.env = env;
 		this.riskCalculator.setTransportFactory(env.getTransportFactory());
 
