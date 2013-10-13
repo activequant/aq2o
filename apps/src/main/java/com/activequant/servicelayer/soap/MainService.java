@@ -1,10 +1,8 @@
 package com.activequant.servicelayer.soap;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +10,6 @@ import java.util.TimeZone;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
 
-import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
@@ -25,16 +22,11 @@ import com.activequant.domainmodel.Future;
 import com.activequant.domainmodel.Instrument;
 import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.domainmodel.backoffice.ClearedTrade;
-import com.activequant.domainmodel.backoffice.ClearerAccount;
-import com.activequant.domainmodel.backoffice.ClearerAccountSnap;
-import com.activequant.domainmodel.backoffice.OrderFill;
 import com.activequant.domainmodel.backoffice.PNL;
 import com.activequant.domainmodel.backoffice.PandS;
-import com.activequant.domainmodel.backoffice.PortfolioSnap;
-import com.activequant.domainmodel.backoffice.SubClearerAccount;
 import com.activequant.domainmodel.exceptions.DaoException;
-import com.activequant.domainmodel.exceptions.InvalidDataException;
+import com.activequant.dto.PortfolioDto;
+import com.activequant.dto.PositionDto;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IAccountDao;
@@ -53,7 +45,6 @@ import com.activequant.interfaces.dao.IReportDao;
 import com.activequant.interfaces.dao.ISubClearerAccountDao;
 import com.activequant.interfaces.dao.ITradeableInstrumentDao;
 import com.activequant.utils.Date8Time6Parser;
-import com.activequant.utils.worker.Worker;
 import com.activequant.utils.worker.WorkerThread;
 
 @WebService(endpointInterface = "com.activequant.servicelayer.soap.IMainService", serviceName = "MainService")
@@ -70,7 +61,6 @@ public class MainService implements IMainService {
 	private IPerformanceReportDao perfDao;
 	private IReportDao reportDao;
 
-	private DtoToDomainConv converter = new DtoToDomainConv();
 	private final IOrderFillDao ofDao;
 	private final IClearedTradeDao ctDao;
 	private final IAccountDao accDao;
@@ -410,6 +400,12 @@ public class MainService implements IMainService {
 	@Override
 	public int randomNumber() {
 		return (int) (100 * Math.random());
+	}
+
+	@Override
+	public void storeInstrument(Instrument instrument) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
