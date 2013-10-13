@@ -14,9 +14,6 @@ import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.domainmodel.exceptions.InvalidDataException;
 import com.activequant.dto.ClearedTradeDto;
-import com.activequant.dto.ClearerAccountStatementDto;
-import com.activequant.dto.OrderFillDto;
-import com.activequant.dto.PositionDto;
 
 @WebService
 @MTOM(enabled = false)
@@ -96,32 +93,7 @@ public interface IMainService {
 	@WebMethod
 	public double testCall() throws Exception;
 
-	@WebMethod
-	public void addOrderFill(@WebParam(name = "orderFillDto") OrderFillDto dto) throws Exception;
-
-	@WebMethod
-	public void addClearedTrade(@WebParam(name = "clearedTradeDto") ClearedTradeDto dto) throws Exception;
-
-	@WebMethod
-	public void setSeriesValue(String portfolio, String seriesName,
-			long timeStampInNanos, double value);
-
-	@WebMethod
-	public void addPosition(@WebParam(name = "positionDto") PositionDto dto) throws Exception;
 	
-	@WebMethod
-	public PositionDto[] 
-			getPositions(
-					String clearingAccountId, 
-					String subClearingAccountId, 
-					String date8Time6) throws Exception; 
-
-	@WebMethod
-	public void addClearerAccountSnap(ClearerAccountStatementDto csdto)
-			throws InvalidDataException, DaoException;
-
-
-
 	@WebMethod
 	public void addPnS(@WebParam(name = "tradeableId") String tradeableId, @WebParam(name = "date8")  long date8,
 			@WebParam(name = "clearingAccountId") String clearingAccountId, @WebParam(name = "currency") String currency, @WebParam(name = "netAmount") Double netAmount) throws DaoException;
