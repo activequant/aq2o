@@ -1,4 +1,3 @@
-
 package com.activequant.servicelayer.soap;
 
 import java.io.IOException;
@@ -36,12 +35,6 @@ import com.activequant.domainmodel.backoffice.PortfolioSnap;
 import com.activequant.domainmodel.backoffice.SubClearerAccount;
 import com.activequant.domainmodel.exceptions.DaoException;
 import com.activequant.domainmodel.exceptions.InvalidDataException;
-import com.activequant.dto.ClearedTradeDto;
-import com.activequant.dto.ClearerAccountStatementDto;
-import com.activequant.dto.DtoToDomainConv;
-import com.activequant.dto.OrderFillDto;
-import com.activequant.dto.PortfolioDto;
-import com.activequant.dto.PositionDto;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveWriter;
 import com.activequant.interfaces.dao.IAccountDao;
@@ -367,208 +360,10 @@ public class MainService implements IMainService {
 		return (int) (100 * Math.random());
 	}
 
-	/**
-	 * adds an order fill.
-	 * 
-	 */
-	@Override
-	public void addOrderFill(OrderFillDto dto) throws Exception {
-		OrderFill of = converter.convert(dto);
-		log.info("Adding order fill for " + dto.brokerAccountId);
-		try {
-			ofDao.update(of);
 
-			// also checking if we have an existing or a new mdi.
-			String tradId = dto.tradeableId;
-			//
-			//
-			if (mdiDao.findByProvId("BBGT", tradId) == null) {
-				/*BloombergMarketDataInstrument mdi = new BloombergMarketDataInstrument();
-				mdi.setMdProvider("BBGT");
-				mdi.setProviderSpecificId(tradId.toUpperCase());
-				mdiDao.update(mdi);*/
-			}
 
-		} catch (Exception ex) {
-			log.warn("Error while adding order fill: " + dto.toString(), ex);
-		}
-		log.debug("Adding done..");
-	}
 
-	/**
-	 * adds an order fill.
-	 * 
-	 */
-	@Override
-	public void addClearedTrade(ClearedTradeDto dto) throws Exception {
-		ClearedTrade ct = converter.convert(dto);
-		log.info("Adding cleared trade. " + dto.clearingAccountId);
-		try {
-			ctDao.update(ct);
-			System.out.println(ct.getId());
-		} catch (Exception ex) {
-			log.warn("Error while adding order fill: " + dto.toString(), ex);
-		}
-		log.debug("Adding done.");
-	}
 
-	@Override
-	public void setSeriesValue(@WebParam(name = "portfolio") String portfolio,
-			@WebParam(name = "seriesName") String seriesName,
-			@WebParam(name = "timeStampInNanos") long timeStampInNanos,
-			@WebParam(name = "value") double value) {
-		String seriesId = "CUSTSERIES." + portfolio;
-		IArchiveWriter iaw = archFac.getWriter(TimeFrame.RAW);
-		iaw.write(seriesId, new TimeStamp(timeStampInNanos), seriesName, value);
-	}
-
-	@Override
-	/**
-	 * Method add positions. positions have to be added in their entirety.
-	 * 
-	 *  1) checks if we have such a clearer account, if not, create it. 
-	 *  2) checks if we have such a sub clearer account, if not, create it. 
-	 *  3) loads the up-to-dateportfolio snap for the handed in date. 
-	 *  3.1.) if no snap exists, create a new snap
-	 *  3.2.) if the loaded snap's timestamp in nanos does not match the incoming date, create a new snap with this particular snapdate. 
-	 *  Reason: it could be that we loaded an old snap, from the day before, therefore we have to compare the new snap's date with the old snap's date.   
-	 *   
-	 */
-	public void addPosition(PositionDto p) throws Exception {
-
-		if (workerThread == null) {
-			Worker<PositionDto> worker = new Worker<PositionDto>() {
-				@Override
-				public void process(PositionDto p) {
-					// find the corresponding portfolio.
-					String cAct = p.clearerAcctId;
-					String subAct = p.subAcctId;
-					SubClearerAccount sca;
-					try {
-						sca = checkClearerAccount(p.clearer, cAct, subAct);
-						Long date8 = p.positionDate8;
-						PortfolioSnap snap;
-						try {
-							snap = getSnapCache(sca.getId(), date8);
-							log.info("Adding position to snap (" + snap.getId()
-									+ "): " + p.toString());
-							snap.addPosition(p);
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
-					} catch (DaoException e1) {
-						e1.printStackTrace();
-					}
-
-				}
-
-				@Override
-				public void queueEmpty() {
-					synchronized (portfolioSnapCache) {
-						Collection<PortfolioSnap> snaps = portfolioSnapCache
-								.values();
-						for (PortfolioSnap snap : snaps) {
-							log.info("Saving position snap ...");
-							// ... and update it in the database.
-							try {
-								pSnapDao.delete(snap);
-								pSnapDao.create(snap);
-
-							} catch (DaoException e) {
-								e.printStackTrace();
-							}
-						}
-						// clear the snaps.
-						portfolioSnapCache.clear();
-					}
-				}
-			};
-			workerThread = new WorkerThread<PositionDto>(posDtoQueue, worker);
-			Thread t = new Thread(workerThread);
-			t.start();
-		}
-
-		log.info("Adding position  ... ");
-		posDtoQueue.add(p);
-
-	}
-
-	private PortfolioSnap getSnapCache(String ownerId, Long date8)
-			throws ParseException {
-		synchronized (portfolioSnapCache) {
-			String key = ownerId + "." + date8;
-			if (!portfolioSnapCache.containsKey(key)) {
-				TimeStamp when = new TimeStamp(sdf.parse(date8.toString()));
-				PortfolioSnap snap = new PortfolioSnap();
-				snap.setOwnerObjectId(ownerId);
-				snap.setTimeStampInNanoseconds(when.getNanoseconds());
-				snap.setCreationTime(date8);
-
-				portfolioSnapCache.put(key, snap);
-			}
-			return portfolioSnapCache.get(key);
-		}
-	}
-
-	private Map<String, PortfolioSnap> portfolioSnapCache = new HashMap<String, PortfolioSnap>();
-
-	private PortfolioSnap getSnapCache2(String ownerId, Long date8)
-			throws ParseException {
-		synchronized (portfolioSnapCache2) {
-			String key = ownerId + "." + date8;
-			if (!portfolioSnapCache2.containsKey(key)) {
-				TimeStamp when = new TimeStamp(sdf.parse(date8.toString()));
-				PortfolioSnap snap = new PortfolioSnap();
-				snap.setOwnerObjectId(ownerId);
-				snap = pSnapDao.loadSnapshot(snap.getNonUniqueID(), when);
-				if (snap == null
-						|| snap.getTimeStampInNanoseconds() != when
-								.getNanoseconds()) {
-					// ok, the most up-to-date snap is not our position's snap.
-					snap = new PortfolioSnap();
-					snap.setTimeStampInNanoseconds(when.getNanoseconds());
-					// initialize it.
-					snap.setOwnerObjectId(ownerId);
-				}
-				portfolioSnapCache2.put(key, snap);
-			}
-			return portfolioSnapCache2.get(key);
-		}
-	}
-
-	private Map<String, PortfolioSnap> portfolioSnapCache2 = new HashMap<String, PortfolioSnap>();
-
-	private SubClearerAccount checkClearerAccount(
-			@WebParam(name = "legalEntity") String legalEntity,
-			@WebParam(name = "accountId") String accountId,
-			@WebParam(name = "subAccountId") String subAccountId)
-			throws DaoException {
-		//
-		ClearerAccount ca = new ClearerAccount();
-		ca.setLegalEntity(legalEntity);
-		ca.setAccountId(accountId);
-		String id = ca.getId();
-
-		// check if we have such a clearer account.
-		if (accDao.load(id) == null)
-			accDao.create(ca);
-
-		SubClearerAccount sca = new SubClearerAccount();
-		sca.setClearerAcctObjId(id);
-		sca.setSubAcctId(subAccountId);
-		if (subClrAccDao.load(sca.getId()) == null)
-			subClrAccDao.create(sca);
-		return sca;
-	}
-
-	@Override
-	public void addClearerAccountSnap(ClearerAccountStatementDto csdto)
-			throws InvalidDataException, DaoException {
-		//
-		ClearerAccountSnap c = converter.convert(csdto);
-		// create the snap.
-		caSnapDao.update(c);
-	}
 
 	/**
 	 * 
@@ -602,23 +397,15 @@ public class MainService implements IMainService {
 	}
 
 	@Override
-	public void storeInstrument(Instrument instrument) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void saveTimeSeriesValues(String seriesKey, TimeFrame timeFrame,
 			String key, long[] nanoSeconds, double[] value) throws IOException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public PositionDto[] getPositions(String clearingAccountId,
-			String subClearingAccountId, String date8Time6) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/**
+	 * This is a good test call 
+	 */
 
 	@Override
 	public int randomNumber() {
