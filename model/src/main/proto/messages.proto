@@ -36,13 +36,19 @@ message BaseMessage {
                 OHLC = 25; 
                 TICK = 26; 
                 
-                VALUESET = 27; 
+                VALUESET = 27;
+
+				MD_SUBSCRIBE = 28;
+				MD_SUBSCRIBE_RESPONSE = 29;
+				MD_UNSUBSCRIBE = 30;
+				MD_UNSUBSCRIBE_RESPONSE = 31; 
                 
+				HIST_REQUEST = 32; 
+				HIST_OHLCRESPONSE = 32; 
         }
         required CommandType type = 1;
-         
 
-}
+		}
 
 message Login {
     extend BaseMessage {
@@ -79,8 +85,6 @@ message MarketDataSnapshot {
 	required string mdiId = 6;
 	optional bool resend = 7;  
 }
-
-
 
 message AccountDataMessage {
     extend BaseMessage {
@@ -120,7 +124,8 @@ message ExecutionReport {
 	required double avgPx = 14;
 	required string ordType = 16;
 	optional string text = 17;
-	 optional string comment = 19;  	
+	optional string comment = 19;  
+	optional string massStatusReqId = 20;	
 }
 
 message OrderCancelRequest {
@@ -134,7 +139,6 @@ message OrderCancelRequest {
 	required double orderQty = 6;
 	optional string comment = 19;
 }
-
 
 message OrderCancelReject {
     extend BaseMessage {
@@ -231,7 +235,6 @@ message OrderRejected {
 	required string reason = 3;  
 }
 
-
 message OrderUpdateSubmitted {
 	extend BaseMessage {
     	required OrderUpdateSubmitted cmd = 117;
@@ -286,19 +289,18 @@ message InfoEvent {
 	required int64 timestamp = 2;
 }
 
-
 message OHLC {
 	extend BaseMessage {
     	required OHLC cmd = 123;
     }
 	required int64 timestamp = 1;
+	required int32 timeframe = 8; 
 	required string mdiId = 2; 
 	required double open = 3;
 	required double high = 4; 
 	required double low = 5; 
 	required double close = 6;
 	optional double volume = 7; 
-	
 }
 		
 message Tick {
@@ -323,4 +325,67 @@ message ValueSet {
 	required string field = 4; 
 	required string value = 5;  	
 }
-		
+			
+			
+
+message MDSubscribe {
+	extend BaseMessage {
+    	required MDSubscribe cmd = 126;
+    }
+	required string mdiId = 2; 
+	required string timeframe = 3;
+}
+
+
+message MDUnsubscribe {
+	extend BaseMessage {
+    	required MDUnsubscribe cmd = 127;
+    }
+	required string mdiId = 2; 
+	required string timeframe = 3;
+}
+
+
+message MDSubscribeResponse {
+	extend BaseMessage {
+    	required MDSubscribeResponse cmd = 128;
+    }
+	required string status = 2;
+	required int32 flag = 3; 
+}
+
+
+message MDUnsubscribeResponse {
+	extend BaseMessage {
+    	required MDSubscribeResponse cmd = 129;
+    }
+	required string status = 2;
+	required int32 flag = 3; 
+}
+
+message HistRequest {
+	extend BaseMessage {
+    	required HistRequest cmd = 130;
+    }
+	required string mdiId = 2;
+	required int32 startDate8	= 3;
+	required int32 endDate8 = 4; 
+	required string timeframe = 5; 
+}
+
+message HistOhlcResponse {
+	extend BaseMessage {
+    	required HistOhlcResponse cmd = 131;
+    }
+	required string mdiId = 2;
+	repeated int64 timestamp = 3;
+	repeated double open = 4;
+	repeated double high = 5; 
+	repeated double low = 6; 
+	repeated double close = 7; 
+	repeated double volume = 8; 
+	required int32 final = 9; 
+	optional int32 errorCode = 10; 
+	optional string errorMessage = 11; 
+}
+
