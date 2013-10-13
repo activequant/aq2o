@@ -26,19 +26,19 @@
               <uniqueVersion>false</uniqueVersion>
               <id>aq3rdpartydeploy</id>
               <name>AQ Repository</name>
-              <url>scp://activequant.org/opt/0.8-stable/public/m2/3rdparty/</url>
+              <url>scp://activequant.com/opt/web/mavenrepository/</url>
               <layout>default</layout>
             </repository>
             <snapshotRepository>
               <uniqueVersion>false</uniqueVersion>
               <id>aq3rdpartydeploy</id>
               <name>AQ Snapshots repository</name>
-              <url>scp://activequant.org:/opt/0.8-stable/public/m2/3rdparty/</url>
+              <url>scp://activequant.com/opt/web/mavenrepository/</url>
               <layout>default</layout>
             </snapshotRepository>
             <site>
                <id>aq-framework-site</id>
-               <url>scp://activequant.org:/var/aq2o.activequant.org</url>
+               <url>scp://activequant.org:/opt/web/aq2osite</url>
             </site>
         </distributionManagement>
 	       
@@ -47,11 +47,6 @@
 		<name>ActiveQuant GmbH</name>
 		<url>http://www.activequant.com</url>
 	</organization>
-	<issueManagement>
-		<system>Redmine</system>
-		<url>http://developers.activequant.org/projects/aq2o/issues</url>
-	</issueManagement>
-	
 	<licenses>
 		<license>
 			<name>Apache style</name>
