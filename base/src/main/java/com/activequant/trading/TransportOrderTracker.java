@@ -28,7 +28,7 @@ import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.OrderRejected;
 import com.activequant.messages.Marshaller;
-import com.activequant.messages.MessageFactory;
+import com.activequant.messages.MessageFactory2;
 import com.activequant.utils.UniqueTimeStampGenerator;
 import com.activequant.utils.events.Event;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -60,7 +60,7 @@ public class TransportOrderTracker implements IOrderTracker {
 	private boolean terminalState = false;
 	private boolean submitted = false;
 
-	private MessageFactory messageFactory;
+	private MessageFactory2 messageFactory;
 	private IPublisher transportPublisher;
 	private IReceiver transportReceiver;
 	private Marshaller marshaller = new Marshaller();
@@ -81,7 +81,7 @@ public class TransportOrderTracker implements IOrderTracker {
 
 		this.orderContainer = order;
 		order.setOpenQuantity(order.getQuantity());
-		messageFactory = new MessageFactory();
+		messageFactory = new MessageFactory2();
 		internalOrderId = order.getOrderId();
 		originalOrderId = order.getOrderId();
 

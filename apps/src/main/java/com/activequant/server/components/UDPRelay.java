@@ -17,7 +17,7 @@ import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.ValueSet;
 import com.activequant.messages.Marshaller;
-import com.activequant.messages.MessageFactory;
+import com.activequant.messages.MessageFactory2;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
@@ -32,7 +32,7 @@ public class UDPRelay extends ComponentBase {
 	private final int udpTargetPort;
 	private final int udpListenerPort;
 	private final boolean silent = true; 
-	MessageFactory mf = new MessageFactory();
+	MessageFactory2 mf = new MessageFactory2();
 
 	public UDPRelay(ITransportFactory localNode) throws Exception {
 		super("UDPRelay", localNode);

@@ -8,7 +8,7 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.interfaces.transport.IPublisher;
 import com.activequant.interfaces.transport.ITransportFactory;
 import com.activequant.messages.Marshaller;
-import com.activequant.messages.MessageFactory;
+import com.activequant.messages.MessageFactory2;
 import com.activequant.utils.ArrayUtils;
 
 /**
@@ -26,7 +26,7 @@ public class RandomMarketDataGenerator extends ComponentBase {
 	IPublisher valueSet ; 
 	ITransportFactory transFac;
 	Marshaller m = new Marshaller();
-	MessageFactory mf = new MessageFactory();
+	MessageFactory2 mf = new MessageFactory2();
 
 	public RandomMarketDataGenerator(ITransportFactory transFac)
 			throws Exception {

@@ -40,7 +40,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  */
 @Deprecated
 public class Marshaller {
-	MessageFactory mf = new MessageFactory();
+	MessageFactory2 mf = new MessageFactory2();
 
 	ExtensionRegistry registry;
 

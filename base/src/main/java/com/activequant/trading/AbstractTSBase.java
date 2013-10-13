@@ -50,7 +50,7 @@ import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
-import com.activequant.messages.MessageFactory;
+import com.activequant.messages.MessageFactory2;
 import com.activequant.trading.datamodel.AccountTable;
 import com.activequant.trading.datamodel.AuditLogTable;
 import com.activequant.trading.datamodel.ExecutionsTable;
@@ -355,7 +355,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	private void requestMarketQuote(MarketDataInstrument mdi)
 			throws TransportException {
-		MessageFactory mf = new MessageFactory();
+		MessageFactory2 mf = new MessageFactory2();
 		try {
 			env.getTransportFactory()
 					.getPublisher(ETransportType.MARKET_DATA,
@@ -369,7 +369,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 
 	private void requestPortfolio(TradeableInstrument tdi)
 			throws TransportException {
-		MessageFactory mf = new MessageFactory();
+		MessageFactory2 mf = new MessageFactory2();
 		try {
 			// env.getTransportFactory()
 			// .getPublisher(ETransportType.TRAD_DATA, tdi.getId())

@@ -11,7 +11,7 @@ import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
-import com.activequant.messages.MessageFactory;
+import com.activequant.messages.MessageFactory2;
 import com.activequant.transport.activemq.ActiveMQTransportFactory;
 import com.activequant.utils.UniqueTimeStampGenerator;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -65,7 +65,7 @@ public class PerformanceMeasure {
 		});
 
 		// and measure the latency.
-		MessageFactory mf = new MessageFactory();
+		MessageFactory2 mf = new MessageFactory2();
 
 		while (true) {
 			L1 = 0;
@@ -103,7 +103,7 @@ public class PerformanceMeasure {
 	public PerformanceMeasure(boolean test) throws Exception {
 
 		Marshaller m = new Marshaller();
-		MessageFactory mf = new MessageFactory();
+		MessageFactory2 mf = new MessageFactory2();
 
 		//
 		for (int h = 0; h < 1000; h++) {

@@ -27,7 +27,7 @@ import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.AQMessages.BaseMessage.CommandType;
 import com.activequant.messages.Marshaller;
-import com.activequant.messages.MessageFactory;
+import com.activequant.messages.MessageFactory2;
 
 /**
  * A chandler makes candles.
@@ -43,7 +43,7 @@ public class Chandler extends ComponentBase {
 	final int timeFrameInMs;
 	final TimeFrame tf;
 	private final Marshaller marshaller = new Marshaller();
-	private final MessageFactory mf = new MessageFactory();
+	private final MessageFactory2 mf = new MessageFactory2();
 
 	class InternalTimerTask extends TimerTask {
 		@Override

@@ -19,7 +19,7 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.interfaces.transport.IPublisher;
 import com.activequant.messages.AQMessages.BaseMessage;
 import com.activequant.messages.Marshaller;
-import com.activequant.messages.MessageFactory;
+import com.activequant.messages.MessageFactory2;
 import com.activequant.server.components.UDPRelay;
 import com.activequant.transport.memory.InMemoryTransportFactory;
 
@@ -175,7 +175,7 @@ public class BlackScholesTest extends TestCase {
 		//
 		// let's create some test messages. 
 		Marshaller m = new Marshaller();
-		MessageFactory mf = new MessageFactory();
+		MessageFactory2 mf = new MessageFactory2();
 		
 		BaseMessage vs = mf.valueSet(new TimeStamp(), "STATE", "1", "M", "100.0");
 		IPublisher p = t.getPublisher(ETransportType.STATE, "1");
