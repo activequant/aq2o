@@ -12,6 +12,8 @@ import com.activequant.messages.AQMessages.BaseMessage;
  * 
  * This is, what was the AlgoEnvironment before.
  * 
+ * Currently not implemented: market state events.
+ * 
  * @author GhostRider
  * 
  */
@@ -82,9 +84,33 @@ public interface IBlackBox {
 	IEventSource<AQMessages.ExecutionReport> executionEvent();
 
 	/**
-	 * All messages that are being sent to the server have to pushed through this method. 
+	 * This method is called once the black box has connected the socket.
+	 * 
+	 * @return
+	 */
+	IEventSource<String> connected();
+
+	/**
+	 * Called when the black box has been disconnected
+	 * 
+	 * @return
+	 */
+	IEventSource<String> disconnected();
+
+	/**
+	 * Called when the black box is ready, for example once the black box
+	 * container has successfully logged in.
+	 * 
+	 * @return
+	 */
+	IEventSource<String> ready();
+
+	/**
+	 * All messages that are being sent to the server have to pushed through
+	 * this method.
+	 * 
 	 * @param bm
 	 */
-	void send(BaseMessage bm);	
-	
+	void send(BaseMessage bm);
+
 }
