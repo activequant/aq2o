@@ -1,6 +1,7 @@
 package com.activequant.interfaces.blackbox;
 
 import com.activequant.domainmodel.trade.event.OrderEvent;
+import com.activequant.domainmodel.trade.order.Order;
 import com.activequant.interfaces.utils.IEventSource;
 import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
@@ -77,13 +78,7 @@ public interface IBlackBox {
 	 */
 	IEventSource<AQMessages.PositionReport> positionEvent();
 
-	/**
-	 * Order executions arrive here.
-	 * 
-	 * @return
-	 */
-	IEventSource<AQMessages.ExecutionReport> executionEvent();
-
+	
 	/**
 	 * This method is called once the black box has connected the socket.
 	 * 
@@ -112,6 +107,6 @@ public interface IBlackBox {
 	 * 
 	 * @param bm
 	 */
-	void send(BaseMessage bm);
+	void send(BaseMessage bm);	
 
 }
