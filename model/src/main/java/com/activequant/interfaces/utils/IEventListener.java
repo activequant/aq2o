@@ -33,6 +33,6 @@ package com.activequant.interfaces.utils;
  */
 public interface IEventListener<T> {
 
-    public void eventFired(T event);
+    void eventFired(T event);
 
 }

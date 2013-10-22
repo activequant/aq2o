@@ -33,6 +33,6 @@ package com.activequant.interfaces.utils;
  */
 public interface IEventListener2<T1, T2> {
 
-    public void eventFired(T1 t1, T2 t2) throws Exception;
+    void eventFired(T1 t1, T2 t2) throws Exception;
 
 }
