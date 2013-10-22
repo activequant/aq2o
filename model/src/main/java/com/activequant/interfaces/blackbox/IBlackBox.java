@@ -1,5 +1,6 @@
 package com.activequant.interfaces.blackbox;
 
+import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.interfaces.utils.IEventSource;
 import com.activequant.messages.AQMessages;
 import com.activequant.messages.AQMessages.BaseMessage;
@@ -53,7 +54,7 @@ public interface IBlackBox {
 	 * 
 	 * @return
 	 */
-	IEventSource<AQMessages.BaseMessage> orderEvents();
+	IEventSource<OrderEvent> orderEvents();
 
 	/**
 	 * All acccount related messages arrive here.
