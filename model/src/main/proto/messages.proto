@@ -273,6 +273,7 @@ message ExecutionReport2 {
 }
 
 
+
 message CustomCommand {
     extend BaseMessage {
     	required CustomCommand cmd = 121;
@@ -389,3 +390,18 @@ message HistOhlcResponse {
 	optional string errorMessage = 11; 
 }
 
+message WorkingOrder {
+	extend BaseMessage {
+		required WorkingOrder cmd = 132;
+	}
+	required string clOrderId = 2; 
+	required int64 timestamp = 3; 
+	required int32 orderType = 4;
+	required double limitPrice = 5;
+	required double stopPrice = 6;
+	required double originalQuantity = 5;
+	required double leftQuantity = 5;
+	required string tdiId = 5;
+	optional string account = 5;
+	optional string orderMessage = 5;
+}
