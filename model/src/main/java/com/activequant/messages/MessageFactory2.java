@@ -1,5 +1,6 @@
 package com.activequant.messages;
 
+import com.activequant.domainmodel.TimeFrame;
 import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.PositionEvent;
 import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
@@ -436,6 +437,17 @@ public class MessageFactory2 {
 				AQMessages.OHLC.cmd, n);
 	}
 	
+
+	/**
+	 * Can be used to send a value set around. 
+	 * 
+	 * @param ts
+	 * @param type
+	 * @param id
+	 * @param field
+	 * @param value
+	 * @return
+	 */
 	public BaseMessage valueSet(TimeStamp ts, String type, String id, String field, String value) {
 		AQMessages.ValueSet n = AQMessages.ValueSet.newBuilder()
 				.setTimestamp(ts.getNanoseconds()).setTimestamp(ts.getNanoseconds()).
@@ -444,5 +456,21 @@ public class MessageFactory2 {
 		return wrap(BaseMessage.CommandType.VALUESET,
 				AQMessages.ValueSet.cmd, n);
 	}
+
+	public BaseMessage subcribeTOB(String mdiId) {
+		AQMessages.MDSubscribe n = AQMessages.MDSubscribe.newBuilder()
+				.setMdiId(mdiId).setTimeframe(TimeFrame.RAW.name()).build();
+
+		return wrap(BaseMessage.CommandType.MD_SUBSCRIBE,
+				AQMessages.MDSubscribe.cmd, n);
+	}
 	
+	public BaseMessage unsubcribeTOB(String mdiId) {
+		AQMessages.MDUnsubscribe n = AQMessages.MDUnsubscribe.newBuilder()
+				.setMdiId(mdiId).setTimeframe(TimeFrame.RAW.name()).build();
+		return wrap(BaseMessage.CommandType.MD_UNSUBSCRIBE,
+				AQMessages.MDUnsubscribe.cmd, n);
+	}
+
+
 }
