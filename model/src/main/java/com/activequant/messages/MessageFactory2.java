@@ -463,7 +463,16 @@ public class MessageFactory2 {
 
 		return wrap(BaseMessage.CommandType.MD_SUBSCRIBE,
 				AQMessages.MDSubscribe.cmd, n);
+	}	
+
+	public BaseMessage subscribe(String mdiId, TimeFrame tf, int depth) {
+		AQMessages.MDSubscribe n = AQMessages.MDSubscribe.newBuilder()
+				.setMdiId(mdiId).setTimeframe(tf.name()).build();
+
+		return wrap(BaseMessage.CommandType.MD_SUBSCRIBE,
+				AQMessages.MDSubscribe.cmd, n);
 	}
+	
 	
 	public BaseMessage unsubcribeTOB(String mdiId) {
 		AQMessages.MDUnsubscribe n = AQMessages.MDUnsubscribe.newBuilder()
@@ -471,6 +480,12 @@ public class MessageFactory2 {
 		return wrap(BaseMessage.CommandType.MD_UNSUBSCRIBE,
 				AQMessages.MDUnsubscribe.cmd, n);
 	}
-
+	
+	public BaseMessage unsubscribe(String mdiId, TimeFrame tf) {
+		AQMessages.MDUnsubscribe n = AQMessages.MDUnsubscribe.newBuilder()
+				.setMdiId(mdiId).setTimeframe(tf.name()).build();
+		return wrap(BaseMessage.CommandType.MD_UNSUBSCRIBE,
+				AQMessages.MDUnsubscribe.cmd, n);
+	}
 
 }
