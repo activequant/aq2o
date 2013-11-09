@@ -25,6 +25,8 @@ package com.activequant.domainmodel;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -36,6 +38,7 @@ import com.activequant.utils.IdentityUtils;
  * <p>
  *  - [26.11.2007] Created (Mike Kroutkov)<br>
  *  - [10.10.2009] + Time component getter (Ghost Rider)<br>
+ *  - [09.11.2013] + added a convenience method to construct from yyyyMMdd<br>
  *
  *  @author Mike Kroutikov
  *  @author Ghost Rider
@@ -79,6 +82,27 @@ public final class TimeStamp implements Comparable<TimeStamp>, Serializable {
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTimeInMillis(this.getMilliseconds());
 		return cal; 
+	}
+	
+	/**
+	 * 
+	 * @param yyyyMMdd
+	 * @return
+	 * @throws ParseException
+	 */
+	public static TimeStamp fromYYYYMMDD(int yyyyMMdd) throws ParseException {
+		return fromYYYYMMDD(""+yyyyMMdd); 
+	}
+	
+	/**
+	 * 
+	 * @param yyyyMMdd
+	 * @return
+	 * @throws ParseException
+	 */
+	public static TimeStamp fromYYYYMMDD(String yyyyMMdd) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+		return new TimeStamp(sdf.parse(yyyyMMdd)); 		
 	}
 	
 	/**
