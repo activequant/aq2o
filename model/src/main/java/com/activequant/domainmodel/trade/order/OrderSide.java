@@ -27,7 +27,7 @@ public enum OrderSide {
      * @param side
      * @return
      */
-    public OrderSide valueFor(int side){
+    public static OrderSide valueFor(int side){
     	if(side==1)
     		return OrderSide.BUY; 
     	return OrderSide.SELL; 
