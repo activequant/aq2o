@@ -16,7 +16,7 @@ public enum OrderSide {
 
     /**
      * integer that can be used to multiply with a quantity 
-     * @return 1 for buy, -1 for sell.
+     * @return 1 for buy, -1 for sell ...
      */
     public int getSide() {
         return this.side;
