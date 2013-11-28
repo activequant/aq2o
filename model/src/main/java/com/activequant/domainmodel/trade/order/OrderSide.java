@@ -22,10 +22,16 @@ public enum OrderSide {
         return this.side;
     }
     
-    // TODO: OBSERVE. 
-    /*public boolean equals(OrderSide other){
-        return(this.getSide() == other.getSide());
-    }*/
+    /**
+     * 
+     * @param side
+     * @return
+     */
+    public OrderSide valueFor(int side){
+    	if(side==1)
+    		return OrderSide.BUY; 
+    	return OrderSide.SELL; 
+    }
     
     
     /**
