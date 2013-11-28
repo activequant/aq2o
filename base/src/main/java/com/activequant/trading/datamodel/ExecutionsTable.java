@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.activequant.domainmodel.TimeStamp;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.trading.AbstractTSBase;
 
 
@@ -52,7 +53,7 @@ public class ExecutionsTable extends AQTableDataBase {
 		}
 	}
 	
-	public void addExecution(String orderId, String execId, TimeStamp ts, String instrumentId, String side, double price, double quantity){		
+	public void addExecution(String orderId, String execId, TimeStamp ts, String instrumentId, OrderSide side, double price, double quantity){		
 		// convert data to list. 
 		List<Object[]> l = c(data);		
 		Object[] row = new Object[header.length];

@@ -9,6 +9,7 @@ import com.activequant.domainmodel.TimeStamp;
 import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.domainmodel.streaming.TimeStreamEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.domainmodel.trade.order.OrderSide;
 
 /**
  * Creates a stream event iterator from a transaction file list. 
@@ -58,7 +59,7 @@ public class TransactionFileStreamIterator extends StreamEventIterator<TimeStrea
 			ofe.setOptionalInstId(inst);
 			ofe.setFillPrice(price);
 			ofe.setFillAmount(quantity);
-			ofe.setSide(dir);			
+			ofe.setSide(OrderSide.valueOf(dir));			
 			ofe.setTimeStamp(tsUnixGmt);
 
 			// shift it, so that it looks as if it emitted at the end of a

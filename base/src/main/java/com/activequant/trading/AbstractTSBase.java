@@ -540,8 +540,7 @@ public abstract class AbstractTSBase implements ITradingSystem {
 						ofe.getExecId(),
 						ofe.getTimeStamp(),
 						ofe.getOptionalInstId(),
-						ofe.getSide().startsWith("B") ? OrderSide.BUY.name()
-								: OrderSide.SELL.name(), ofe.getFillPrice(),
+						ofe.getSide(), ofe.getFillPrice(),
 						ofe.getFillAmount());
 				if (ofe.getResend() == 0) {
 					// also signal the execution to the risk calculator.

@@ -10,6 +10,7 @@ import com.activequant.domainmodel.trade.event.OrderAcceptedEvent;
 import com.activequant.domainmodel.trade.event.OrderCancelledEvent;
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.interfaces.utils.IEventListener;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TSContainerMethods;
@@ -49,7 +50,7 @@ public class OrderEventListener implements IEventListener<OrderEvent> {
 			OrderFillEvent ofe = (OrderFillEvent) event;
 			if(ofe.getFillAmount()!=0.0)fillEvents.add(ofe);
 			trackFill(ofe.getOptionalInstId(), ofe.getTimeStamp(), ofe.getFillAmount()
-					* (ofe.getSide().startsWith("B") ? 1.0 : -1.0), ofe.getFillPrice());
+					* (ofe.getSide().equals(OrderSide.BUY) ? 1.0 : -1.0), ofe.getFillPrice());
 			countFill(ofe.getOptionalInstId());
 		} else if (event instanceof OrderCancelledEvent) {
 			countCancellation(((OrderCancelledEvent) event).getOptionalInstId());

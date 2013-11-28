@@ -22,7 +22,7 @@ public class CSVFileFillExporter {
 				bw.write(";");
 				bw.write(ofe.getRefOrderId());
 				bw.write(";");
-				bw.write(ofe.getSide());
+				bw.write(ofe.getSide().name());
 				bw.write(";");
 				bw.write(dcf.format(ofe.getTimeStamp().getMilliseconds()));
 				bw.write(";");

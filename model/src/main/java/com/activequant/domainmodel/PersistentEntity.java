@@ -9,14 +9,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+
 import com.activequant.domainmodel.annotations.Property;
 
+@Entity
+@MappedSuperclass
 public abstract class PersistentEntity {
 
+	@Column
     private String className;
+	@Column
     private long creationTime = System.currentTimeMillis();
+	@Column
     private long deletionTime = 0L;
+	@Column
     private long snapshotTime = 0L;
+	
     private Map<String, Object> underlyingMap = new HashMap<String, Object>();
 
     public PersistentEntity() {

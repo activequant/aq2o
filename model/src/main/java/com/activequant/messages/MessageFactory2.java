@@ -141,7 +141,7 @@ public class MessageFactory2 {
 		} else if (oe instanceof OrderFillEvent) {
 			OrderFillEvent ofe = (OrderFillEvent) oe;
 			ret = executionReport2(ofe.getRefOrderId(), ofe.getExecId(),
-					ofe.getSide(), ofe.getFillPrice(), ofe.getOptionalInstId(),
+					ofe.getSide().name(), ofe.getFillPrice(), ofe.getOptionalInstId(),
 					ofe.getTimeStamp().getNanoseconds(), ofe.getFillAmount(),
 					ofe.getLeftQuantity(), ofe.getResend());
 		}

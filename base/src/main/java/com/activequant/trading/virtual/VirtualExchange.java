@@ -232,7 +232,7 @@ public class VirtualExchange implements IExchange {
 			ofe.setTimeStamp(currentExchangeTime());
 			ofe.setRefOrder(order);
 			ofe.setRefOrderId(order.getOrderId());
-			ofe.setSide(lo.getOrderSide().toString());
+			ofe.setSide(lo.getOrderSide());
 			ofe.setOptionalInstId(lo.getTradInstId());
 			ofe.setFillAmount(quantity);
 			ofe.setFillPrice(price);

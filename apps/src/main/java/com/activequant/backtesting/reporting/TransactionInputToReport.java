@@ -35,6 +35,7 @@ import com.activequant.domainmodel.streaming.PNLChangeEvent;
 import com.activequant.domainmodel.streaming.StreamEvent;
 import com.activequant.domainmodel.streaming.StreamEventIterator;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.interfaces.archive.IArchiveFactory;
 import com.activequant.interfaces.archive.IArchiveReader;
 import com.activequant.interfaces.transport.ITransportFactory;
@@ -160,7 +161,7 @@ public class TransactionInputToReport {
 				// order event listener also holds the fee calculator
 				oel.eventFired(ofe);
 				PNLChangeEvent pce = prc.execution(ofe.getTimeStamp(), ofe.getOptionalInstId(),
-						ofe.getFillPrice(), (ofe.getSide().startsWith("B") ? 1 : -1) * ofe.getFillAmount());
+						ofe.getFillPrice(), ofe.getSide().getSide() * ofe.getFillAmount());
 				increaseTransactionCount(ofe.getOptionalInstId());
 			} else if (se instanceof OHLCV) {
 				OHLCV o = (OHLCV) se;
@@ -173,7 +174,7 @@ public class TransactionInputToReport {
 				ofe.setOptionalInstId(o.getMdiId());
 				ofe.setFillAmount(0.0);
 				// just set something. 
-				ofe.setSide("BUY");
+				ofe.setSide(OrderSide.BUY);
 				ofe.setFillPrice(o.getClose());
 				ofe.setTimeStamp(o.getTimeStamp());
 				oel.eventFired(ofe);

@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.activequant.domainmodel.trade.event.OrderEvent;
 import com.activequant.domainmodel.trade.event.OrderFillEvent;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.timeseries.TSContainer2;
 import com.activequant.timeseries.TypedColumn;
 
@@ -95,7 +96,7 @@ public class IBFXFeeCalculator implements IFeeCalculator {
 			// 
 			double signedVolume = volume;
 			
-			if(ofe.getSide().startsWith("S")){
+			if(ofe.getSide().equals(OrderSide.SELL)){
 				signedVolume = - signedVolume; 
 			}		
 			log.info(tid+": signed volume: " + signedVolume);

@@ -1,15 +1,24 @@
 package com.activequant.domainmodel.trade.event;
 
-import com.activequant.domainmodel.annotations.Property;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.utils.UniqueTimeStampGenerator;
 
+@Entity
 public class OrderFillEvent extends OrderEvent {
+	@Column
 	private double fillAmount;
+	@Column
 	private double fillPrice;
-	private String side;
+	@Column
+	private OrderSide side;
+	@Column
 	private double leftQuantity;
+	@Column
 	private String execId;
-
+	@Column
 	private int resend = 0;
 
 	public OrderFillEvent() {
@@ -21,7 +30,7 @@ public class OrderFillEvent extends OrderEvent {
 	public String getId() {
 		return "OFE." + nullSafe(getTimeStamp());
 	}
-	@Property
+
 	public int getResend() {
 		return resend;
 	}
@@ -29,7 +38,7 @@ public class OrderFillEvent extends OrderEvent {
 	public void setResend(int resend) {
 		this.resend = resend;
 	}
-	@Property
+
 	public String getExecId() {
 		return execId;
 	}
@@ -38,8 +47,6 @@ public class OrderFillEvent extends OrderEvent {
 		this.execId = execId;
 	}
 
-	
-	@Property
 	public double getFillPrice() {
 		return fillPrice;
 	}
@@ -47,7 +54,7 @@ public class OrderFillEvent extends OrderEvent {
 	public void setFillPrice(double fillPrice) {
 		this.fillPrice = fillPrice;
 	}
-	@Property
+
 	public double getFillAmount() {
 		return fillAmount;
 	}
@@ -60,15 +67,15 @@ public class OrderFillEvent extends OrderEvent {
 		return "Order " + super.getRefOrderId() + " filled: " + fillAmount
 				+ "@" + fillPrice;
 	}
-	@Property
-	public String getSide() {
+
+	public OrderSide getSide() {
 		return side;
 	}
 
-	public void setSide(String side) {
+	public void setSide(OrderSide side) {
 		this.side = side;
 	}
-	@Property
+
 	public double getLeftQuantity() {
 		return leftQuantity;
 	}

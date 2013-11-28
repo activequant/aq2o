@@ -17,6 +17,7 @@ import com.activequant.domainmodel.trade.event.OrderUpdateSubmittedEvent;
 import com.activequant.domainmodel.trade.order.LimitOrder;
 import com.activequant.domainmodel.trade.order.MarketOrder;
 import com.activequant.domainmodel.trade.order.Order;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.domainmodel.trade.order.SingleLegOrder;
 import com.activequant.domainmodel.trade.order.StopOrder;
 import com.activequant.interfaces.trading.IOrderTracker;
@@ -580,7 +581,7 @@ public class TransportOrderTracker implements IOrderTracker {
 			Double avgPx = er.getPrice();
 
 			String side = er.getSide();
-			ofe.setSide(side);
+			ofe.setSide(OrderSide.valueOf(side));
 			ofe.setTimeStamp(new TimeStamp());
 			ofe.setLeftQuantity(er.getQuantityLeft());
 			ofe.setFillPrice(er.getPrice());
