@@ -177,7 +177,7 @@ class HBaseArchiveWriter extends HBaseBase implements IArchiveWriter {
 	public void close() throws IOException {
 		this.htable.close();
 		if(config!=null)
-			HConnectionManager.deleteConnection(config,true);
+			HConnectionManager.deleteConnection(config);
 	}
 
 

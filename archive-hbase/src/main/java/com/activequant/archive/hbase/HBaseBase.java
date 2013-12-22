@@ -53,7 +53,7 @@ class HBaseBase {
         }
         admin.close();        
         htable = new HTable(config, tableName.getBytes());
-        htable.setAutoFlush(false);        
+        htable.setAutoFlush(false, true);        
         htable.setScannerCaching(1000000);
     }
 

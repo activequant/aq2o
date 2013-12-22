@@ -239,6 +239,6 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
 	public void close() throws IOException {
 		this.htable.close();
 		if(config!=null)
-			HConnectionManager.deleteConnection(config,true);
+			HConnectionManager.deleteConnection(config);
 	}
 }
