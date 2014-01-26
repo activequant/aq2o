@@ -178,7 +178,7 @@ class HBaseArchiveReader extends HBaseBase implements IArchiveReader {
             			start = startTimeStamp;
             		else
             			start = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60l * 60l * 1000l * 1000l * 1000l);
-            		end = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60l * 60l * 1000l * 1000l * 1000l);
+            		end   = new TimeStamp(start.getNanoseconds() + slotSizeInHours * 60l * 60l * 1000l * 1000l * 1000l);
             		log.info("Prepared scanner from " + start.getCalendar().getTime()+ " to " + end.getCalendar().getTime());
 					scanner = getScanner(streamId, start, end);
 					resultIterator = scanner.iterator();

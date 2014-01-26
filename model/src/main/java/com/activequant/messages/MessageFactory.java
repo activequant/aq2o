@@ -1,7 +1,7 @@
 package com.activequant.messages;
 
 import com.activequant.domainmodel.TimeStamp;
-import com.activequant.messages.AQMessages;
+import com.activequant.domainmodel.trade.order.OrderSide;
 import com.activequant.messages.AQMessages.BaseMessage;
 
 /**
@@ -77,7 +77,7 @@ public class MessageFactory {
 	}
 
 	public BaseMessage buildExecReport(String clOrdId, String execId,
-			String side, String currency, Double orderQty, Double price,
+			OrderSide side, String currency, Double orderQty, Double price,
 			String acmTdiId, String transactTime, String orderId,
 			String execType, Double cumQty, Double leavesQty, Double avgPx,
 			String ordType, String timeInForce, String text, String massReqId,
@@ -88,7 +88,7 @@ public class MessageFactory {
 				.newBuilder();
 		l.setClOrdId(clOrdId);
 		l.setExecId(execId);
-		l.setSide(Integer.parseInt(side));
+		l.setSide(side.getSide());
 		l.setCurrency(currency);
 		l.setOrderQty(orderQty);
 		l.setPrice(price);

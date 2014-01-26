@@ -318,47 +318,7 @@ public class CSVServlet extends HttpServlet {
 			//
 			Map paramMap = req.getParameterMap();
 
-			//
-			//
-			// if (paramMap.containsKey("SERIESID") &&
-			// paramMap.containsKey("FREQ")
-			// && paramMap.containsKey("FIELD")) {
-			//
-
-			// Object seriesObject = paramMap.get("SERIESID");
-			// @SuppressWarnings("rawtypes")
-			// String s = ""; // (String) paramMap.get("SERIESID");
-			// if (seriesObject.getClass().isArray()) {
-			// s = ((String[]) seriesObject)[0];
-			// } else
-			// s = (String) seriesObject;
-			// //
-			//
-
-			// Object fieldObject = paramMap.get("FIELD");
-			// String field = "";
-			// if (fieldObject.getClass().isArray())
-			// field = ((String[]) fieldObject)[0];
-			// else
-			// field = (String) fieldObject;
-			//
-			//
-
-			// String timeFrame = "";
-			// Object timeFrameObject = paramMap.get("FREQ");
-			// if (timeFrameObject.getClass().isArray())
-			// timeFrame = ((String[]) timeFrameObject)[0];
-			// else
-			// timeFrame = (String) timeFrameObject;
-			//
-			//
-			// String data = "";
-			// Object dataObject = paramMap.get("DATA");
-			// if (dataObject.getClass().isArray())
-			// data = ((String[]) dataObject)[0];
-			// else
-			// data = (String) dataObject;
-
+	
 			sanityCheck(s);
 
 			IArchiveWriter iaw = archFac
